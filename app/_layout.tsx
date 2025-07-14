@@ -48,7 +48,13 @@ const RootLayout = () => {
 				<SqlMigrations />
 				<SyncSettings />
 
-				<Stack screenOptions={{ headerShown: false, animation: 'none' }}>
+				<Stack
+					screenOptions={{
+						headerShown: false,
+						animation: 'none',
+						navigationBarHidden: true
+					}}
+				>
 					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				</Stack>
 			</GestureHandlerRootView>

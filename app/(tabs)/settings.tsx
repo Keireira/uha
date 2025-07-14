@@ -88,6 +88,16 @@ const SettingsScreen = () => {
 						trigger: notificationStatus.label,
 						onPress: handleNotifications
 					}
+				},
+				{
+					id: 'general-face-id',
+					title: 'Require Face ID',
+					accessory: {
+						type: 'switch',
+						value: false,
+						disabled: true,
+						onPress: () => {}
+					}
 				}
 			]
 		},
