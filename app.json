@@ -1,0 +1,72 @@
+{
+  "expo": {
+    "slug": "uha",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/ios-light.png",
+    "scheme": "uha",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "appleTeamId": "WU9ZX7QZRL",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.keireira.uha",
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "uha",
+          "уха"
+        ],
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleAllowMixedLocalizations": true,
+        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you of upcoming payments"
+      },
+      "icon": {
+        "dark": "./assets/images/ios-dark.png",
+        "light": "./assets/images/ios-light.png"
+      }
+    },
+    "locales": {
+      "en": "./assets/locales/en.json",
+      "ru": "./assets/locales/ru.json"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-dev-client",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "react-native-permissions",
+        {
+          "iosPermissions": [
+            "Notifications"
+          ]
+        }
+      ],
+      "expo-secure-store",
+      "expo-sqlite"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "supportsRTL": false,
+      "forcesRTL": false,
+      "eas": {
+        "projectId": "85064a70-6ca6-4a3a-91f3-6feb0c705943"
+      }
+    },
+    "android": {
+      "package": "com.keireira.uha"
+    }
+  }
+}
