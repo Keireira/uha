@@ -12,6 +12,17 @@ export const TabButton = styled.Pressable`
 	justify-content: center;
 `;
 
+export const CircleRoot = styled.Pressable`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	color: #fafafa;
+	background-color: #333333;
+	border-radius: 50%;
+`;
+
 export const BurpView = styled(BlurView)`
 	padding: 12px;
 	display: flex;

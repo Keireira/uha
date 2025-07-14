@@ -5,10 +5,10 @@ import * as Haptics from 'expo-haptics';
 import { Pressable, useColorScheme } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { ListIcon, CalendarIcon, SettingsIcon, LibraryIcon } from '@ui/icons';
-import Root, { GradientRoot, Gradient, BurpView, TabButton } from './bottom-nav.styles';
+import { ListIcon, CalendarIcon, SettingsIcon, LibraryIcon, AddIcon } from '@ui/icons';
+import Root, { GradientRoot, Gradient, BurpView, TabButton, CircleRoot } from './navbar.styles';
 
-import type { Props } from './bottom-nav.d';
+import type { Props } from './navbar.d';
 
 const ANIMATION_CONFIG = {
 	mass: 0.35,
@@ -82,12 +82,16 @@ const NavbarButton = ({ style, ...props }: React.ComponentProps<typeof TabButton
 BottomNav.Button = NavbarButton;
 
 type IconProps = {
-	name: 'list' | 'library' | 'search' | 'settings';
+	isInverted?: boolean;
+	name: 'list' | 'library' | 'search' | 'settings' | 'add';
 };
 
-const NavbarIcon = ({ name }: IconProps) => {
-	const colorScheme = useColorScheme();
-	const iconColor = colorScheme === 'dark' ? '#fafafa' : '#333333';
+const NORMAL_THEME_MAP = { dark: '#fafafa', light: '#333333' };
+const INVERTED_THEME_MAP = { dark: NORMAL_THEME_MAP.light, light: NORMAL_THEME_MAP.dark };
+
+const NavbarIcon = ({ name, isInverted = false }: IconProps) => {
+	const colorScheme = useColorScheme() || 'light';
+	const iconColor = isInverted ? INVERTED_THEME_MAP[colorScheme] : NORMAL_THEME_MAP[colorScheme];
 
 	switch (name) {
 		case 'list':
@@ -98,11 +102,23 @@ const NavbarIcon = ({ name }: IconProps) => {
 			return <LibraryIcon color={iconColor} />;
 		case 'settings':
 			return <SettingsIcon color={iconColor} />;
+		case 'add':
+			return <AddIcon color={iconColor} />;
 	}
 
 	return null;
 };
 
 BottomNav.Icon = NavbarIcon;
+
+const CircleButton = (props: React.ComponentProps<typeof CircleRoot>) => {
+	return (
+		<CircleRoot {...props}>
+			<NavbarIcon name="add" isInverted />
+		</CircleRoot>
+	);
+};
+
+BottomNav.CircleButton = CircleButton;
 
 export default BottomNav;

@@ -66,8 +66,8 @@
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "styled-components": "^6.1.19",
-    "react-native-svg": "15.11.2"
+    "react-native-svg": "15.11.2",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -56,6 +56,7 @@ const RootLayout = () => {
 					}}
 				>
 					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+					<Stack.Screen name="(crossroad)" options={{ headerShown: false }} />
 				</Stack>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
