@@ -14,6 +14,7 @@ const renderItem = ({ item }: LegendListRenderItemProps<ListSectionProps>) => {
 const List = ({ sections, style }: Props) => {
 	return (
 		<LegendList
+			scrollEnabled={false}
 			data={sections}
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id || item.title || 'section'}

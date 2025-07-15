@@ -19,7 +19,7 @@
         ],
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
-        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you of upcoming payments"
+        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments"
       },
       "icon": {
         "dark": "./assets/images/ios-dark.png",
@@ -34,6 +34,27 @@
       "expo-router",
       "expo-dev-client",
       "expo-localization",
+      [
+        "@howincodes/expo-dynamic-app-icon",
+        {
+          "enby": {
+            "ios": "./assets/images/enby-icon.png",
+            "android": "./assets/images/enby-icon.png"
+          },
+          "lesbi": {
+            "ios": "./assets/images/lesbi-icon.png",
+            "android": "./assets/images/lesbi-icon.png"
+          },
+          "pan": {
+            "ios": "./assets/images/pan-icon.png",
+            "android": "./assets/images/pan-icon.png"
+          },
+          "trans": {
+            "ios": "./assets/images/trans-icon.png",
+            "android": "./assets/images/trans-icon.png"
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {

@@ -21,6 +21,7 @@
   "dependencies": {
     "@config-plugins/apple-settings": "^5.0.0",
     "@expo/ui": "0.1.1-alpha.10",
+    "@howincodes/expo-dynamic-app-icon": "^2.0.3",
     "@legendapp/list": "^1.1.4",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
@@ -62,6 +63,7 @@
     "react-native": "0.79.5",
     "react-native-context-menu-view": "^1.19.0",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-pager-view": "6.7.1",
     "react-native-permissions": "^5.4.1",
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",

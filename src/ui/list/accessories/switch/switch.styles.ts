@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
 
-export default styled.View`
-	padding-right: 16px;
+export default styled.View<{ $isOldIOS: boolean }>`
+	padding-right: ${({ $isOldIOS }) => ($isOldIOS ? '6px' : '12px')};
 `;

@@ -2,14 +2,22 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 import { path } from 'ramda';
 import i18n from '@src/i18n';
+import { Image } from 'expo-image';
 import * as Linking from 'expo-linking';
 import { useTranslation } from 'react-i18next';
 import { useLocales } from 'expo-localization';
+import PagerView from 'react-native-pager-view';
 import SettingsBridgeModule from '@modules/settings-bridge';
+import { setAppIcon, getAppIcon } from '@howincodes/expo-dynamic-app-icon';
 
 import { Wrapper, List } from '@ui';
-import { Settings, useColorScheme } from 'react-native';
+import { Button, Settings, useColorScheme, View, ScrollView, Pressable } from 'react-native';
 import { requestNotifications, checkNotifications, RESULTS } from 'react-native-permissions';
+
+// import EnbyIcon from '@assets/images/enby-icon.png';
+// import LesbiIcon from '@assets/images/lesbi-icon.png';
+// import PanIcon from '@assets/images/pan-icon.png';
+// import TransIcon from '@assets/images/trans-icon.png';
 
 import {
 	SIGNS_BY_CODES,
@@ -25,6 +33,8 @@ import type { NativeSyntheticEvent } from 'react-native';
 import type { Props as ListProps } from '@ui/list/list.d';
 import type { PermissionStatus } from 'react-native-permissions';
 import type { ContextMenuAction, ContextMenuOnPressNativeEvent } from 'react-native-context-menu-view';
+
+import SquircleMask from '@assets/masks/squircle.svg.tsx';
 
 const NOTIFICATION_STATUS_LABELS: Record<PermissionStatus, string> = {
 	[RESULTS.UNAVAILABLE]: '',
@@ -213,6 +223,16 @@ const SettingsScreen = () => {
 	const colorScheme = useColorScheme();
 	const currenciesList = useGetCurrenciesList();
 
+	const [appIcon, setAppIconLocal] = useState(() => getAppIcon());
+
+	useEffect(() => {
+		const activeIcon = getAppIcon();
+
+		if (activeIcon !== appIcon) {
+			setAppIcon(appIcon === 'DEFAULT' ? null : appIcon);
+		}
+	}, [appIcon]);
+
 	const notificationStatus = useGetNotificationStatus();
 	const [isDarkMode, setIsDarkMode] = useState(colorScheme === 'dark');
 	const [defaultCurrencyCode, setDefaultCurrencyCode] = useState(Settings.get('default_currency_code'));
@@ -330,7 +350,52 @@ const SettingsScreen = () => {
 		}
 	];
 
-	return <Wrapper<ListProps> as={List} withBottom={false} sections={sections} />;
+	const pages = [
+		{
+			key: 'DEFAULT',
+			source: require('@assets/images/ios-light.png')
+		},
+		{
+			key: 'enby',
+			source: require('@assets/images/enby-icon.png')
+		},
+		{
+			key: 'lesbi',
+			source: require('@assets/images/lesbi-icon.png')
+		},
+		{
+			key: 'pan',
+			source: require('@assets/images/pan-icon.png')
+		},
+		{
+			key: 'trans',
+			source: require('@assets/images/trans-icon.png')
+		}
+	];
+
+	const defaultPage = pages.findIndex((page) => page.key === appIcon);
+
+	return (
+		<Wrapper as={ScrollView} withBottom={false}>
+			<PagerView style={{ flex: 1, height: 256 }} initialPage={defaultPage} overdrag>
+				{pages.map((page) => {
+					return (
+						<Pressable
+							key={page.key}
+							style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
+							onPress={() => setAppIconLocal(page.key)}
+						>
+							<SquircleMask>
+								<Image style={{ width: 192, height: 192 }} source={page.source} contentFit="cover" />
+							</SquircleMask>
+						</Pressable>
+					);
+				})}
+			</PagerView>
+
+			<List sections={sections} />
+		</Wrapper>
+	);
 };
 
 export default SettingsScreen;

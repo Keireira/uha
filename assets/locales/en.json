@@ -44,7 +44,7 @@
   },
   "currencies": {
     "ALL": "Albanian Lek",
-    "USD": "US Dollar",
+    "USD": "US Dollars",
     "EUR": "Euro",
     "AOA": "Angolan Kwanza",
     "XCD": "East Caribbean Dollar",
@@ -174,7 +174,6 @@
     "TRY": "Turkish Lira",
     "UGX": "Ugandan Shilling",
     "UAH": "Hryvnia",
-    "USN": "US Dollar (Next day)",
     "UYU": "Uruguayan Peso",
     "UYI": "Uruguayan Peso en Unidades Indexadas",
     "UYW": "Uruguayan Unidad Previsional",

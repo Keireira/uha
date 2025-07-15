@@ -23,6 +23,7 @@ const ListSectionComponent = ({ title, innerArray }: Props) => {
 
 			<GroupedListContainer>
 				<LegendList
+					scrollEnabled={false}
 					data={innerArray}
 					renderItem={renderItem}
 					keyExtractor={(item) => item.id}
