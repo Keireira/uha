@@ -1,15 +1,19 @@
 import React from 'react';
-import Svg, { Defs, Path, Mask } from 'react-native-svg';
+import Svg, { Defs, Path, G, ClipPath, Image } from 'react-native-svg';
 
 import type { SvgProps } from 'react-native-svg';
 
-const SvgComponent = (props: SvgProps) => (
+const SvgComponent = (props: SvgProps & { link: string }) => (
 	<Svg viewBox="0 0 1 1" {...props}>
 		<Defs>
-			<Mask id="squircle" maskUnits="objectBoundingBox">
-				<Path d="M0 .5C0 .172.172 0 .5 0s.5.172.5.5-.172.5-.5.5S0 .828 0 .5" />
-			</Mask>
+			<ClipPath id="squircle">
+				<Path d="M 0,0.5 C 0,0.1725  0.1725,0  0.5,0 0.8275,0  1,0.1725  1,0.5 1,0.8275  0.8275,1  0.5,1 0.1725,1  0,0.8275  0,0.5" />
+			</ClipPath>
 		</Defs>
+
+		<G x="0" y="0" width="100%" height="100%" clipPath="url(#squircle)">
+			<Image x="0" y="0" width="100%" height="100%" href={props.link} />
+		</G>
 	</Svg>
 );
 export default SvgComponent;
