@@ -28,6 +28,7 @@ export const ListItemContent = styled.View`
 `;
 
 export default styled.TouchableHighlight`
+	flex: 1;
 	flex-direction: row;
 	align-items: center;
 	padding-vertical: 12px;

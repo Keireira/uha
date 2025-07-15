@@ -17,6 +17,23 @@ const SyncSettings = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const showFractions = Settings.get('currency_fractions'); // '1' for true, '0' for false
+
+		if (![0, 1].includes(showFractions)) {
+			Settings.set({ currency_fractions: 0 });
+		}
+	}, []);
+
+	useEffect(() => {
+		const defaultCurrency = Settings.get('default_currency_code');
+		const recalcCurrency = Settings.get('recalc_currency_code');
+
+		if (!defaultCurrency || !recalcCurrency) {
+			Settings.set({ default_currency_code: 'USD', recalc_currency_code: 'USD' });
+		}
+	}, []);
+
 	return null;
 };
 

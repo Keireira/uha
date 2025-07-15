@@ -1,38 +1,47 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useWindowDimensions } from 'react-native';
 
-import { Text } from '@ui';
 import { AddIcon } from '@ui/icons';
-import { Pressable, useWindowDimensions } from 'react-native';
 import { BottomSheet } from '@expo/ui/swift-ui';
-import styled from 'styled-components/native';
-
-import { Grid, Square } from './crossroad.styles';
+import { Grid, Icon, TileButton, TilePress, TileText } from './crossroad.styles';
 
 import type { Props } from './crossroad.d';
 
-const CROSSROAD_ROUTES = [
-	{ title: 'Subscription', route: '/(crossroad)/add-subscription' },
-	{ title: 'Category', route: '/(crossroad)/add-category' },
-	{ title: 'Application', route: '/(crossroad)/add-service' },
-	{ title: 'Payment', route: '/(crossroad)/add-payment' }
-];
+const useCrossroadRoutes = () => {
+	const { t } = useTranslation();
 
-const Icon = styled.View`
-	background-color: #dfdfdf;
-	padding: 16px;
-	width: 48px;
-	height: 48px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 32px;
-`;
+	const routes = useMemo(() => {
+		return [
+			{ title: t('crossroad.category'), route: '/(crossroad)/add-category' },
+			{ title: t('crossroad.service'), route: '/(crossroad)/add-service' },
+			{ title: t('crossroad.subscription'), route: '/(crossroad)/add-subscription' },
+			{ title: t('crossroad.payment'), route: '/(crossroad)/add-payment' }
+		];
+	}, [t]);
+
+	return routes;
+};
+
+const useTileSizes = () => {
+	const { width } = useWindowDimensions();
+
+	const tile = useMemo(() => {
+		const tileWidth = width / 2 - 32;
+		const tileHeight = (tileWidth / 4) * 3;
+
+		return { width: tileWidth, height: tileHeight };
+	}, [width]);
+
+	return tile;
+};
 
 const Crossroad = ({ isOpened, onIsOpenedChange }: Props) => {
 	const router = useRouter();
-	const { width } = useWindowDimensions();
+	const tile = useTileSizes();
+	const crossroadRoutes = useCrossroadRoutes();
 
 	const handleOptionPress = (route: string) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -40,37 +49,23 @@ const Crossroad = ({ isOpened, onIsOpenedChange }: Props) => {
 		router.push(route as any);
 	};
 
-	const tileWidth = width / 2 - 32;
-	const tileHeight = (tileWidth / 4) * 3;
+	if (!isOpened) {
+		return null;
+	}
 
 	return (
 		<BottomSheet isOpened={isOpened} onIsOpenedChange={onIsOpenedChange}>
-			<Grid style={{ height: tileHeight * 2 + 92 }}>
-				{CROSSROAD_ROUTES.map((route) => (
-					<Square key={route.route} $width={tileWidth} onPress={() => handleOptionPress(route.route)}>
-						<Pressable
-							style={{
-								height: '100%',
-								padding: 16,
-								display: 'flex',
-								flexDirection: 'column',
-								justifyContent: 'space-between'
-							}}
-						>
+			<Grid style={{ height: tile.height * 2 + 92 }}>
+				{crossroadRoutes.map((route) => (
+					<TileButton key={route.route} $width={tile.width} onPress={() => handleOptionPress(route.route)}>
+						<TilePress>
 							<Icon>
 								<AddIcon />
 							</Icon>
 
-							<Text
-								style={{
-									fontSize: 22,
-									fontWeight: 'bold'
-								}}
-							>
-								{route.title}
-							</Text>
-						</Pressable>
-					</Square>
+							<TileText>{route.title}</TileText>
+						</TilePress>
+					</TileButton>
 				))}
 			</Grid>
 		</BottomSheet>

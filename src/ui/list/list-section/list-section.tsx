@@ -26,7 +26,7 @@ const ListSectionComponent = ({ title, innerArray }: Props) => {
 					data={innerArray}
 					renderItem={renderItem}
 					keyExtractor={(item) => item.id}
-					recycleItems={false}
+					recycleItems
 					extraData={{
 						arrLength: innerArray.length
 					}}

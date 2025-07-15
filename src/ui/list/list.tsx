@@ -2,6 +2,7 @@ import React from 'react';
 
 import { LegendList } from '@legendapp/list';
 import ListSectionComponent from './list-section';
+
 import type { Props } from './list.d';
 import type { Props as ListSectionProps } from './list-section';
 import type { LegendListRenderItemProps } from '@legendapp/list';

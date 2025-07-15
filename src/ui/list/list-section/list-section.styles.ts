@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components/native';
 import { Text } from '../../typography';
 
 export const ListSection = styled.View`
+	flex: 1;
 	margin-bottom: 20px;
 `;
 
@@ -27,6 +28,15 @@ const last = css`
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom-width: 0;
+	border-top-width: 0.5px;
+	border-top-color: #c6c6c875;
+	border-top-style: solid;
+`;
+
+const middle = css`
+	border-top-width: 0.5px;
+	border-top-color: #c6c6c875;
+	border-top-style: solid;
 `;
 
 const first = css`
@@ -37,8 +47,8 @@ const first = css`
 export const GroupedListItem = styled.View<{ $isFirst: boolean; $isLast: boolean }>`
 	min-height: 44px;
 	background-color: white;
-	border-bottom-width: 0.5px;
-	border-bottom-color: #c6c6c8;
+
 	${({ $isFirst }) => $isFirst && first}
+	${({ $isFirst, $isLast }) => !$isFirst && !$isLast && middle}
 	${({ $isLast }) => $isLast && last}
 `;
