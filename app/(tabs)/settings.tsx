@@ -7,8 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { useLocales } from 'expo-localization';
 import PagerView from 'react-native-pager-view';
 import { SymbolView } from 'expo-symbols';
+import VersionNumber from 'react-native-version-number';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import SettingsBridgeModule from '@modules/settings-bridge';
+import { useScrollDirection } from '@hooks';
 import { setAppIcon, getAppIcon } from '@howincodes/expo-dynamic-app-icon';
 
 import { Wrapper, List } from '@ui';
@@ -240,6 +242,7 @@ const useGetNotificationStatus = () => {
 const SettingsScreen = () => {
 	const { t } = useTranslation();
 	const colorScheme = useColorScheme();
+	const handleScroll = useScrollDirection();
 	const currenciesList = useGetCurrenciesList();
 
 	const iconScale = useSharedValue(1);
@@ -382,14 +385,80 @@ const SettingsScreen = () => {
 					}
 				}
 			]
+		},
+		{
+			id: 'about-section',
+			title: t('settings.about.header'),
+			innerArray: [
+				{
+					id: 'about-version',
+					title: t('settings.about.version'),
+					accessory: {
+						type: 'text',
+						text: `${VersionNumber.appVersion} (${VersionNumber.buildVersion})`
+					}
+				},
+				{
+					id: 'about-github',
+					title: t('settings.about.sources'),
+					accessory: {
+						type: 'text',
+						text: t('settings.about.github'),
+						link: 'https://github.com/Keireira/uha'
+					}
+				},
+				{
+					id: 'about-testflight',
+					title: t('settings.about.beta'),
+					accessory: {
+						type: 'text',
+						text: t('settings.about.testflight'),
+						link: 'https://testflight.apple.com/join/uVYrDkbA'
+					}
+				}
+			]
+		},
+		{
+			id: 'support-section',
+			title: t('settings.donations.header'),
+			bottomText: t('settings.donations.description'),
+			innerArray: [
+				{
+					id: 'support-github',
+					title: t('settings.about.github'),
+					accessory: {
+						type: 'text',
+						text: 'keireira',
+						link: 'https://github.com/sponsors/Keireira'
+					}
+				},
+				{
+					id: 'support-boosty',
+					title: t('settings.donations.boosty'),
+					accessory: {
+						type: 'text',
+						text: 'keireira',
+						link: 'https://boosty.to/keireira/donate'
+					}
+				},
+				{
+					id: 'support-patreon',
+					title: t('settings.donations.patreon'),
+					accessory: {
+						type: 'text',
+						text: 'keireira_fog',
+						link: 'https://patreon.com/keireira_fog'
+					}
+				}
+			]
 		}
 	];
 
 	const defaultPage = pages.findIndex((page) => page.key === appIcon);
 
 	return (
-		<Wrapper as={ScrollView} withBottom={false}>
-			<PagerView style={{ flex: 1, height: 220 }} initialPage={defaultPage} overdrag>
+		<Wrapper as={ScrollView} onScroll={handleScroll}>
+			<PagerView style={{ flex: 1, height: 200 }} initialPage={defaultPage} overdrag>
 				{pages.map((page) => {
 					const isActive = page.key === appIcon;
 
@@ -407,12 +476,12 @@ const SettingsScreen = () => {
 								setAppIconLocal(page.key as 'DEFAULT' | 'enby' | 'lesbi' | 'pan' | 'trans');
 							}}
 						>
-							<Animated.View style={[iconScaledStyle, { width: 160, height: 160, position: 'relative' }]}>
+							<Animated.View style={[iconScaledStyle, { width: 128, height: 128, position: 'relative' }]}>
 								{isActive && (
 									<View
 										style={{
-											width: 36,
-											height: 36,
+											width: 28,
+											height: 28,
 											position: 'absolute',
 											bottom: 0,
 											right: 0,
@@ -421,7 +490,7 @@ const SettingsScreen = () => {
 									>
 										<SymbolView
 											name="checkmark.seal.fill"
-											size={36}
+											size={28}
 											tintColor="green"
 											animationSpec={{ effect: { type: 'scale', wholeSymbol: true } }}
 										/>

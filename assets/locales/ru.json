@@ -40,6 +40,22 @@
       "babah": "Ближний Восток",
       "maori": "Океания",
       "other": "Иные"
+    },
+    "about": {
+      "header": "О приложении",
+      "version": "Версия",
+      "sources": "Исходники",
+      "github": "GitHub",
+      "beta": "Бета-версия",
+      "testflight": "TestFlight"
+    },
+    "donations": {
+      "header": "Поддержать",
+      "description": "Это приложение бесплатно и открыто, но оно требует поддержки (в т.ч. денежной), так что буду благодарна за любой донат.",
+      "donate": "Поддержать",
+      "patreon": "Patreon",
+      "github": "GitHub",
+      "boosty": "Boosty"
     }
   },
   "currencies": {

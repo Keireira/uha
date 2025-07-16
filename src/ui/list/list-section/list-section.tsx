@@ -2,7 +2,13 @@ import React from 'react';
 
 import ListItemComponent from '../list-item';
 import { LegendList } from '@legendapp/list';
-import { ListSection, SectionHeader, GroupedListContainer, GroupedListItem } from './list-section.styles';
+import {
+	ListSection,
+	SectionHeader,
+	GroupedListContainer,
+	GroupedListItem,
+	SectionBottomText
+} from './list-section.styles';
 
 import type { Props } from './list-section.d';
 import type { Props as ListItemProps } from '../list-item';
@@ -16,7 +22,7 @@ const renderItem = ({ item, index, extraData }: LegendListRenderItemProps<ListIt
 	);
 };
 
-const ListSectionComponent = ({ title, innerArray }: Props) => {
+const ListSectionComponent = ({ title, innerArray, bottomText }: Props) => {
 	return (
 		<ListSection>
 			{Boolean(title) && <SectionHeader>{title}</SectionHeader>}
@@ -33,6 +39,8 @@ const ListSectionComponent = ({ title, innerArray }: Props) => {
 					}}
 				/>
 			</GroupedListContainer>
+
+			{Boolean(bottomText) && <SectionBottomText>{bottomText}</SectionBottomText>}
 		</ListSection>
 	);
 };

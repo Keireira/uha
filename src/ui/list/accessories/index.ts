@@ -9,3 +9,6 @@ export { default as PlainActionAccessory } from './plain-action';
 
 export * from './switch';
 export { default as SwitchAccessory } from './switch';
+
+export * from './text';
+export { default as TextAccessory } from './text';

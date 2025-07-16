@@ -40,6 +40,22 @@
       "babah": "Middle East",
       "maori": "Oceania",
       "other": "Other"
+    },
+    "about": {
+      "header": "About",
+      "version": "Version",
+      "sources": "Sources",
+      "github": "GitHub",
+      "beta": "Join Beta",
+      "testflight": "TestFlight"
+    },
+    "donations": {
+      "header": "Support me",
+      "description": "This application is free and open sourced, and always will be.\nI have to pay for it's maintenance though, so I'll appreciate any form of support.",
+      "donate": "Donate",
+      "patreon": "Patreon",
+      "github": "GitHub",
+      "boosty": "Boosty"
     }
   },
   "currencies": {

@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { View } from 'react-native';
+
 import type { ViewProps } from 'react-native';
 import type { EdgeInsets } from 'react-native-safe-area-context';
 
@@ -30,6 +32,8 @@ const Wrapper = <T extends ViewProps = ViewProps>({
 	return (
 		<Root {...props} $insets={insets} $withTop={withTop} $withBottom={withBottom}>
 			{children || null}
+
+			{withBottom && <View style={{ height: insets.bottom + 32 }} />}
 		</Root>
 	);
 };

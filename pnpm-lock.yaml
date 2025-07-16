@@ -158,6 +158,9 @@ importers:
       react-native-svg:
         specifier: 15.11.2
         version: 15.11.2(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-version-number:
+        specifier: ^0.3.6
+        version: 0.3.6
       styled-components:
         specifier: ^6.1.19
         version: 6.1.19(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -4100,6 +4103,9 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-version-number@0.3.6:
+    resolution: {integrity: sha512-TdyXiK90NiwmSbmAUlUBOV6WI1QGoqtvZZzI5zQY4fKl67B3ZrZn/h+Wy/OYIKKFMfePSiyfeIs8LtHGOZ/NgA==}
 
   react-native@0.79.5:
     resolution: {integrity: sha512-jVihwsE4mWEHZ9HkO1J2eUZSwHyDByZOqthwnGrVZCh6kTQBCm4v8dicsyDa6p0fpWNE5KicTcpX/XXl0ASJFg==}
@@ -9324,6 +9330,8 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
       warn-once: 0.1.1
+
+  react-native-version-number@0.3.6: {}
 
   react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0):
     dependencies:

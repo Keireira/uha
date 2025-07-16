@@ -16,6 +16,15 @@ export const SectionHeader = styled(Text)`
 	margin-top: 16px;
 `;
 
+export const SectionBottomText = styled(Text)`
+	font-size: 12px;
+	font-weight: 400;
+	color: #6d6d70;
+	margin-left: 32px;
+	margin-right: 32px;
+	margin-top: 8px;
+`;
+
 export const GroupedListContainer = styled.View`
 	margin-horizontal: 16px;
 	margin-vertical: 8px;
