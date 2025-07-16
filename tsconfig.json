@@ -27,6 +27,9 @@
       "@models": ["./src/models"],
       "@models/*": ["./src/models/*"],
 
+      "@screens": ["./src/screens"],
+      "@screens/*": ["./src/screens/*"],
+
       "@types": ["./src/types"],
       "@types/*": ["./src/types/*"],
 

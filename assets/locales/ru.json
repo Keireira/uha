@@ -6,9 +6,6 @@
     "en": "Английский",
     "ru": "Русский"
   },
-  "drawer": {
-    "settings": "Настройки"
-  },
   "intervals": {
     "day": "День",
     "week": "Неделя",
@@ -24,7 +21,15 @@
   "settings": {
     "system": {
       "header": "Система",
-      "notifications": "Уведомления",
+      "notifications": {
+        "header": "Уведомления",
+        "results": {
+          "denied": "Не запрошены",
+          "blocked": "Заблокированы",
+          "granted": "Всё хорошо",
+          "limited": "Всё хорошо"
+        }
+      },
       "face_id": "Требовать Face ID",
       "language": "Язык",
       "dark_mode": "Тёмный режим"

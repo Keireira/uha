@@ -6,9 +6,6 @@
     "en": "English",
     "ru": "Russian"
   },
-  "drawer": {
-    "settings": "Settings"
-  },
   "intervals": {
     "day": "Day",
     "week": "Week",
@@ -24,7 +21,15 @@
   "settings": {
     "system": {
       "header": "System",
-      "notifications": "Notifications",
+      "notifications": {
+        "header": "Notifications",
+        "results": {
+          "denied": "Not requested",
+          "blocked": "Denied",
+          "granted": "All good",
+          "limited": "All good"
+        }
+      },
       "face_id": "Require Face ID",
       "language": "Language",
       "dark_mode": "Dark Mode"
