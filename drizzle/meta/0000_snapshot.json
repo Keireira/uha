@@ -1,84 +1,9 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "ad7324ff-8e96-4733-8c22-1e1ce8e07b3b",
+  "id": "1b0102e0-7159-45f0-9b6d-a00097c6830d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "apps": {
-      "name": "apps",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "color": {
-          "name": "color",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "aliases": {
-          "name": "aliases",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'[]'"
-        },
-        "category_id": {
-          "name": "category_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "apps_id_unique": {
-          "name": "apps_id_unique",
-          "columns": [
-            "id"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "apps_category_id_categories_id_fk": {
-          "name": "apps_category_id_categories_id_fk",
-          "tableFrom": "apps",
-          "tableTo": "categories",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "billing_cycles": {
       "name": "billing_cycles",
       "columns": {
@@ -368,6 +293,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "services": {
+      "name": "services",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "aliases": {
+          "name": "aliases",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "category_id": {
+          "name": "category_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "services_id_unique": {
+          "name": "services_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "services_category_id_categories_id_fk": {
+          "name": "services_category_id_categories_id_fk",
+          "tableFrom": "services",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "subscriptions": {
       "name": "subscriptions",
       "columns": {
@@ -385,8 +385,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "app_id": {
-          "name": "app_id",
+        "service_id": {
+          "name": "service_id",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -490,12 +490,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "subscriptions_app_id_apps_id_fk": {
-          "name": "subscriptions_app_id_apps_id_fk",
+        "subscriptions_service_id_services_id_fk": {
+          "name": "subscriptions_service_id_services_id_fk",
           "tableFrom": "subscriptions",
-          "tableTo": "apps",
+          "tableTo": "services",
           "columnsFrom": [
-            "app_id"
+            "service_id"
           ],
           "columnsTo": [
             "id"

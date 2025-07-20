@@ -3,6 +3,7 @@ export const DEFAULT_SIGN = '';
 export const SIGNS_BY_CODES = {
 	USD: 'dollarsign.circle',
 	EUR: 'eurosign.circle',
+	CAD: 'dollarsign.circle',
 	ALL: 'l.circle',
 	DKK: 'danishkronesign.circle',
 	GEL: 'larisign.circle',
@@ -14,7 +15,6 @@ export const SIGNS_BY_CODES = {
 	RUB: 'rublesign.circle',
 	SEK: 'swedishkronasign.circle',
 	CHF: 'francsign.circle',
-	TRY: 'turkishlirasign.circle',
 	UAH: 'hryvniasign.circle',
 	KZT: 'tengesign.circle',
 	AUD: 'australiandollarsign.circle',
@@ -33,7 +33,6 @@ export const SIGNS_BY_CODES = {
 	ARS: 'pesosign.circle',
 	CLP: 'dollarsign.circle',
 	COP: 'dollarsign.circle',
-	CUP: 'dollarsign.circle',
 	PHP: 'pesosign.circle',
 	ILS: 'shekelsign.circle',
 	SGD: 'singaporedollarsign.circle',
@@ -73,7 +72,6 @@ export const EUROPEAN_CURRENCIES = [
 export const ASIAN_CURRENCIES = [
 	'JPY',
 	'KZT',
-	'TRY',
 	'CNY',
 	'INR',
 	'KGS',
@@ -98,4 +96,4 @@ export const MIDDLE_EAST_CURRENCIES = ['ILS'];
 export const OCEANIAN_CURRENCIES = ['AUD', 'NZD'];
 
 // OTHER CURRENCIES
-export const OTHER_CURRENCIES = [];
+export const OTHER_CURRENCIES = ['CAD', 'CLP', 'COP', 'CRC', 'MXN'];

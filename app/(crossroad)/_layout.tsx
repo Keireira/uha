@@ -16,14 +16,14 @@ const TabLayout = () => {
 					<Navbar.Icon name="list" />
 				</Navbar.Button>
 
-				<Navbar.Button onPress={() => router.push('/(tabs)/library')}>
-					<Navbar.Icon name="library" />
+				<Navbar.Button onPress={() => router.push('/(tabs)/calendar')}>
+					<Navbar.Icon name="calendar" />
 				</Navbar.Button>
 
 				<Navbar.CircleButton onPress={() => setIsModalOpened(true)} />
 
-				<Navbar.Button onPress={() => router.push('/(tabs)/search')}>
-					<Navbar.Icon name="search" />
+				<Navbar.Button onPress={() => router.push('/(tabs)/library')}>
+					<Navbar.Icon name="library" />
 				</Navbar.Button>
 
 				<Navbar.Button onPress={() => router.push('/(tabs)/settings')}>

@@ -24,6 +24,9 @@
       "@lib": ["./src/lib"],
       "@lib/*": ["./src/lib/*"],
 
+      "@db": ["./db"],
+      "@db/*": ["./db/*"],
+
       "@models": ["./src/models"],
       "@models/*": ["./src/models/*"],
 

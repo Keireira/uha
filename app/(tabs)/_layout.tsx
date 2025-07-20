@@ -19,17 +19,17 @@ const TabLayout = () => {
 							</Navbar.Button>
 						</TabTrigger>
 
-						<TabTrigger name="library" href="/library" asChild>
+						<TabTrigger name="calendar" href="/calendar" asChild>
 							<Navbar.Button>
-								<Navbar.Icon name="library" />
+								<Navbar.Icon name="calendar" />
 							</Navbar.Button>
 						</TabTrigger>
 
 						<Navbar.CircleButton onPress={() => setIsModalOpened(true)} />
 
-						<TabTrigger name="search" href="/search" asChild>
+						<TabTrigger name="library" href="/library" asChild>
 							<Navbar.Button>
-								<Navbar.Icon name="search" />
+								<Navbar.Icon name="library" />
 							</Navbar.Button>
 						</TabTrigger>
 

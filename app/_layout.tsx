@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import appModel from '@models';
-import { useGate } from 'effector-react';
 import { useFonts } from 'expo-font';
 import { withFactory, useFactoryModel } from '@lib/effector';
 import * as SplashScreen from 'expo-splash-screen';
@@ -24,9 +23,7 @@ setNotificationHandler({
 });
 
 const RootLayout = () => {
-	const { gate } = useFactoryModel(appModel);
-
-	useGate(gate, {});
+	useFactoryModel(appModel);
 
 	const [loaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')

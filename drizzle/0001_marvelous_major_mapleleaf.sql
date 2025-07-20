@@ -1,463 +1,92 @@
-INSERT INTO `currencies` (`id`, `symbol`, `is_favorite`) VALUES
-	-- Albania (Lek)
+-- Custom SQL migration file, put your code below! --
+
+INSERT INTO "currencies" ("id", "symbol", "is_favorite") VALUES
 	('ALL', 'L', false),
-
-	-- United States (US Dollar)
 	('USD', '$', true),
-
-	-- European Union (Euro)
 	('EUR', '€', true),
-
-	-- Angola (Kwanza)
-	('AOA', 'Kz', false),
-
-	-- East Caribbean (East Caribbean Dollar)
-	('XCD', '$', false),
-
-	-- Argentina (Argentine Peso)
 	('ARS', '$', false),
-
-	-- Armenia (Armenian Dram)
 	('AMD', '֏', false),
-
-	-- Aruba (Aruban Florin)
 	('AWG', 'ƒ', false),
-
-	-- Australia (Australian Dollar)
 	('AUD', '$', false),
-
-	-- Azerbaijan (Azerbaijan Manat)
-	('AZN', '₼', false),
-
-	-- Bahamas (Bahamian Dollar)
-	('BSD', '$', false),
-
-	-- Bangladesh (Taka)
-	('BDT', '৳', false),
-
-	-- Barbados (Barbados Dollar)
-	('BBD', '$', false),
-
-	-- Belarus (Belarusian Ruble)
-	('BYN', 'Br', false),
-
-	-- Belize (Belize Dollar)
-	('BZD', '$', false),
-
-	-- West Africa (CFA Franc BCEAO)
-	('XOF', 'CFA', false),
-
-	-- Bermuda (Bermudian Dollar)
-	('BMD', '$', false),
-
-	-- India (Indian Rupee)
-	('INR', '₹', false),
-
-	-- Bhutan (Ngultrum)
-	('BTN', 'Nu.', false),
-
-	-- Bolivia (Boliviano)
-	('BOB', 'Bs.', false),
-
-	-- Bolivia (Mvdol)
-	('BOV', 'BOV', false),
-
-	-- Bosnia and Herzegovina (Convertible Mark)
 	('BAM', 'КМ', false),
-
-	-- Botswana (Pula)
-	('BWP', 'P', false),
-
-	-- Norway (Norwegian Krone)
 	('NOK', 'kr', false),
-
-	-- Brazil (Brazilian Real)
 	('BRL', 'R$', false),
-
-	-- Brunei (Brunei Dollar)
-	('BND', '$', false),
-
-	-- Bulgaria (Bulgarian Lev)
-	('BGN', 'лв', false),
-
-	-- Burundi (Burundi Franc)
-	('BIF', 'FBu', false),
-
-	-- Cape Verde (Cabo Verde Escudo)
-	('CVE', '$', false),
-
-	-- Cambodia (Riel)
-	('KHR', '៛', false),
-
-	-- Central Africa (CFA Franc BEAC)
-	('XAF', 'FCFA', false),
-
-	-- Canada (Canadian Dollar)
 	('CAD', '$', false),
-
-	-- Cayman Islands (Cayman Islands Dollar)
-	('KYD', '$', false),
-
-	-- Chile (Chilean Peso)
 	('CLP', '$', false),
-
-	-- Chile (Unidad de Fomento)
-	('CLF', 'UF', false),
-
-	-- China (Yuan Renminbi)
 	('CNY', '¥', false),
-
-	-- Colombia (Colombian Peso)
 	('COP', '$', false),
-
-	-- Colombia (Unidad de Valor Real)
-	('COU', 'COU', false),
-
-	-- Comoros (Comorian Franc)
-	('KMF', 'CF', false),
-
-	-- Congo (Congolese Franc)
-	('CDF', 'FC', false),
-
-	-- New Zealand (New Zealand Dollar)
 	('NZD', '$', false),
-
-	-- Costa Rica (Costa Rican Colon)
 	('CRC', '₡', false),
-
-	-- Cuba (Cuban Peso)
-	('CUP', '$', false),
-
-	-- Caribbean (Caribbean Guilder)
-	('XCG', 'ƒ', false),
-
-	-- Czech Republic (Czech Koruna)
 	('CZK', 'Kč', false),
-
-	-- Denmark (Danish Krone)
 	('DKK', 'kr', false),
-
-	-- Djibouti (Djibouti Franc)
-	('DJF', 'Fdj', false),
-
-	-- Dominican Republic (Dominican Peso)
-	('DOP', '$', false),
-
-	-- El Salvador (El Salvador Colon)
-	('SVC', '₡', false),
-
-	-- Eritrea (Nakfa)
-	('ERN', 'Nfk', false),
-
-	-- Eswatini (Lilangeni)
-	('SZL', 'L', false),
-
-	-- Ethiopia (Ethiopian Birr)
-	('ETB', 'Br', false),
-
-	-- Falkland Islands (Falkland Islands Pound)
-	('FKP', '£', false),
-
-	-- Fiji (Fiji Dollar)
-	('FJD', '$', false),
-
-	-- French Pacific (CFP Franc)
-	('XPF', 'F', false),
-
-	-- Gambia (Dalasi)
-	('GMD', 'D', false),
-
-	-- Georgia (Lari)
 	('GEL', '₾', false),
-
-	-- Ghana (Ghana Cedi)
 	('GHS', '₵', false),
-
-	-- Gibraltar (Gibraltar Pound)
-	('GIP', '£', false),
-
-	-- Guatemala (Quetzal)
-	('GTQ', 'Q', false),
-
-	-- United Kingdom (Pound Sterling)
 	('GBP', '£', true),
-
-	-- Guinea (Guinean Franc)
-	('GNF', 'FG', false),
-
-	-- Guyana (Guyana Dollar)
-	('GYD', '$', false),
-
-	-- Haiti (Gourde)
-	('HTG', 'G', false),
-
-	-- Honduras (Lempira)
-	('HNL', 'L', false),
-
-	-- Hong Kong (Hong Kong Dollar)
 	('HKD', '$', false),
-
-	-- Hungary (Forint)
 	('HUF', 'Ft', false),
-
-	-- Iceland (Iceland Krona)
 	('ISK', 'kr', false),
-
-	-- Indonesia (Rupiah)
-	('IDR', 'Rp', false),
-
-	-- Israel (New Israeli Sheqel)
 	('ILS', '₪', false),
-
-	-- Jamaica (Jamaican Dollar)
-	('JMD', '$', false),
-
-	-- Japan (Yen)
 	('JPY', '¥', true),
-
-	-- Kazakhstan (Tenge)
 	('KZT', '₸', true),
-
-	-- Kenya (Kenyan Shilling)
-	('KES', 'Sh', false),
-
-	-- North Korea (North Korean Won)
 	('KPW', '₩', false),
-
-	-- South Korea (Won)
 	('KRW', '₩', false),
-
-	-- Kyrgyzstan (Som)
 	('KGS', 'сом', false),
-
-	-- Laos (Lao Kip)
 	('LAK', '₭', false),
-
-	-- Lebanon (Lebanese Pound)
-	('LBP', 'ل.ل', false),
-
-	-- Lesotho (Loti)
-	('LSL', 'L', false),
-
-	-- South Africa (Rand)
-	('ZAR', 'R', false),
-
-	-- Liberia (Liberian Dollar)
-	('LRD', '$', false),
-
-	-- Switzerland (Swiss Franc)
 	('CHF', 'Fr', false),
-
-	-- Macau (Pataca)
 	('MOP', 'P', false),
-
-	-- Madagascar (Malagasy Ariary)
-	('MGA', 'Ar', false),
-
-	-- Malawi (Malawi Kwacha)
-	('MWK', 'MK', false),
-
-	-- Malaysia (Malaysian Ringgit)
-	('MYR', 'RM', false),
-
-	-- Maldives (Rufiyaa)
-	('MVR', 'ރ.', false),
-
-	-- Mauritania (Ouguiya)
-	('MRU', 'UM', false),
-
-	-- Mauritius (Mauritius Rupee)
-	('MUR', '₨', false),
-
-	-- Mexico (Mexican Peso)
 	('MXN', '$', false),
-
-	-- Mexico (Mexican Unidad de Inversion)
-	('MXV', 'UDI', false),
-
-	-- Moldova (Moldovan Leu)
 	('MDL', 'L', false),
-
-	-- Mongolia (Tugrik)
 	('MNT', '₮', false),
-
-	-- Mozambique (Mozambique Metical)
-	('MZN', 'MT', false),
-
-	-- Myanmar (Kyat)
-	('MMK', 'K', false),
-
-	-- Namibia (Namibia Dollar)
-	('NAD', '$', false),
-
-	-- Nepal (Nepalese Rupee)
-	('NPR', '₨', false),
-
-	-- Nicaragua (Cordoba Oro)
-	('NIO', 'C$', false),
-
-	-- Nigeria (Naira)
-	('NGN', '₦', false),
-
-	-- North Macedonia (Denar)
 	('MKD', 'ден', false),
-
-	-- Panama (Balboa)
-	('PAB', 'B/.', false),
-
-	-- Papua New Guinea (Kina)
-	('PGK', 'K', false),
-
-	-- Paraguay (Guarani)
 	('PYG', '₲', false),
-
-	-- Peru (Sol)
 	('PEN', 'S/', false),
-
-	-- Philippines (Philippine Peso)
 	('PHP', '₱', false),
-
-	-- Poland (Zloty)
 	('PLN', 'zł', false),
-
-	-- Romania (Romanian Leu)
 	('RON', 'lei', false),
-
-	-- Russia (Russian Ruble)
 	('RUB', '₽', true),
-
-	-- Rwanda (Rwanda Franc)
-	('RWF', 'FRw', false),
-
-	-- Saint Helena (Saint Helena Pound)
-	('SHP', '£', false),
-
-	-- Samoa (Tala)
-	('WST', 'T', false),
-
-	-- São Tomé and Príncipe (Dobra)
-	('STN', 'Db', false),
-
-	-- Serbia (Serbian Dinar)
 	('RSD', 'din', false),
-
-	-- Seychelles (Seychelles Rupee)
-	('SCR', '₨', false),
-
-	-- Sierra Leone (Leone)
-	('SLE', 'Le', false),
-
-	-- Singapore (Singapore Dollar)
 	('SGD', '$', false),
-
-	-- Solomon Islands (Solomon Islands Dollar)
-	('SBD', '$', false),
-
-	-- Sri Lanka (Sri Lanka Rupee)
-	('LKR', '₨', false),
-
-	-- Suriname (Surinam Dollar)
-	('SRD', '$', false),
-
-	-- Sweden (Swedish Krona)
 	('SEK', 'kr', false),
-
-	-- Taiwan (New Taiwan Dollar)
 	('TWD', '$', false),
-
-	-- Tajikistan (Somoni)
 	('TJS', 'ЅМ', false),
-
-	-- Tanzania (Tanzanian Shilling)
-	('TZS', 'Sh', false),
-
-	-- Thailand (Baht)
 	('THB', '฿', false),
-
-	-- Tonga (Pa'anga)
-	('TOP', 'T$', false),
-
-	-- Trinidad and Tobago (Trinidad and Tobago Dollar)
-	('TTD', '$', false),
-
-	-- Turkmenistan (Turkmenistan New Manat)
-	('TMT', 'T', false),
-
-	-- Turkey (Turkish Lira)
-	('TRY', '₺', false),
-
-	-- Uganda (Uganda Shilling)
-	('UGX', 'Sh', false),
-
-	-- Ukraine (Hryvnia)
 	('UAH', '₴', false),
-
-	-- United States (US Dollar Next day)
-	('USN', '$', false),
-
-	-- Uruguay (Peso Uruguayo)
-	('UYU', '$', false),
-
-	-- Uruguay (Uruguay Peso en Unidades Indexadas)
-	('UYI', 'UI', false),
-
-	-- Uruguay (Unidad Previsional)
-	('UYW', 'UP', false),
-
-	-- Uzbekistan (Uzbekistan Sum)
 	('UZS', 'сўм', false),
-
-	-- Vanuatu (Vatu)
-	('VUV', 'Vt', false),
-
-	-- Venezuela (Bolívar Soberano)
-	('VES', 'Bs.S', false),
-
-	-- Venezuela (Bolívar Soberano)
-	('VED', 'Bs.D', false),
-
-	-- Vietnam (Dong)
-	('VND', '₫', false),
-
-	-- Zambia (Zambian Kwacha)
-	('ZMW', 'ZK', false),
-
-	-- Zimbabwe (Zimbabwe Gold)
-	('ZWG', 'Z$', false);
-
-INSERT INTO `user` (`recalc_currency`, `default_currency`) VALUES
+	('VND', '₫', false);
+--> statement-breakpoint
+INSERT INTO "user" ("recalc_currency", "default_currency") VALUES
 	('USD', 'USD');
-
-INSERT INTO `categories` (`id`, `title`, `emoji`, `color`) VALUES
-	('c1e7f8d6-4b2a-4f9e-8a7c-3d5e9f2b8c1a', 'AI', '🤖', '#f0932b'),
-	('a2d8e5f1-9c3b-4e7f-9b8d-2c6f7e1a5d9c', 'Creativity', '🎨', '#be2edd'),
-	('f3b9c4e2-5d7a-4c8e-8f9b-1a4d6e3c7b5f', 'Education', '📚', '#6ab04c'),
-	('e4a5d7f3-8b1c-4f6e-9c2d-5e8f1a7b4c9e', 'Entertainment', '🎮', '#ff7979'),
-	('d5c8e1f4-2a9b-4e3f-8d7c-6f9e2b5a8c1d', 'Food', '🍔', '#30336b'),
-	('b6f2a9e5-7c4d-4b8f-9e1a-3c5d7f8b2a6e', 'For Developers', '👨‍💻', '#f9ca24'),
-	('c7e3d8f1-1b5a-4f9c-8e2d-4a6f9c3e7b1c', 'Hosting & SaaS', '☁️', '#eb4d4b'),
-	('a8d4f2e7-6c9b-4e1f-9d8a-2e5c8f1a4d7b', 'Magazines', '📚', '#22a6b3'),
-	('f9e1c5d8-3a7b-4f6e-8c9d-1d4e7a2f5c8b', 'Many-in-One', '🎯', '#4834d4'),
-	('e1a6f9c2-8d4b-4e7f-9a5c-3f8e1d6a9c2e', 'Messengers', '💬', '#badc58'),
-	('d2b7e8f5-9a3c-4f1e-8d6b-5c9f2e7a8d1b', 'Monetization Platforms', '💰', '#686de0'),
-	('c3f8d1e6-4b7a-4e9f-9c2d-6a1e4f7c8b3d', 'Music', '🎵', '#e056fd'),
-	('b4e9f2d7-5c8a-4f3e-8b1d-7f2c5e9a4b8f', 'Utilities', '🔧', '#f6e58d'),
-	('a5d1e8f3-6b9c-4e7f-9a4d-8e3f6a1c5d9b', 'Video', '🎬', '#7ed6df'),
-	('f6c2d9e4-7a8b-4f5e-8c3d-9f6e2a5c8b1f', 'VPN', '🔒', '#ffbe76');
-
-INSERT INTO `payment_methods` (`id`, `title`, `is_card`, `comment`, `color`, `emoji`) VALUES
-	('64A560AB-3628-4AD6-8C7D-40CD6A276D01', 'PayPal', false, '', '#007F73', '💸'),
-	('8E10EA47-2C03-4E55-B80C-A7E1F1BAB230', 'Apple Pay', false, '', '#000000', '🍎'),
-	('E9CC47EB-A985-4A35-AAAF-4E504D4291D1', 'Credit Card', true, '', '#007F73', '💳'),
-	('4D789C2C-7F32-47C8-9FA0-B0CE028981A2', 'Debit Card', true, '', '#007F73', '💳');
-
-INSERT INTO `billing_cycles` (`id`, `min`, `max`) VALUES
+--> statement-breakpoint
+INSERT INTO "categories" ("id", "color", "emoji", "title") VALUES
+	('c1e7f8d6-4b2a-4f9e-8a7c-3d5e9f2b8c1a', '#f0932b', '🤖', 'AI'),
+	('a2d8e5f1-9c3b-4e7f-9b8d-2c6f7e1a5d9c', '#be2edd', '🎨', 'Creativity'),
+	('f3b9c4e2-5d7a-4c8e-8f9b-1a4d6e3c7b5f', '#6ab04c', '📚', 'Education'),
+	('e4a5d7f3-8b1c-4f6e-9c2d-5e8f1a7b4c9e', '#ff7979', '🎮', 'Entertainment'),
+	('d5c8e1f4-2a9b-4e3f-8d7c-6f9e2b5a8c1d', '#30336b', '🍔', 'Food'),
+	('b6f2a9e5-7c4d-4b8f-9e1a-3c5d7f8b2a6e', '#f9ca24', '👨‍💻', 'For Developers'),
+	('c7e3d8f1-1b5a-4f9c-8e2d-4a6f9c3e7b1c', '#eb4d4b', '☁️', 'Hosting & SaaS'),
+	('a8d4f2e7-6c9b-4e1f-9d8a-2e5c8f1a4d7b', '#22a6b3', '📚', 'Magazines'),
+	('f9e1c5d8-3a7b-4f6e-8c9d-1d4e7a2f5c8b', '#4834d4', '🎯', 'Many-in-One'),
+	('e1a6f9c2-8d4b-4e7f-9a5c-3f8e1d6a9c2e', '#badc58', '💬', 'Messengers'),
+	('d2b7e8f5-9a3c-4f1e-8d6b-5c9f2e7a8d1b', '#686de0', '💰', 'Monetization Platforms'),
+	('c3f8d1e6-4b7a-4e9f-9c2d-6a1e4f7c8b3d', '#e056fd', '🎵', 'Music'),
+	('b4e9f2d7-5c8a-4f3e-8b1d-7f2c5e9a4b8f', '#f6e58d', '🔧', 'Utilities'),
+	('a5d1e8f3-6b9c-4e7f-9a4d-8e3f6a1c5d9b', '#7ed6df', '🎬', 'Video'),
+	('f6c2d9e4-7a8b-4f5e-8c3d-9f6e2a5c8b1f', '#ffbe76', '🔒', 'VPN');
+--> statement-breakpoint
+INSERT INTO "payment_methods" ("id", "emoji", "comment", "color", "is_card", "title") VALUES
+	('64A560AB-3628-4AD6-8C7D-40CD6A276D01', '💸', '', '#007F73', false, 'PayPal'),
+	('8E10EA47-2C03-4E55-B80C-A7E1F1BAB230', '🍎', '', '#000000', false, 'Apple Pay'),
+	('E9CC47EB-A985-4A35-AAAF-4E504D4291D1', '💳', '', '#007F73', true, 'Credit Card'),
+	('4D789C2C-7F32-47C8-9FA0-B0CE028981A2', '💳', '', '#007F73', true, 'Debit Card');
+--> statement-breakpoint
+INSERT INTO "billing_cycles" ("id", "min", "max") VALUES
 	('day', 1, 365),
 	('week', 1, 52),
 	('month', 1, 24),
 	('year', 1, 10);
-
-INSERT INTO `apps` (`id`, `slug`, `title`, `color`, `aliases`, `category_id`) VALUES
+--> statement-breakpoint
+INSERT INTO "services" ("id", "slug", "title", "color", "aliases", "category_id") VALUES
 	('20AEAAA4-046B-41CD-AB93-21FA606B6353', 'adguard', 'AdGuard', '#68B27A', '["адгард"]', 'b4e9f2d7-5c8a-4f3e-8b1d-7f2c5e9a4b8f'),
 	('5FC33A9A-5080-4657-AE7A-C130C26951A4', 'adobe', 'Adobe', '#D93731', '[]', 'a2d8e5f1-9c3b-4e7f-9b8d-2c6f7e1a5d9c'),
 	('584AFED2-245C-41B7-9ABA-8FE8F4F7366D', 'aeza', 'Aeza', '#FEFEFE', '["аеза"]', 'c7e3d8f1-1b5a-4f9c-8e2d-4a6f9c3e7b1c'),

@@ -1,32 +1,29 @@
 import { createGate } from 'effector-react';
 import { createFactory } from '@lib/effector';
-import { createEvent, createStore, sample } from 'effector';
 
-type AppModelProps = {};
+import { db as drizzleDB } from '@src/sql-migrations';
+import { createCategoriesModel, createDirectionModel, createPaymentsModel, createServicesModel } from './all';
 
-type ScrollDirection = 'up' | 'down' | 'idle';
+import type { DBT } from './app-model.d';
 
-const createAppModel = ({}: AppModelProps) => {
+type AppModelT = {
+	db: DBT;
+};
+
+const createAppModel = ({ db }: AppModelT) => {
 	const gate = createGate();
-	const $direction = createStore<ScrollDirection>('idle');
-	const setScrollDirection = createEvent<ScrollDirection>();
-
-	sample({
-		clock: setScrollDirection,
-		target: $direction
-	});
 
 	return {
 		gate,
-		scroll: {
-			$direction,
-			setDirection: setScrollDirection
-		}
+		scroll: createDirectionModel(),
+		services: createServicesModel({ db }),
+		payments: createPaymentsModel({ db }),
+		categories: createCategoriesModel({ db })
 	};
 };
 
 const appModel = createFactory(() => {
-	return createAppModel({});
+	return createAppModel({ db: drizzleDB });
 });
 
 export default appModel;

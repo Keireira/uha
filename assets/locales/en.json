@@ -18,6 +18,9 @@
     "service": "Service",
     "payment": "Tender"
   },
+  "library": {
+    "search": "Search everywhere"
+  },
   "settings": {
     "system": {
       "header": "System",
@@ -26,8 +29,8 @@
         "results": {
           "denied": "Not requested",
           "blocked": "Denied",
-          "granted": "All good",
-          "limited": "All good"
+          "granted": "Everything is good",
+          "limited": "Everything is good"
         }
       },
       "face_id": "Require Face ID",

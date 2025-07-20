@@ -1,14 +1,3 @@
-CREATE TABLE `apps` (
-	`id` text PRIMARY KEY NOT NULL,
-	`slug` text,
-	`title` text NOT NULL,
-	`color` text NOT NULL,
-	`aliases` text DEFAULT '[]',
-	`category_id` text,
-	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action
-);
---> statement-breakpoint
-CREATE UNIQUE INDEX `apps_id_unique` ON `apps` (`id`);--> statement-breakpoint
 CREATE TABLE `billing_cycles` (
 	`id` text PRIMARY KEY NOT NULL,
 	`min` integer NOT NULL,
@@ -57,10 +46,21 @@ CREATE TABLE `prices_history` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `prices_history_id_unique` ON `prices_history` (`id`);--> statement-breakpoint
+CREATE TABLE `services` (
+	`id` text PRIMARY KEY NOT NULL,
+	`slug` text,
+	`title` text NOT NULL,
+	`color` text NOT NULL,
+	`aliases` text DEFAULT '[]',
+	`category_id` text,
+	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `services_id_unique` ON `services` (`id`);--> statement-breakpoint
 CREATE TABLE `subscriptions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`category_id` text,
-	`app_id` text,
+	`service_id` text,
 	`custom_name` text,
 	`currency_id` text,
 	`amount` real NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `subscriptions` (
 	`is_canceled` integer DEFAULT false NOT NULL,
 	`cancellation_date` text DEFAULT (CURRENT_DATE),
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`app_id`) REFERENCES `apps`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods`(`id`) ON UPDATE no action ON DELETE no action
 );

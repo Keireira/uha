@@ -36,7 +36,7 @@ export const paymentMethodsTable = sqliteTable('payment_methods', {
 	emoji: text().notNull() // 💳 | 🍎 | ...
 });
 
-export const appsTable = sqliteTable('apps', {
+export const servicesTable = sqliteTable('services', {
 	id: text().primaryKey().unique(), // uuid v4
 	slug: text(), // adguard | spotify | ...
 	title: text().notNull(), // Adguard | Spotify | ...
@@ -60,7 +60,7 @@ export const subscriptionsTable = sqliteTable('subscriptions', {
 
 	category_id: text().references(() => categoriesTable.id), // uuid v4
 
-	app_id: text().references(() => appsTable.id),
+	service_id: text().references(() => servicesTable.id),
 	custom_name: text(),
 
 	currency_id: text().references(() => currenciesTable.id), // e.g. 'USD' | 'RUB' | ...

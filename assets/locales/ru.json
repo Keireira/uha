@@ -18,6 +18,9 @@
     "service": "Сервис",
     "payment": "Платёж"
   },
+  "library": {
+    "search": "Глобальный поиск"
+  },
   "settings": {
     "system": {
       "header": "Система",

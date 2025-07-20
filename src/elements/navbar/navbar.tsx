@@ -83,7 +83,7 @@ BottomNav.Button = NavbarButton;
 
 type IconProps = {
 	isInverted?: boolean;
-	name: 'list' | 'library' | 'search' | 'settings' | 'add';
+	name: 'list' | 'library' | 'calendar' | 'settings' | 'add';
 };
 
 const NORMAL_THEME_MAP = { dark: '#fafafa', light: '#333333' };
@@ -96,9 +96,9 @@ const NavbarIcon = ({ name, isInverted = false }: IconProps) => {
 	switch (name) {
 		case 'list':
 			return <ListIcon color={iconColor} />;
-		case 'library':
+		case 'calendar':
 			return <CalendarIcon color={iconColor} />;
-		case 'search':
+		case 'library':
 			return <LibraryIcon color={iconColor} />;
 		case 'settings':
 			return <SettingsIcon color={iconColor} />;

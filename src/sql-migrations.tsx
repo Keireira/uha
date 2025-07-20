@@ -5,12 +5,12 @@ import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import migrations from '../drizzle/migrations';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 
-const uhaDb = SQLite.openDatabaseSync('uha.db');
-const db = drizzle(uhaDb);
+const uhaDb = SQLite.openDatabaseSync('db.db', { enableChangeListener: true });
+export const db = drizzle(uhaDb);
 
 const SqlMigrations = () => {
-	useDrizzleStudio(db.$client); // @TODO: Maybe add guard so it will work only in dev mode
 	useMigrations(db, migrations);
+	useDrizzleStudio(db.$client);
 
 	return null;
 };
