@@ -1,22 +1,30 @@
 import React from 'react';
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { asc } from 'drizzle-orm';
+import { db } from '@src/sql-migrations';
+import { categoriesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { View, Text } from 'react-native';
+import NoItems from './no-items';
 import PreviewItem from './preview-item';
+import Root, { SnapMark } from './previews.styles';
 
 const Previews = () => {
-	const { categories } = useAppModel();
-	const categoriesList = useUnit(categories.$categories);
+	const { data: categories } = useLiveQuery(
+		db.select().from(categoriesTable).orderBy(asc(categoriesTable.title)).limit(6)
+	);
 
 	return (
-		<View>
-			<Text>Category Previews</Text>
+		<Root>
+			<SnapMark $left />
 
-			{categoriesList.map((category) => (
+			{!categories.length && <NoItems />}
+
+			{categories.map((category) => (
 				<PreviewItem key={category.id} {...category} />
 			))}
-		</View>
+
+			<SnapMark $right />
+		</Root>
 	);
 };
 

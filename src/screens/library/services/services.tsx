@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const ServicesScreen = () => {
 	return (
 		<View>
-			<Text>Services List</Text>
+			<Text>All Services List</Text>
 		</View>
 	);
 };

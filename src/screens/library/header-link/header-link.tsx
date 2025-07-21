@@ -10,7 +10,7 @@ const HeaderLink = ({ title, ...props }: Props) => {
 		<Root hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} {...props}>
 			<Title>{title}</Title>
 
-			<ArrowRightIcon width={18} height={18} />
+			<ArrowRightIcon width={18} height={18} color="#333" />
 		</Root>
 	);
 };

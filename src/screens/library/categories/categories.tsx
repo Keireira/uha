@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const CategoriesScreen = () => {
 	return (
 		<View>
-			<Text>Categories List</Text>
+			<Text>All Categories List</Text>
 		</View>
 	);
 };

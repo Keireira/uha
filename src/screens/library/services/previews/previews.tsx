@@ -1,22 +1,28 @@
 import React from 'react';
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { asc } from 'drizzle-orm';
+import { db } from '@src/sql-migrations';
+import { servicesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { View, Text } from 'react-native';
+import NoItems from './no-items';
 import PreviewItem from './preview-item';
+import Root, { SnapMark } from './previews.styles';
 
 const Previews = () => {
-	const { services } = useAppModel();
-	const servicesList = useUnit(services.$services);
+	const { data: services } = useLiveQuery(db.select().from(servicesTable).orderBy(asc(servicesTable.title)).limit(6));
 
 	return (
-		<View>
-			<Text>Service Previews</Text>
+		<Root>
+			<SnapMark $left />
 
-			{servicesList.map((service) => (
+			{!services.length && <NoItems />}
+
+			{services.map((service) => (
 				<PreviewItem key={service.id} {...service} />
 			))}
-		</View>
+
+			<SnapMark $right />
+		</Root>
 	);
 };
 

@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const PaymentsScreen = () => {
 	return (
 		<View>
-			<Text>Payments List</Text>
+			<Text>All Payments List</Text>
 		</View>
 	);
 };

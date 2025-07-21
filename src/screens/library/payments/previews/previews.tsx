@@ -1,22 +1,30 @@
 import React from 'react';
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { asc } from 'drizzle-orm';
+import { db } from '@src/sql-migrations';
+import { paymentMethodsTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { View, Text } from 'react-native';
+import NoItems from './no-items';
 import PreviewItem from './preview-item';
+import Root, { SnapMark } from './previews.styles';
 
 const Previews = () => {
-	const { payments } = useAppModel();
-	const paymentsList = useUnit(payments.$payments);
+	const { data: payments } = useLiveQuery(
+		db.select().from(paymentMethodsTable).orderBy(asc(paymentMethodsTable.title)).limit(6)
+	);
 
 	return (
-		<View>
-			<Text>Payment Previews</Text>
+		<Root>
+			<SnapMark $left />
 
-			{paymentsList.map((payment) => (
+			{!payments.length && <NoItems />}
+
+			{payments.map((payment) => (
 				<PreviewItem key={payment.id} {...payment} />
 			))}
-		</View>
+
+			<SnapMark $right />
+		</Root>
 	);
 };
 
