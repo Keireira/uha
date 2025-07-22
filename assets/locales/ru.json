@@ -19,7 +19,10 @@
     "payment": "Платёж"
   },
   "library": {
-    "search": "Глобальный поиск"
+    "search": "Глобальный поиск",
+    "search_categories": "Поиск по категориям",
+    "search_services": "Поиск по сервисам",
+    "search_payments": "Поиск по платежам"
   },
   "settings": {
     "system": {

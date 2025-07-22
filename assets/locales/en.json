@@ -19,7 +19,10 @@
     "payment": "Tender"
   },
   "library": {
-    "search": "Search everywhere"
+    "search": "Search everywhere",
+    "search_categories": "Search in categories",
+    "search_services": "Search in services",
+    "search_payments": "Search in payments"
   },
   "settings": {
     "system": {

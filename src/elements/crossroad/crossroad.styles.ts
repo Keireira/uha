@@ -22,12 +22,29 @@ export const Icon = styled.View`
 	border-radius: 32px;
 `;
 
-export const TileButton = styled(Button)<{ $width: number }>`
-	aspect-ratio: 4/3;
-	width: ${({ $width }) => $width}px;
+export const Entities = styled.View`
+	flex-direction: row;
+	gap: 16px;
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+export const TileButton = styled(Button)<{ $height: number }>`
+	flex-grow: 1;
+	height: ${({ $height }) => $height}px;
 	font-family: 'Nunito';
 	border-radius: 16px;
-	background-color: transparent;
+	background-color: #dddddd50;
+`;
+
+export const FullButton = styled(Button)`
+	width: 100%;
+	display: flex;
+	font-family: 'Nunito';
+	border-radius: 16px;
+	background-color: #dddddd50;
 `;
 
 export const TilePress = styled(Pressable)`
@@ -38,7 +55,9 @@ export const TilePress = styled(Pressable)`
 	justify-content: space-between;
 `;
 
-export const TileText = styled(Text)`
-	font-size: 22px;
+export const TileText = styled(Text).attrs({
+	numberOfLines: 1
+})`
+	font-size: 18px;
 	font-weight: bold;
 `;

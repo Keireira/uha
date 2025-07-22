@@ -4,8 +4,8 @@ import { Pressable } from 'react-native';
 import iconsMap, { CloseIcon } from '../icons';
 import Root, { SearchInput } from './text-input.styles';
 
-import type { TextInput as RNTextInput } from 'react-native';
 import type { Props } from './text-input.d';
+import type { TextInput as RNTextInput } from 'react-native';
 
 const TextInput = ({ leadingIcon, onClear, ...props }: Props) => {
 	const withText = Boolean(props.value?.length);

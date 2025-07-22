@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useScrollDirection } from '@hooks';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
+import { View } from 'react-native';
 import { Wrapper, TextInput } from '@ui';
 import { PaymentPreviews } from './payments';
 import { ServicePreviews } from './services';
 import { CategoryPreviews } from './categories';
 import Root, { NoItems } from './library.styles';
 
+// @TODO: use "@legendapp/list"
 const LibraryScreen = () => {
 	const { t } = useTranslation();
 	const [search, setSearch] = useState('');
@@ -19,13 +20,16 @@ const LibraryScreen = () => {
 
 	return (
 		<Wrapper as={Root} onScroll={handleScroll}>
-			<TextInput
-				leadingIcon="search"
-				placeholder={t('library.search')}
-				value={search}
-				onChangeText={setSearch}
-				onClear={() => setSearch('')}
-			/>
+			<View style={{ flex: 1 }}>
+				<TextInput
+					leadingIcon="search"
+					autoCorrect={false}
+					placeholder={t('library.search')}
+					value={search}
+					onChangeText={setSearch}
+					onClear={() => setSearch('')}
+				/>
+			</View>
 
 			{!categoriesFound && !servicesFound && !paymentsFound && search.length > 0 && (
 				<View>

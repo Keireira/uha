@@ -6,7 +6,7 @@ import { useWindowDimensions } from 'react-native';
 
 import { AddIcon } from '@ui/icons';
 import { BottomSheet } from '@expo/ui/swift-ui';
-import { Grid, Icon, TileButton, TilePress, TileText } from './crossroad.styles';
+import { Grid, Icon, TileButton, TilePress, TileText, Entities, FullButton } from './crossroad.styles';
 
 import type { Href } from 'expo-router';
 import type { Props, RouteT } from './crossroad.d';
@@ -18,7 +18,6 @@ const useCrossroadRoutes = () => {
 		return [
 			{ id: 1, title: t('crossroad.category'), route: '/(crossroad)/add-category' },
 			{ id: 2, title: t('crossroad.service'), route: '/(crossroad)/add-service' },
-			{ id: 3, title: t('crossroad.subscription'), route: '/(crossroad)/add-subscription' },
 			{ id: 4, title: t('crossroad.payment'), route: '/(crossroad)/add-payment' }
 		];
 	}, [t]);
@@ -30,10 +29,10 @@ const useTileSizes = () => {
 	const { width } = useWindowDimensions();
 
 	const tile = useMemo(() => {
-		const tileWidth = width / 2 - 32;
-		const tileHeight = (tileWidth / 4) * 3;
+		const tileWidth = width / 3 - 24;
+		const tileHeight = tileWidth;
 
-		return { width: tileWidth, height: tileHeight };
+		return { width: tileWidth, height: tileHeight, fullWidth: width - 36 };
 	}, [width]);
 
 	return tile;
@@ -42,6 +41,7 @@ const useTileSizes = () => {
 const Crossroad = ({ isOpened, onIsOpenedChange }: Props) => {
 	const router = useRouter();
 	const tile = useTileSizes();
+	const { t } = useTranslation();
 	const crossroadRoutes = useCrossroadRoutes();
 
 	const handleOptionPress = (route: Href) => {
@@ -57,17 +57,29 @@ const Crossroad = ({ isOpened, onIsOpenedChange }: Props) => {
 	return (
 		<BottomSheet isOpened={isOpened} onIsOpenedChange={onIsOpenedChange}>
 			<Grid style={{ height: tile.height * 2 + 92 }}>
-				{crossroadRoutes.map((route) => (
-					<TileButton key={route.id} $width={tile.width} onPress={() => handleOptionPress(route.route)}>
-						<TilePress>
-							<Icon>
-								<AddIcon />
-							</Icon>
+				<Entities>
+					{crossroadRoutes.map((route) => (
+						<TileButton key={route.id} $height={tile.height} onPress={() => handleOptionPress(route.route)}>
+							<TilePress>
+								<Icon>
+									<AddIcon />
+								</Icon>
 
-							<TileText>{route.title}</TileText>
-						</TilePress>
-					</TileButton>
-				))}
+								<TileText>{route.title}</TileText>
+							</TilePress>
+						</TileButton>
+					))}
+				</Entities>
+
+				<FullButton onPress={() => handleOptionPress('/(crossroad)/add-subscription')}>
+					<TilePress>
+						<Icon>
+							<AddIcon />
+						</Icon>
+
+						<TileText>{t('crossroad.subscription')}</TileText>
+					</TilePress>
+				</FullButton>
 			</Grid>
 		</BottomSheet>
 	);
