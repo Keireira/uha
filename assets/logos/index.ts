@@ -12,6 +12,7 @@ const links = {
 	chatgpt: require('@assets/logos/chatgpt.webp'),
 	claude: require('@assets/logos/claude.webp'),
 	coursehunter: require('@assets/logos/coursehunter.webp'),
+	coursetrain: require('@assets/logos/coursetrain.webp'),
 	crunchyroll: require('@assets/logos/crunchyroll.webp'),
 	'curiosity-stream': require('@assets/logos/curiosity-stream.webp'),
 	cyberghost: require('@assets/logos/cyberghost.webp'),

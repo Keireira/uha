@@ -9,12 +9,13 @@ export const SearchInput = styled(TextInput)`
 	padding: 20px 12px;
 `;
 
-export default styled.View<{ $withLeadingIcon: boolean }>`
+export default styled.View<{ $withLeadingIcon: boolean; $withClear: boolean }>`
 	flex: 1;
 	border: 1px solid #e0e0e0;
 	background-color: #f7f7f8;
 	border-radius: 10px;
 	padding-left: ${({ $withLeadingIcon }) => ($withLeadingIcon ? '16px' : '0')};
+	padding-right: ${({ $withClear }) => ($withClear ? '16px' : '0')};
 	flex-direction: row;
 	align-items: center;
 	gap: 8px;

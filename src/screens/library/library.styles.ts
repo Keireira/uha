@@ -1,8 +1,10 @@
 import styled from 'styled-components/native';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
+import { Text } from '@ui';
 
-export const Section = styled(View)`
-	gap: 12px;
+export const NoItems = styled(Text)`
+	font-size: 18px;
+	color: #888;
 `;
 
 export default styled(ScrollView).attrs({
@@ -10,6 +12,5 @@ export default styled(ScrollView).attrs({
 		gap: 48
 	}
 })`
-	padding-left: 24px;
-	padding-right: 24px;
+	padding-horizontal: 16px;
 `;

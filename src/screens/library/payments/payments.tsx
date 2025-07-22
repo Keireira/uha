@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { useScrollDirection } from '@hooks';
+
+import { Wrapper, Text } from '@ui';
+import Root from './payments.styles';
 
 const PaymentsScreen = () => {
+	const handleScroll = useScrollDirection();
+
 	return (
-		<View>
+		<Wrapper as={Root} onScroll={handleScroll}>
 			<Text>All Payments List</Text>
-		</View>
+		</Wrapper>
 	);
 };
 

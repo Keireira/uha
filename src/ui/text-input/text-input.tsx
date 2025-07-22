@@ -1,12 +1,15 @@
 import React, { useMemo, useRef } from 'react';
 
-import iconsMap from '../icons';
+import { Pressable } from 'react-native';
+import iconsMap, { CloseIcon } from '../icons';
 import Root, { SearchInput } from './text-input.styles';
 
 import type { TextInput as RNTextInput } from 'react-native';
 import type { Props } from './text-input.d';
 
-const TextInput = ({ leadingIcon, ...props }: Props) => {
+const TextInput = ({ leadingIcon, onClear, ...props }: Props) => {
+	const withText = Boolean(props.value?.length);
+	const withClear = Boolean(onClear) && withText;
 	const inputRef = useRef<RNTextInput>(null);
 
 	const LeadingIcon = useMemo(() => {
@@ -20,10 +23,16 @@ const TextInput = ({ leadingIcon, ...props }: Props) => {
 	};
 
 	return (
-		<Root $withLeadingIcon={Boolean(LeadingIcon)}>
-			{LeadingIcon && <LeadingIcon color="#333" onPress={focusTextInput} />}
+		<Root $withLeadingIcon={Boolean(LeadingIcon)} $withClear={withClear}>
+			{LeadingIcon && <LeadingIcon color={withText ? '#333' : '#33333375'} onPress={focusTextInput} />}
 
 			<SearchInput {...props} ref={inputRef} />
+
+			{withClear && (
+				<Pressable onPress={onClear} hitSlop={12}>
+					<CloseIcon color={withText ? '#333' : '#33333375'} />
+				</Pressable>
+			)}
 		</Root>
 	);
 };

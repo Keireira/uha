@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+
 import { Text } from '@ui';
 
 export const Title = styled(Text)`
@@ -7,9 +8,13 @@ export const Title = styled(Text)`
 	text-transform: uppercase;
 `;
 
-export default styled.Pressable`
+export const HeaderLink = styled.Pressable`
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
 	gap: 2px;
+`;
+
+export default styled.View`
+	gap: 12px;
 `;

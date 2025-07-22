@@ -2,9 +2,11 @@ import React from 'react';
 
 import Root, { Title } from './no-items.styles';
 
-const NoItems = () => (
+import type { Props } from './no-items.d';
+
+const NoItems = ({ title }: Props) => (
 	<Root>
-		<Title>No services</Title>
+		<Title>{title}</Title>
 	</Root>
 );
 

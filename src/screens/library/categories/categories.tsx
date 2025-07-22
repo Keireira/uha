@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { useScrollDirection } from '@hooks';
+
+import { Wrapper, Text } from '@ui';
+import Root from './categories.styles';
 
 const CategoriesScreen = () => {
+	const handleScroll = useScrollDirection();
+
 	return (
-		<View>
+		<Wrapper as={Root} onScroll={handleScroll}>
 			<Text>All Categories List</Text>
-		</View>
+		</Wrapper>
 	);
 };
 
