@@ -38,6 +38,11 @@ const TabLayout = () => {
 								<Navbar.Icon name="settings" />
 							</Navbar.Button>
 						</TabTrigger>
+
+						<TabTrigger name="add-category" href="/add-category" />
+						<TabTrigger name="add-service" href="/add-service" />
+						<TabTrigger name="add-payment" href="/add-payment" />
+						<TabTrigger name="add-subscription" href="/add-subscription" />
 					</Navbar>
 				</TabList>
 			</Tabs>

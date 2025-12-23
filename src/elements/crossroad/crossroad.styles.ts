@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Button } from '@expo/ui/swift-ui';
+import { Host, Button } from '@expo/ui/swift-ui';
 import { Pressable } from 'react-native';
 import { Text } from '@ui';
 
@@ -31,20 +31,32 @@ export const Entities = styled.View`
 	justify-content: space-between;
 `;
 
-export const TileButton = styled(Button)<{ $height: number }>`
-	flex-grow: 1;
-	height: ${({ $height }) => $height}px;
+export const TileButton = styled(Button)`
 	font-family: 'Nunito';
 	border-radius: 16px;
 	background-color: #dddddd50;
 `;
 
+export const TileButtonHost = styled(Host)<{ $height: number }>`
+	height: ${({ $height }) => $height}px;
+	flex-grow: 1;
+`;
+
 export const FullButton = styled(Button)`
-	width: 100%;
 	display: flex;
 	font-family: 'Nunito';
 	border-radius: 16px;
 	background-color: #dddddd50;
+`;
+
+export const FullButtonHost = styled(Host)<{ $height: number }>`
+	height: ${({ $height }) => $height}px;
+	width: 100%;
+`;
+
+export const SheetHost = styled(Host)<{ $height: number }>`
+	position: absolute;
+	height: ${({ $height }) => $height}px;
 `;
 
 export const TilePress = styled(Pressable)`

@@ -1,7 +1,7 @@
 {
   "expo": {
     "slug": "uha",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
