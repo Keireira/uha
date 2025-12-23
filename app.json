@@ -31,6 +31,7 @@
       "ru": "./assets/locales/ru.json"
     },
     "plugins": [
+      "expo-font",
       "expo-router",
       "expo-dev-client",
       "expo-localization",

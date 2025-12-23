@@ -3,7 +3,7 @@ import { default as withAppleSettings, RadioGroup, ChildPane } from '@config-plu
 import type { ExpoConfig, ConfigContext } from 'expo/config';
 
 const appConfig = ({ config }: ConfigContext): ExpoConfig => {
-	return withAppleSettings(config as ExpoConfig, {
+	const modifiedConfig = withAppleSettings(config as ExpoConfig, {
 		Root: {
 			locales: {
 				en: {
@@ -52,6 +52,8 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 			}
 		}
 	});
+
+	return modifiedConfig;
 };
 
 export default appConfig;
