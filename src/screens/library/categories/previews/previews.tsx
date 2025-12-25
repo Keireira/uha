@@ -26,11 +26,11 @@ const Previews = ({ search, setFound }: Props) => {
 	);
 
 	useEffect(() => {
-		const timeout = setTimeout(() => {
+		const timeout = window.setTimeout(() => {
 			setCanRender(true);
 		}, 250);
 
-		return () => clearTimeout(timeout);
+		return () => window.clearTimeout(timeout);
 	}, []);
 
 	useEffect(() => {

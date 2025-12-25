@@ -6,12 +6,27 @@
 
 - [ ] Add missed currency SF symbols as custom SF symbols (see figma plugin + <https://developer.apple.com/documentation/uikit/creating-custom-symbol-images-for-your-app>)
 - [ ] When text overflows trigger in list, show ... sign instead just cutting the text
+- [ ] Implement custom lists (child\husband\friend??)
 
 ## WTF
 
 ```sh
+# run dev
+pnpm expo run:ios --device
+
+
+# Install eas-cli
+pnpm add --global eas-cli
+
 # Login to expo
 pnpm expo login
+eas login
+
+# initiate build on EAS side
+eas build --platform ios
+
+# Initiate submission process for iOS
+eas submit --platform ios
 ```
 
 - <https://docs.expo.dev/workflow/android-studio-emulator/>
