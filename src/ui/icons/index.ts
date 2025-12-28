@@ -16,6 +16,7 @@ import { default as RotateRightIcon } from './rotate-right.svg.tsx';
 import { default as SearchIcon } from './search.svg.tsx';
 import { default as SettingsIcon } from './settings.svg.tsx';
 import { default as StopIcon } from './stop.svg.tsx';
+import { default as FilterIcon } from './filter.svg.tsx';
 
 export {
 	AddIcon,
@@ -35,7 +36,8 @@ export {
 	RotateRightIcon,
 	SearchIcon,
 	SettingsIcon,
-	StopIcon
+	StopIcon,
+	FilterIcon
 };
 
 const allIcons = {
@@ -56,7 +58,8 @@ const allIcons = {
 	'rotate-right': RotateRightIcon,
 	search: SearchIcon,
 	settings: SettingsIcon,
-	stop: StopIcon
+	stop: StopIcon,
+	filter: FilterIcon
 };
 
 export type IconNameT = keyof typeof allIcons;

@@ -13,7 +13,7 @@ export type ServiceT = InferSelectModel<typeof servicesTable>;
 export type ScrollDirection = 'up' | 'down' | 'idle';
 
 // LENSES (FILTERS) MODEL
-export type LensT = 'upcoming' | 'past_and_upcoming' | 'selected_period' | 'infinite';
+export type TimeModesT = 'all' | 'future';
 export type FilterTypeT = 'category' | 'service' | 'tender' | 'currency' | 'list';
 
 export type AppliedFilterT = {
@@ -23,8 +23,7 @@ export type AppliedFilterT = {
 };
 
 export type LensesModel = {
-	primary_lens: LensT;
-	start_date: Date | null;
-	end_date: Date | null;
+	time_mode: TimeModesT;
+	wo_twins: boolean; // Show in the future each subscription only once
 	applied_filters: AppliedFilterT[];
 };
