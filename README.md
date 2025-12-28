@@ -34,3 +34,6 @@ eas submit --platform ios
 - pnpx expo install expo-dev-client
 - Do Not Forget to sign into your account in xed, and setup provisioning profile
 - pnpm expo run:ios --device
+
+I wanted to implement behavior when you can't close ContextMenu while tapping on it, so I created related patch.
+Do not forget to remove it later, when support for such behavior will be added in `@expo/ui`

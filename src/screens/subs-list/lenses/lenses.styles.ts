@@ -32,7 +32,6 @@ export default styled.View`
 	display: flex;
 	flex-direction: row;
 	gap: 16px;
-	margin-top: 32px;
 	padding-horizontal: 16px;
 	align-items: center;
 	justify-content: space-between;

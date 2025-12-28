@@ -1,0 +1,158 @@
+diff --git a/build/jetpack-compose/ContextMenu/index.d.ts b/build/jetpack-compose/ContextMenu/index.d.ts
+index 99894a8235ef2bf7d4773ac97fdb485d56ff1218..1ac642003b37ff90705c0576c7efa4883490b848 100644
+--- a/build/jetpack-compose/ContextMenu/index.d.ts
++++ b/build/jetpack-compose/ContextMenu/index.d.ts
+@@ -25,6 +25,7 @@ export type ContextMenuElementBase = {
+  * - `longPress`: The context menu is opened with a long press. On iOS additionally Highlights the content by blurring the background.
+  */
+ export type ActivationMethod = 'singlePress' | 'longPress';
++export type DismissBehavior = 'automatic' | 'enabled' | 'disabled';
+ /**
+  * Props of the `ContextMenu` component.
+  */
+@@ -35,6 +36,15 @@ export type ContextMenuProps = {
+      * @platform ios
+      */
+     activationMethod?: ActivationMethod;
++
++		/**
++		 * Determines how the context menu will be dismissed.
++		 * - `auto`: The context menu will be dismissed automatically when the user taps outside of the context menu.
++		 * - `manual`: The context menu will be dismissed manually when the user taps the dismiss button.
++		 *
++		 * @platform ios
++		 */
++		dismissBehavior?: DismissBehavior;
+     /**
+      * The contents of the submenu are used as an anchor for the context menu.
+      * The children will be wrapped in a pressable element, which triggers opening of the context menu.
+diff --git a/build/swift-ui/ContextMenu/types.d.ts b/build/swift-ui/ContextMenu/types.d.ts
+index 2258a2cefed842a60f993775f2b44cee9f0caaff..eb3492ec30f9578148ec2fb19d9bc30abae6f6a4 100644
+--- a/build/swift-ui/ContextMenu/types.d.ts
++++ b/build/swift-ui/ContextMenu/types.d.ts
+@@ -7,6 +7,7 @@ import { type CommonViewModifierProps } from '../types';
+  * - `longPress`: The context menu is opened with a long press. On iOS additionally Highlights the content by blurring the background.
+  */
+ export type ActivationMethod = 'singlePress' | 'longPress';
++export type DismissBehavior = 'automatic' | 'enabled' | 'disabled';
+ /**
+  * Props of the `ContextMenu` component.
+  */
+@@ -15,6 +16,15 @@ export type ContextMenuProps = {
+      * Determines how the context menu will be activated.
+      */
+     activationMethod?: ActivationMethod;
++
++		/**
++		 * Determines how the context menu will be dismissed.
++		 * - `auto`: The context menu will be dismissed automatically when the user taps outside of the context menu.
++		 * - `manual`: The context menu will be dismissed manually when the user taps the dismiss button.
++		 *
++		 * @platform ios
++		 */
++		dismissBehavior?: DismissBehavior;
+     /**
+      * The contents of the submenu are used as an anchor for the context menu.
+      * The children will be wrapped in a pressable element, which triggers opening of the context menu.
+diff --git a/ios/ContextMenu/ContextMenu.swift b/ios/ContextMenu/ContextMenu.swift
+index caa78caf75823a7bba3b8ff499cec2dfc5733acf..3a064d3fc43276e7912629a31f398102c7cb0c43 100644
+--- a/ios/ContextMenu/ContextMenu.swift
++++ b/ios/ContextMenu/ContextMenu.swift
+@@ -2,15 +2,25 @@ import SwiftUI
+ import ExpoModulesCore
+ 
+ struct SinglePressContextMenu<ActivationElement: View, MenuContent: View>: View {
++	let dismissBehavior: MenuActionDismissBehavior
+   let activationElement: ActivationElement
+   let menuContent: MenuContent
+ 
+   var body: some View {
+     #if !os(tvOS)
+-    SwiftUI.Menu {
+-      menuContent
+-    } label: {
+-      activationElement
++    if #available(iOS 16.4, *) {
++      SwiftUI.Menu {
++        menuContent
++      } label: {
++        activationElement
++      }
++      .menuActionDismissBehavior(dismissBehavior.toSwiftUI())
++    } else {
++      SwiftUI.Menu {
++        menuContent
++      } label: {
++        activationElement
++      }
+     }
+     #else
+     Text("SinglePressContextMenu is not supported on this platform")
+@@ -52,6 +62,7 @@ struct ContextMenu: ExpoSwiftUI.View {
+ 
+     if props.activationMethod == .singlePress {
+       SinglePressContextMenu(
++				dismissBehavior: props.dismissBehavior ?? .automatic,
+         activationElement: activationElement,
+         menuContent: menuContent
+       )
+diff --git a/ios/ContextMenu/ContextMenuRecords.swift b/ios/ContextMenu/ContextMenuRecords.swift
+index c1d3e720d73432ebd23e6ef5e44d729e8875b003..5aee12290c26f44cb1568fa2ca7f673f8f170c2a 100644
+--- a/ios/ContextMenu/ContextMenuRecords.swift
++++ b/ios/ContextMenu/ContextMenuRecords.swift
+@@ -1,16 +1,33 @@
+ import ExpoModulesCore
++import SwiftUI
+ 
+ internal enum ActivationMethod: String, Enumerable {
+   case singlePress
+   case longPress
+ }
+ 
++internal enum MenuActionDismissBehavior: String, Enumerable {
++	case automatic
++	case enabled
++	case disabled
++
++	@available(iOS 16.4, *)
++	func toSwiftUI() -> SwiftUI.MenuActionDismissBehavior {
++		switch self {
++			case .automatic: return .automatic
++			case .enabled: return .enabled
++			case .disabled: return .disabled
++		}
++	}
++}
++
+ internal final class ContextMenuProps: ExpoSwiftUI.ViewProps, CommonViewModifierProps {
+   @Field var fixedSize: Bool?
+   @Field var frame: FrameOptions?
+   @Field var padding: PaddingOptions?
+   @Field var testID: String?
+   @Field var modifiers: ModifierArray?
++	@Field var dismissBehavior: MenuActionDismissBehavior? = .automatic
+ 
+   @Field var activationMethod: ActivationMethod? = .singlePress
+ }
+diff --git a/src/swift-ui/ContextMenu/types.ts b/src/swift-ui/ContextMenu/types.ts
+index 3bf05935a5c23a4498bb5c728acf73fe910ec032..a287fe15965ee2e1f6884aa62994ef4b1a0f76df 100644
+--- a/src/swift-ui/ContextMenu/types.ts
++++ b/src/swift-ui/ContextMenu/types.ts
+@@ -10,6 +10,8 @@ import { type CommonViewModifierProps } from '../types';
+  */
+ export type ActivationMethod = 'singlePress' | 'longPress';
+ 
++export type DismissBehavior = 'automatic' | 'enabled' | 'disabled';
++
+ /**
+  * Props of the `ContextMenu` component.
+  */
+@@ -24,6 +26,8 @@ export type ContextMenuProps = {
+    * The children will be wrapped in a pressable element, which triggers opening of the context menu.
+    */
+   children: ReactNode;
++
++	dismissBehavior?: DismissBehavior;
+ } & CommonViewModifierProps;
+ 
+ /**

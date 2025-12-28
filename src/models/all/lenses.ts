@@ -52,6 +52,13 @@ const createLensesModel = () => {
 		},
 		target: $filters
 	});
+
+	const clearFilters = createEvent();
+	sample({
+		clock: clearFilters,
+		target: $filters,
+		fn: () => []
+	});
 	// Filters | End
 
 	const $combinedStore = combine({
@@ -65,7 +72,8 @@ const createLensesModel = () => {
 		setTimeMode,
 		filters: {
 			add: addFilter,
-			remove: removeFilter
+			remove: removeFilter,
+			clear: clearFilters
 		}
 	};
 };
