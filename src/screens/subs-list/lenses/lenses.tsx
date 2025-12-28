@@ -40,28 +40,39 @@ const Lenses = () => {
 							{t(`lenses.future`)}
 						</Button>
 
-						<Divider />
+						{/* <Divider /> */}
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
 								<Switch
 									label="Category 1"
-									variant="checkbox"
 									value={lensesStore.filters.some(
 										(filter) => filter.type === 'category' && filter.value === 'category_1'
 									)}
 									onValueChange={(value) =>
 										lenses.filters.add({
 											type: 'category',
-											value: 'category_1',
-											label: 'Category 1'
+											value: 'category_1'
+										})
+									}
+								/>
+
+								<Switch
+									label="Category 2"
+									value={lensesStore.filters.some(
+										(filter) => filter.type === 'category' && filter.value === 'category_2'
+									)}
+									onValueChange={(value) =>
+										lenses.filters.add({
+											type: 'category',
+											value: 'category_2'
 										})
 									}
 								/>
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>
-								<Button systemImage="slider.horizontal.3">By Category</Button>
+								<Button systemImage="camera.filters">By Category</Button>
 							</ContextMenu.Trigger>
 						</ContextMenu>
 
@@ -69,22 +80,60 @@ const Lenses = () => {
 							<ContextMenu.Items>
 								<Switch
 									label="Service 1"
-									variant="checkbox"
 									value={lensesStore.filters.some(
 										(filter) => filter.type === 'service' && filter.value === 'service_1'
 									)}
 									onValueChange={(value) =>
 										lenses.filters.add({
 											type: 'service',
-											value: 'service_1',
-											label: 'Service 1'
+											value: 'service_1'
 										})
 									}
 								/>
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>
-								<Button systemImage="slider.horizontal.3">By Service</Button>
+								<Button systemImage="camera.filters">By Service</Button>
+							</ContextMenu.Trigger>
+						</ContextMenu>
+
+						<ContextMenu dismissBehavior="disabled">
+							<ContextMenu.Items>
+								<Switch
+									label="Tender 1"
+									value={lensesStore.filters.some((filter) => filter.type === 'tender' && filter.value === 'tender_1')}
+									onValueChange={(value) =>
+										lenses.filters.add({
+											type: 'tender',
+											value: 'tender_1'
+										})
+									}
+								/>
+							</ContextMenu.Items>
+
+							<ContextMenu.Trigger>
+								<Button systemImage="camera.filters">By Tender</Button>
+							</ContextMenu.Trigger>
+						</ContextMenu>
+
+						<ContextMenu dismissBehavior="disabled">
+							<ContextMenu.Items>
+								<Switch
+									label="Currency 1"
+									value={lensesStore.filters.some(
+										(filter) => filter.type === 'currency' && filter.value === 'currency_1'
+									)}
+									onValueChange={(value) =>
+										lenses.filters.add({
+											type: 'currency',
+											value: 'currency_1'
+										})
+									}
+								/>
+							</ContextMenu.Items>
+
+							<ContextMenu.Trigger>
+								<Button systemImage="camera.filters">By Base Currency</Button>
 							</ContextMenu.Trigger>
 						</ContextMenu>
 

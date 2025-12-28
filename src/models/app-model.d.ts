@@ -19,7 +19,6 @@ export type FilterTypeT = 'category' | 'service' | 'tender' | 'currency' | 'list
 export type AppliedFilterT = {
 	type: FilterTypeT;
 	value: string;
-	label: string;
 };
 
 export type LensesModel = {
