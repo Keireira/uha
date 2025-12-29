@@ -14,21 +14,6 @@ export const Icon = styled.View<{ $color: string }>`
 	background-color: ${({ $color }) => `${$color}30`};
 `;
 
-export const Blurred = styled(BlurView).attrs({
-	intensity: 25,
-	tint: 'prominent'
-})<{ $color: string }>`
-	width: 72px;
-	height: 72px;
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	background-color: ${({ $color }) => `${$color}30`};
-`;
-
 export const HeaderTitle = styled(Text)`
 	font-size: 16px;
 	font-weight: 700;

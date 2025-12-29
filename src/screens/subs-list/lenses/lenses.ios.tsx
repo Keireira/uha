@@ -3,9 +3,10 @@ import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 import { useAppModel } from '@models';
 
+import { H2 } from '@ui';
 import { FilterIcon } from '@ui/icons';
 import { Host, Button, Switch, ContextMenu, Divider } from '@expo/ui/swift-ui';
-import Root, { Title, TitlePress, FilterBtn } from './lenses.styles';
+import Root, { TitlePress, FilterBtn } from './lenses.styles';
 
 import { ALL_TIME_MODES } from '@models/all/lenses';
 
@@ -27,7 +28,7 @@ const Lenses = () => {
 	return (
 		<Root>
 			<TitlePress onPress={setNextTimeMode}>
-				<Title>{t(`lenses.${lensesStore.time_mode}`)}</Title>
+				<H2>{t(`lenses.${lensesStore.time_mode}`)}</H2>
 			</TitlePress>
 
 			<Host>

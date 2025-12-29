@@ -5,11 +5,10 @@ import { asc, like, eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { servicesTable, categoriesTable } from '@db/schema';
 
+import { LogoView } from '@ui';
 import logos from '@assets/logos';
 import { ArrowLeftIcon } from '@ui/icons';
-import { SymbolView } from 'expo-symbols';
-import SquircleMask from '@assets/masks/squircle.svg.tsx';
-import Root, { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, Blurred, Icon } from './list.styles';
+import Root, { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, Icon } from './list.styles';
 
 import type { Props } from './list.d';
 
@@ -45,13 +44,7 @@ const CategoriesListScreen = ({ search }: Props) => {
 				return (
 					<ServiceRoot key={services.id}>
 						<Icon $color={color}>
-							{logoUrl ? (
-								<SquircleMask style={{ width: 48, height: 48 }} link={logoUrl} />
-							) : (
-								<Blurred $color={color}>
-									<SymbolView name="questionmark" size={24} tintColor={color} />
-								</Blurred>
-							)}
+							<LogoView name={services.title} logoId={logoUrl} color={color} size={48} />
 						</Icon>
 
 						<Description>

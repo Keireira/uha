@@ -1,1 +1,1 @@
-export { default } from './lenses';
+export { default } from './lenses.ios';

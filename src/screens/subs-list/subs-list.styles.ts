@@ -1,14 +1,6 @@
 import styled from 'styled-components/native';
 import MaskedView from '@react-native-masked-view/masked-view';
 
-export const Item = styled.View`
-	gap: 12px;
-	width: calc(100% + 24px);
-	padding: 12px 16px;
-	border-radius: 18px;
-	background-color: lightblue;
-`;
-
 export const ContentView = styled.ScrollView`
 	padding-vertical: 16px;
 `;
