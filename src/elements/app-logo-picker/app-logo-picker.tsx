@@ -83,7 +83,7 @@ const AppLogoPicker = () => {
 								</CheckSF>
 							)}
 
-							<SquircleMask link={page.source} />
+							<SquircleMask link={page.source} size={128} />
 						</AnimateMe>
 					</PressMe>
 				);

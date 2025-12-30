@@ -31,9 +31,9 @@
         "header": "Notifications",
         "results": {
           "denied": "Not requested",
-          "blocked": "Denied",
-          "granted": "Everything is good",
-          "limited": "Everything is good"
+          "blocked": "Disabled",
+          "granted": "Enabled",
+          "limited": "Enabled"
         }
       },
       "face_id": "Require Face ID",
@@ -210,5 +210,9 @@
     "VND": "Vietnamese Dong",
     "ZMW": "Zambian Kwacha",
     "ZWG": "Zimbabwean Gold"
+  },
+  "lenses": {
+    "future": "Upcoming",
+    "all": "All time"
   }
 }

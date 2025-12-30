@@ -1,22 +1,7 @@
 import styled from 'styled-components/native';
 
 import { Text } from '@ui';
-import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-
-export const Blurred = styled(BlurView).attrs({
-	intensity: 25,
-	tint: 'prominent'
-})`
-	width: 48px;
-	height: 48px;
-	border-radius: 8px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	background-color: #ffffff20;
-`;
 
 export const Gradient = styled(LinearGradient)`
 	position: absolute;

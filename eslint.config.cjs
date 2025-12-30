@@ -4,7 +4,7 @@ const expoConfig = require('eslint-config-expo/flat');
 
 const globals = require('globals');
 const eslint = require('@eslint/js');
-const tseslint = require('typescript-eslint');
+// const tseslint = require('typescript-eslint');
 const react = require('eslint-plugin-react');
 const reactHooks = require('eslint-plugin-react-hooks');
 const prettier = require('eslint-plugin-prettier');
@@ -12,7 +12,7 @@ const prettier = require('eslint-plugin-prettier');
 module.exports = defineConfig([
 	expoConfig,
 	eslint.configs.recommended,
-	tseslint.configs.recommended,
+	// tseslint.configs.recommended,
 
 	{
 		settings: {

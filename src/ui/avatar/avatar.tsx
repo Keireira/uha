@@ -2,6 +2,7 @@ import React from 'react';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { Pressable } from 'react-native';
+// @TODO: Remove that shit
 import * as AvatarPrimitive from '@rn-primitives/avatar';
 import Root, { Image, FallbackText } from './avatar.styles';
 

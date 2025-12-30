@@ -1,14 +1,15 @@
 import { createGate } from 'effector-react';
 import { createFactory } from '@lib/effector';
 
-import { createDirectionModel } from './all';
+import { createDirectionModel, createLensesModel } from './all';
 
 const createAppModel = () => {
 	const gate = createGate();
 
 	return {
 		gate,
-		scroll: createDirectionModel()
+		lenses: createLensesModel(),
+		scroll: createDirectionModel(),
 	};
 };
 
