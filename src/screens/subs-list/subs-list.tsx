@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Lenses from './lenses';
 import Transactions from './transactions';
 import { LinearGradient } from 'expo-linear-gradient';
-import Root, { Masked, ContentView, BottomSpacer } from './subs-list.styles';
+import Root, { Masked, ContentView } from './subs-list.styles';
 
 const SubsList = () => {
 	const handleScroll = useScrollDirection();
@@ -28,8 +28,6 @@ const SubsList = () => {
 			>
 				<ContentView onScroll={handleScroll}>
 					<Transactions />
-
-					<BottomSpacer $bottom={insets.bottom} />
 				</ContentView>
 			</Masked>
 		</Root>

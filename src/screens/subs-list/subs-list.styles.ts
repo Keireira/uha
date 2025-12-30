@@ -10,10 +10,6 @@ export const Masked = styled(MaskedView)`
 	gap: 16px;
 `;
 
-export const BottomSpacer = styled.View<{ $bottom: number }>`
-	height: ${({ $bottom }) => $bottom + 64}px;
-`;
-
 export default styled.View<{ $top: number; $bottom: number }>`
 	flex: 1;
 	background-color: #f2f2f7;
