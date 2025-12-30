@@ -29,6 +29,26 @@ eas build --platform ios
 eas submit --platform ios
 ```
 
+### Drizzle ORM
+
+```sh
+# 1. Update schemas
+# 2. Apply migrations & resolve conflicts
+pnpm drizzle-kit generate
+```
+
+```sh
+# Custom migration
+pnpm drizzle-kit generate --custom
+```
+
+### Setup
+
+```sh
+pnpm install
+pnpm expo run:ios --device
+```
+
 - <https://docs.expo.dev/workflow/android-studio-emulator/>
 - <https://docs.expo.dev/workflow/ios-simulator/>
 - pnpx expo install expo-dev-client

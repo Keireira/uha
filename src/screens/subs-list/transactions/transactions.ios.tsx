@@ -6,7 +6,7 @@ import Root from './transactions.styles';
 const Transactions = () => {
 	return (
 		<Root>
-			{Array.from({ length: 100 }, (_, index) => (
+			{Array.from({ length: 33 }, (_, index) => (
 				<TransactionCard key={index} />
 			))}
 		</Root>

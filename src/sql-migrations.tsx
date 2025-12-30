@@ -9,8 +9,12 @@ const uhaDb = SQLite.openDatabaseSync('db.db', { enableChangeListener: true });
 export const db = drizzle(uhaDb);
 
 const SqlMigrations = () => {
-	useMigrations(db, migrations);
+	const { error } = useMigrations(db, migrations);
 	useDrizzleStudio(db.$client);
+
+	if (error) {
+		console.error('Migration error:', error);
+	}
 
 	return null;
 };

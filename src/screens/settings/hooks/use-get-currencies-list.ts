@@ -7,6 +7,7 @@ import {
 	DEFAULT_SIGN,
 	EUROPEAN_CURRENCIES,
 	DEFAULT_CURRENCIES,
+	AMERICAN_CURRENCIES,
 	ASIAN_CURRENCIES,
 	MIDDLE_EAST_CURRENCIES,
 	OCEANIAN_CURRENCIES
@@ -121,6 +122,30 @@ const useGetCurrenciesList = (): ContextMenuAction[] => {
 			currenciesActions.push({
 				title: t('settings.currencies.babah'),
 				actions: sortedMiddleEastCurrencies
+			});
+		}
+
+		// AMERICAN CURRENCIES
+		const americanCurrencies = AMERICAN_CURRENCIES.reduce((acc, currency) => {
+			if (forbiddenCodes.includes(currency)) {
+				return acc;
+			}
+
+			const nextAction = {
+				title: t(`currencies.${currency}`),
+				subtitle: currency,
+				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
+			};
+
+			return [...acc, nextAction];
+		}, [] as ContextMenuAction[]);
+
+		if (americanCurrencies.length > 0) {
+			const sortedAmericanCurrencies = sortCurrenciesList(americanCurrencies);
+
+			currenciesActions.push({
+				title: t('settings.currencies.american'),
+				actions: sortedAmericanCurrencies
 			});
 		}
 

@@ -68,7 +68,6 @@ export const EUROPEAN_CURRENCIES = [
 	'UAH'
 ];
 
-// ASIAN CURRENCIES
 export const ASIAN_CURRENCIES = [
 	'JPY',
 	'KZT',
@@ -77,6 +76,7 @@ export const ASIAN_CURRENCIES = [
 	'KGS',
 	'MNT',
 	'KRW',
+	'PHP',
 	'TJS',
 	'THB',
 	'KPW',
@@ -89,11 +89,10 @@ export const ASIAN_CURRENCIES = [
 	'MOP'
 ];
 
-// MIDDLE EAST CURRENCIES
+export const AMERICAN_CURRENCIES = ['ARS', 'BRL'];
+
 export const MIDDLE_EAST_CURRENCIES = ['ILS'];
 
-// OCEANIAN CURRENCIES
 export const OCEANIAN_CURRENCIES = ['AUD', 'NZD'];
 
-// OTHER CURRENCIES
 export const OTHER_CURRENCIES = ['CAD', 'CLP', 'COP', 'CRC', 'MXN'];

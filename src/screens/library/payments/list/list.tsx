@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { asc, like } from 'drizzle-orm';
 import { db } from '@src/sql-migrations';
-import { paymentMethodsTable } from '@db/schema';
+import { tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { ArrowLeftIcon } from '@ui/icons';
@@ -16,9 +16,9 @@ const CategoriesListScreen = ({ search }: Props) => {
 	const { data: payments } = useLiveQuery(
 		db
 			.select()
-			.from(paymentMethodsTable)
-			.where(like(paymentMethodsTable.title, `%${search.trim()}%`))
-			.orderBy(asc(paymentMethodsTable.title)),
+			.from(tendersTable)
+			.where(like(tendersTable.title, `%${search.trim()}%`))
+			.orderBy(asc(tendersTable.title)),
 		[search]
 	);
 

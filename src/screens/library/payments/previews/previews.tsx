@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { asc, like } from 'drizzle-orm';
 import { db } from '@src/sql-migrations';
-import { paymentMethodsTable } from '@db/schema';
+import { tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
@@ -12,15 +12,15 @@ import { ToAll, NoItems, useLength } from '@screens/library/shared';
 import type { Props } from './previews.d';
 
 const Previews = ({ search, setFound }: Props) => {
-	const length = useLength(paymentMethodsTable);
+	const length = useLength(tendersTable);
 	const [canRender, setCanRender] = useState(false);
 
 	const { data: payments } = useLiveQuery(
 		db
 			.select()
-			.from(paymentMethodsTable)
-			.where(like(paymentMethodsTable.title, `%${search.trim()}%`))
-			.orderBy(asc(paymentMethodsTable.title))
+			.from(tendersTable)
+			.where(like(tendersTable.title, `%${search.trim()}%`))
+			.orderBy(asc(tendersTable.title))
 			.limit(6),
 		[search]
 	);

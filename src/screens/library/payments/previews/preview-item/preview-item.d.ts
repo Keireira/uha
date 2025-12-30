@@ -1,3 +1,3 @@
-import type { PaymentT } from '@models';
+import type { TenderT } from '@models';
 
-export type PropsT = PaymentT;
+export type PropsT = TenderT;

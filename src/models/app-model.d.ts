@@ -1,4 +1,4 @@
-import { categoriesTable, paymentMethodsTable, servicesTable } from '@db/schema';
+import { categoriesTable, tendersTable, servicesTable } from '@db/schema';
 import { db as drizzleDB } from '@src/sql-migrations';
 
 import type { InferSelectModel } from 'drizzle-orm';
@@ -6,7 +6,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 export type DBT = typeof drizzleDB;
 
 export type CategoryT = InferSelectModel<typeof categoriesTable>;
-export type PaymentT = InferSelectModel<typeof paymentMethodsTable>;
+export type TenderT = InferSelectModel<typeof tendersTable>;
 export type ServiceT = InferSelectModel<typeof servicesTable>;
 
 // SCROLL MODEL
