@@ -125,7 +125,7 @@ const Lenses = () => {
 						<Button variant="bordered" systemImage="figure.run" onPress={() => lenses.setTimeMode('future')}>
 							{t(`lenses.future`)}
 						</Button>
-
+						{/*
 						{lensesStore.time_mode === 'future' && (
 							<Button
 								systemImage={lensesStore.wo_twins ? 'checkmark.square' : 'square'}
@@ -133,7 +133,7 @@ const Lenses = () => {
 							>
 								Unique Only
 							</Button>
-						)}
+						)} */}
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>

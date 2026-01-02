@@ -72,4 +72,4 @@ const TransactionCard = ({
 	);
 };
 
-export default TransactionCard;
+export default React.memo(TransactionCard);

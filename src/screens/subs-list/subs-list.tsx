@@ -1,20 +1,21 @@
 import React from 'react';
-import { useScrollDirection } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Lenses from './lenses';
-// import Summaries from './summaries';
+import Summaries from './summaries';
 import Transactions from './transactions';
 import { LinearGradient } from 'expo-linear-gradient';
-import Root, { Masked, ContentView } from './subs-list.styles';
+import Root, { Masked } from './subs-list.styles';
 
 const SubsList = () => {
-	const handleScroll = useScrollDirection();
 	const insets = useSafeAreaInsets();
 
 	return (
 		<Root $top={insets.top} $bottom={insets.bottom}>
 			<Lenses />
+
+			<Summaries />
+
 			<Masked
 				maskElement={
 					<LinearGradient
@@ -26,11 +27,7 @@ const SubsList = () => {
 					/>
 				}
 			>
-				<ContentView onScroll={handleScroll}>
-					{/* <Summaries /> */}
-
-					<Transactions />
-				</ContentView>
+				<Transactions />
 			</Masked>
 		</Root>
 	);
