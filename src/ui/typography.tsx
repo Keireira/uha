@@ -33,6 +33,27 @@ export const H3 = styled(BaseText)<TextProps>`
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
+export const H4 = styled(BaseText)<TextProps>`
+	font-size: 18px;
+	color: ${({ $color }) => $color || '#333'};
+	font-weight: ${({ $weight }) => $weight || 700};
+	text-align: ${({ $align }) => $align || 'left'};
+`;
+
+export const H5 = styled(BaseText)<TextProps>`
+	font-size: 16px;
+	color: ${({ $color }) => $color || '#333'};
+	font-weight: ${({ $weight }) => $weight || 700};
+	text-align: ${({ $align }) => $align || 'left'};
+`;
+
+export const H6 = styled(BaseText)<TextProps>`
+	font-size: 14px;
+	color: ${({ $color }) => $color || '#333'};
+	font-weight: ${({ $weight }) => $weight || 700};
+	text-align: ${({ $align }) => $align || 'left'};
+`;
+
 // Regular text
 export const SmallText = styled(BaseText)<TextProps>`
 	font-size: 12px;

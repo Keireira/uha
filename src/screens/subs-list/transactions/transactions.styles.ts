@@ -11,7 +11,7 @@ export const BottomSpacer = styled.View<{ $bottom: number }>`
 `;
 
 export const ItemSeparator = styled.View`
-	height: 16px;
+	height: 4px;
 `;
 
 export default styled.View`

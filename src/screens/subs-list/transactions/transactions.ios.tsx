@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
 import { useUnit } from 'effector-react';
 import { FlashList } from '@shopify/flash-list';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
@@ -7,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppModel } from '@models';
 import { db } from '@src/sql-migrations';
 import { useScrollDirection } from '@hooks';
-import { eq, desc } from 'drizzle-orm';
+import { eq, asc } from 'drizzle-orm';
 import {
 	transactionsTable,
 	currenciesTable,
@@ -18,12 +19,25 @@ import {
 } from '@db/schema';
 import { buildWhereConditions } from './utils';
 
+import { H4 } from '@ui';
 import TransactionCard from './transaction-card';
 import Root, { GroupedListContainer, ItemSeparator, BottomSpacer } from './transactions.styles';
 
 import type { TransactionProps } from './transaction-card/transaction-card.d';
 
-const renderItem = ({ item }: { item: TransactionProps }) => <TransactionCard {...item} />;
+type SectionT = (string | TransactionProps)[];
+
+const renderItem = ({ item }: { item: SectionT }) => {
+	if (typeof item === 'string') {
+		return (
+			<H4 $align="left" $weight={700} style={{ marginHorizontal: 16, marginTop: 16 }}>
+				{item}
+			</H4>
+		);
+	}
+
+	return <TransactionCard {...(item as unknown as TransactionProps)} />;
+};
 
 const Transactions = () => {
 	const insets = useSafeAreaInsets();
@@ -52,10 +66,44 @@ const Transactions = () => {
 			.leftJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
 			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.orderBy(desc(transactionsTable.date))
+			.orderBy(asc(transactionsTable.date))
 			.where(buildWhereConditions(lensesStore.filters, lensesStore.time_mode)),
 		[lensesStore.filters, lensesStore.time_mode]
 	);
+
+	const sections = useMemo(() => {
+		const formattedSections = transactions.reduce((acc, transaction, index) => {
+			const prevTransaction = transactions[index - 1];
+			const transactionDate = new Date(transaction.date);
+
+			let dateLabel = '';
+
+			if (isToday(transactionDate)) {
+				dateLabel = 'Today';
+			} else if (isTomorrow(transactionDate)) {
+				dateLabel = 'Tomorrow';
+			} else if (isYesterday(transactionDate)) {
+				dateLabel = 'Yesterday';
+			} else {
+				const isCurrentYear = transactionDate.getFullYear() === new Date().getFullYear();
+
+				dateLabel = format(transactionDate, isCurrentYear ? 'dd MMM' : 'dd MMM, yyyy');
+			}
+
+			const dateKey = format(transactionDate, 'dd-yyyy-MM');
+			const prevDateKey = prevTransaction ? format(new Date(prevTransaction.date), 'dd-yyyy-MM') : null;
+
+			if (dateKey !== prevDateKey) {
+				acc.push(dateLabel);
+			}
+
+			acc.push(transaction as TransactionProps);
+
+			return acc;
+		}, [] as SectionT);
+
+		return formattedSections;
+	}, [transactions]);
 
 	return (
 		<Root>
@@ -65,10 +113,13 @@ const Transactions = () => {
 						gap: 16
 					}}
 					onScroll={handleScroll}
-					data={transactions as TransactionProps[]}
+					data={sections}
 					renderItem={renderItem}
+					getItemType={(item) => {
+						return typeof item === 'string' ? 'sectionHeader' : 'row';
+					}}
 					showsVerticalScrollIndicator={false}
-					keyExtractor={(item) => item.id}
+					keyExtractor={(item) => (typeof item === 'string' ? item : (item as unknown as TransactionProps).id)}
 					ItemSeparatorComponent={ItemSeparator}
 					ListFooterComponent={<BottomSpacer $bottom={insets.bottom} />}
 				/>

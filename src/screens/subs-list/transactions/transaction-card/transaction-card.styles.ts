@@ -45,7 +45,6 @@ export default styled.Pressable`
 	flex-direction: row;
 
 	gap: 16px;
-	width: calc(100% + 24px);
 	padding: 12px 16px;
-	border-radius: 18px;
+	border-radius: 16px;
 `;

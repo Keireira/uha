@@ -28,9 +28,9 @@ import { Text } from '@ui';
 import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
 
 const ANIMATION_CONFIG = {
-	mass: 0.5,
+	mass: 0.25,
 	damping: 15,
-	stiffness: 250
+	stiffness: 500
 };
 
 const Summaries = () => {

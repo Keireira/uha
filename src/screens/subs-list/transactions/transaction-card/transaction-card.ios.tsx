@@ -3,7 +3,7 @@ import { Settings } from 'react-native';
 
 import logos from '@assets/logos';
 
-import { SmallText, LargeText, H3, LogoView } from '@ui';
+import { Text, LargeText, H3, LogoView } from '@ui';
 import Root, { LogoSection, DescSection, PriceSection } from './transaction-card.styles';
 
 import type { TransactionProps } from './transaction-card.d';
@@ -20,6 +20,7 @@ const TransactionCard = ({
 	customName,
 	title,
 	emoji,
+	date,
 	category,
 	color
 }: TransactionProps) => {
@@ -44,28 +45,28 @@ const TransactionCard = ({
 					{customName || title}
 				</H3>
 
-				<SmallText numberOfLines={1} ellipsizeMode="tail" $color="#666">
+				<Text numberOfLines={1} ellipsizeMode="tail" $color="#666">
 					{category}
-				</SmallText>
+				</Text>
 			</DescSection>
 
 			<PriceSection $isSingle={!withConversion}>
 				{withConversion ? (
-					<LargeText $weight={500} $align="right">
+					<LargeText numberOfLines={1} ellipsizeMode="tail" $weight={500} $align="right">
 						{currency}
 						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
 					</LargeText>
 				) : (
-					<H3 $weight={500} $align="right">
+					<H3 numberOfLines={1} ellipsizeMode="tail" $weight={500} $align="right">
 						{currency}
 						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
 					</H3>
 				)}
 
 				{withConversion && (
-					<SmallText $align="right" $color="#666">
+					<Text numberOfLines={1} ellipsizeMode="tail" $align="right" $color="#666">
 						{showFractions ? convertedPrice.toFixed(2) : Math.round(convertedPrice)} ₸
-					</SmallText>
+					</Text>
 				)}
 			</PriceSection>
 		</Root>
