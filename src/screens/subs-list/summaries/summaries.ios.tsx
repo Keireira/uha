@@ -17,7 +17,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { buildWhereConditions } from '../transactions/utils';
 
 import { Text } from '@ui';
-import Root, { Card } from './summaries.styles';
+import Root, { TextRow, SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
 
 const Summaries = () => {
 	const { lenses } = useAppModel();
@@ -26,7 +26,10 @@ const Summaries = () => {
 	const { data: transactionsYear } = useLiveQuery(
 		db
 			.select({
-				amount: transactionsTable.amount
+				id: transactionsTable.id,
+				amount: transactionsTable.amount,
+				category_id: categoriesTable.id,
+				category_color: categoriesTable.color
 			})
 			.from(transactionsTable)
 			.leftJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
@@ -47,7 +50,10 @@ const Summaries = () => {
 	const { data: transactionsCurrentMonth } = useLiveQuery(
 		db
 			.select({
-				amount: transactionsTable.amount
+				id: transactionsTable.id,
+				amount: transactionsTable.amount,
+				category_id: categoriesTable.id,
+				category_color: categoriesTable.color
 			})
 			.from(transactionsTable)
 			.leftJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
@@ -65,6 +71,14 @@ const Summaries = () => {
 		[lensesStore.filters]
 	);
 
+	const currentMonth = useMemo(() => {
+		return startOfMonth(new Date()).toLocaleDateString('en-US', { month: 'long' });
+	}, []);
+
+	const currentYear = useMemo(() => {
+		return startOfYear(new Date()).toLocaleDateString('en-US', { year: 'numeric' });
+	}, []);
+
 	const totalYear = useMemo(() => {
 		if (!transactionsYear) return 0;
 
@@ -77,17 +91,93 @@ const Summaries = () => {
 		return transactionsCurrentMonth.reduce((acc, curr) => acc + curr.amount, 0);
 	}, [transactionsCurrentMonth]);
 
+	const categoriesMonth = useMemo(() => {
+		if (!transactionsCurrentMonth) return {};
+
+		const { total, ...sum } = transactionsCurrentMonth.reduce(
+			(acc, cur) => {
+				if (!cur.category_id) return acc;
+
+				acc[cur.category_id] ??= {
+					id: cur.category_id,
+					amount: 0,
+					color: cur.category_color || '#ffffff'
+				};
+
+				acc[cur.category_id].amount += cur.amount;
+
+				acc.total += cur.amount;
+
+				return acc;
+			},
+			{ total: 0 }
+		);
+
+		return {
+			tmp: Object.values(sum).sort((a, b) => b.amount - a.amount),
+			total
+		};
+	}, [transactionsCurrentMonth]);
+
+	const categoriesYear = useMemo(() => {
+		if (!transactionsYear) return {};
+
+		const { total, ...sum } = transactionsYear.reduce(
+			(acc, cur) => {
+				if (!cur.category_id) return acc;
+
+				acc[cur.category_id] ??= {
+					id: cur.category_id,
+					amount: 0,
+					color: cur.category_color || '#ffffff'
+				};
+
+				acc[cur.category_id].amount += cur.amount;
+
+				acc.total += cur.amount;
+
+				return acc;
+			},
+			{ total: 0 }
+		);
+
+		return {
+			tmp: Object.values(sum).sort((a, b) => b.amount - a.amount),
+			total
+		};
+	}, [transactionsYear]);
+
 	return (
 		<Root>
-			<Card>
-				<Text>${totalMonth}</Text>
-				<Text $bold>In January</Text>
-			</Card>
+			<SummaryItem>
+				<TextRow>
+					<Text>${totalMonth}</Text>
+					<Text $bold>In {currentMonth}</Text>
+				</TextRow>
 
-			<Card>
-				<Text>${totalYear}</Text>
-				<Text $bold>In 2026</Text>
-			</Card>
+				<CategoryChips>
+					{categoriesMonth.tmp.map((category) => {
+						const percentage = (category.amount / categoriesMonth.total) * 100;
+
+						return <CategoryChip key={category.id} $color={category.color} $percentage={percentage} />;
+					})}
+				</CategoryChips>
+			</SummaryItem>
+
+			<SummaryItem>
+				<TextRow>
+					<Text>${totalYear}</Text>
+					<Text $bold>In {currentYear}</Text>
+				</TextRow>
+
+				<CategoryChips>
+					{categoriesYear.tmp.map((category) => {
+						const percentage = (category.amount / categoriesYear.total) * 100;
+
+						return <CategoryChip key={category.id} $color={category.color} $percentage={percentage} />;
+					})}
+				</CategoryChips>
+			</SummaryItem>
 		</Root>
 	);
 };
