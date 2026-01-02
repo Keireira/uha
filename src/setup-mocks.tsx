@@ -49,15 +49,10 @@ const buildSubscription = (
 	};
 };
 
-export const useMockedSubscriptions = () => {
+const useMockedSubscriptions = () => {
 	const [seeded, setSeeded] = useState(false);
 
-	const { data: services } = useLiveQuery(
-		db
-			.select()
-			.from(servicesTable)
-			.orderBy(sql`RANDOM()`)
-	);
+	const { data: services } = useLiveQuery(db.select().from(servicesTable));
 
 	const { data: tenders } = useLiveQuery(
 		db
@@ -83,3 +78,11 @@ export const useMockedSubscriptions = () => {
 
 	return seeded;
 };
+
+const SetupMocks = () => {
+	useMockedSubscriptions();
+
+	return null;
+};
+
+export default SetupMocks;

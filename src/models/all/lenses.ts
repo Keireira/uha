@@ -16,11 +16,11 @@ const createLensesModel = () => {
 	// Time Modes | End
 
 	// Twins | Start
-	const $twins = createStore<LensesModel['wo_twins']>(true);
-	const setTwins = createEvent<LensesModel['wo_twins']>();
+	const $wo_twins = createStore<LensesModel['wo_twins']>(true);
+	const setWoTwins = createEvent<LensesModel['wo_twins']>();
 	sample({
-		clock: setTwins,
-		target: $twins
+		clock: setWoTwins,
+		target: $wo_twins
 	});
 	// Twins | End
 
@@ -63,13 +63,14 @@ const createLensesModel = () => {
 
 	const $combinedStore = combine({
 		time_mode: $timeMode,
-		twins: $twins,
+		wo_twins: $wo_twins,
 		filters: $filters
 	});
 
 	return {
 		$store: $combinedStore,
 		setTimeMode,
+		setWoTwins,
 		filters: {
 			add: addFilter,
 			remove: removeFilter,

@@ -1,7 +1,12 @@
 import React from 'react';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
 import { useAppModel } from '@models';
+import { db } from '@src/sql-migrations';
+import { eq, isNull, inArray } from 'drizzle-orm';
+import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
 
 import { H2 } from '@ui';
 import { FilterIcon } from '@ui/icons';
@@ -10,10 +15,89 @@ import Root, { TitlePress, FilterBtn } from './lenses.styles';
 
 import { ALL_TIME_MODES } from '@models/all/lenses';
 
+const useGetActiveEntries = () => {
+	const { data: services } = useLiveQuery(
+		db
+			.selectDistinct({
+				id: servicesTable.id,
+				title: servicesTable.title
+			})
+			.from(servicesTable)
+			.where(
+				inArray(
+					servicesTable.id,
+					db
+						.select({ id: subscriptionsTable.service_id })
+						.from(subscriptionsTable)
+						.where(isNull(subscriptionsTable.cancellation_date))
+				)
+			)
+	);
+
+	const { data: categories } = useLiveQuery(
+		db
+			.selectDistinct({
+				id: categoriesTable.id,
+				title: categoriesTable.title
+			})
+			.from(categoriesTable)
+			.where(
+				inArray(
+					categoriesTable.id,
+					db
+						.select({ id: servicesTable.category_id })
+						.from(servicesTable)
+						.innerJoin(subscriptionsTable, eq(subscriptionsTable.service_id, servicesTable.id))
+						.where(isNull(subscriptionsTable.cancellation_date))
+				)
+			)
+	);
+
+	const { data: tenders } = useLiveQuery(
+		db
+			.selectDistinct({
+				id: tendersTable.id,
+				title: tendersTable.title
+			})
+			.from(tendersTable)
+			.where(
+				inArray(
+					tendersTable.id,
+					db
+						.select({ id: subscriptionsTable.tender_id })
+						.from(subscriptionsTable)
+						.where(isNull(subscriptionsTable.cancellation_date))
+				)
+			)
+	);
+
+	const { data: currencies } = useLiveQuery(
+		db
+			.selectDistinct({
+				id: currenciesTable.id,
+				symbol: currenciesTable.symbol
+			})
+			.from(currenciesTable)
+			.where(
+				inArray(
+					currenciesTable.id,
+					db
+						.select({ id: subscriptionsTable.current_currency_id })
+						.from(subscriptionsTable)
+						.where(isNull(subscriptionsTable.cancellation_date))
+				)
+			)
+	);
+
+	return { services, categories, tenders, currencies };
+};
+
 const Lenses = () => {
 	const { t } = useTranslation();
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
+
+	const entries = useGetActiveEntries();
 
 	const setNextTimeMode = () => {
 		const timeMode = lensesStore.time_mode;
@@ -32,44 +116,44 @@ const Lenses = () => {
 			</TitlePress>
 
 			<Host>
-				<ContextMenu>
+				<ContextMenu dismissBehavior="disabled">
 					<ContextMenu.Items>
 						<Button systemImage="infinity" onPress={() => lenses.setTimeMode('all')}>
 							{t(`lenses.all`)}
 						</Button>
+
 						<Button variant="bordered" systemImage="figure.run" onPress={() => lenses.setTimeMode('future')}>
 							{t(`lenses.future`)}
 						</Button>
+
+						{lensesStore.time_mode === 'future' && (
+							<Button
+								systemImage={lensesStore.wo_twins ? 'checkmark.square' : 'square'}
+								onPress={() => lenses.setWoTwins(!lensesStore.wo_twins)}
+							>
+								Unique Only
+							</Button>
+						)}
 
 						{/* <Divider /> */}
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
-								<Switch
-									label="Category 1"
-									value={lensesStore.filters.some(
-										(filter) => filter.type === 'category' && filter.value === 'category_1'
-									)}
-									onValueChange={(value) =>
-										lenses.filters.add({
-											type: 'category',
-											value: 'category_1'
-										})
-									}
-								/>
-
-								<Switch
-									label="Category 2"
-									value={lensesStore.filters.some(
-										(filter) => filter.type === 'category' && filter.value === 'category_2'
-									)}
-									onValueChange={(value) =>
-										lenses.filters.add({
-											type: 'category',
-											value: 'category_2'
-										})
-									}
-								/>
+								{entries.categories.map((category) => (
+									<Switch
+										key={category.id}
+										label={category.title}
+										value={lensesStore.filters.some(
+											(filter) => filter.type === 'category' && filter.value === category.id
+										)}
+										onValueChange={(value) =>
+											lenses.filters.add({
+												type: 'category',
+												value: category.id
+											})
+										}
+									/>
+								))}
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>
@@ -79,18 +163,21 @@ const Lenses = () => {
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
-								<Switch
-									label="Service 1"
-									value={lensesStore.filters.some(
-										(filter) => filter.type === 'service' && filter.value === 'service_1'
-									)}
-									onValueChange={(value) =>
-										lenses.filters.add({
-											type: 'service',
-											value: 'service_1'
-										})
-									}
-								/>
+								{entries.services.map((service) => (
+									<Switch
+										key={service.id}
+										label={service.title}
+										value={lensesStore.filters.some(
+											(filter) => filter.type === 'service' && filter.value === service.id
+										)}
+										onValueChange={(value) =>
+											lenses.filters.add({
+												type: 'service',
+												value: service.id
+											})
+										}
+									/>
+								))}
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>
@@ -100,16 +187,19 @@ const Lenses = () => {
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
-								<Switch
-									label="Tender 1"
-									value={lensesStore.filters.some((filter) => filter.type === 'tender' && filter.value === 'tender_1')}
-									onValueChange={(value) =>
-										lenses.filters.add({
-											type: 'tender',
-											value: 'tender_1'
-										})
-									}
-								/>
+								{entries.tenders.map((tender) => (
+									<Switch
+										key={tender.id}
+										label={tender.title}
+										value={lensesStore.filters.some((filter) => filter.type === 'tender' && filter.value === tender.id)}
+										onValueChange={(value) =>
+											lenses.filters.add({
+												type: 'tender',
+												value: tender.id
+											})
+										}
+									/>
+								))}
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>
@@ -119,18 +209,21 @@ const Lenses = () => {
 
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
-								<Switch
-									label="Currency 1"
-									value={lensesStore.filters.some(
-										(filter) => filter.type === 'currency' && filter.value === 'currency_1'
-									)}
-									onValueChange={(value) =>
-										lenses.filters.add({
-											type: 'currency',
-											value: 'currency_1'
-										})
-									}
-								/>
+								{entries.currencies.map((currency) => (
+									<Switch
+										key={currency.id}
+										label={currency.id}
+										value={lensesStore.filters.some(
+											(filter) => filter.type === 'currency' && filter.value === currency.id
+										)}
+										onValueChange={(value) =>
+											lenses.filters.add({
+												type: 'currency',
+												value: currency.id
+											})
+										}
+									/>
+								))}
 							</ContextMenu.Items>
 
 							<ContextMenu.Trigger>

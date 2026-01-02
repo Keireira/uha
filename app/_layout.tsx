@@ -9,6 +9,7 @@ import { Stack } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
 import SqlMigrations from '@src/sql-migrations';
 import SyncSettings from '@src/sync-settings';
+import SetupMocks from '@src/setup-mocks';
 import '@src/i18n';
 
 SplashScreen.preventAutoHideAsync();
@@ -44,6 +45,7 @@ const RootLayout = () => {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<SqlMigrations />
 				<SyncSettings />
+				<SetupMocks />
 
 				<Stack
 					screenOptions={{

@@ -10,22 +10,17 @@ import { LegendList } from '@legendapp/list';
 import TransactionCard from './transaction-card';
 import Root, { GroupedListContainer, GroupedListItem, BottomSpacer } from './transactions.styles';
 
-import { useMockedSubscriptions } from './mocks';
-
 import type { TransactionProps } from './transaction-card/transaction-card.d';
 import type { LegendListRenderItemProps } from '@legendapp/list';
 
-const renderItem = ({ item }: LegendListRenderItemProps<TransactionProps>) => {
-	return (
-		<GroupedListItem>
-			<TransactionCard {...item} />
-		</GroupedListItem>
-	);
-};
+const renderItem = ({ item }: LegendListRenderItemProps<TransactionProps>) => (
+	<GroupedListItem>
+		<TransactionCard {...item} />
+	</GroupedListItem>
+);
 
 const Transactions = () => {
 	const insets = useSafeAreaInsets();
-	useMockedSubscriptions();
 
 	const { data: transactions } = useLiveQuery(
 		db
