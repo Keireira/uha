@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import { sql } from 'drizzle-orm';
 import { db } from '@src/sql-migrations';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { servicesTable, tendersTable, subscriptionsTable } from '@db/schema';
+import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
 import * as Crypto from 'expo-crypto';
 import { subDays } from 'date-fns';
+
+import { buildTransactions } from '@lib';
 
 const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
@@ -24,13 +26,15 @@ const createBillingCycleType = () => {
 	] as keyof typeof BILLING_CYCLES;
 };
 
+type SubscriptionT = typeof subscriptionsTable.$inferSelect;
+
 const buildSubscription = (
 	service: typeof servicesTable.$inferSelect,
 	tenders: (typeof tendersTable.$inferSelect)[]
-): typeof subscriptionsTable.$inferInsert => {
+): SubscriptionT => {
 	const tender = tenders[randomInt(0, tenders.length - 1)];
 	const billingCycleType = createBillingCycleType();
-	const days = randomInt(20, 2000);
+	const days = randomInt(20, 365 * 2);
 
 	return {
 		id: Crypto.randomUUID(),
@@ -52,7 +56,12 @@ const buildSubscription = (
 const useMockedSubscriptions = () => {
 	const [seeded, setSeeded] = useState(false);
 
-	const { data: services } = useLiveQuery(db.select().from(servicesTable));
+	const { data: services } = useLiveQuery(
+		db
+			.select()
+			.from(servicesTable)
+			.orderBy(sql`RANDOM()`)
+	);
 
 	const { data: tenders } = useLiveQuery(
 		db
@@ -65,10 +74,14 @@ const useMockedSubscriptions = () => {
 		const seedMockData = async () => {
 			if (services.length === 0 || tenders.length === 0 || seeded) return;
 
+			await db.delete(transactionsTable);
 			await db.delete(subscriptionsTable);
 
-			const mocks = services.map((service) => buildSubscription(service, tenders));
-			await db.insert(subscriptionsTable).values(mocks);
+			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
+			const transactionMocks = buildTransactions(subscriptionMocks);
+
+			await db.insert(subscriptionsTable).values(subscriptionMocks);
+			await db.insert(transactionsTable).values(transactionMocks);
 
 			setSeeded(true);
 		};

@@ -43,9 +43,11 @@ const RootLayout = () => {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<SqlMigrations />
+				<SqlMigrations>
+					<SetupMocks />
+				</SqlMigrations>
+
 				<SyncSettings />
-				<SetupMocks />
 
 				<Stack
 					screenOptions={{

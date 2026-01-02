@@ -9,7 +9,7 @@ export const transactionsTable = sqliteTable(
 	'transactions',
 	{
 		id: text().primaryKey(), // uuid v4
-		amount: real().notNull(),
+		amount: real().notNull(), // change to ref to price_history table???
 		// Will be marked as completed as soon as transaction hit the date
 		status: text().$type<'planned' | 'completed'>().notNull().default('planned'),
 		date: text()

@@ -12,48 +12,52 @@ const randomInt = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const TransactionCard = ({ subscriptions, currencies, services, categories }: TransactionProps) => {
+const TransactionCard = ({
+	currency,
+	price,
+	denominator,
+	slug,
+	customName,
+	title,
+	emoji,
+	category,
+	color
+}: TransactionProps) => {
 	const showConverted = randomInt(0, 1);
 	const showFractions = Settings.get('currency_fractions') === 1 ? true : false;
 
-	const convertedPrice = (subscriptions.current_price * 514.1) / currencies.denominator;
-	const basePrice = subscriptions.current_price / currencies.denominator;
+	const convertedPrice = (price * 514.1) / denominator;
+	const basePrice = price / denominator;
 
 	const withConversion = showConverted > 0;
 
-	const logoUrl = services.slug ? logos[services.slug as keyof typeof logos] : null;
+	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
 
 	return (
 		<Root>
 			<LogoSection>
-				<LogoView
-					logoId={logoUrl}
-					emoji={categories?.emoji}
-					name={subscriptions.custom_name || services.title}
-					size={48}
-					color={services.color || categories?.color}
-				/>
+				<LogoView logoId={logoUrl} emoji={emoji} name={customName || title} size={48} color={color} />
 			</LogoSection>
 
 			<DescSection>
 				<H3 numberOfLines={1} ellipsizeMode="tail">
-					{subscriptions.custom_name || services.title}
+					{customName || title}
 				</H3>
 
 				<SmallText numberOfLines={1} ellipsizeMode="tail" $color="#666">
-					{categories?.title}
+					{category}
 				</SmallText>
 			</DescSection>
 
 			<PriceSection $isSingle={!withConversion}>
 				{withConversion ? (
 					<LargeText $weight={500} $align="right">
-						{currencies.symbol}
+						{currency}
 						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
 					</LargeText>
 				) : (
 					<H3 $weight={500} $align="right">
-						{currencies.symbol}
+						{currency}
 						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
 					</H3>
 				)}

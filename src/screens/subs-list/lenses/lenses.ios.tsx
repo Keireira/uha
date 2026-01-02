@@ -135,8 +135,6 @@ const Lenses = () => {
 							</Button>
 						)}
 
-						{/* <Divider /> */}
-
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
 								{entries.categories.map((category) => (
@@ -146,12 +144,13 @@ const Lenses = () => {
 										value={lensesStore.filters.some(
 											(filter) => filter.type === 'category' && filter.value === category.id
 										)}
-										onValueChange={(value) =>
-											lenses.filters.add({
-												type: 'category',
-												value: category.id
-											})
-										}
+										onValueChange={(value) => {
+											if (value) {
+												lenses.filters.add({ type: 'category', value: category.id });
+											} else {
+												lenses.filters.remove({ type: 'category', value: category.id });
+											}
+										}}
 									/>
 								))}
 							</ContextMenu.Items>
@@ -170,12 +169,13 @@ const Lenses = () => {
 										value={lensesStore.filters.some(
 											(filter) => filter.type === 'service' && filter.value === service.id
 										)}
-										onValueChange={(value) =>
-											lenses.filters.add({
-												type: 'service',
-												value: service.id
-											})
-										}
+										onValueChange={(value) => {
+											if (value) {
+												lenses.filters.add({ type: 'service', value: service.id });
+											} else {
+												lenses.filters.remove({ type: 'service', value: service.id });
+											}
+										}}
 									/>
 								))}
 							</ContextMenu.Items>
@@ -192,12 +192,13 @@ const Lenses = () => {
 										key={tender.id}
 										label={tender.title}
 										value={lensesStore.filters.some((filter) => filter.type === 'tender' && filter.value === tender.id)}
-										onValueChange={(value) =>
-											lenses.filters.add({
-												type: 'tender',
-												value: tender.id
-											})
-										}
+										onValueChange={(value) => {
+											if (value) {
+												lenses.filters.add({ type: 'tender', value: tender.id });
+											} else {
+												lenses.filters.remove({ type: 'tender', value: tender.id });
+											}
+										}}
 									/>
 								))}
 							</ContextMenu.Items>
@@ -216,12 +217,13 @@ const Lenses = () => {
 										value={lensesStore.filters.some(
 											(filter) => filter.type === 'currency' && filter.value === currency.id
 										)}
-										onValueChange={(value) =>
-											lenses.filters.add({
-												type: 'currency',
-												value: currency.id
-											})
-										}
+										onValueChange={(value) => {
+											if (value) {
+												lenses.filters.add({ type: 'currency', value: currency.id });
+											} else {
+												lenses.filters.remove({ type: 'currency', value: currency.id });
+											}
+										}}
 									/>
 								))}
 							</ContextMenu.Items>
