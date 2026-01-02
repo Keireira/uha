@@ -8,7 +8,7 @@ export const Card = styled.View`
 
 export default styled.View`
 	padding-horizontal: 16px;
-	padding-vertical: 8px;
+	padding-bottom: 16px;
 	flex-direction: row;
 	justify-content: space-between;
 	gap: 16px;

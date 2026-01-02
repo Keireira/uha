@@ -1,6 +1,6 @@
 import React from 'react';
-import { FlatList } from 'react-native';
 import { useUnit } from 'effector-react';
+import { FlashList } from '@shopify/flash-list';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,12 +19,11 @@ import {
 import { buildWhereConditions } from './utils';
 
 import TransactionCard from './transaction-card';
-import Root, { GroupedListContainer, BottomSpacer } from './transactions.styles';
+import Root, { GroupedListContainer, ItemSeparator, BottomSpacer } from './transactions.styles';
 
-import type { ListRenderItem } from 'react-native';
 import type { TransactionProps } from './transaction-card/transaction-card.d';
 
-const renderItem: ListRenderItem<TransactionProps> = ({ item }) => <TransactionCard {...item} />;
+const renderItem = ({ item }: { item: TransactionProps }) => <TransactionCard {...item} />;
 
 const Transactions = () => {
 	const insets = useSafeAreaInsets();
@@ -61,17 +60,16 @@ const Transactions = () => {
 	return (
 		<Root>
 			<GroupedListContainer>
-				<FlatList
+				<FlashList
 					contentContainerStyle={{
-						gap: 16
-					}}
-					style={{
-						paddingHorizontal: 12
+						gap: 8
 					}}
 					onScroll={handleScroll}
 					data={transactions as TransactionProps[]}
 					renderItem={renderItem}
+					showsVerticalScrollIndicator={false}
 					keyExtractor={(item) => item.id}
+					ItemSeparatorComponent={ItemSeparator}
 					ListFooterComponent={<BottomSpacer $bottom={insets.bottom} />}
 				/>
 			</GroupedListContainer>

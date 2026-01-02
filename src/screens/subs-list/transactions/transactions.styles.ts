@@ -10,6 +10,10 @@ export const BottomSpacer = styled.View<{ $bottom: number }>`
 	height: ${({ $bottom }) => $bottom + 64}px;
 `;
 
+export const ItemSeparator = styled.View`
+	height: 16px;
+`;
+
 export default styled.View`
 	flex: 1;
 	flex-direction: column;

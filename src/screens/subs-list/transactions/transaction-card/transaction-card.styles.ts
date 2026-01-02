@@ -46,8 +46,6 @@ export default styled.Pressable`
 
 	gap: 16px;
 	width: calc(100% + 24px);
-	margin-right: -12px;
-	margin-left: -12px;
 	padding: 12px 16px;
 	border-radius: 18px;
 `;
