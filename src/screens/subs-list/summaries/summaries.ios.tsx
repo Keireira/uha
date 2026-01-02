@@ -1,6 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
 import { startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
+import {
+	interpolate,
+	useAnimatedStyle,
+	useSharedValue,
+	withSpring,
+	useDerivedValue,
+	useReducedMotion
+} from 'react-native-reanimated';
 
 import { useAppModel } from '@models';
 import { db } from '@src/sql-migrations';
@@ -17,11 +25,42 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { buildWhereConditions } from '../transactions/utils';
 
 import { Text } from '@ui';
-import Root, { TextRow, SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
+import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
+
+const ANIMATION_CONFIG = {
+	mass: 0.5,
+	damping: 15,
+	stiffness: 250
+};
 
 const Summaries = () => {
-	const { lenses } = useAppModel();
+	const { lenses, scroll } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
+	const direction = useUnit(scroll.$direction);
+
+	const progress = useSharedValue(0);
+
+	const paddingBottom = useDerivedValue(() => interpolate(progress.value, [0, 1], [28, 0]));
+	const maxHeight = useDerivedValue(() => interpolate(progress.value, [0, 1], [16, 0]));
+	const opacity = useDerivedValue(() => interpolate(progress.value, [0, 1], [1, 0]));
+
+	const animatedPaddingBottom = useAnimatedStyle(() => ({
+		paddingBottom: paddingBottom.value
+	}));
+	const animatedHeight = useAnimatedStyle(() => ({
+		maxHeight: maxHeight.value
+	}));
+	const animatedOpacity = useAnimatedStyle(() => ({
+		opacity: opacity.value
+	}));
+
+	const reducedMotion = useReducedMotion();
+
+	useEffect(() => {
+		const target = direction === 'down' ? 1 : 0;
+
+		progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
+	}, [direction, reducedMotion]);
 
 	const { data: transactionsYear } = useLiveQuery(
 		db
@@ -149,13 +188,19 @@ const Summaries = () => {
 
 	return (
 		<Root>
-			<SummaryItem>
-				<TextRow>
-					<Text>${totalMonth}</Text>
-					<Text $bold>In {currentMonth}</Text>
-				</TextRow>
+			<SummaryItem style={[animatedPaddingBottom]}>
+				<Text $bold>
+					{totalMonth.toLocaleString('en-US', {
+						style: 'currency',
+						currency: 'USD',
+						currencyDisplay: 'narrowSymbol',
+						maximumFractionDigits: 0
+					})}
+				</Text>
 
-				<CategoryChips>
+				<Text $color="#666">{currentMonth}</Text>
+
+				<CategoryChips style={[animatedHeight, animatedOpacity]}>
 					{categoriesMonth.tmp.map((category) => {
 						const percentage = (category.amount / categoriesMonth.total) * 100;
 
@@ -164,13 +209,18 @@ const Summaries = () => {
 				</CategoryChips>
 			</SummaryItem>
 
-			<SummaryItem>
-				<TextRow>
-					<Text>${totalYear}</Text>
-					<Text $bold>In {currentYear}</Text>
-				</TextRow>
+			<SummaryItem style={[animatedPaddingBottom]}>
+				<Text $bold>
+					{totalYear.toLocaleString('en-US', {
+						style: 'currency',
+						currency: 'USD',
+						maximumFractionDigits: 0
+					})}
+				</Text>
 
-				<CategoryChips>
+				<Text $color="#666">{currentYear}</Text>
+
+				<CategoryChips style={[animatedHeight, animatedOpacity]}>
 					{categoriesYear.tmp.map((category) => {
 						const percentage = (category.amount / categoriesYear.total) * 100;
 

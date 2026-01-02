@@ -62,7 +62,7 @@ const Transactions = () => {
 			<GroupedListContainer>
 				<FlashList
 					contentContainerStyle={{
-						gap: 8
+						gap: 16
 					}}
 					onScroll={handleScroll}
 					data={transactions as TransactionProps[]}
