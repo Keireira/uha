@@ -1,10 +1,9 @@
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 
-export const CategoryChip = styled.View<{ $color: string; $percentage: number }>`
+export const CategoryChip = styled.View<{ $color: string }>`
 	display: flex;
 	background-color: ${({ $color }) => $color};
-	width: ${({ $percentage }) => `${$percentage}%`};
 `;
 
 export const CategoryChips = styled(Animated.View)`

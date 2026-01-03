@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useMemo } from 'react';
-import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
+import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
 import { useUnit } from 'effector-react';
 import { FlashList } from '@shopify/flash-list';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppModel } from '@models';
 import { db } from '@src/sql-migrations';
 import { useScrollDirection } from '@hooks';
-import { eq, asc } from 'drizzle-orm';
+import { eq, asc, and } from 'drizzle-orm';
 import {
 	transactionsTable,
 	currenciesTable,
@@ -17,7 +17,7 @@ import {
 	categoriesTable,
 	tendersTable
 } from '@db/schema';
-import { buildWhereConditions } from './utils';
+import { buildWhereConditions, buildForFeed } from '../utils';
 
 import { H4 } from '@ui';
 import TransactionCard from './transaction-card';
@@ -68,7 +68,7 @@ const Transactions = () => {
 			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(buildWhereConditions(lensesStore.filters, lensesStore.time_mode)),
+			.where(and(buildWhereConditions(lensesStore.filters), buildForFeed(lensesStore.time_mode))),
 		[lensesStore.filters, lensesStore.time_mode]
 	);
 
@@ -109,16 +109,16 @@ const Transactions = () => {
 	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
 		if (viewableItems.length === 0) return;
 
-		const index = Math.floor(viewableItems.length / 2);
+		const possibleItem = viewableItems[1]?.item;
+		const index = viewableItems[1] ? 1 : 0;
 
-		let middleItem = viewableItems[index]?.item;
-
-		if (typeof middleItem === 'string') {
-			middleItem = viewableItems[index + 1]?.item;
+		let firstItem = possibleItem || viewableItems[index]?.item;
+		if (typeof firstItem === 'string') {
+			firstItem = viewableItems[index + 1]?.item;
 		}
 
-		if (middleItem) {
-			const dates = new Date(middleItem.date);
+		if (firstItem) {
+			const dates = new Date(firstItem.date);
 
 			scroll.setViewableDate(dates);
 		}
