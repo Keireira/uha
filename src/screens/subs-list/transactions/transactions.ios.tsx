@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
+import React, { useRef, useCallback, useMemo } from 'react';
+import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
 import { useUnit } from 'effector-react';
 import { FlashList } from '@shopify/flash-list';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
@@ -41,9 +41,10 @@ const renderItem = ({ item }: { item: SectionT }) => {
 
 const Transactions = () => {
 	const insets = useSafeAreaInsets();
-	const { lenses } = useAppModel();
+	const { lenses, scroll } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const handleScroll = useScrollDirection();
+	const listRef = useRef(null);
 
 	const { data: transactions } = useLiveQuery(
 		db
@@ -105,10 +106,30 @@ const Transactions = () => {
 		return formattedSections;
 	}, [transactions]);
 
+	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
+		if (viewableItems.length === 0) return;
+
+		const index = Math.floor(viewableItems.length / 2);
+
+		let middleItem = viewableItems[index]?.item;
+
+		if (typeof middleItem === 'string') {
+			middleItem = viewableItems[index + 1]?.item;
+		}
+
+		if (middleItem) {
+			const dates = new Date(middleItem.date);
+
+			scroll.setViewableDate(dates);
+		}
+	}, []);
+
 	return (
 		<Root>
 			<GroupedListContainer>
 				<FlashList
+					ref={listRef}
+					onViewableItemsChanged={handleViewableItemsChanged}
 					contentContainerStyle={{
 						gap: 16
 					}}

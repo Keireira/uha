@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
+import { startOfMonth, endOfMonth, startOfYear, endOfYear, format } from 'date-fns';
 import {
 	interpolate,
 	useAnimatedStyle,
@@ -37,6 +37,7 @@ const Summaries = () => {
 	const { lenses, scroll } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const direction = useUnit(scroll.$direction);
+	const viewableDate = useUnit(scroll.$viewableDate);
 
 	const progress = useSharedValue(0);
 
@@ -111,12 +112,20 @@ const Summaries = () => {
 	);
 
 	const currentMonth = useMemo(() => {
+		if (viewableDate) {
+			return format(viewableDate, 'MMMM');
+		}
+
 		return startOfMonth(new Date()).toLocaleDateString('en-US', { month: 'long' });
-	}, []);
+	}, [viewableDate]);
 
 	const currentYear = useMemo(() => {
+		if (viewableDate) {
+			return format(viewableDate, 'yyyy');
+		}
+
 		return startOfYear(new Date()).toLocaleDateString('en-US', { year: 'numeric' });
-	}, []);
+	}, [viewableDate]);
 
 	const totalYear = useMemo(() => {
 		if (!transactionsYear) return 0;

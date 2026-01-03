@@ -9,7 +9,7 @@ const createAppModel = () => {
 	return {
 		gate,
 		lenses: createLensesModel(),
-		scroll: createDirectionModel(),
+		scroll: createDirectionModel()
 	};
 };
 
