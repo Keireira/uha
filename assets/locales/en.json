@@ -215,5 +215,10 @@
   "lenses": {
     "future": "Upcoming",
     "all": "All time"
+  },
+  "dates": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday"
   }
 }
