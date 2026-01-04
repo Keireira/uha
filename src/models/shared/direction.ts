@@ -11,20 +11,9 @@ const createDirectionModel = () => {
 		target: $direction
 	});
 
-	const $viewableDate = createStore<Date | null>(null);
-	const setViewableDate = createEvent<Date>();
-
-	sample({
-		clock: setViewableDate,
-		target: $viewableDate
-	});
-
 	return {
 		$direction,
-		setDirection: setScrollDirection,
-
-		$viewableDate,
-		setViewableDate: setViewableDate
+		setDirection: setScrollDirection
 	};
 };
 

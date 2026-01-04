@@ -20,7 +20,6 @@ const TransactionCard = ({
 	customName,
 	title,
 	emoji,
-	date,
 	category,
 	color
 }: TransactionProps) => {

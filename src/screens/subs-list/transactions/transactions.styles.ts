@@ -6,8 +6,8 @@ export const GroupedListContainer = styled.View`
 	overflow: hidden;
 `;
 
-export const BottomSpacer = styled.View<{ $bottom: number }>`
-	height: ${({ $bottom }) => $bottom + 64}px;
+export const BottomSpacer = styled.View<{ $height: number }>`
+	height: ${({ $height }) => $height + 64}px;
 `;
 
 export const ItemSeparator = styled.View`

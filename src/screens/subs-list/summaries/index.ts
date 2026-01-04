@@ -1,1 +1,1 @@
-export { default } from './summaries.ios';
+export { default } from './summaries';

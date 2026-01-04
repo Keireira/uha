@@ -18,10 +18,8 @@ import {
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { buildWhereConditions, buildForFeed } from '@screens/subs-list/utils';
 
-import type { UseTranslationResponse } from 'react-i18next';
+import type { HeaderSectionT, TI18nT } from '../transactions.d';
 import type { TransactionProps } from '../transaction-card/transaction-card.d';
-
-type TI18nT = UseTranslationResponse<string, undefined>['t'];
 
 /* Fetch transactions from DB */
 const useTransactionsQuery = () => {
@@ -70,7 +68,18 @@ const getDateLabel = (date: Date, t: TI18nT) => {
 
 	const isCurrentYear = date.getFullYear() === new Date().getFullYear();
 
-	return format(date, isCurrentYear ? 'dd MMMM' : 'dd MMMM, yyyy');
+	return format(date, isCurrentYear ? 'd MMMM' : 'd MMMM, yyyy');
+};
+
+const calcTotalAmount = (txs: TransactionProps[]) => {
+	const total = txs.reduce((acc, tx) => acc + tx.price / (tx.denominator || 1), 0);
+	const formattedTotal = total.toLocaleString('en-US', {
+		style: 'currency',
+		currency: 'USD',
+		maximumFractionDigits: total > 1000 ? 0 : 2
+	});
+
+	return formattedTotal;
 };
 
 const useTransactionsSections = () => {
@@ -84,15 +93,22 @@ const useTransactionsSections = () => {
 			if (!txs) return [];
 
 			const date = new Date(txs[0].date);
+			const rightPart = txs.length > 1 ? calcTotalAmount(txs) : null;
 			const dateLabel = getDateLabel(date, t);
 
-			return [dateLabel, ...txs];
+			const headerSection: HeaderSectionT = {
+				type: 'sectionHeader',
+				date: dateLabel,
+				total: rightPart
+			};
+
+			return [headerSection, ...txs];
 		});
 
 		return sectioned;
 	}, [t, transactions]);
 
-	return sections satisfies (string | TransactionProps)[];
+	return sections satisfies (HeaderSectionT | TransactionProps)[];
 };
 
 export default useTransactionsSections;

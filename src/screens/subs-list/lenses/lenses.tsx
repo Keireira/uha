@@ -13,7 +13,7 @@ import { FilterIcon } from '@ui/icons';
 import { Host, Button, Switch, ContextMenu, Divider } from '@expo/ui/swift-ui';
 import Root, { TitlePress, FilterBtn } from './lenses.styles';
 
-import { ALL_TIME_MODES } from '@models/all/lenses';
+import { ALL_TIME_MODES } from '@models/shared/lenses';
 
 const useGetActiveEntries = () => {
 	const { data: services } = useLiveQuery(

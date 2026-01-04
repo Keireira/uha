@@ -17,22 +17,22 @@ import { db } from '@src/sql-migrations';
 import { buildWhereConditions, buildForSummaries } from '@screens/subs-list/utils';
 
 const useTransactionsQuery = () => {
-	const { lenses, scroll } = useAppModel();
+	const { lenses, viewableDate } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
-	const viewableDate = useUnit(scroll.$viewableDate);
+	const activeDate = useUnit(viewableDate.$date);
 
 	/*
-	 * We can't use plain `viewableDate` in `useLiveQuery`,
+	 * We can't use plain `activeDate` in `useLiveQuery`,
 	 * since I don't want to run query for every possible day in the feed
 	 */
 	const { viewableMonthDate, viewableYearDate } = useMemo(() => {
-		const date = viewableDate || new Date();
+		const date = activeDate || new Date();
 
 		return {
 			viewableMonthDate: startOfMonth(date),
 			viewableYearDate: startOfYear(date)
 		};
-	}, [viewableDate]);
+	}, [activeDate]);
 
 	// @TODO: add support of RECALC currency
 	const { data: transactionsMonth } = useLiveQuery(

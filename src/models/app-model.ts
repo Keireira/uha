@@ -1,7 +1,7 @@
 import { createGate } from 'effector-react';
 import { createFactory } from '@lib/effector';
 
-import { createDirectionModel, createLensesModel } from './all';
+import { createDirectionModel, createLensesModel, createViewableDateModel } from './shared';
 
 const createAppModel = () => {
 	const gate = createGate();
@@ -9,7 +9,8 @@ const createAppModel = () => {
 	return {
 		gate,
 		lenses: createLensesModel(),
-		scroll: createDirectionModel()
+		scroll: createDirectionModel(),
+		viewableDate: createViewableDateModel()
 	};
 };
 

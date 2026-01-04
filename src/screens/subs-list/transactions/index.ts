@@ -1,1 +1,1 @@
-export { default } from './transactions.ios';
+export { default } from './transactions';
