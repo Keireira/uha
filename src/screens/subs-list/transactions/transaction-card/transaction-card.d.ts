@@ -8,14 +8,14 @@ type SubscriptionT = typeof subscriptionsTable.$inferSelect;
 
 export type TransactionProps = {
 	id: TransactionT['id'];
-	currency: CurrencyT['symbol'] | null;
+	currency: CurrencyT['symbol'];
 	price: TransactionT['amount'];
-	slug: ServiceT['slug'] | null;
+	slug: ServiceT['slug'];
 	customName: SubscriptionT['custom_name'];
-	title: ServiceT['title'] | null;
-	emoji: CategoryT['emoji'] | null;
-	category: CategoryT['title'] | null;
-	color: ServiceT['color'] | null;
+	title: ServiceT['title'];
+	emoji: CategoryT['emoji'];
+	category: CategoryT['title'];
+	color: ServiceT['color'];
 	date: TransactionT['date'];
-	denominator: CurrencyT['denominator'] | null;
+	denominator: CurrencyT['denominator'];
 };

@@ -14,7 +14,9 @@ export const servicesTable = sqliteTable(
 			.$type<string[]>()
 			.default(sql`'[]'`)
 			.notNull(), // ["адгард"]
-		category_id: text().references(() => categoriesTable.id) // uuid v4
+		category_id: text()
+			.references(() => categoriesTable.id)
+			.notNull() // uuid v4
 	},
 	(table) => [index('services_category_id_idx').on(table.category_id), index('services_title_idx').on(table.title)]
 );

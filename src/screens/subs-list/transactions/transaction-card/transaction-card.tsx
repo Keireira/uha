@@ -1,17 +1,23 @@
 import React from 'react';
-import { Settings } from 'react-native';
 
 import logos from '@assets/logos';
+import { useSettingsValue } from '@hooks';
 
 import { Text, LargeText, H3, LogoView } from '@ui';
 import Root, { LogoSection, DescSection, PriceSection } from './transaction-card.styles';
 
 import type { TransactionProps } from './transaction-card.d';
 
+const STUB_KZT_RATE = 514.1;
+
 const randomInt = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+/*
+ * @TODO:
+ * Apply real currency rates and conversion logic here
+ */
 const TransactionCard = ({
 	currency,
 	price,
@@ -24,10 +30,10 @@ const TransactionCard = ({
 	color
 }: TransactionProps) => {
 	const showConverted = randomInt(0, 1);
-	const showFractions = Settings.get('currency_fractions') === 1 ? true : false;
+	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
-	const convertedPrice = (price * 514.1) / denominator;
-	const basePrice = price / denominator;
+	const convertedPrice = (price * STUB_KZT_RATE) / (denominator || 1);
+	const basePrice = price / (denominator || 1);
 
 	const withConversion = showConverted > 0;
 

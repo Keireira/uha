@@ -25,7 +25,7 @@ const useLogo = ({ logoId, logoUrl, emoji, name, color, size = 48 }: Props) => {
 
 	const Component = useMemo(() => {
 		if (logoId || logoUrl) {
-			return <SquircleMask size={size} color={color} link={(logoId || logoUrl)!} />;
+			return <SquircleMask size={size} color={color} link={(logoId || logoUrl || '')!} />;
 		}
 
 		return (

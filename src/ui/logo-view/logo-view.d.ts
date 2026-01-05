@@ -3,6 +3,6 @@ export type Props = {
 	logoUrl?: string;
 	name: string;
 	emoji?: string;
-	size?: number;
+	size: number;
 	color?: string;
 };

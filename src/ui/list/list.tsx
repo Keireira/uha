@@ -11,6 +11,7 @@ const renderItem = ({ item }: LegendListRenderItemProps<ListSectionProps>) => {
 	return <ListSectionComponent key={item.id} {...item} />;
 };
 
+// @TODO: Replace & remove LegendList
 const List = ({ sections, style }: Props) => {
 	return (
 		<LegendList

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { path } from 'ramda';
 import i18n from '@src/i18n';
 import { getCurrencyPath } from './utils';
 import { openSettings } from 'expo-linking';
-import { useScrollDirection } from '@hooks';
 import { useTranslation } from 'react-i18next';
 import { useGetCurrenciesList, useNotifications } from './hooks';
+import { useScrollDirection, setSettingsValue, useSettingsValue } from '@hooks';
 
 import { Wrapper, List } from '@ui';
 import { AppLogoPicker } from '@elements';
-import { Settings, useColorScheme, ScrollView } from 'react-native';
+import { useColorScheme, ScrollView } from 'react-native';
 import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
@@ -22,41 +22,39 @@ const SettingsScreen = () => {
 	const { t } = useTranslation();
 	const handleScroll = useScrollDirection();
 
+	const notificationStatus = useNotifications();
+
 	const colorScheme = useColorScheme();
-	const [isDarkMode, setIsDarkMode] = useState(colorScheme === 'dark');
+	const theme = useSettingsValue<'dark' | 'light'>('theme');
+
+	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
 	const currenciesList = useGetCurrenciesList();
-	const notificationStatus = useNotifications();
-	const [recalcCurrencyCode, setRecalcCurrencyCode] = useState(Settings.get('recalc_currency_code'));
-	const [defaultCurrencyCode, setDefaultCurrencyCode] = useState(Settings.get('default_currency_code'));
-	const [showFractions, setShowFractions] = useState(Settings.get('currency_fractions') === 1 ? true : false);
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 
 	useEffect(() => {
-		setIsDarkMode(colorScheme === 'dark');
+		setSettingsValue('theme', colorScheme);
 	}, [colorScheme]);
 
 	const changeColorScheme = (isDarkMode: boolean) => {
-		Settings.set({ theme: isDarkMode ? 'dark' : 'light' });
-		setIsDarkMode(isDarkMode);
+		setSettingsValue('theme', isDarkMode ? 'dark' : 'light');
 	};
 
 	const changeCurrencyFractions = (isVisible: boolean) => {
-		Settings.set({ currency_fractions: isVisible ? 1 : 0 });
-		setShowFractions(isVisible);
+		setSettingsValue('currency_fractions', isVisible);
 	};
 
 	const changePrimaryCurrency = ({ nativeEvent }: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => {
 		const nextCurrencyCode = path(getCurrencyPath(nativeEvent.indexPath), currenciesList);
 
-		Settings.set({ default_currency_code: nextCurrencyCode });
-		setDefaultCurrencyCode(nextCurrencyCode);
+		setSettingsValue('default_currency_code', nextCurrencyCode);
 	};
 
 	const changeRecalcCurrency = ({ nativeEvent }: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => {
 		const nextCurrencyCode = path(getCurrencyPath(nativeEvent.indexPath), currenciesList);
 
-		Settings.set({ recalc_currency_code: nextCurrencyCode });
-		setRecalcCurrencyCode(nextCurrencyCode);
+		setSettingsValue('recalc_currency_code', nextCurrencyCode);
 	};
 
 	const handleNotifications = () => {
@@ -130,7 +128,7 @@ const SettingsScreen = () => {
 					title: t('settings.system.dark_mode'),
 					accessory: {
 						type: 'switch',
-						value: isDarkMode,
+						value: theme === 'dark',
 						onPress: changeColorScheme
 					}
 				}

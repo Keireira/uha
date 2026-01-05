@@ -1,12 +1,15 @@
 import React from 'react';
 import { useYear, useMonth, useTransactionsQuery, useSummaryAnimation } from './hooks';
 
+import { useSettingsValue } from '@hooks';
+
 import { Text } from '@ui';
 import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
 
 const Summaries = () => {
 	const animations = useSummaryAnimation();
 	const transactions = useTransactionsQuery();
+	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
 	const year = useYear(transactions);
 	const month = useMonth(transactions);
@@ -18,7 +21,7 @@ const Summaries = () => {
 					{month.total.toLocaleString('en-US', {
 						style: 'currency',
 						currency: 'USD',
-						maximumFractionDigits: month.total > 1000 ? 0 : 2
+						maximumFractionDigits: month.total > 1000 || !showFractions ? 0 : 2
 					})}
 				</Text>
 
@@ -44,7 +47,7 @@ const Summaries = () => {
 					{year.total.toLocaleString('en-US', {
 						style: 'currency',
 						currency: 'USD',
-						maximumFractionDigits: year.total > 1000 ? 0 : 2
+						maximumFractionDigits: year.total > 1000 || !showFractions ? 0 : 2
 					})}
 				</Text>
 

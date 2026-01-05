@@ -11,9 +11,13 @@ export const subscriptionsTable = sqliteTable(
 	{
 		id: text().primaryKey(), // uuid v4
 
-		category_id: text().references(() => categoriesTable.id), // uuid v4
+		category_id: text()
+			.references(() => categoriesTable.id)
+			.notNull(), // uuid v4
 
-		service_id: text().references(() => servicesTable.id),
+		service_id: text()
+			.references(() => servicesTable.id)
+			.notNull(),
 		custom_name: text(),
 
 		billing_cycle_type: text().$type<'days' | 'weeks' | 'months' | 'years'>().default('months').notNull(),

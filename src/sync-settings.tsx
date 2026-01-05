@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
-import { Settings, Appearance } from 'react-native';
+import { Appearance } from 'react-native';
+
+import { setSettingsValue, useSettingsValue } from '@hooks';
 import SettingsBridgeModule from '@modules/settings-bridge';
 
 const SyncSettings = () => {
-	useEffect(() => {
-		const theme = Settings.get('theme');
+	const theme = useSettingsValue<'dark' | 'light'>('theme');
+	const showFractions = useSettingsValue<boolean>('currency_fractions');
+	const recalcCurrency = useSettingsValue<string>('recalc_currency_code');
+	const defaultCurrency = useSettingsValue<string>('default_currency_code');
 
+	useEffect(() => {
 		Appearance.setColorScheme(theme);
 
 		SettingsBridgeModule.addListener('onThemeChanged', (event) => {
@@ -15,24 +20,20 @@ const SyncSettings = () => {
 		return () => {
 			SettingsBridgeModule.removeAllListeners('onThemeChanged');
 		};
-	}, []);
+	}, [theme]);
 
 	useEffect(() => {
-		const showFractions = Settings.get('currency_fractions'); // '1' for true, '0' for false
-
-		if (![0, 1].includes(showFractions)) {
-			Settings.set({ currency_fractions: 0 });
+		if (typeof showFractions !== 'boolean') {
+			setSettingsValue('currency_fractions', true);
 		}
-	}, []);
+	}, [showFractions]);
 
 	useEffect(() => {
-		const defaultCurrency = Settings.get('default_currency_code');
-		const recalcCurrency = Settings.get('recalc_currency_code');
-
 		if (!defaultCurrency || !recalcCurrency) {
-			Settings.set({ default_currency_code: 'USD', recalc_currency_code: 'USD' });
+			setSettingsValue('default_currency_code', 'USD');
+			setSettingsValue('recalc_currency_code', 'USD');
 		}
-	}, []);
+	}, [defaultCurrency, recalcCurrency]);
 
 	return null;
 };
