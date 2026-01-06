@@ -6,11 +6,10 @@ import { subscriptionsTable, transactionsTable } from '@db/schema';
 type TransactionT = typeof transactionsTable.$inferSelect;
 type SubscriptionT = typeof subscriptionsTable.$inferSelect;
 
-const generateTransaction = (subscription: SubscriptionT, nextPaymentDate: Date, isCompleted: boolean) => {
+const generateTransaction = (subscription: SubscriptionT, nextPaymentDate: Date) => {
 	return {
 		id: Crypto.randomUUID(),
 		amount: subscription.current_price,
-		status: isCompleted ? 'completed' : 'planned',
 		date: nextPaymentDate.toISOString(),
 		currency_id: subscription.current_currency_id,
 		tender_id: subscription.tender_id || '',
@@ -29,7 +28,7 @@ const buildTransactions = (subscriptions: SubscriptionT[]) => {
 		const cancellationDate = subscription.cancellation_date ? new Date(subscription.cancellation_date) : null;
 
 		while (nextPaymentDate < today || (cancellationDate && nextPaymentDate <= cancellationDate)) {
-			subscriptionTransactions.push(generateTransaction(subscription, nextPaymentDate, true));
+			subscriptionTransactions.push(generateTransaction(subscription, nextPaymentDate));
 
 			switch (subscription.billing_cycle_type) {
 				case 'days':
@@ -46,8 +45,6 @@ const buildTransactions = (subscriptions: SubscriptionT[]) => {
 					break;
 			}
 		}
-
-		subscriptionTransactions.push(generateTransaction(subscription, nextPaymentDate, false));
 
 		transactions.push(subscriptionTransactions);
 	}

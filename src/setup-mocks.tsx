@@ -72,16 +72,20 @@ const useMockedSubscriptions = () => {
 
 	useEffect(() => {
 		const seedMockData = async () => {
-			if (services.length === 0 || tenders.length === 0 || seeded) return;
+			if (!services.length || !tenders.length || seeded) return;
 
-			await db.delete(transactionsTable);
-			await db.delete(subscriptionsTable);
+			await db.transaction(async (tx) => {
+				await tx.delete(transactionsTable);
+				await tx.delete(subscriptionsTable);
+			});
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
 			const transactionMocks = buildTransactions(subscriptionMocks);
 
-			await db.insert(subscriptionsTable).values(subscriptionMocks);
-			await db.insert(transactionsTable).values(transactionMocks);
+			await db.transaction(async (tx) => {
+				await tx.insert(subscriptionsTable).values(subscriptionMocks);
+				await tx.insert(transactionsTable).values(transactionMocks);
+			});
 
 			setSeeded(true);
 		};
