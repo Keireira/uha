@@ -15,7 +15,7 @@ import {
 	transactionsTable,
 	subscriptionsTable
 } from '@db/schema';
-import { useCreatePhantomTxs } from '@lib';
+// import { useCreatePhantomTxs } from '@lib';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { buildWhereConditions, buildForFeed } from '@screens/subs-list/utils';
 
@@ -25,7 +25,8 @@ import type { TransactionProps } from '../transaction-card/transaction-card.d';
 /* Fetch transactions from DB */
 const useTransactionsQuery = () => {
 	const { lenses } = useAppModel();
-	const phantomTxs = useCreatePhantomTxs();
+	// const phantomTxs = useCreatePhantomTxs();
+	const phantomTxs = [];
 	const lensesStore = useUnit(lenses.$store);
 
 	const { data: dbTxs } = useLiveQuery(
@@ -55,7 +56,7 @@ const useTransactionsQuery = () => {
 	);
 
 	return useMemo(() => {
-		console.log('[PHANTOM TXS]:', phantomTxs.length);
+		// console.log('[PHANTOM TXS]:', phantomTxs.length);
 		const all = [...dbTxs, ...phantomTxs];
 		return all.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 	}, [dbTxs, phantomTxs]);

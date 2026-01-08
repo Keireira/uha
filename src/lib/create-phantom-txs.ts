@@ -176,80 +176,80 @@ const createFutureTxs = (subscriptions: EnrichedSubscriptionT[], maxPaymentDate:
 // 	return futureTxs;
 // };
 
-/* min horizon is 1 year, max horizon is the end of a month of latest subscription */
-const findMaxPaymentDate = (subscriptions: ExtendedSubscriptionT[]) => {
-	const today = startOfToday();
-	const tomorrow = startOfTomorrow();
+// /* min horizon is 1 year, max horizon is the end of a month of latest subscription */
+// const findMaxPaymentDate = (subscriptions: ExtendedSubscriptionT[]) => {
+// 	const today = startOfToday();
+// 	const tomorrow = startOfTomorrow();
 
-	let maxDate = today;
+// 	let maxDate = today;
 
-	for (const {
-		cancellation_date,
-		latest_transaction_date,
-		first_payment_date,
-		billing_cycle_type,
-		billing_cycle_value
-	} of subscriptions) {
-		const cancellationDate = cancellation_date ? new Date(cancellation_date) : null;
+// 	for (const {
+// 		cancellation_date,
+// 		latest_transaction_date,
+// 		first_payment_date,
+// 		billing_cycle_type,
+// 		billing_cycle_value
+// 	} of subscriptions) {
+// 		const cancellationDate = cancellation_date ? new Date(cancellation_date) : null;
 
-		/* Skip fully cancelled subscriptions */
-		if (cancellationDate && isBefore(cancellationDate, tomorrow)) {
-			continue;
-		}
+// 		/* Skip fully cancelled subscriptions */
+// 		if (cancellationDate && isBefore(cancellationDate, tomorrow)) {
+// 			continue;
+// 		}
 
-		const latestPaymentDate = latest_transaction_date
-			? new Date(latest_transaction_date)
-			: new Date(first_payment_date);
-		let nextDate = advanceDate(latestPaymentDate, billing_cycle_type, billing_cycle_value);
+// 		const latestPaymentDate = latest_transaction_date
+// 			? new Date(latest_transaction_date)
+// 			: new Date(first_payment_date);
+// 		let nextDate = advanceDate(latestPaymentDate, billing_cycle_type, billing_cycle_value);
 
-		if (isAfter(nextDate, maxDate)) {
-			maxDate = nextDate;
-		}
-	}
+// 		if (isAfter(nextDate, maxDate)) {
+// 			maxDate = nextDate;
+// 		}
+// 	}
 
-	return maxR(addYears(today, 1), endOfMonth(maxDate));
-};
+// 	return maxR(addYears(today, 1), endOfMonth(maxDate));
+// };
 
 const useCreatePhantomTxs = () => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
 	/* Get all subscriptions with their latest transaction date */
-	const { data: subscriptions } = useLiveQuery(
-		db
-			.select({
-				id: subscriptionsTable.id,
-				custom_name: subscriptionsTable.custom_name,
-				billing_cycle_type: subscriptionsTable.billing_cycle_type,
-				billing_cycle_value: subscriptionsTable.billing_cycle_value,
-				current_price: subscriptionsTable.current_price,
-				current_currency_id: subscriptionsTable.current_currency_id,
-				first_payment_date: subscriptionsTable.first_payment_date,
-				tender_id: subscriptionsTable.tender_id,
-				cancellation_date: subscriptionsTable.cancellation_date,
-				latest_transaction_date: max(transactionsTable.date),
-				/* Joined fields for use-sections */
-				currency: currenciesTable.symbol,
-				denominator: currenciesTable.denominator,
-				slug: servicesTable.slug,
-				title: servicesTable.title,
-				emoji: categoriesTable.emoji,
-				category: categoriesTable.title,
-				color: servicesTable.color,
-				/* Joined fields for use-sections */
-				categoryId: categoriesTable.id,
-				serviceId: servicesTable.id,
-				currencyId: currenciesTable.id,
-				tenderId: tendersTable.id
-			})
-			.from(subscriptionsTable)
-			.leftJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
-			.leftJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
-			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
-			.leftJoin(transactionsTable, and(eq(subscriptionsTable.id, transactionsTable.subscription_id)))
-			.groupBy(subscriptionsTable.id)
-	);
+	// const { data: subscriptions } = useLiveQuery(
+	// 	db
+	// 		.select({
+	// 			id: subscriptionsTable.id,
+	// 			custom_name: subscriptionsTable.custom_name,
+	// 			billing_cycle_type: subscriptionsTable.billing_cycle_type,
+	// 			billing_cycle_value: subscriptionsTable.billing_cycle_value,
+	// 			current_price: subscriptionsTable.current_price,
+	// 			current_currency_id: subscriptionsTable.current_currency_id,
+	// 			first_payment_date: subscriptionsTable.first_payment_date,
+	// 			tender_id: subscriptionsTable.tender_id,
+	// 			cancellation_date: subscriptionsTable.cancellation_date,
+	// 			latest_transaction_date: max(transactionsTable.date),
+	// 			/* Joined fields for use-sections */
+	// 			currency: currenciesTable.symbol,
+	// 			denominator: currenciesTable.denominator,
+	// 			slug: servicesTable.slug,
+	// 			title: servicesTable.title,
+	// 			emoji: categoriesTable.emoji,
+	// 			category: categoriesTable.title,
+	// 			color: servicesTable.color,
+	// 			/* Joined fields for use-sections */
+	// 			categoryId: categoriesTable.id,
+	// 			serviceId: servicesTable.id,
+	// 			currencyId: currenciesTable.id,
+	// 			tenderId: tendersTable.id
+	// 		})
+	// 		.from(subscriptionsTable)
+	// 		.leftJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
+	// 		.leftJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
+	// 		.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+	// 		.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
+	// 		.leftJoin(transactionsTable, and(eq(subscriptionsTable.id, transactionsTable.subscription_id)))
+	// 		.groupBy(subscriptionsTable.id)
+	// );
 
 	const futureTxs = useMemo(() => {
 		if (!subscriptions.length) return [];
