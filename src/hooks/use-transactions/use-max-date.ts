@@ -14,7 +14,7 @@ import {
 
 import type { PreparedSubscriptionT } from './types.d';
 
-const advanceDate = (
+export const advanceDate = (
 	date: Date,
 	type: PreparedSubscriptionT['billing_cycle_type'],
 	value: PreparedSubscriptionT['billing_cycle_value']
@@ -72,9 +72,7 @@ const findMaxPaymentDate = (subscriptions: PreparedSubscriptionT[]) => {
 };
 
 const useMaxDate = (subscriptions: PreparedSubscriptionT[]) => {
-	const maxDate = useMemo(() => {
-		return findMaxPaymentDate(subscriptions);
-	}, [subscriptions]);
+	const maxDate = useMemo(() => findMaxPaymentDate(subscriptions), [subscriptions]);
 
 	return maxDate;
 };

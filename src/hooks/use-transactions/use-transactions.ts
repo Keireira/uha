@@ -5,7 +5,7 @@ const useTransactions = () => {
 	const dbTxs = useTransactionsQuery();
 	const phantomTxs = useCreatePhantomTxs();
 
-	return dbTxs;
+	return [...dbTxs, ...phantomTxs];
 };
 
 export default useTransactions;

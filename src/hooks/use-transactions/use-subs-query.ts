@@ -1,5 +1,7 @@
+import { useAppModel } from '@models';
+import { useUnit } from 'effector-react';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { getTableColumns, and, eq, max } from 'drizzle-orm';
+import { getTableColumns, inArray, and, eq, max } from 'drizzle-orm';
 
 import {
 	currenciesTable,
@@ -11,10 +13,45 @@ import {
 } from '@db/schema';
 import { db } from '@src/sql-migrations';
 
+import type { SQL } from 'drizzle-orm';
 import type { PreparedSubscriptionT } from './types.d';
+import type { AppliedFilterT } from '@models/app-model.d';
+
+/* Master Filters */
+const filterTypeToIdColumn = {
+	category: categoriesTable.id,
+	service: servicesTable.id,
+	currency: currenciesTable.id,
+	tender: tendersTable.id
+} as const;
+
+export const buildWhereConditions = (filters: AppliedFilterT[]) => {
+	const conditions: SQL[] = [];
+
+	for (const type in filterTypeToIdColumn) {
+		const ids = filters.reduce((acc, filter) => {
+			if (filter.type === type) {
+				acc.push(filter.value);
+			}
+
+			return acc;
+		}, [] as string[]);
+
+		if (ids.length > 0) {
+			const id = filterTypeToIdColumn[type as keyof typeof filterTypeToIdColumn];
+
+			conditions.push(inArray(id, ids));
+		}
+	}
+
+	return conditions.length > 0 ? and(...conditions) : undefined;
+};
 
 /* Get all subscriptions with their latest transaction date and keys for filtering */
 const useSubscriptionsQuery = () => {
+	const { lenses } = useAppModel();
+	const lensesStore = useUnit(lenses.$store);
+
 	const { data: subscriptions } = useLiveQuery(
 		db
 			.select({
@@ -40,7 +77,9 @@ const useSubscriptionsQuery = () => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 			.innerJoin(transactionsTable, and(eq(subscriptionsTable.id, transactionsTable.subscription_id)))
-			.groupBy(subscriptionsTable.id)
+			.where(buildWhereConditions(lensesStore.filters))
+			.groupBy(subscriptionsTable.id),
+		[lensesStore.filters]
 	);
 
 	return subscriptions satisfies PreparedSubscriptionT[];

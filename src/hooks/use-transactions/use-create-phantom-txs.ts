@@ -1,7 +1,13 @@
-import useMaxDate from './use-max-date';
-import useSubscriptionsQuery from './use-subs-query';
+import { useMemo } from 'react';
+import { useAppModel } from '@models';
+import * as Crypto from 'expo-crypto';
+import { useUnit } from 'effector-react';
+import { startOfTomorrow, isBefore } from 'date-fns';
 
-import type { PreparedSubscriptionT } from './types.d';
+import useSubscriptionsQuery from './use-subs-query';
+import useMaxDate, { advanceDate } from './use-max-date';
+
+import type { PreparedDbTxT, PreparedSubscriptionT } from './types.d';
 
 const WITH_LOGS = true;
 
@@ -28,7 +34,54 @@ const debugLogging = (maxDate: Date, preparedSubscriptions: PreparedSubscription
 	});
 };
 
+// @TODO: Implement support of price history,and use data from it, not from `current_price`
+const generatePhantomTransaction = (subscription: PreparedSubscriptionT, nextPaymentDate: Date): PreparedDbTxT => {
+	const data = {
+		id: Crypto.randomUUID(),
+		price: subscription.current_price,
+		date: nextPaymentDate.toISOString(),
+		currency: subscription.currency,
+		denominator: subscription.denominator,
+		slug: subscription.slug,
+		title: subscription.title,
+		customName: subscription.custom_name,
+		emoji: subscription.emoji,
+		category: subscription.category,
+		color: subscription.color
+	};
+
+	return data;
+};
+
+const createFutureTxs = (subscriptions: PreparedSubscriptionT[], maxPaymentDate: Date) => {
+	const tomorrow = startOfTomorrow();
+	const futureTxs: PreparedDbTxT[] = [];
+
+	for (const subscription of subscriptions) {
+		const cancellationDate = subscription.cancellation_date ? new Date(subscription.cancellation_date) : null;
+
+		if (cancellationDate && isBefore(cancellationDate, tomorrow)) {
+			continue;
+		}
+
+		const latestPaymentDate = subscription.latest_transaction_date
+			? new Date(subscription.latest_transaction_date)
+			: new Date(subscription.first_payment_date);
+		let nextDate = advanceDate(latestPaymentDate, subscription.billing_cycle_type, subscription.billing_cycle_value);
+
+		while (isBefore(nextDate, maxPaymentDate)) {
+			futureTxs.push(generatePhantomTransaction(subscription, nextDate));
+			nextDate = advanceDate(nextDate, subscription.billing_cycle_type, subscription.billing_cycle_value);
+		}
+	}
+
+	return futureTxs;
+};
+
 const useCreatePhantomTxs = () => {
+	const { lenses } = useAppModel();
+	const lensesStore = useUnit(lenses.$store);
+
 	const preparedSubscriptions = useSubscriptionsQuery();
 	const maxDate = useMaxDate(preparedSubscriptions);
 
@@ -36,7 +89,20 @@ const useCreatePhantomTxs = () => {
 		debugLogging(maxDate, preparedSubscriptions);
 	}
 
-	return [];
+	const futureTxs = useMemo(() => {
+		if (!preparedSubscriptions.length) return [];
+
+		let txs = createFutureTxs(preparedSubscriptions, maxDate);
+
+		if (lensesStore.time_mode === 'future') {
+			const now = new Date().toISOString();
+			txs = txs.filter((tx) => tx.date >= now);
+		}
+
+		return txs;
+	}, [preparedSubscriptions, maxDate, lensesStore.time_mode]);
+
+	return futureTxs;
 };
 
 export default useCreatePhantomTxs;

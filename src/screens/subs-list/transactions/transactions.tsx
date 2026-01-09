@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isHeaderSection } from './utils';
 import { useScrollDirection } from '@hooks';
-import useTransactions from '@hooks/use-transactions';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
 
 import HeaderCard from './header-card';
@@ -28,11 +27,7 @@ const Transactions = () => {
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 
-	const testTxs = useTransactions();
-
-	// return null;
-
-	// const sections = useTransactionsSections();
+	const sections = useTransactionsSections();
 	const handleViewableItemsChanged = useGetViewableItem();
 
 	return (
@@ -43,8 +38,7 @@ const Transactions = () => {
 					contentContainerStyle={{
 						gap: 16
 					}}
-					// data={sections}
-					data={testTxs}
+					data={sections}
 					onScroll={handleScroll}
 					renderItem={renderRowItem}
 					showsVerticalScrollIndicator={false}

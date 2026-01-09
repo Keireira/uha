@@ -1,6 +1,6 @@
 import { startOfToday } from 'date-fns';
 import { useUnit } from 'effector-react';
-import { eq, asc, gte } from 'drizzle-orm';
+import { eq, asc, gte, and } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import {
@@ -13,6 +13,7 @@ import {
 } from '@db/schema';
 import { useAppModel } from '@models';
 import { db } from '@src/sql-migrations';
+import { buildWhereConditions } from './use-subs-query';
 
 import type { PreparedDbTxT } from './types.d';
 import type { TimeModesT } from '@models/app-model.d';
@@ -67,7 +68,7 @@ const useTransactionsQuery = (): PreparedDbTxT[] => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(timeModeFilter(lensesStore.time_mode)),
+			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(lensesStore.time_mode))),
 		[lensesStore.time_mode]
 	);
 
