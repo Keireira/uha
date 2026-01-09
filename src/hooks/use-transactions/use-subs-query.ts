@@ -69,7 +69,8 @@ const useSubscriptionsQuery = () => {
 				title: servicesTable.title,
 				emoji: categoriesTable.emoji,
 				category: categoriesTable.title,
-				color: servicesTable.color
+				color: servicesTable.color,
+				category_color: categoriesTable.color
 			})
 			.from(subscriptionsTable)
 			.innerJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))

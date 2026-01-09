@@ -9,7 +9,7 @@ import useMaxDate, { advanceDate } from './use-max-date';
 
 import type { PreparedDbTxT, PreparedSubscriptionT } from './types.d';
 
-const WITH_LOGS = true;
+const WITH_LOGS = false;
 
 const debugLogging = (maxDate: Date, preparedSubscriptions: PreparedSubscriptionT[]) => {
 	console.log('\n\x1b[1m\x1b[35m🔮 Phantom Transactions\x1b[0m');
@@ -47,6 +47,8 @@ const generatePhantomTransaction = (subscription: PreparedSubscriptionT, nextPay
 		customName: subscription.custom_name,
 		emoji: subscription.emoji,
 		category: subscription.category,
+		category_color: subscription.category_color,
+		category_id: subscription.category_id,
 		color: subscription.color
 	};
 

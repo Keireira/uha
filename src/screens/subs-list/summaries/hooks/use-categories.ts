@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 
-import type { TransactionsQueryReturnT } from './use-query';
+import type { SummariesQueryReturnT } from './use-summaries';
 
 const DEFAULT_DENOMINATOR = 1;
 const DEFAULT_COLOR = '#ffffff';
@@ -17,7 +17,7 @@ type CategoryAccumulatorT = {
 	byCategoryId: Record<string, CategoryT>;
 };
 
-type TransactionT = TransactionsQueryReturnT['month'][number] | TransactionsQueryReturnT['year'][number];
+type TransactionT = SummariesQueryReturnT['month'][number] | SummariesQueryReturnT['year'][number];
 
 type SummaryT = {
 	total: number;
@@ -32,7 +32,7 @@ type SummaryReturnT = {
 
 const formatCategoryPredicate = (acc: CategoryAccumulatorT, cur: TransactionT) => {
 	const denominator = cur.denominator || DEFAULT_DENOMINATOR;
-	acc.total += cur.amount / denominator;
+	acc.total += cur.price / denominator;
 
 	if (!cur.category_id) {
 		return acc;
@@ -40,11 +40,11 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, cur: TransactionT) =
 
 	acc.byCategoryId[cur.category_id] ??= {
 		id: cur.category_id,
-		color: cur.category_color || DEFAULT_COLOR,
+		color: cur.color || DEFAULT_COLOR,
 		amount: 0
 	};
 
-	acc.byCategoryId[cur.category_id].amount += cur.amount / denominator;
+	acc.byCategoryId[cur.category_id].amount += cur.price / denominator;
 
 	return acc;
 };
@@ -56,7 +56,7 @@ const sortCategoriesPredicate = (a: CategoryT, b: CategoryT) => b.amount - a.amo
  *	- add support of RECALC currency
  *	- move denominator up
  */
-export const useMonth = (transactions: TransactionsQueryReturnT) => {
+export const useMonth = (transactions: SummariesQueryReturnT) => {
 	const categoriesMonth = useMemo(() => {
 		if (!transactions.month) {
 			return { total: 0, categories: [] } satisfies SummaryT;
@@ -83,7 +83,7 @@ export const useMonth = (transactions: TransactionsQueryReturnT) => {
 	} satisfies SummaryReturnT;
 };
 
-export const useYear = (transactions: TransactionsQueryReturnT) => {
+export const useYear = (transactions: SummariesQueryReturnT) => {
 	const categoriesYear = useMemo(() => {
 		if (!transactions.year) {
 			return { total: 0, categories: [] } satisfies SummaryT;

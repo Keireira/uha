@@ -18,6 +18,7 @@ export type PreparedDbTxT = {
 	category: CategoryT['title'];
 	color: ServiceT['color'];
 	date: TransactionT['date'];
+	category_id: CategoryT['id'];
 };
 
 export type PreparedSubscriptionT = SubscriptionT & {
@@ -32,5 +33,7 @@ export type PreparedSubscriptionT = SubscriptionT & {
 	title: ServiceT['title'];
 	emoji: CategoryT['emoji'];
 	category: CategoryT['title'];
+	/* Do we really need to have service color here? */
 	color: ServiceT['color'];
+	category_color: CategoryT['color'];
 };

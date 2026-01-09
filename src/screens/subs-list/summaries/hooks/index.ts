@@ -1,5 +1,5 @@
 export { useYear, useMonth } from './use-categories';
-export { default as useTransactionsQuery } from './use-query';
+export { default as useSummariesQuery } from './use-summaries';
 export { default as useSummaryAnimation } from './use-animation';
 
-export type { TransactionsQueryReturnT } from './use-query';
+export type { SummariesQueryReturnT } from './use-summaries';

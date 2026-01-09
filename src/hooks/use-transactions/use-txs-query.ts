@@ -28,12 +28,6 @@ const timeModeFilter = (timeMode: TimeModesT) => {
 	return undefined;
 };
 
-/* Unfortunately, we can't fully rely on interactions with DB.
- * We have to add possible future transactions on the fly, or else DB will be stuck in infinite loop :(
- * (add phantom txs to the list -> db updates -> ...)
- *
- * But if I'll resolve this issue, I hope we will be able to use tables' query functionality on full;
- */
 const useTransactionsQuery = (): PreparedDbTxT[] => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
@@ -69,7 +63,7 @@ const useTransactionsQuery = (): PreparedDbTxT[] => {
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
 			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(lensesStore.time_mode))),
-		[lensesStore.time_mode]
+		[lensesStore.filters, lensesStore.time_mode]
 	);
 
 	return dbTxs satisfies PreparedDbTxT[];

@@ -42,7 +42,7 @@ const useSummaryAnimation = () => {
 		const target = direction === 'down' ? 1 : 0;
 
 		progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [direction, reducedMotion]);
 
 	return {
