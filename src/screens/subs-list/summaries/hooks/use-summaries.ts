@@ -17,9 +17,10 @@ const isWithinInterval = (date: Date, interval: { start: Date; end: Date }) => {
 };
 
 const useSummariesQuery = () => {
+	const transactions = useTransactions();
+
 	const { viewableDate } = useAppModel();
 	const activeDate = useUnit(viewableDate.$date);
-	const transactions = useTransactions();
 
 	/*
 	 * for the optimized chain of rerenders

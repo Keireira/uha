@@ -1,37 +1,9 @@
 import { useMemo } from 'react';
 import { max as maxR } from 'ramda';
-import {
-	isAfter,
-	isBefore,
-	startOfToday,
-	startOfTomorrow,
-	addDays,
-	addWeeks,
-	addMonths,
-	addYears,
-	endOfMonth
-} from 'date-fns';
+import { advanceDate } from './utils';
+import { isAfter, isBefore, startOfToday, startOfTomorrow, addYears, endOfMonth } from 'date-fns';
 
 import type { PreparedSubscriptionT } from './types.d';
-
-export const advanceDate = (
-	date: Date,
-	type: PreparedSubscriptionT['billing_cycle_type'],
-	value: PreparedSubscriptionT['billing_cycle_value']
-) => {
-	switch (type) {
-		case 'days':
-			return addDays(date, value);
-		case 'weeks':
-			return addWeeks(date, value);
-		case 'months':
-			return addMonths(date, value);
-		case 'years':
-			return addYears(date, value);
-		default:
-			return date;
-	}
-};
 
 /*
  * min horizon is 1 year,

@@ -26,7 +26,7 @@ const TransactionCard = ({
 	customName,
 	title,
 	emoji,
-	category,
+	category_title,
 	color
 }: TransactionProps) => {
 	const showConverted = randomInt(0, 1);
@@ -51,7 +51,7 @@ const TransactionCard = ({
 				</H3>
 
 				<Text numberOfLines={1} ellipsizeMode="tail" $color="#666">
-					{category}
+					{category_title}
 				</Text>
 			</DescSection>
 

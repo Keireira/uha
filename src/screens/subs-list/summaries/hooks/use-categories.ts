@@ -19,93 +19,69 @@ type CategoryAccumulatorT = {
 
 type TransactionT = SummariesQueryReturnT['month'][number] | SummariesQueryReturnT['year'][number];
 
-type SummaryT = {
-	total: number;
-	categories: CategoryT[];
-};
-
 type SummaryReturnT = {
 	formattedDate: string;
 	total: number;
 	categories: CategoryT[];
 };
 
-const formatCategoryPredicate = (acc: CategoryAccumulatorT, cur: TransactionT) => {
-	const denominator = cur.denominator || DEFAULT_DENOMINATOR;
-	acc.total += cur.price / denominator;
+const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) => {
+	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
+	acc.total += tx.price / denominator;
 
-	if (!cur.category_id) {
+	if (!tx.category_id) {
 		return acc;
 	}
 
-	acc.byCategoryId[cur.category_id] ??= {
-		id: cur.category_id,
-		color: cur.color || DEFAULT_COLOR,
+	acc.byCategoryId[tx.category_id] ??= {
+		id: tx.category_id,
+		color: tx.category_color || DEFAULT_COLOR,
 		amount: 0
 	};
 
-	acc.byCategoryId[cur.category_id].amount += cur.price / denominator;
+	acc.byCategoryId[tx.category_id].amount += tx.price / denominator;
 
 	return acc;
 };
 
-const sortCategoriesPredicate = (a: CategoryT, b: CategoryT) => b.amount - a.amount;
+const computeSummary = (data: TransactionT[]) => {
+	if (!data.length) {
+		return { total: 0, categories: [] };
+	}
+
+	const result = data.reduce(formatCategoryPredicate, {
+		total: 0,
+		byCategoryId: {}
+	} as CategoryAccumulatorT);
+
+	const sortedCategories = Object.values(result.byCategoryId).sort((a, b) => b.amount - a.amount);
+
+	return {
+		total: result.total,
+		categories: sortedCategories
+	};
+};
 
 /*
  * @TODO:
- *	- add support of RECALC currency
- *	- move denominator up
+ *	- add support of RECALC
  */
-export const useMonth = (transactions: SummariesQueryReturnT) => {
-	const categoriesMonth = useMemo(() => {
-		if (!transactions.month) {
-			return { total: 0, categories: [] } satisfies SummaryT;
-		}
-
-		const result = transactions.month.reduce(formatCategoryPredicate, {
-			total: 0,
-			byCategoryId: {}
-		} as CategoryAccumulatorT);
-		const categories = Object.values(result.byCategoryId);
-
-		return {
-			total: result.total,
-			categories: categories.sort(sortCategoriesPredicate)
-		} satisfies SummaryT;
-	}, [transactions.month]);
-
+export const useMonth = (transactions: SummariesQueryReturnT): SummaryReturnT => {
+	const summary = useMemo(() => computeSummary(transactions.month), [transactions.month]);
 	const formattedDate = useMemo(() => format(transactions.dates.month, 'MMMM'), [transactions.dates.month]);
 
 	return {
-		formattedDate,
-		total: categoriesMonth.total,
-		categories: categoriesMonth.categories
-	} satisfies SummaryReturnT;
+		...summary,
+		formattedDate
+	};
 };
 
-export const useYear = (transactions: SummariesQueryReturnT) => {
-	const categoriesYear = useMemo(() => {
-		if (!transactions.year) {
-			return { total: 0, categories: [] } satisfies SummaryT;
-		}
-
-		const result = transactions.year.reduce(formatCategoryPredicate, {
-			total: 0,
-			byCategoryId: {}
-		} as CategoryAccumulatorT);
-		const categories = Object.values(result.byCategoryId);
-
-		return {
-			total: result.total,
-			categories: categories.sort(sortCategoriesPredicate)
-		} satisfies SummaryT;
-	}, [transactions.year]);
-
+export const useYear = (transactions: SummariesQueryReturnT): SummaryReturnT => {
+	const summary = useMemo(() => computeSummary(transactions.year), [transactions.year]);
 	const formattedDate = useMemo(() => format(transactions.dates.year, 'yyyy'), [transactions.dates.year]);
 
 	return {
-		formattedDate,
-		total: categoriesYear.total,
-		categories: categoriesYear.categories
-	} satisfies SummaryReturnT;
+		...summary,
+		formattedDate
+	};
 };

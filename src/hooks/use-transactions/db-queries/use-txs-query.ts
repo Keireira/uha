@@ -13,9 +13,9 @@ import {
 } from '@db/schema';
 import { useAppModel } from '@models';
 import { db } from '@src/sql-migrations';
-import { buildWhereConditions } from './use-subs-query';
+import { buildWhereConditions } from './utils';
 
-import type { PreparedDbTxT } from './types.d';
+import type { PreparedDbTxT } from '../types.d';
 import type { TimeModesT } from '@models/app-model.d';
 
 const timeModeFilter = (timeMode: TimeModesT) => {
@@ -43,9 +43,13 @@ const useTransactionsQuery = (): PreparedDbTxT[] => {
 				title: servicesTable.title,
 				customName: subscriptionsTable.custom_name,
 				emoji: categoriesTable.emoji,
-				category: categoriesTable.title,
 				color: servicesTable.color,
-				date: transactionsTable.date
+				date: transactionsTable.date,
+
+				/* category-related fields */
+				category_id: categoriesTable.id,
+				category_title: categoriesTable.title,
+				category_color: categoriesTable.color
 			})
 			.from(transactionsTable)
 			/*

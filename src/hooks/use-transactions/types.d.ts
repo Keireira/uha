@@ -15,10 +15,12 @@ export type PreparedDbTxT = {
 	title: ServiceT['title'];
 	customName: SubscriptionT['custom_name'];
 	emoji: CategoryT['emoji'];
-	category: CategoryT['title'];
 	color: ServiceT['color'];
 	date: TransactionT['date'];
+
 	category_id: CategoryT['id'];
+	category_title: CategoryT['title'];
+	category_color: CategoryT['color'];
 };
 
 export type PreparedSubscriptionT = SubscriptionT & {
@@ -32,8 +34,9 @@ export type PreparedSubscriptionT = SubscriptionT & {
 	slug: ServiceT['slug'];
 	title: ServiceT['title'];
 	emoji: CategoryT['emoji'];
-	category: CategoryT['title'];
-	/* Do we really need to have service color here? */
 	color: ServiceT['color'];
+
+	/* category-related fields. category_id is already included in the SubscriptionT */
+	category_title: CategoryT['title'];
 	category_color: CategoryT['color'];
 };

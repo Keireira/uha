@@ -1,51 +1,20 @@
 import { useAppModel } from '@models';
 import { useUnit } from 'effector-react';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { getTableColumns, inArray, and, eq, max } from 'drizzle-orm';
+import { getTableColumns, and, eq, max } from 'drizzle-orm';
 
 import {
-	currenciesTable,
-	servicesTable,
 	tendersTable,
+	servicesTable,
+	currenciesTable,
 	categoriesTable,
-	subscriptionsTable,
-	transactionsTable
+	transactionsTable,
+	subscriptionsTable
 } from '@db/schema';
 import { db } from '@src/sql-migrations';
+import { buildWhereConditions } from './utils';
 
-import type { SQL } from 'drizzle-orm';
-import type { PreparedSubscriptionT } from './types.d';
-import type { AppliedFilterT } from '@models/app-model.d';
-
-/* Master Filters */
-const filterTypeToIdColumn = {
-	category: categoriesTable.id,
-	service: servicesTable.id,
-	currency: currenciesTable.id,
-	tender: tendersTable.id
-} as const;
-
-export const buildWhereConditions = (filters: AppliedFilterT[]) => {
-	const conditions: SQL[] = [];
-
-	for (const type in filterTypeToIdColumn) {
-		const ids = filters.reduce((acc, filter) => {
-			if (filter.type === type) {
-				acc.push(filter.value);
-			}
-
-			return acc;
-		}, [] as string[]);
-
-		if (ids.length > 0) {
-			const id = filterTypeToIdColumn[type as keyof typeof filterTypeToIdColumn];
-
-			conditions.push(inArray(id, ids));
-		}
-	}
-
-	return conditions.length > 0 ? and(...conditions) : undefined;
-};
+import type { PreparedSubscriptionT } from '../types.d';
 
 /* Get all subscriptions with their latest transaction date and keys for filtering */
 const useSubscriptionsQuery = () => {
@@ -68,8 +37,10 @@ const useSubscriptionsQuery = () => {
 				slug: servicesTable.slug,
 				title: servicesTable.title,
 				emoji: categoriesTable.emoji,
-				category: categoriesTable.title,
 				color: servicesTable.color,
+
+				/* category-related fields. category_id is already included in the `getTableColumns()` call */
+				category_title: categoriesTable.title,
 				category_color: categoriesTable.color
 			})
 			.from(subscriptionsTable)
