@@ -1,3 +1,3 @@
-import { SubsList } from '@screens';
+import { TxsList } from '@screens';
 
-export default SubsList;
+export default TxsList;

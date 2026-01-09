@@ -1,12 +1,11 @@
+import { flatten } from 'ramda';
 import { useState, useEffect } from 'react';
 
 import { db } from '@src/sql-migrations';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { addDays, subDays, addMonths, addYears, addWeeks } from 'date-fns';
 import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
 import * as Crypto from 'expo-crypto';
-import { subDays } from 'date-fns';
-
-import { buildTransactions } from '@lib';
 
 const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
@@ -25,7 +24,19 @@ const createBillingCycleType = () => {
 	] as keyof typeof BILLING_CYCLES;
 };
 
+type TransactionT = typeof transactionsTable.$inferSelect;
 type SubscriptionT = typeof subscriptionsTable.$inferSelect;
+
+const generateTransaction = (subscription: SubscriptionT, nextPaymentDate: Date) => {
+	return {
+		id: Crypto.randomUUID(),
+		amount: subscription.current_price,
+		date: nextPaymentDate.toISOString(),
+		currency_id: subscription.current_currency_id,
+		tender_id: subscription.tender_id || '',
+		subscription_id: subscription.id
+	};
+};
 
 const buildSubscription = (
 	service: typeof servicesTable.$inferSelect,
@@ -52,6 +63,41 @@ const buildSubscription = (
 	};
 };
 
+const buildMockTransactions = (subscriptions: SubscriptionT[]) => {
+	const transactions: TransactionT[][] = [];
+
+	for (const subscription of subscriptions) {
+		const subscriptionTransactions: TransactionT[] = [];
+
+		const today = new Date();
+		let nextPaymentDate = new Date(subscription.first_payment_date);
+		const cancellationDate = subscription.cancellation_date ? new Date(subscription.cancellation_date) : null;
+
+		while (nextPaymentDate < today || (cancellationDate && nextPaymentDate <= cancellationDate)) {
+			subscriptionTransactions.push(generateTransaction(subscription, nextPaymentDate));
+
+			switch (subscription.billing_cycle_type) {
+				case 'days':
+					nextPaymentDate = addDays(nextPaymentDate, subscription.billing_cycle_value);
+					break;
+				case 'weeks':
+					nextPaymentDate = addWeeks(nextPaymentDate, subscription.billing_cycle_value);
+					break;
+				case 'months':
+					nextPaymentDate = addMonths(nextPaymentDate, subscription.billing_cycle_value);
+					break;
+				case 'years':
+					nextPaymentDate = addYears(nextPaymentDate, subscription.billing_cycle_value);
+					break;
+			}
+		}
+
+		transactions.push(subscriptionTransactions);
+	}
+
+	return flatten(transactions);
+};
+
 const useMockedSubscriptions = () => {
 	const [seeded, setSeeded] = useState(false);
 
@@ -68,7 +114,7 @@ const useMockedSubscriptions = () => {
 			});
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
-			const transactionMocks = buildTransactions(subscriptionMocks);
+			const transactionMocks = buildMockTransactions(subscriptionMocks);
 
 			await db.transaction(async (tx) => {
 				await tx.insert(subscriptionsTable).values(subscriptionMocks);

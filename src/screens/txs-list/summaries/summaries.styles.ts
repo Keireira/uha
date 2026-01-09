@@ -11,9 +11,9 @@ export const CategoryChips = styled(Animated.View)`
 	flex-direction: row;
 	flex: 1;
 	min-width: 100%;
-	min-height: 16px;
-	max-height: 16px;
-	border-radius: 16px;
+	min-height: 12px;
+	max-height: 12px;
+	border-radius: 12px;
 	overflow: hidden;
 	margin-top: 8px;
 `;

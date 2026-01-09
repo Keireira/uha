@@ -1,6 +1,8 @@
-# Уха
+# Uha | Уха
 
+<https://frankfurter.dev/>
 <https://currencyapi.net/documentation>
+Create service with base currency, and recalc derivatives
 
 ## TODO
 

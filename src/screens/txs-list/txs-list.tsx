@@ -5,9 +5,9 @@ import Lenses from './lenses';
 import Summaries from './summaries';
 import Transactions from './transactions';
 import { LinearGradient } from 'expo-linear-gradient';
-import Root, { Masked } from './subs-list.styles';
+import Root, { Masked } from './txs-list.styles';
 
-const SubsList = () => {
+const TxsList = () => {
 	const insets = useSafeAreaInsets();
 
 	return (
@@ -33,4 +33,4 @@ const SubsList = () => {
 	);
 };
 
-export default SubsList;
+export default TxsList;
