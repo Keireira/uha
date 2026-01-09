@@ -1,5 +1,5 @@
 import React from 'react';
-import { useYear, useMonth, useTransactionsQuery, useSummaryAnimation } from './hooks';
+import { useYear, useMonth, useSummariesQuery, useSummaryAnimation } from './hooks';
 
 import { useSettingsValue } from '@hooks';
 
@@ -8,7 +8,7 @@ import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styl
 
 const Summaries = () => {
 	const animations = useSummaryAnimation();
-	const transactions = useTransactionsQuery();
+	const transactions = useSummariesQuery();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
 	const year = useYear(transactions);

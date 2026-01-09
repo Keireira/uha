@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { sql } from 'drizzle-orm';
 import { db } from '@src/sql-migrations';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
@@ -45,8 +44,8 @@ const buildSubscription = (
 		billing_cycle_type: billingCycleType,
 		billing_cycle_value: randomInt(BILLING_CYCLES[billingCycleType].min, BILLING_CYCLES[billingCycleType].max),
 
-		current_price: randomInt(5, 555),
-		current_currency_id: 'USD',
+		current_price: randomInt(125, 5555),
+		current_currency_id: 'USD', // @TODO: Current? Replace it (and price as well) with price history item
 		first_payment_date: subDays(new Date(), days).toISOString(),
 		tender_id: tender.id,
 		cancellation_date: null
@@ -56,19 +55,8 @@ const buildSubscription = (
 const useMockedSubscriptions = () => {
 	const [seeded, setSeeded] = useState(false);
 
-	const { data: services } = useLiveQuery(
-		db
-			.select()
-			.from(servicesTable)
-			.orderBy(sql`RANDOM()`)
-	);
-
-	const { data: tenders } = useLiveQuery(
-		db
-			.select()
-			.from(tendersTable)
-			.orderBy(sql`RANDOM()`)
-	);
+	const { data: services } = useLiveQuery(db.select().from(servicesTable));
+	const { data: tenders } = useLiveQuery(db.select().from(tendersTable));
 
 	useEffect(() => {
 		const seedMockData = async () => {
