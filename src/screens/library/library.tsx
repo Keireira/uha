@@ -9,7 +9,6 @@ import { ServicePreviews } from './services';
 import { CategoryPreviews } from './categories';
 import Root, { NoItems } from './library.styles';
 
-// @TODO: use "@legendapp/list"
 const LibraryScreen = () => {
 	const { t } = useTranslation();
 	const [search, setSearch] = useState('');

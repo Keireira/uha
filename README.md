@@ -1,5 +1,7 @@
 # Uha | Уха
 
+<https://trello.com/b/pEHXDigd/uha>
+
 <https://frankfurter.dev/>
 <https://currencyapi.net/documentation>
 Create service with base currency, and recalc derivatives
@@ -13,6 +15,9 @@ Create service with base currency, and recalc derivatives
 ## WTF
 
 ```sh
+# update expo
+pnpx expo install expo@latest --fix
+
 # run dev
 pnpm expo run:ios --device
 
