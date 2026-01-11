@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { addMonths, startOfMonth, subMonths } from 'date-fns';
+import { lightFormat, addMonths, startOfMonth, subMonths } from 'date-fns';
 
 import CalendarEntry from './calendar-entry';
 import Root, { Pager, Page } from './txs-calendar.styles';
@@ -22,7 +22,7 @@ const TxsCalendar = () => {
 	useEffect(() => {
 		const interval = setTimeout(() => {
 			pagerRef.current?.setPageWithoutAnimation(1);
-		}, 75);
+		}, 125);
 
 		return () => clearTimeout(interval);
 	}, [activeMonth]);
@@ -58,15 +58,15 @@ const TxsCalendar = () => {
 				orientation="horizontal"
 				onPageSelected={onPageSelectedHd}
 			>
-				<Page key="calendar_previous_view">
+				<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
 					<CalendarEntry date={previousMonth} />
 				</Page>
 
-				<Page key="calendar_current_view">
+				<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
 					<CalendarEntry date={currentMonth} />
 				</Page>
 
-				<Page key="calendar_next_view">
+				<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
 					<CalendarEntry date={nextMonth} />
 				</Page>
 			</Pager>

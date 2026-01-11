@@ -7,9 +7,6 @@ export const Page = styled.View`
 
 export const Pager = styled(PagerView)`
 	flex: 1;
-	height: 60%;
-	max-height: 60%;
-	min-height: 250px;
 `;
 
 export default styled.View<{ $top: number; $bottom: number }>`

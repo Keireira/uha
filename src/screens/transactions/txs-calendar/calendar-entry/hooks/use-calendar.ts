@@ -11,8 +11,13 @@ import {
 	eachDayOfInterval,
 	eachWeekOfInterval
 } from 'date-fns';
+import useCalendarTxs from './use-calendar-txs';
 
-const useBuildCalendar = (date: Date) => {
+import type { CalendarEntryT } from '../calendar-entry.d';
+
+const useCalendar = (date: Date) => {
+	const { total, txsByDate } = useCalendarTxs(date);
+
 	const calendar = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
 			{ start: startOfMonth(date), end: endOfMonth(date) },
@@ -26,32 +31,33 @@ const useBuildCalendar = (date: Date) => {
 			});
 
 			const formattedDays = weekDays.map((day) => ({
-				key: day.toISOString(),
-				content: isSameMonth(day, date) ? lightFormat(day, 'd') : undefined,
-				raw: day
+				item_key: lightFormat(day, 'dd-MM-yyyy'),
+				content: isSameMonth(day, date) ? lightFormat(day, 'd') : undefined
 			}));
 
-			return formattedDays;
+			return formattedDays satisfies CalendarEntryT[];
 		});
 
 		const formattedMonth = month.map((week) => ({
-			key: `week_${week[0].key}`,
-			content: week
+			item_key: `week_${week[0].item_key}`,
+			days: week
 		}));
 
 		return formattedMonth;
 	}, [date]);
 
-	const formattedTitle = useMemo(() => {
+	const title = useMemo(() => {
 		const isCurrentYear = isSameYear(date, startOfToday());
 
 		return isCurrentYear ? format(date, 'MMMM') : format(date, 'MMMM, yyyy');
 	}, [date]);
 
 	return {
-		formattedTitle,
-		calendar
+		calendar,
+		txsByDate,
+		monthTotal: total,
+		formattedTitle: title
 	};
 };
 
-export default useBuildCalendar;
+export default useCalendar;

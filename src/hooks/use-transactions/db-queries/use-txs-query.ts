@@ -28,7 +28,7 @@ const timeModeFilter = (timeMode: TimeModesT) => {
 	return undefined;
 };
 
-const useTransactionsQuery = (): PreparedDbTxT[] => {
+const useTransactionsQuery = (forcedTimeMode?: TimeModesT): PreparedDbTxT[] => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
@@ -66,7 +66,7 @@ const useTransactionsQuery = (): PreparedDbTxT[] => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(lensesStore.time_mode))),
+			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(forcedTimeMode || lensesStore.time_mode))),
 		[lensesStore.filters, lensesStore.time_mode]
 	);
 

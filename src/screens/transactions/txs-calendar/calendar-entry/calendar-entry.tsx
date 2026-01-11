@@ -1,31 +1,49 @@
 import React from 'react';
-import { useCalendarTxs, useBuildCalendar } from './hooks';
+import { useCalendar } from './hooks';
 
-import { H2, LargeText } from '@ui';
-import { View, Text } from 'react-native';
-import Root from './calendar-entry.styles';
+import Day from './day';
+import { H2, Text, SmallText } from '@ui';
+import Root, { Header, WeekdayRow, WeekdayCell, CalendarGrid, WeekRow } from './calendar-entry.styles';
 
 import type { Props } from './calendar-entry.d';
 
 const CalendarEntry = ({ date }: Props) => {
-	const { txs, total } = useCalendarTxs(date);
-	const { calendar, formattedTitle } = useBuildCalendar(date);
+	const { txsByDate, calendar, formattedTitle, monthTotal } = useCalendar(date);
 
 	return (
 		<Root>
-			<H2>{formattedTitle}</H2>
-			<Text>{txs.length}</Text>
-			<Text>Monthly total: {total}</Text>
+			<Header>
+				<H2 $color="#FFFFFF">{formattedTitle}</H2>
 
-			<View>
-				{calendar.map((week) => (
-					<View key={week.key} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-						{week.content.map((day) => {
-							return <LargeText key={day.key}>{day.content ?? ''}</LargeText>;
-						})}
-					</View>
+				<Text $color="#8E8E93">
+					Total:&nbsp;
+					<Text $color="#FFFFFF" $bold>
+						{/* @TODO: Use recalc currency */}${monthTotal.toFixed(2)}
+					</Text>
+				</Text>
+			</Header>
+
+			<WeekdayRow>
+				{['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day) => (
+					<WeekdayCell key={day}>
+						<SmallText $color="#8E8E93" $weight={600}>
+							{day}
+						</SmallText>
+					</WeekdayCell>
 				))}
-			</View>
+			</WeekdayRow>
+
+			<CalendarGrid>
+				{calendar.map((week) => (
+					<WeekRow key={week.item_key}>
+						{week.days.map((day) => {
+							const dayTxs = txsByDate[day.item_key] || [];
+
+							return <Day key={day.item_key} {...day} txs={dayTxs} />;
+						})}
+					</WeekRow>
+				))}
+			</CalendarGrid>
 		</Root>
 	);
 };
