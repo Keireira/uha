@@ -1,6 +1,7 @@
 const darkThemeConfig = {
 	background: {
-		main: '#1c1c1e'
+		main: '#1c1c1e',
+		secondary: '#3a3a3c'
 	},
 	text: {
 		primary: '#FFFFFF',

@@ -220,5 +220,8 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "yesterday": "Yesterday"
+  },
+  "calendar": {
+    "total": "Total"
   }
 }

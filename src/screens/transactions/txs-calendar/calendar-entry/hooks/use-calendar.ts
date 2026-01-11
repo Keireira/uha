@@ -49,7 +49,7 @@ const useCalendar = (date: Date) => {
 	const title = useMemo(() => {
 		const isCurrentYear = isSameYear(date, startOfToday());
 
-		return isCurrentYear ? format(date, 'MMMM') : format(date, 'MMMM, yyyy');
+		return isCurrentYear ? format(date, 'LLLL') : format(date, 'LLLL, yyyy');
 	}, [date]);
 
 	return {

@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import { lightFormat, interval, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
-
 import useTransactions from '@hooks/use-transactions';
+import { lightFormat, interval, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const useCalendarTxs = (activeDate: Date) => {
 	const allTransactions = useTransactions('all');
 
-	const { start, end } = useMemo(() => {
-		return {
+	const { start, end } = useMemo(
+		() => ({
 			start: startOfMonth(activeDate),
 			end: endOfMonth(activeDate)
-		};
-	}, [activeDate]);
+		}),
+		[activeDate]
+	);
 
 	const transactions = useMemo(() => {
 		const filteredTxs = allTransactions.filter((tx) => isWithinInterval(new Date(tx.date), interval(start, end)));

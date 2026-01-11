@@ -1,14 +1,18 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
+import { LargeText } from '@ui';
 
-export const DayNumber = styled.Text`
+const tmp = css`
 	position: absolute;
 	bottom: 6px;
 	left: 0;
 	right: 0;
-	text-align: center;
 	font-size: 14px;
-	color: #ffffff;
-	font-family: 'Nunito';
+`;
+
+export const DayNumber = styled(LargeText)<{ $withTxs: boolean }>`
+	${({ $withTxs }) => $withTxs && tmp}
+	text-align: center;
+	color: #fafafa;
 	font-weight: 600;
 `;
 
@@ -27,12 +31,22 @@ export const OverflowBadge = styled.View`
 	padding: 2px 6px;
 `;
 
-export default styled.View`
+const test = css`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const test2 = css`
+	position: relative;
+`;
+
+export default styled.View<{ $isEmpty: boolean; $woTxs: boolean }>`
 	flex: 1;
 	aspect-ratio: 1;
 	margin: 2px;
 	border-radius: 12px;
-	background-color: #2c2c2e;
+	background-color: ${({ $isEmpty }) => ($isEmpty ? 'rgba(52, 52, 52, 0.2)' : '#2c2c2e')};
 	padding: 6px;
-	position: relative;
+	${({ $woTxs }) => ($woTxs ? test : test2)}
 `;

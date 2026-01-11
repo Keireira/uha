@@ -9,11 +9,13 @@ import Root, { DayNumber, LogoContainer, OverflowBadge } from './day.styles';
 import type { Props } from './day.d';
 
 const Day = ({ content, txs }: Props) => {
+	const withTxs = txs.length > 0;
+
 	const indexTx = head(txs);
 	const indexTxLogoUrl = indexTx?.slug ? logos[indexTx.slug as keyof typeof logos] : null;
 
 	return (
-		<Root>
+		<Root $isEmpty={!content} $woTxs={!withTxs}>
 			{txs.length > 0 && indexTx && (
 				<LogoContainer>
 					<LogoView
@@ -31,9 +33,9 @@ const Day = ({ content, txs }: Props) => {
 				</OverflowBadge>
 			)}
 
-			{content && <DayNumber>{content}</DayNumber>}
+			{content && <DayNumber $withTxs={withTxs}>{content}</DayNumber>}
 		</Root>
 	);
 };
 
-export default Day;
+export default React.memo(Day);
