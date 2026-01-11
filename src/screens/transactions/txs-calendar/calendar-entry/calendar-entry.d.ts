@@ -1,3 +1,3 @@
 export type Props = {
-	date: Date | string;
+	date: Date;
 };

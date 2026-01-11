@@ -22,7 +22,7 @@ const TxsCalendar = () => {
 	useEffect(() => {
 		const interval = setTimeout(() => {
 			pagerRef.current?.setPageWithoutAnimation(1);
-		}, 125);
+		}, 75);
 
 		return () => clearTimeout(interval);
 	}, [activeMonth]);

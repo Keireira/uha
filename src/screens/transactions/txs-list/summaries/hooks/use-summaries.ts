@@ -3,18 +3,14 @@ import { useAppModel } from '@models';
 import { useUnit } from 'effector-react';
 import {
 	format,
-	isAfter,
-	isBefore,
+	interval,
+	isWithinInterval,
 	startOfMonth as startOfMonthFn,
 	endOfMonth as endOfMonthFn,
 	startOfYear as startOfYearFn,
 	endOfYear as endOfYearFn
 } from 'date-fns';
 import useTransactions from '@hooks/use-transactions';
-
-const isWithinInterval = (date: Date, interval: { start: Date; end: Date }) => {
-	return isAfter(date, interval.start) && isBefore(date, interval.end);
-};
 
 const useSummariesQuery = () => {
 	const transactions = useTransactions();
@@ -46,7 +42,7 @@ const useSummariesQuery = () => {
 
 	const transactionsMonth = useMemo(() => {
 		const filteredTxs = transactions.filter((tx) =>
-			isWithinInterval(new Date(tx.date), { start: startOfMonth, end: endOfMonth })
+			isWithinInterval(new Date(tx.date), interval(startOfMonth, endOfMonth))
 		);
 
 		return filteredTxs;
@@ -55,7 +51,7 @@ const useSummariesQuery = () => {
 
 	const transactionsYear = useMemo(() => {
 		const filteredTxs = transactions.filter((tx) =>
-			isWithinInterval(new Date(tx.date), { start: startOfYear, end: endOfYear })
+			isWithinInterval(new Date(tx.date), interval(startOfYear, endOfYear))
 		);
 
 		return filteredTxs;
