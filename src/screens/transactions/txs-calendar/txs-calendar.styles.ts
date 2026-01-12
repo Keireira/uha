@@ -11,7 +11,7 @@ export const Pager = styled(PagerView)`
 
 export default styled.View<{ $top: number; $bottom: number }>`
 	flex: 1;
-	background-color: #f2f2f7;
+	background-color: #1c1c1e;
 	padding-top: ${({ $top }) => $top}px;
-	margin-bottom: ${({ $bottom }) => $bottom}px;
+	padding-bottom: ${({ $bottom }) => $bottom}px;
 `;

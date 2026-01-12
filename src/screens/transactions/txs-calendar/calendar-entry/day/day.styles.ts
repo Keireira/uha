@@ -1,52 +1,51 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { LargeText } from '@ui';
 
-const tmp = css`
-	position: absolute;
-	bottom: 6px;
-	left: 0;
-	right: 0;
-	font-size: 14px;
+export const EmptyLogo = styled.View`
+	width: 32px;
+	height: 32px;
+	background-color: rgba(72, 72, 74, 0.2);
+	border-radius: 12px;
 `;
 
-export const DayNumber = styled(LargeText)<{ $withTxs: boolean }>`
-	${({ $withTxs }) => $withTxs && tmp}
-	text-align: center;
-	color: #fafafa;
-	font-weight: 600;
-`;
+export const DayNumber = styled(LargeText).attrs({
+	$weight: 600,
+	$color: '#fafafa',
+	$align: 'center'
+})``;
 
 export const LogoContainer = styled.View`
-	flex: 1;
+	display: flex;
 	align-items: center;
 	justify-content: center;
+	overflow: hidden;
 `;
 
 export const OverflowBadge = styled.View`
 	position: absolute;
-	top: 4px;
-	right: 4px;
-	background-color: #48484a;
-	border-radius: 8px;
-	padding: 2px 6px;
-`;
-
-const test = css`
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 60%;
+	height: 110%;
+	background-color: #2c2c2e;
+	background-color: #6d28d9;
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
+	transform: rotate(45deg) translateY(4px);
+	transform-origin: center;
 `;
 
-const test2 = css`
-	position: relative;
-`;
-
-export default styled.View<{ $isEmpty: boolean; $woTxs: boolean }>`
+export default styled.View<{ $isEmpty: boolean }>`
 	flex: 1;
-	aspect-ratio: 1;
+	aspect-ratio: 1 / 1.5;
 	margin: 2px;
 	border-radius: 12px;
 	background-color: ${({ $isEmpty }) => ($isEmpty ? 'rgba(52, 52, 52, 0.2)' : '#2c2c2e')};
 	padding: 6px;
-	${({ $woTxs }) => ($woTxs ? test : test2)}
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 4px;
 `;

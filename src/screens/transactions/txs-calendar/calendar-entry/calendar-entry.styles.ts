@@ -10,6 +10,5 @@ export const WeekRow = styled.View`
 
 export default styled.View`
 	flex: 1;
-	background-color: #1c1c1e;
 	padding: 16px;
 `;

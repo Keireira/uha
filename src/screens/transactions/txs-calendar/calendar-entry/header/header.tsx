@@ -11,11 +11,11 @@ const Header = ({ title, total }: Props) => {
 
 	return (
 		<Root>
-			<Title $color="#FFFFFF">{title}</Title>
+			<Title $color="#fafafa">{title}</Title>
 
 			<Text $color="#8E8E93">
 				{t('calendar.total')}:&nbsp;
-				<Text $color="#FFFFFF" $bold>
+				<Text $color="#fafafa" $bold>
 					{/* @TODO: Use recalc currency */}${total.toFixed(2)}
 				</Text>
 			</Text>

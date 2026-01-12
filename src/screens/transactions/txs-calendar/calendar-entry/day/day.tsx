@@ -1,39 +1,34 @@
 import React from 'react';
 import { head } from 'ramda';
 
-import { SmallText } from '@ui';
 import logos from '@assets/logos';
+import { AddIcon } from '@ui/icons';
 import LogoView from '@ui/logo-view';
-import Root, { DayNumber, LogoContainer, OverflowBadge } from './day.styles';
+import Root, { DayNumber, LogoContainer, OverflowBadge, EmptyLogo } from './day.styles';
 
 import type { Props } from './day.d';
 
 const Day = ({ content, txs }: Props) => {
-	const withTxs = txs.length > 0;
-
 	const indexTx = head(txs);
 	const indexTxLogoUrl = indexTx?.slug ? logos[indexTx.slug as keyof typeof logos] : null;
 
 	return (
-		<Root $isEmpty={!content} $woTxs={!withTxs}>
-			{txs.length > 0 && indexTx && (
-				<LogoContainer>
-					<LogoView
-						logoId={indexTxLogoUrl}
-						color={indexTx.color}
-						name={indexTx.customName || indexTx.title}
-						size={22}
-					/>
-				</LogoContainer>
-			)}
+		<Root $isEmpty={!content}>
+			<LogoContainer>
+				{txs.length > 0 && indexTx && (
+					<LogoView logoId={indexTxLogoUrl} color={indexTx.color} name={indexTx.customName || indexTx.title} size={32}>
+						{txs.length > 1 && (
+							<OverflowBadge>
+								<AddIcon color="#fafafa" width={16} height={16} />
+							</OverflowBadge>
+						)}
+					</LogoView>
+				)}
 
-			{txs.length > 1 && (
-				<OverflowBadge>
-					<SmallText $color="#FFFFFF">+{txs.length - 1}</SmallText>
-				</OverflowBadge>
-			)}
+				{!txs.length && content && <EmptyLogo />}
+			</LogoContainer>
 
-			{content && <DayNumber $withTxs={withTxs}>{content}</DayNumber>}
+			{content && <DayNumber>{content}</DayNumber>}
 		</Root>
 	);
 };

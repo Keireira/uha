@@ -44,6 +44,7 @@ const LogoView = (props: Props) => {
 	return (
 		<SquircleMask size={props.size || 48}>
 			<Root $color={props.color || '#ffffff'}>{logoContent}</Root>
+			{props.children && props.children}
 		</SquircleMask>
 	);
 };

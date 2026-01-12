@@ -112,9 +112,11 @@ const NavbarIcon = ({ name, isInverted = false }: IconProps) => {
 BottomNav.Icon = NavbarIcon;
 
 const CircleButton = (props: React.ComponentProps<typeof CircleRoot>) => {
+	const colorScheme = useColorScheme() || 'light';
+
 	return (
 		<CircleRoot {...props}>
-			<NavbarIcon name="add" isInverted />
+			<NavbarIcon name="add" isInverted={colorScheme === 'light'} />
 		</CircleRoot>
 	);
 };

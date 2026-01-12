@@ -4,7 +4,7 @@ const darkThemeConfig = {
 		secondary: '#3a3a3c'
 	},
 	text: {
-		primary: '#FFFFFF',
+		primary: '#fafafa',
 		secondary: '#8E8E93',
 		tertiary: '#A1A1A6'
 	}
