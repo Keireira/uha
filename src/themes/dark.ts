@@ -5,8 +5,8 @@ const darkThemeConfig = {
 	},
 	text: {
 		primary: '#fafafa',
-		secondary: '#8E8E93',
-		tertiary: '#A1A1A6'
+		secondary: '#a8a8ad',
+		tertiary: '#a1a1a6'
 	}
 };
 

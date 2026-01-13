@@ -31,6 +31,7 @@ const useCalendar = (date: Date) => {
 			});
 
 			const formattedDays = weekDays.map((day) => ({
+				raw: day,
 				item_key: lightFormat(day, 'dd-MM-yyyy'),
 				content: isSameMonth(day, date) ? lightFormat(day, 'd') : undefined
 			}));

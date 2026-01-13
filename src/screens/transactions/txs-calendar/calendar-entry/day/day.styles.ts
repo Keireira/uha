@@ -37,12 +37,13 @@ export const OverflowBadge = styled.View`
 	transform-origin: center;
 `;
 
-export default styled.View<{ $isEmpty: boolean }>`
+export default styled.Pressable<{ $isEmpty: boolean; $isSelected: boolean }>`
 	flex: 1;
 	aspect-ratio: 1 / 1.5;
 	margin: 2px;
 	border-radius: 12px;
-	background-color: ${({ $isEmpty }) => ($isEmpty ? 'rgba(52, 52, 52, 0.2)' : '#2c2c2e')};
+	background-color: ${({ $isEmpty, $isSelected }) =>
+		$isEmpty ? 'rgba(52, 52, 52, 0.2)' : $isSelected ? '#d98028' : '#2c2c2e'};
 	padding: 6px;
 	display: flex;
 	flex-direction: column;

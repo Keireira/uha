@@ -10,4 +10,5 @@ export default styled.View`
 	justify-content: flex-start;
 	align-items: flex-start;
 	gap: 8px;
+	margin-bottom: 16px;
 `;

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { SmallText } from '@ui';
 
 export const WeekdayText = styled(SmallText)`
-	color: #fafafa95;
+	color: #a1a1a6;
 	font-weight: 600;
 	text-transform: uppercase;
 `;
@@ -19,5 +19,4 @@ export const WeekdayCell = styled.View`
 export default styled.View`
 	flex-direction: row;
 	margin-bottom: 8px;
-	margin-top: 16px;
 `;
