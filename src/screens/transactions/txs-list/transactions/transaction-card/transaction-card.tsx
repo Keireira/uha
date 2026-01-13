@@ -3,8 +3,8 @@ import React from 'react';
 import logos from '@assets/logos';
 import { useSettingsValue } from '@hooks';
 
-import { Text, LargeText, H3, LogoView } from '@ui';
-import Root, { LogoSection, DescSection, PriceSection } from './transaction-card.styles';
+import { LargeText, H3, LogoView } from '@ui';
+import Root, { LogoSection, DescSection, PriceSection, BottomText } from './transaction-card.styles';
 
 import type { TransactionProps } from './transaction-card.d';
 
@@ -50,9 +50,9 @@ const TransactionCard = ({
 					{customName || title}
 				</H3>
 
-				<Text numberOfLines={1} ellipsizeMode="tail" $color="#666">
+				<BottomText numberOfLines={1} ellipsizeMode="tail">
 					{category_title}
-				</Text>
+				</BottomText>
 			</DescSection>
 
 			<PriceSection $isSingle={!withConversion}>
@@ -69,9 +69,9 @@ const TransactionCard = ({
 				)}
 
 				{withConversion && (
-					<Text numberOfLines={1} ellipsizeMode="tail" $align="right" $color="#666">
+					<BottomText numberOfLines={1} ellipsizeMode="tail" $align="right">
 						{showFractions ? convertedPrice.toFixed(2) : Math.round(convertedPrice)} ₸
-					</Text>
+					</BottomText>
 				)}
 			</PriceSection>
 		</Root>

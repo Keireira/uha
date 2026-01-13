@@ -1,6 +1,12 @@
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 
+import { Text } from '@ui';
+
+export const DateText = styled(Text)`
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
 export const CategoryChip = styled.View<{ $color: string }>`
 	display: flex;
 	background-color: ${({ $color }) => $color};

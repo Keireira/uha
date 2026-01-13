@@ -2,17 +2,22 @@ import type { ThemeConfigT } from './themes.d';
 
 const lightThemeConfig: ThemeConfigT = {
 	tint: 'light',
+
+	static: {
+		white: '#fafafa'
+	},
+
 	background: {
 		default: '#f2f2f7'
-		// secondary: '#ffffff',
+		// secondary: '#ffffff'
 		// tertiary: '#e5e5ea',
 		// elevated: '#ffffff'
 	},
 
 	surface: {
 		default: '#ffffff',
-		navbar: '#1c1c1e',
-		placeholder: '#c7c7cc'
+		secondary: '#e5e5ea',
+		navbar: '#1c1c1e'
 	},
 
 	shadow: {
@@ -20,15 +25,14 @@ const lightThemeConfig: ThemeConfigT = {
 	},
 
 	text: {
-		primary: '#222222',
-		secondary: '#3c3c43',
+		primary: '#333333',
+		secondary: '#636366',
 		tertiary: '#8e8e93',
-		disabled: '#c7c7cc',
 		inverse: '#fafafa'
 	},
 
 	accent: {
-		primary: '#d98028',
+		primary: '#ff9f0a',
 		secondary: '#6d28d9',
 		tertiary: '#007aff'
 	},

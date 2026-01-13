@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@ui';
-import Root, { Title } from './header.styles';
+import Root, { Title, Subtitle } from './header.styles';
 
 import type { Props } from './header.d';
 
@@ -12,14 +12,14 @@ const Header = ({ title, total }: Props) => {
 	return (
 		<Root>
 			{/* @TODO: Show calendar view (month + year) on tap */}
-			<Title $color="#fafafa">{title}</Title>
+			<Title>{title}</Title>
 
-			<Text $color="#8e8e93">
+			<Subtitle>
 				{t('calendar.total')}:&nbsp;
-				<Text $color="#fafafa" $bold>
+				<Text $bold>
 					{/* @TODO: Use recalc currency */}${total.toFixed(2)}
 				</Text>
-			</Text>
+			</Subtitle>
 		</Root>
 	);
 };

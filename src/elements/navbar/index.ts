@@ -1,1 +1,1 @@
-export { default } from './older-ios-navbar';
+export { default } from './navbar';

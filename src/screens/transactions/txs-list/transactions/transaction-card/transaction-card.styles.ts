@@ -1,4 +1,9 @@
 import styled from 'styled-components/native';
+import { Text } from '@ui';
+
+export const BottomText = styled(Text)`
+	color: ${({ theme }) => theme.text.secondary};
+`;
 
 export const LogoSection = styled.View`
 	display: flex;

@@ -4,7 +4,7 @@ import { useYear, useMonth, useSummariesQuery, useSummaryAnimations } from './ho
 import { useSettingsValue } from '@hooks';
 
 import { Text } from '@ui';
-import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
+import Root, { SummaryItem, CategoryChips, CategoryChip, DateText } from './summaries.styles';
 
 const Summaries = () => {
 	const transactions = useSummariesQuery();
@@ -25,7 +25,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<Text $color="#666">{month.formattedDate}</Text>
+				<DateText>{month.formattedDate}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{month.categories.map((category) => {
@@ -51,7 +51,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<Text $color="#666">{year.formattedDate}</Text>
+				<DateText>{year.formattedDate}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{year.categories.map((category) => {

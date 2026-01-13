@@ -2,15 +2,19 @@ import type { ThemeConfigT } from './themes.d';
 
 const oledThemeConfig: ThemeConfigT = {
 	tint: 'dark',
+
+	static: {
+		white: '#fafafa'
+	},
+
 	background: {
 		default: '#000000'
-		// secondary: '#0a0a0a'
 	},
 
 	surface: {
 		default: '#1c1c1e',
-		navbar: '#000000',
-		placeholder: '#2c2c2e'
+		secondary: '#0a0a0a',
+		navbar: '#000000'
 	},
 
 	shadow: {
@@ -19,9 +23,8 @@ const oledThemeConfig: ThemeConfigT = {
 
 	text: {
 		primary: '#ffffff',
-		secondary: '#a8a8ad',
-		tertiary: '#a1a1a6',
-		disabled: '#636366',
+		secondary: '#a8a8a8',
+		tertiary: '#737373',
 		inverse: '#000000'
 	},
 

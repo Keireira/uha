@@ -4,6 +4,11 @@ export type ThemeT = 'dark' | 'light' | 'oled';
 
 export type ThemeConfigT = {
 	tint: 'dark' | 'light';
+
+	static: {
+		white: string;
+	};
+
 	background: {
 		default: string;
 		// secondary: string;
@@ -12,8 +17,8 @@ export type ThemeConfigT = {
 	};
 	surface: {
 		default: string;
+		secondary: string;
 		navbar: string;
-		placeholder: string;
 	};
 	shadow: {
 		default: string;
@@ -22,7 +27,6 @@ export type ThemeConfigT = {
 		primary: string;
 		secondary: string;
 		tertiary: string;
-		disabled: string;
 		inverse: string;
 	};
 	accent: {

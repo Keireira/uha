@@ -10,7 +10,7 @@ export const TotalText = styled(Text).attrs({
 	$align: 'right',
 	$weight: 400
 })`
-	opacity: 0.33;
+	color: ${({ theme }) => theme.text.tertiary};
 `;
 
 export default styled.View`

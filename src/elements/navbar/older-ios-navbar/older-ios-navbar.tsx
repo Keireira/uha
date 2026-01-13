@@ -38,6 +38,7 @@ const OlderIOSNavbar = ({ children, ...props }: Props) => {
 };
 
 OlderIOSNavbar.Icon = NavbarIcon;
+// @TODO: Add behavior like double tap to scroll in start of the list
 OlderIOSNavbar.Button = NavbarButton;
 OlderIOSNavbar.CircleButton = CircleButton;
 

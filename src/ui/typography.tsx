@@ -14,42 +14,42 @@ export const BaseText = styled.Text`
 // Header
 export const H1 = styled(BaseText)<TextProps>`
 	font-size: 28px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
 export const H2 = styled(BaseText)<TextProps>`
 	font-size: 24px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
 export const H3 = styled(BaseText)<TextProps>`
 	font-size: 20px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
 export const H4 = styled(BaseText)<TextProps>`
 	font-size: 18px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
 export const H5 = styled(BaseText)<TextProps>`
 	font-size: 16px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
 
 export const H6 = styled(BaseText)<TextProps>`
 	font-size: 14px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	font-weight: ${({ $weight }) => $weight || 700};
 	text-align: ${({ $align }) => $align || 'left'};
 `;
@@ -57,21 +57,21 @@ export const H6 = styled(BaseText)<TextProps>`
 // Regular text
 export const SmallText = styled(BaseText)<TextProps>`
 	font-size: 12px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	text-align: ${({ $align }) => $align || 'left'};
 	font-weight: ${({ $bold, $weight }) => $weight || ($bold ? '700' : '400')};
 `;
 
 export const Text = styled(BaseText)<TextProps>`
 	font-size: 16px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	text-align: ${({ $align }) => $align || 'left'};
 	font-weight: ${({ $bold, $weight }) => $weight || ($bold ? '700' : '400')};
 `;
 
 export const LargeText = styled(BaseText)<TextProps>`
 	font-size: 18px;
-	color: ${({ $color }) => $color || '#333'};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 	text-align: ${({ $align }) => $align || 'left'};
 	font-weight: ${({ $weight, $bold }) => $weight || ($bold ? '700' : '400')};
 `;
