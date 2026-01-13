@@ -45,7 +45,7 @@ const lightThemeConfig: ThemeConfigT = {
 	},
 
 	border: {
-		default: '#38383a',
+		default: '#c6c6c8',
 		subtle: '#2c2c2e'
 	}
 };

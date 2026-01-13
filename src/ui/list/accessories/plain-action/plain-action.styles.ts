@@ -4,7 +4,7 @@ import { Text } from '../../../typography';
 export const TriggerText = styled(Text)`
 	text-align: right;
 	font-size: 18px;
-	color: #666;
+	color: ${({ theme }) => theme.text.secondary};
 `;
 
 export const Trigger = styled.Pressable`

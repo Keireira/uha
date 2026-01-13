@@ -11,7 +11,7 @@ export const SearchInput = styled(TextInput)`
 
 export default styled.View<{ $withLeadingIcon: boolean; $withClear: boolean }>`
 	flex: 1;
-	border: 1px solid ${({ theme }) => theme.border.default};
+	border: 1px solid ${({ theme }) => `${theme.border.default}75`};
 	background-color: ${({ theme }) => theme.surface.default};
 	border-radius: 10px;
 	padding-left: ${({ $withLeadingIcon }) => ($withLeadingIcon ? '16px' : '0')};

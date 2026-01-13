@@ -42,7 +42,7 @@ const oledThemeConfig: ThemeConfigT = {
 	},
 
 	border: {
-		default: '#1c1c1e',
+		default: '#545458',
 		subtle: '#0a0a0a'
 	}
 };

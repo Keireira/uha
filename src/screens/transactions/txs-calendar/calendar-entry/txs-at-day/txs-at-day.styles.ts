@@ -1,4 +1,9 @@
 import styled from 'styled-components/native';
+import { H2 } from '@ui';
+
+export const EmptyText = styled(H2)`
+	color: ${({ theme }) => theme.text.secondary};
+`;
 
 export const EmptyView = styled.View`
 	display: flex;

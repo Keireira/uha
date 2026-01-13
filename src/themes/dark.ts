@@ -45,7 +45,7 @@ const darkThemeConfig: ThemeConfigT = {
 	},
 
 	border: {
-		default: '#38383a', // +
+		default: '#545458', // +
 		subtle: '#2c2c2e'
 	}
 };

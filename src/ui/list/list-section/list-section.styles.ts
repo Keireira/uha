@@ -9,7 +9,7 @@ export const ListSection = styled.View`
 export const SectionHeader = styled(Text)`
 	font-size: 12px;
 	font-weight: 600;
-	color: #6d6d70;
+	color: ${({ theme }) => theme.text.secondary};
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 	margin-left: 32px;
@@ -19,7 +19,7 @@ export const SectionHeader = styled(Text)`
 export const SectionBottomText = styled(Text)`
 	font-size: 12px;
 	font-weight: 400;
-	color: #6d6d70;
+	color: ${({ theme }) => theme.text.secondary};
 	margin-left: 32px;
 	margin-right: 32px;
 	margin-top: 8px;
@@ -38,13 +38,13 @@ const last = css`
 	border-bottom-right-radius: 10px;
 	border-bottom-width: 0;
 	border-top-width: 0.5px;
-	border-top-color: #c6c6c875;
+	border-top-color: ${({ theme }) => `${theme.border.default}75`};
 	border-top-style: solid;
 `;
 
 const middle = css`
 	border-top-width: 0.5px;
-	border-top-color: #c6c6c875;
+	border-top-color: ${({ theme }) => `${theme.border.default}75`};
 	border-top-style: solid;
 `;
 

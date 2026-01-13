@@ -9,7 +9,7 @@ export const ListItemRight = styled.View`
 
 export const ListItemTitle = styled(Text)`
 	font-size: 18px;
-	color: #000;
+	color: ${({ theme }) => theme.text.primary};
 	font-weight: 400;
 `;
 

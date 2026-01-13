@@ -5,6 +5,7 @@ import { Trigger, TriggerText } from './context-menu.styles';
 
 import type { AccessoryContextMenuT } from './context-menu.d';
 
+/* @TODO: Replace by actual context menu from expo/ui */
 const ContextMenuAccessory = ({ actions, trigger, onPress }: AccessoryContextMenuT) => {
 	return (
 		<ContextMenu dropdownMenuMode actions={actions} onPress={onPress} fontName="Nunito">

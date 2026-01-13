@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { H2 } from '@ui';
-import Root, { EmptyView } from './txs-at-day.styles';
+import Root, { EmptyView, EmptyText } from './txs-at-day.styles';
 import TransactionCard from '@screens/transactions/txs-list/transactions/transaction-card';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
@@ -9,7 +8,7 @@ import type { PreparedDbTxT } from '@hooks/use-transactions';
 const Empty = () => (
 	<Root>
 		<EmptyView>
-			<H2 $color="#a1a1a6">No transactions</H2>
+			<EmptyText>No transactions</EmptyText>
 		</EmptyView>
 	</Root>
 );
