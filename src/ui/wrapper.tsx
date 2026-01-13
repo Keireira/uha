@@ -16,7 +16,7 @@ type Props<T extends ViewProps> = {
 
 const Root = styled.View<{ $insets: EdgeInsets; $withTop: boolean; $withBottom: boolean }>`
 	flex: 1;
-	background-color: #f2f2f7;
+	background-color: ${({ theme }) => theme.background.default};
 	padding-top: ${({ $insets, $withTop }) => ($withTop ? $insets.top + 24 : 0)}px;
 	padding-bottom: ${({ $insets, $withBottom }) => ($withBottom ? $insets.bottom + 64 : 0)}px;
 `;

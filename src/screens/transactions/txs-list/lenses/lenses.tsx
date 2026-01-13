@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useAppModel } from '@models';
@@ -93,6 +94,7 @@ const useGetActiveEntries = () => {
 };
 
 const Lenses = () => {
+	const theme = useTheme();
 	const { t } = useTranslation();
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
@@ -235,7 +237,7 @@ const Lenses = () => {
 
 					<ContextMenu.Trigger>
 						<FilterBtn>
-							<FilterIcon color="#333" />
+							<FilterIcon color={theme.text.primary} />
 						</FilterBtn>
 					</ContextMenu.Trigger>
 				</ContextMenu>

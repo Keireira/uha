@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import { SmallText } from '@ui';
 
-export const WeekdayText = styled(SmallText)`
-	color: #a1a1a6;
-	font-weight: 600;
+export const WeekdayText = styled(SmallText).attrs({
+	$bold: true
+})`
+	color: ${({ theme }) => theme.text.secondary};
 	text-transform: uppercase;
 `;
 

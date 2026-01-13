@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ThemeProvider } from 'styled-components/native';
 import appModel from '@models';
 import { useFonts } from 'expo-font';
 import { withFactory, useFactoryModel } from '@lib/effector';
@@ -11,6 +12,8 @@ import SqlMigrations from '@src/sql-migrations';
 import SyncSettings from '@src/sync-settings';
 import SetupMocks from '@src/setup-mocks';
 import '@src/i18n';
+
+import { useGetTheme } from '@themes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +28,7 @@ setNotificationHandler({
 
 const RootLayout = () => {
 	useFactoryModel(appModel);
+	const theme = useGetTheme();
 
 	const [loaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
@@ -49,15 +53,17 @@ const RootLayout = () => {
 
 				<SyncSettings />
 
-				<Stack
-					screenOptions={{
-						headerShown: false,
-						animation: 'none',
-						navigationBarHidden: true
-					}}
-				>
-					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-				</Stack>
+				<ThemeProvider theme={theme}>
+					<Stack
+						screenOptions={{
+							headerShown: false,
+							animation: 'none',
+							navigationBarHidden: true
+						}}
+					>
+						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+					</Stack>
+				</ThemeProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	);

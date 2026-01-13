@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useTheme } from 'styled-components/native';
 
 import { setAppIcon, getAppIcon } from '@howincodes/expo-dynamic-app-icon';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -38,7 +39,10 @@ const ANIM_CONFIG = {
 	stiffness: 210
 };
 
+// @TODO: Refactor according to the new standards
 const AppLogoPicker = () => {
+	const theme = useTheme();
+
 	const iconScale = useSharedValue(1);
 	const iconScaledStyle = useAnimatedStyle(() => ({
 		transform: [{ scale: iconScale.value }]
@@ -77,7 +81,8 @@ const AppLogoPicker = () => {
 									<SymbolView
 										name="checkmark.seal.fill"
 										size={28}
-										tintColor="green"
+										type="palette"
+										colors={[theme.static.white, 'green']}
 										animationSpec={{ effect: { type: 'scale', wholeSymbol: true } }}
 									/>
 								</CheckSF>

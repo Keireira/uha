@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { useInitials } from '@hooks';
+import { useTheme } from 'styled-components/native';
 
 import { H3 } from '../typography';
 import { SymbolView } from 'expo-symbols';
@@ -39,11 +40,12 @@ const useLogo = ({ logoId, logoUrl, emoji, name, color, size = 48 }: Props) => {
 };
 
 const LogoView = (props: Props) => {
+	const theme = useTheme();
 	const logoContent = useLogo(props);
 
 	return (
 		<SquircleMask size={props.size || 48}>
-			<Root $color={props.color || '#ffffff'}>{logoContent}</Root>
+			<Root $color={props.color || theme.surface.default}>{logoContent}</Root>
 			{props.children && props.children}
 		</SquircleMask>
 	);

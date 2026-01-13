@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import PagerView from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
+import PagerView from 'react-native-pager-view';
 
 export const PressMe = styled.Pressable`
 	display: flex;

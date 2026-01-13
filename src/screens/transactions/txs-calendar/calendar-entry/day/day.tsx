@@ -3,9 +3,8 @@ import { head } from 'ramda';
 import * as Haptics from 'expo-haptics';
 
 import logos from '@assets/logos';
-import { AddIcon } from '@ui/icons';
 import LogoView from '@ui/logo-view';
-import Root, { DayNumber, LogoContainer, OverflowBadge, EmptyLogo } from './day.styles';
+import Root, { DayNumber, LogoContainer, OverflowText, OverflowBadge, EmptyLogo } from './day.styles';
 
 import type { Props } from './day.d';
 
@@ -27,7 +26,7 @@ const Day = ({ content, raw, txs, isSelected, setSelectedDay }: Props) => {
 					<LogoView logoId={indexTxLogoUrl} color={indexTx.color} name={indexTx.customName || indexTx.title} size={32}>
 						{txs.length > 1 && (
 							<OverflowBadge>
-								<AddIcon color="#fafafa" width={16} height={16} />
+								<OverflowText>+{txs.length - 1}</OverflowText>
 							</OverflowBadge>
 						)}
 					</LogoView>
@@ -36,7 +35,7 @@ const Day = ({ content, raw, txs, isSelected, setSelectedDay }: Props) => {
 				{!txs.length && content && <EmptyLogo />}
 			</LogoContainer>
 
-			{content && <DayNumber>{content}</DayNumber>}
+			{content && <DayNumber $isSelected={isSelected}>{content}</DayNumber>}
 		</Root>
 	);
 };

@@ -11,7 +11,7 @@ const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
 	weeks: { min: 1, max: 52 },
 	months: { min: 1, max: 24 },
-	years: { min: 1, max: 10 }
+	years: { min: 1, max: 2 }
 } as const;
 
 const randomInt = (min: number, max: number) => {

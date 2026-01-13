@@ -1,4 +1,9 @@
 import styled from 'styled-components/native';
+import { H2 } from '@ui';
+
+export const EmptyText = styled(H2)`
+	color: ${({ theme }) => theme.text.secondary};
+`;
 
 export const EmptyView = styled.View`
 	display: flex;
@@ -13,6 +18,6 @@ export default styled.View`
 	gap: 16px;
 
 	margin-top: 32px;
-	margin-bottom: 64px;
+	margin-bottom: 96px;
 	margin-horizontal: -12px;
 `;

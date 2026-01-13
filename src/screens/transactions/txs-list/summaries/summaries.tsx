@@ -1,14 +1,14 @@
 import React from 'react';
-import { useYear, useMonth, useSummariesQuery, useSummaryAnimation } from './hooks';
+import { useYear, useMonth, useSummariesQuery, useSummaryAnimations } from './hooks';
 
 import { useSettingsValue } from '@hooks';
 
 import { Text } from '@ui';
-import Root, { SummaryItem, CategoryChips, CategoryChip } from './summaries.styles';
+import Root, { SummaryItem, CategoryChips, CategoryChip, DateText } from './summaries.styles';
 
 const Summaries = () => {
-	const animations = useSummaryAnimation();
 	const transactions = useSummariesQuery();
+	const animations = useSummaryAnimations();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
 	const year = useYear(transactions);
@@ -25,7 +25,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<Text $color="#666">{month.formattedDate}</Text>
+				<DateText>{month.formattedDate}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{month.categories.map((category) => {
@@ -51,7 +51,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<Text $color="#666">{year.formattedDate}</Text>
+				<DateText>{year.formattedDate}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{year.categories.map((category) => {

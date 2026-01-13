@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
+import { lightFormat, isSameDay, startOfToday, isAfter } from 'date-fns';
+
 import { useCalendar } from './hooks';
-import { lightFormat, isSameDay } from 'date-fns';
+import { useScrollDirection } from '@hooks';
 
 import Day from './day';
 import Header from './header';
@@ -14,8 +16,13 @@ import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const EMPTY_TXS: PreparedDbTxT[] = [];
 
+// @TODO: Improve date selection logic
 const CalendarEntry = ({ date }: Props) => {
-	const [selectedDay, setSelectedDay] = useState(date);
+	const handleScroll = useScrollDirection();
+
+	const today = startOfToday();
+	const [selectedDay, setSelectedDay] = useState(isAfter(today, date) ? today : date);
+
 	const { txsByDate, calendar, formattedTitle, monthTotal } = useCalendar(date);
 
 	const selectedDateTxs = useMemo(() => {
@@ -26,9 +33,9 @@ const CalendarEntry = ({ date }: Props) => {
 		<Root>
 			<Header title={formattedTitle} total={monthTotal} />
 
-			<ScrollView showsVerticalScrollIndicator={false}>
-				<Weekdays />
+			<Weekdays />
 
+			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} onScroll={handleScroll}>
 				<CalendarGrid>
 					{calendar.map((week) => (
 						<WeekRow key={week.item_key}>
