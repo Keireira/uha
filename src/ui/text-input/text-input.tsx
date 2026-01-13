@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from 'react';
+import { useTheme } from 'styled-components/native';
 
 import { Pressable } from 'react-native';
 import iconsMap, { CloseIcon } from '../icons';
@@ -8,6 +9,7 @@ import type { Props } from './text-input.d';
 import type { TextInput as RNTextInput } from 'react-native';
 
 const TextInput = ({ leadingIcon, onClear, ...props }: Props) => {
+	const theme = useTheme();
 	const withText = Boolean(props.value?.length);
 	const withClear = Boolean(onClear) && withText;
 	const inputRef = useRef<RNTextInput>(null);
@@ -24,13 +26,15 @@ const TextInput = ({ leadingIcon, onClear, ...props }: Props) => {
 
 	return (
 		<Root $withLeadingIcon={Boolean(LeadingIcon)} $withClear={withClear}>
-			{LeadingIcon && <LeadingIcon color={withText ? '#333' : '#33333375'} onPress={focusTextInput} />}
+			{LeadingIcon && (
+				<LeadingIcon color={withText ? theme.text.tertiary : `${theme.text.tertiary}75`} onPress={focusTextInput} />
+			)}
 
-			<SearchInput {...props} ref={inputRef} />
+			<SearchInput {...props} ref={inputRef} placeholderTextColor={`${theme.text.tertiary}75`} />
 
 			{withClear && (
 				<Pressable onPress={onClear} hitSlop={12}>
-					<CloseIcon color={withText ? '#333' : '#33333375'} />
+					<CloseIcon color={withText ? theme.text.tertiary : `${theme.text.tertiary}75`} />
 				</Pressable>
 			)}
 		</Root>

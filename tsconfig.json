@@ -43,7 +43,10 @@
       "@modules/*": ["./modules/*"],
 
       "@locales": ["./assets/locales"],
-      "@locales/*": ["./assets/locales/*"]
+      "@locales/*": ["./assets/locales/*"],
+
+      "@themes": ["./src/themes"],
+      "@themes/*": ["./src/themes/*"]
     }
   },
   "include": [

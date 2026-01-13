@@ -1,12 +1,48 @@
-const darkThemeConfig = {
+import type { ThemeConfigT } from './themes.d';
+
+const darkThemeConfig: ThemeConfigT = {
+	tint: 'dark',
 	background: {
-		main: '#1c1c1e',
-		secondary: '#3a3a3c'
+		default: '#1c1c1e' // +
+		// secondary: '#2c2c2e',
+		// tertiary: '#3a3a3c',
+		// elevated: '#48484a'
 	},
+
+	surface: {
+		default: '#2c2c2e', // +
+		navbar: '#333333',
+		placeholder: '#3c3c3e' // +
+	},
+
+	shadow: {
+		default: '#a8a8ad' // +
+	},
+
 	text: {
 		primary: '#fafafa',
 		secondary: '#a8a8ad',
-		tertiary: '#a1a1a6'
+		tertiary: '#a1a1a6',
+		disabled: '#636366',
+		inverse: '#1c1c1e'
+	},
+
+	accent: {
+		primary: '#d98028',
+		secondary: '#6d28d9', // +
+		tertiary: '#0a84ff'
+	},
+
+	semantic: {
+		success: '#30d158',
+		warning: '#ff9f0a',
+		error: '#ff453a',
+		info: '#0a84ff'
+	},
+
+	border: {
+		default: '#38383a', // +
+		subtle: '#2c2c2e'
 	}
 };
 

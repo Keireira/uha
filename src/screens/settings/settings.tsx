@@ -27,6 +27,11 @@ const SettingsScreen = () => {
 	const colorScheme = useColorScheme();
 	const theme = useSettingsValue<'dark' | 'light'>('theme');
 
+	const isOledEnabled = useSettingsValue<boolean>('oled_mode');
+	const changeOledMode = (isEnabled: boolean) => {
+		setSettingsValue('oled_mode', isEnabled);
+	};
+
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
 	const currenciesList = useGetCurrenciesList();
@@ -130,6 +135,16 @@ const SettingsScreen = () => {
 						type: 'switch',
 						value: theme === 'dark',
 						onPress: changeColorScheme
+					}
+				},
+				{
+					id: 'system-oled-mode',
+					title: t('settings.system.oled_mode'),
+					accessory: {
+						type: 'switch',
+						disabled: theme !== 'dark',
+						value: isOledEnabled,
+						onPress: changeOledMode
 					}
 				}
 			]

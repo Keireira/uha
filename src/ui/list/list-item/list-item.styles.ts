@@ -33,6 +33,6 @@ export default styled.TouchableHighlight`
 	align-items: center;
 	padding-vertical: 12px;
 	padding-horizontal: 16px;
-	background-color: white;
+	background-color: ${({ theme }) => theme.surface.default};
 	height: 50px;
 `;

@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useUnit } from 'effector-react';
+import { useTheme } from 'styled-components/native';
 import { useAppModel } from '@models';
 import * as Haptics from 'expo-haptics';
-import { Pressable, useColorScheme } from 'react-native';
+import { Pressable } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { ListIcon, CalendarIcon, SettingsIcon, LibraryIcon, AddIcon } from '@ui/icons';
 import Root, { GradientRoot, Gradient, BurpView, TabButton, CircleRoot } from './navbar.styles';
 
 import type { Props } from './navbar.d';
+import type { GestureResponderEvent } from 'react-native';
 
 const ANIMATION_CONFIG = {
 	mass: 0.35,
@@ -17,11 +19,9 @@ const ANIMATION_CONFIG = {
 };
 
 const BottomNav = ({ children, ...props }: Props) => {
+	const theme = useTheme();
 	const { scroll } = useAppModel();
 	const direction = useUnit(scroll.$direction);
-
-	const colorScheme = useColorScheme();
-	const tint = colorScheme === 'dark' ? 'dark' : 'light';
 
 	const bottom = useSharedValue(18);
 	const shadow = useSharedValue(120);
@@ -49,13 +49,23 @@ const BottomNav = ({ children, ...props }: Props) => {
 
 	return (
 		<React.Fragment>
+			{/* This is not a background of navbar. This is a shadow under navbar. */}
 			<GradientRoot style={shadowAnimatedStyle}>
-				<Gradient colors={['transparent', 'rgba(0, 0, 0, 0.08)']} />
+				<Gradient colors={['transparent', `${theme.shadow.default}16`]} />
 			</GradientRoot>
 
-			<Root {...props} style={[animatedStyle, { boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 4px' }]}>
+			<Root
+				{...props}
+				style={[
+					animatedStyle,
+					{
+						boxShadow: `0 0 6px 1px ${theme.shadow.default}20`,
+						elevation: 2
+					}
+				]}
+			>
 				<Pressable onPress={onPress}>
-					<BurpView intensity={25} tint={tint}>
+					<BurpView intensity={25} tint={theme.tint}>
 						{children}
 					</BurpView>
 				</Pressable>
@@ -65,18 +75,15 @@ const BottomNav = ({ children, ...props }: Props) => {
 };
 
 const NavbarButton = ({ style, ...props }: React.ComponentProps<typeof TabButton>) => {
-	return (
-		<TabButton
-			{...props}
-			onPress={(event) => {
-				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+	const onPressHd = (event: GestureResponderEvent) => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-				if (props.onPress) {
-					props.onPress(event);
-				}
-			}}
-		/>
-	);
+		if (props.onPress) {
+			props.onPress(event);
+		}
+	};
+
+	return <TabButton {...props} onPress={onPressHd} />;
 };
 
 BottomNav.Button = NavbarButton;
@@ -86,24 +93,20 @@ type IconProps = {
 	name: 'list' | 'library' | 'calendar' | 'settings' | 'add';
 };
 
-const NORMAL_THEME_MAP = { dark: '#fafafa', light: '#333333' };
-const INVERTED_THEME_MAP = { dark: NORMAL_THEME_MAP.light, light: NORMAL_THEME_MAP.dark };
-
-const NavbarIcon = ({ name, isInverted = false }: IconProps) => {
-	const colorScheme = useColorScheme() || 'light';
-	const iconColor = isInverted ? INVERTED_THEME_MAP[colorScheme] : NORMAL_THEME_MAP[colorScheme];
+const NavbarIcon = ({ name }: IconProps) => {
+	const theme = useTheme();
 
 	switch (name) {
 		case 'list':
-			return <ListIcon color={iconColor} />;
+			return <ListIcon color={theme.text.primary} />;
 		case 'calendar':
-			return <CalendarIcon color={iconColor} />;
+			return <CalendarIcon color={theme.text.primary} />;
 		case 'library':
-			return <LibraryIcon color={iconColor} />;
+			return <LibraryIcon color={theme.text.primary} />;
 		case 'settings':
-			return <SettingsIcon color={iconColor} />;
+			return <SettingsIcon color={theme.text.primary} />;
 		case 'add':
-			return <AddIcon color={iconColor} />;
+			return <AddIcon color={theme.tint === 'dark' ? theme.text.primary : theme.text.inverse} />;
 	}
 
 	return null;
@@ -111,15 +114,11 @@ const NavbarIcon = ({ name, isInverted = false }: IconProps) => {
 
 BottomNav.Icon = NavbarIcon;
 
-const CircleButton = (props: React.ComponentProps<typeof CircleRoot>) => {
-	const colorScheme = useColorScheme() || 'light';
-
-	return (
-		<CircleRoot {...props}>
-			<NavbarIcon name="add" isInverted={colorScheme === 'light'} />
-		</CircleRoot>
-	);
-};
+const CircleButton = (props: React.ComponentProps<typeof CircleRoot>) => (
+	<CircleRoot {...props}>
+		<NavbarIcon name="add" />
+	</CircleRoot>
+);
 
 BottomNav.CircleButton = CircleButton;
 

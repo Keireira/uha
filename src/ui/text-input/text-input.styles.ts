@@ -5,14 +5,14 @@ export const SearchInput = styled(TextInput)`
 	flex: 1;
 	font-family: 'Nunito';
 	font-size: 18px;
-	color: #333;
+	color: ${({ theme }) => theme.text.primary};
 	padding: 20px 12px;
 `;
 
 export default styled.View<{ $withLeadingIcon: boolean; $withClear: boolean }>`
 	flex: 1;
-	border: 1px solid #e0e0e0;
-	background-color: #f7f7f8;
+	border: 1px solid ${({ theme }) => theme.border.default};
+	background-color: ${({ theme }) => theme.surface.default};
 	border-radius: 10px;
 	padding-left: ${({ $withLeadingIcon }) => ($withLeadingIcon ? '16px' : '0')};
 	padding-right: ${({ $withClear }) => ($withClear ? '16px' : '0')};

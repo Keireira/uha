@@ -13,6 +13,6 @@ export default styled.View`
 	gap: 16px;
 
 	margin-top: 32px;
-	margin-bottom: 64px;
+	margin-bottom: 96px;
 	margin-horizontal: -12px;
 `;

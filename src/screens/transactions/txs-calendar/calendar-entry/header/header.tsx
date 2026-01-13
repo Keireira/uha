@@ -11,6 +11,7 @@ const Header = ({ title, total }: Props) => {
 
 	return (
 		<Root>
+			{/* @TODO: Show calendar view (month + year) on tap */}
 			<Title $color="#fafafa">{title}</Title>
 
 			<Text $color="#8e8e93">

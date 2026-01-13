@@ -21,7 +21,7 @@ export default styled(Animated.View)<{ $color?: string }>`
 	position: relative;
 	height: 96px;
 	width: 96px;
-	background-color: ${({ $color }) => $color || 'lightblue'};
+	background-color: ${({ $color, theme }) => $color || theme.surface.default};
 	border-radius: 42px;
 	display: flex;
 	align-items: center;

@@ -30,7 +30,7 @@ export const GroupedListContainer = styled.View`
 	margin-vertical: 8px;
 	border-radius: 10px;
 	overflow: hidden;
-	background-color: white;
+	background-color: ${({ theme }) => theme.surface.default};
 `;
 
 const last = css`
@@ -55,7 +55,7 @@ const first = css`
 
 export const GroupedListItem = styled.View<{ $isFirst: boolean; $isLast: boolean }>`
 	min-height: 44px;
-	background-color: white;
+	background-color: ${({ theme }) => theme.surface.default};
 
 	${({ $isFirst }) => $isFirst && first}
 	${({ $isFirst, $isLast }) => !$isFirst && !$isLast && middle}

@@ -18,8 +18,7 @@ export const CircleRoot = styled.Pressable`
 	justify-content: center;
 	width: 48px;
 	height: 48px;
-	color: #fafafa;
-	background-color: #333333;
+	background-color: ${({ theme }) => theme.surface.navbar};
 	border-radius: 50%;
 `;
 
@@ -54,7 +53,6 @@ export default styled(Animated.View)`
 	right: 18px;
 	border-radius: 36px;
 	bottom: 18px;
-	border-top: 1px solid rgb(229, 231, 235);
 	z-index: 100;
 	overflow: hidden;
 `;

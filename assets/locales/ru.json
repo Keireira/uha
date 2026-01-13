@@ -27,6 +27,7 @@
   "settings": {
     "system": {
       "header": "Система",
+      "oled_mode": "OLED режим",
       "notifications": {
         "header": "Уведомления",
         "results": {

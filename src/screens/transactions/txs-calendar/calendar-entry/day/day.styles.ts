@@ -4,7 +4,7 @@ import { LargeText } from '@ui';
 export const EmptyLogo = styled.View`
 	width: 32px;
 	height: 32px;
-	background-color: rgba(72, 72, 74, 0.2);
+	background-color: ${({ theme }) => `${theme.surface.placeholder}40`};
 	border-radius: 12px;
 `;
 
@@ -28,8 +28,7 @@ export const OverflowBadge = styled.View`
 	bottom: 0;
 	width: 60%;
 	height: 110%;
-	background-color: #2c2c2e;
-	background-color: #6d28d9;
+	background-color: ${({ theme }) => theme.accent.secondary};
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -42,8 +41,8 @@ export default styled.Pressable<{ $isEmpty: boolean; $isSelected: boolean }>`
 	aspect-ratio: 1 / 1.5;
 	margin: 2px;
 	border-radius: 12px;
-	background-color: ${({ $isEmpty, $isSelected }) =>
-		$isEmpty ? 'rgba(52, 52, 52, 0.2)' : $isSelected ? '#d98028' : '#2c2c2e'};
+	background-color: ${({ $isEmpty, $isSelected, theme }) =>
+		$isEmpty ? `${theme.surface.default}30` : $isSelected ? '#d98028' : theme.surface.default};
 	padding: 6px;
 	display: flex;
 	flex-direction: column;

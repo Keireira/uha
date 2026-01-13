@@ -2,8 +2,9 @@ import React from 'react';
 import { head } from 'ramda';
 import * as Haptics from 'expo-haptics';
 
+import { SmallText } from '@ui';
 import logos from '@assets/logos';
-import { AddIcon } from '@ui/icons';
+// import { AddIcon } from '@ui/icons';
 import LogoView from '@ui/logo-view';
 import Root, { DayNumber, LogoContainer, OverflowBadge, EmptyLogo } from './day.styles';
 
@@ -27,7 +28,14 @@ const Day = ({ content, raw, txs, isSelected, setSelectedDay }: Props) => {
 					<LogoView logoId={indexTxLogoUrl} color={indexTx.color} name={indexTx.customName || indexTx.title} size={32}>
 						{txs.length > 1 && (
 							<OverflowBadge>
-								<AddIcon color="#fafafa" width={16} height={16} />
+								<SmallText
+									$color="#fafafa"
+									$bold
+									style={{ transform: [{ rotate: '-45deg' }, { translateX: 0 }, { translateY: 0 }] }}
+								>
+									+{txs.length - 1}
+								</SmallText>
+								{/* <AddIcon color="#fafafa" width={16} height={16} /> */}
 							</OverflowBadge>
 						)}
 					</LogoView>
