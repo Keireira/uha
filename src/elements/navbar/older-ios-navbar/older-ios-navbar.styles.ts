@@ -3,25 +3,6 @@ import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export const TabButton = styled.Pressable`
-	flex: 1;
-	width: 48px;
-	height: 48px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
-
-export const CircleRoot = styled.Pressable`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 48px;
-	height: 48px;
-	background-color: ${({ theme }) => theme.surface.navbar};
-	border-radius: 50%;
-`;
-
 export const BurpView = styled(BlurView)`
 	padding: 12px;
 	display: flex;

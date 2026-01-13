@@ -16,7 +16,7 @@ const ANIMATION_CONFIG = {
 	stiffness: 500
 };
 
-const useSummaryAnimation = () => {
+const useSummaryAnimations = () => {
 	const { scroll } = useAppModel();
 	const direction = useUnit(scroll.$direction);
 
@@ -51,4 +51,4 @@ const useSummaryAnimation = () => {
 	};
 };
 
-export default useSummaryAnimation;
+export default useSummaryAnimations;
