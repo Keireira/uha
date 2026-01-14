@@ -6,7 +6,7 @@ import { isAfter, isBefore, startOfToday, startOfTomorrow, addYears, endOfMonth 
 import type { PreparedSubscriptionT } from './types.d';
 
 /*
- * min horizon is 1 year,
+ * min horizon is 2 years,
  * max horizon is the end of a month of the most distant (latest) subscription
  */
 const findMaxPaymentDate = (subscriptions: PreparedSubscriptionT[]) => {
@@ -14,7 +14,7 @@ const findMaxPaymentDate = (subscriptions: PreparedSubscriptionT[]) => {
 	const tomorrow = startOfTomorrow();
 
 	let maxHorizon = today;
-	const minHorizon = addYears(today, 1);
+	const minHorizon = addYears(today, 2);
 
 	for (const {
 		cancellation_date,
