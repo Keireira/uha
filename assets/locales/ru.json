@@ -214,14 +214,28 @@
     "ZMW": "Замбийская квача",
     "ZWG": "Зимбабвийское золото"
   },
-  "lenses": {
-    "future": "Предстоящие",
-    "all": "За всё время"
-  },
   "dates": {
     "today": "Сегодня",
     "tomorrow": "Завтра",
     "yesterday": "Вчера"
+  },
+  "transactions": {
+    "filters": {
+      "category": "По категории",
+      "service": "По сервису",
+      "tender": "По способу оплаты",
+      "currency": "По базовой валюту",
+      "clear": "Сбросить фильтры"
+    },
+    "time_mode": {
+      "future": "Предстоящие",
+      "all": "За всё время"
+    },
+    "view_mode": {
+      "list": "Список",
+      "calendar": "Календарь",
+      "subscriptions": "Подписки"
+    }
   },
   "calendar": {
     "total": "Всего"

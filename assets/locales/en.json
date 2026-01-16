@@ -213,14 +213,28 @@
     "ZMW": "Zambian Kwacha",
     "ZWG": "Zimbabwean Gold"
   },
-  "lenses": {
-    "future": "Upcoming",
-    "all": "All time"
-  },
   "dates": {
     "today": "Today",
     "tomorrow": "Tomorrow",
     "yesterday": "Yesterday"
+  },
+  "transactions": {
+    "filters": {
+      "category": "By Category",
+      "service": "By Service",
+      "tender": "By Tender",
+      "currency": "By Base Currency",
+      "clear": "Clear Filters"
+    },
+    "time_mode": {
+      "future": "Upcoming",
+      "all": "All time"
+    },
+    "view_mode": {
+      "list": "List",
+      "calendar": "Calendar",
+      "subscriptions": "Subscriptions"
+    }
   },
   "calendar": {
     "total": "Total"

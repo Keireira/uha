@@ -1,10 +1,7 @@
 import { useMemo } from 'react';
 import {
-	format,
 	lightFormat,
-	isSameYear,
 	isSameMonth,
-	startOfToday,
 	startOfMonth,
 	endOfWeek,
 	endOfMonth,
@@ -47,17 +44,10 @@ const useCalendar = (date: Date) => {
 		return formattedMonth;
 	}, [date]);
 
-	const title = useMemo(() => {
-		const isCurrentYear = isSameYear(date, startOfToday());
-
-		return isCurrentYear ? format(date, 'LLLL') : format(date, 'LLLL, yyyy');
-	}, [date]);
-
 	return {
 		calendar,
 		txsByDate,
-		monthTotal: total,
-		formattedTitle: title
+		monthTotal: total
 	};
 };
 

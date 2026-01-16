@@ -12,7 +12,7 @@ type ViewableItemsT = {
 };
 
 const useGetViewableItem = () => {
-	const { viewableDate } = useAppModel();
+	const { focusedDate } = useAppModel();
 
 	const handleViewableItemsChanged = useCallback(({ viewableItems }: ViewableItemsT) => {
 		if (viewableItems.length === 0) return;
@@ -28,7 +28,7 @@ const useGetViewableItem = () => {
 		if (firstItem) {
 			const dates = new Date(firstItem.date);
 
-			viewableDate.set(dates);
+			focusedDate.set(dates);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

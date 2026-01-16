@@ -23,7 +23,7 @@ const CalendarEntry = ({ date }: Props) => {
 	const today = startOfToday();
 	const [selectedDay, setSelectedDay] = useState(isAfter(today, date) ? today : date);
 
-	const { txsByDate, calendar, formattedTitle, monthTotal } = useCalendar(date);
+	const { txsByDate, calendar, monthTotal } = useCalendar(date);
 
 	const selectedDateTxs = useMemo(() => {
 		return txsByDate[lightFormat(selectedDay, 'dd-MM-yyyy')];
@@ -31,7 +31,7 @@ const CalendarEntry = ({ date }: Props) => {
 
 	return (
 		<Root>
-			<Header title={formattedTitle} total={monthTotal} />
+			<Header total={monthTotal} />
 
 			<Weekdays />
 

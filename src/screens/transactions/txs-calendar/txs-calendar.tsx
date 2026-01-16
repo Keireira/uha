@@ -1,17 +1,20 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { lightFormat, addMonths, startOfMonth, subMonths } from 'date-fns';
+import React, { useRef, useMemo, useEffect } from 'react';
+import { lightFormat, addMonths, subMonths } from 'date-fns';
 
 import CalendarEntry from './calendar-entry';
-import Root, { Pager, Page } from './txs-calendar.styles';
+import { Pager, Page } from './txs-calendar.styles';
 
 import type { PagerRef } from './txs-calendar.d';
 import type { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 
-const TxsCalendar = () => {
-	const insets = useSafeAreaInsets();
+type Props = {
+	activeMonth: Date;
+	// @TODO: Maybe another type?
+	setActiveMonth: React.Dispatch<React.SetStateAction<Date>>;
+};
+
+const TxsCalendar = ({ activeMonth, setActiveMonth }: Props) => {
 	const pagerRef = useRef<PagerRef>(null);
-	const [activeMonth, setActiveMonth] = useState(startOfMonth(new Date()));
 
 	/*
 	 * Unfortunately, if you swipe too fast, the pager will not be able to update the active month at time,
@@ -49,28 +52,26 @@ const TxsCalendar = () => {
 	};
 
 	return (
-		<Root $top={insets.top} $bottom={insets.bottom}>
-			<Pager
-				ref={pagerRef}
-				pageMargin={0}
-				initialPage={1}
-				layoutDirection="ltr"
-				orientation="horizontal"
-				onPageSelected={onPageSelectedHd}
-			>
-				<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-					<CalendarEntry date={previousMonth} />
-				</Page>
+		<Pager
+			ref={pagerRef}
+			pageMargin={0}
+			initialPage={1}
+			layoutDirection="ltr"
+			orientation="horizontal"
+			onPageSelected={onPageSelectedHd}
+		>
+			<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+				<CalendarEntry date={previousMonth} />
+			</Page>
 
-				<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-					<CalendarEntry date={currentMonth} />
-				</Page>
+			<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+				<CalendarEntry date={currentMonth} />
+			</Page>
 
-				<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-					<CalendarEntry date={nextMonth} />
-				</Page>
-			</Pager>
-		</Root>
+			<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+				<CalendarEntry date={nextMonth} />
+			</Page>
+		</Pager>
 	);
 };
 

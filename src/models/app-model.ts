@@ -1,16 +1,21 @@
 import { createGate } from 'effector-react';
 import { createFactory } from '@lib/effector';
 
-import { createDirectionModel, createLensesModel, createViewableDateModel } from './shared';
+import { createDirectionModel } from './shared';
+import { createFocusedDateModel, createLensesModel, createViewModeModel } from '@screens/transactions/models';
 
 const createAppModel = () => {
 	const gate = createGate();
 
 	return {
 		gate,
-		lenses: createLensesModel(),
+		/* navigation-related models */
 		scroll: createDirectionModel(),
-		viewableDate: createViewableDateModel()
+
+		/* tx-related models */
+		lenses: createLensesModel(),
+		viewMode: createViewModeModel(),
+		focusedDate: createFocusedDateModel()
 	};
 };
 

@@ -1,7 +1,7 @@
 import { createEvent, createStore, combine, sample } from 'effector';
 import { uniqBy, remove } from 'ramda';
 
-import type { FilterTypeT, AppliedFilterT, LensesModel, TimeModesT } from '@models/app-model.d';
+import type { FilterTypeT, AppliedFilterT, LensesModel, TimeModesT } from './types.d';
 
 export const ALL_TIME_MODES: TimeModesT[] = ['all', 'future'];
 
@@ -14,15 +14,6 @@ const createLensesModel = () => {
 		target: $timeMode
 	});
 	// Time Modes | End
-
-	// Twins | Start
-	const $wo_twins = createStore<LensesModel['wo_twins']>(true);
-	const setWoTwins = createEvent<LensesModel['wo_twins']>();
-	sample({
-		clock: setWoTwins,
-		target: $wo_twins
-	});
-	// Twins | End
 
 	// Filters | Start
 	const $filters = createStore<LensesModel['applied_filters']>([]);
@@ -63,14 +54,14 @@ const createLensesModel = () => {
 
 	const $combinedStore = combine({
 		time_mode: $timeMode,
-		wo_twins: $wo_twins,
 		filters: $filters
 	});
 
 	return {
 		$store: $combinedStore,
-		setTimeMode,
-		setWoTwins,
+		time_mode: {
+			set: setTimeMode
+		},
 		filters: {
 			add: addFilter,
 			remove: removeFilter,

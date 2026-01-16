@@ -8,9 +8,3 @@ export const Page = styled.View`
 export const Pager = styled(PagerView)`
 	flex: 1;
 `;
-
-export default styled.View<{ $top: number; $bottom: number }>`
-	flex: 1;
-	background-color: ${({ theme }) => theme.background.default};
-	padding-top: ${({ $top }) => $top}px;
-`;

@@ -16,7 +16,7 @@ import { db } from '@src/sql-migrations';
 import { buildWhereConditions } from './utils';
 
 import type { PreparedDbTxT } from '../types.d';
-import type { TimeModesT } from '@models/app-model.d';
+import type { TimeModesT } from '@screens/transactions/models/types.d';
 
 const timeModeFilter = (timeMode: TimeModesT) => {
 	if (timeMode === 'future') {

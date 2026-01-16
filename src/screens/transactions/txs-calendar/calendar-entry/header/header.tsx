@@ -2,18 +2,15 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@ui';
-import Root, { Title, Subtitle } from './header.styles';
+import Root, { Subtitle } from './header.styles';
 
 import type { Props } from './header.d';
 
-const Header = ({ title, total }: Props) => {
+const Header = ({ total }: Props) => {
 	const { t } = useTranslation();
 
 	return (
 		<Root>
-			{/* @TODO: Show calendar view (month + year) on tap */}
-			<Title>{title}</Title>
-
 			<Subtitle>
 				{t('calendar.total')}:&nbsp;
 				<Text $bold>

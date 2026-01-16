@@ -13,7 +13,6 @@ const makeGroups = groupBy((tx: TransactionProps) => {
 	return format(new Date(tx.date), 'yyyy-MM-dd');
 });
 
-/* @TODO: Maybe we should use formatRelative (date-fns) here? */
 const getDateLabel = (date: Date, t: TI18nT) => {
 	if (isToday(date)) return t('dates.today');
 	if (isTomorrow(date)) return t('dates.tomorrow');
