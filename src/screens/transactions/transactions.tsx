@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { startOfMonth } from 'date-fns';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react';
 import { useUnit } from 'effector-react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppModel } from '@models';
 
@@ -18,16 +17,14 @@ const Transactions = () => {
 	const appModel = useAppModel();
 	const viewMode = useUnit(appModel.viewMode.$mode);
 
-	const [activeMonth, setActiveMonth] = useState<Date>(startOfMonth(new Date()));
-
 	return (
 		<Root $top={insets.top}>
-			<TxHeader activeMonth={activeMonth} />
+			<TxHeader />
 
 			<Summaries />
 
 			{viewMode === 'list' && <TransactionsList />}
-			{viewMode === 'calendar' && <TransactionsCalendar activeMonth={activeMonth} setActiveMonth={setActiveMonth} />}
+			{viewMode === 'calendar' && <TransactionsCalendar />}
 		</Root>
 	);
 };

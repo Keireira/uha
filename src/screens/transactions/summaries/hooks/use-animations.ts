@@ -24,7 +24,7 @@ const useSummaryAnimations = () => {
 	const direction = useUnit(scroll.$direction);
 	const viewModeStore = useUnit(viewMode.$mode);
 
-	const progress = useSharedValue(viewModeStore === 'calendar' ? 1 : 0);
+	const progress = useSharedValue(viewModeStore === 'calendar' ? COLLAPSED : EXPANDED);
 	/* https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/ */
 	const reducedMotion = useReducedMotion();
 

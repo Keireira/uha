@@ -2,7 +2,7 @@ import { createGate } from 'effector-react';
 import { createFactory } from '@lib/effector';
 
 import { createDirectionModel } from './shared';
-import { createFocusedDateModel, createLensesModel, createViewModeModel } from '@screens/transactions/models';
+import { createTxDatesModel, createLensesModel, createViewModeModel } from '@screens/transactions/models';
 
 const createAppModel = () => {
 	const gate = createGate();
@@ -15,7 +15,7 @@ const createAppModel = () => {
 		/* tx-related models */
 		lenses: createLensesModel(),
 		viewMode: createViewModeModel(),
-		focusedDate: createFocusedDateModel()
+		tx_dates: createTxDatesModel()
 	};
 };
 

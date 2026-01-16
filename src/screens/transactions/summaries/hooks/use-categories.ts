@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import type { SummariesQueryReturnT } from './use-summaries';
 
 const DEFAULT_DENOMINATOR = 1;
-const DEFAULT_COLOR = '#ffffff';
+const __STUB_COLOR = '#ffffff';
 
 type CategoryT = {
 	id: string;
@@ -35,7 +35,7 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) =>
 
 	acc.byCategoryId[tx.category_id] ??= {
 		id: tx.category_id,
-		color: tx.category_color || DEFAULT_COLOR,
+		color: tx.category_color || __STUB_COLOR,
 		amount: 0
 	};
 

@@ -11,11 +11,7 @@ import { FilterIcon, ListIcon, CalendarIcon } from '@ui/icons';
 import { Host, Button, ContextMenu, Divider } from '@expo/ui/swift-ui';
 import Root, { FilterBtn, GlassItem, GlassWrapper } from './tx-header.styles';
 
-type Props = {
-	activeMonth: Date;
-};
-
-const TxHeader = ({ activeMonth }: Props) => {
+const TxHeader = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const { viewMode, lenses } = useAppModel();
@@ -42,7 +38,7 @@ const TxHeader = ({ activeMonth }: Props) => {
 
 	return (
 		<Root>
-			<TitleInteractive activeMonth={activeMonth} />
+			<TitleInteractive />
 
 			<GlassWrapper>
 				<GlassItem isInteractive $side="left">

@@ -15,19 +15,19 @@ import useTransactions from '@hooks/use-transactions';
 const useSummariesQuery = () => {
 	const transactions = useTransactions();
 
-	const { focusedDate } = useAppModel();
-	const activeDate = useUnit(focusedDate.$date);
+	const { tx_dates } = useAppModel();
+	const focusedDate = useUnit(tx_dates.focused.$value);
 
 	/*
 	 * for the optimized chain of rerenders
-	 * activeDate -> startOfMonth -> recalcMonthKey -> transactionsMonth
-	 * activeDate -> startOfMonth -> recalcYearKey -> transactionsYear
+	 * focusedDate -> startOfMonth -> recalcMonthKey -> transactionsMonth
+	 * focusedDate -> startOfMonth -> recalcYearKey -> transactionsYear
 	 */
 	const startOfMonth = useMemo(() => {
-		const date = activeDate || new Date();
+		const date = focusedDate || new Date();
 
 		return startOfMonthFn(date);
-	}, [activeDate]);
+	}, [focusedDate]);
 
 	const { recalcYearKey, recalcMonthKey, endOfMonth, startOfYear, endOfYear } = useMemo(
 		() => ({
