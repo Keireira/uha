@@ -6,6 +6,7 @@ import { useUnit } from 'effector-react';
 import { useAppModel } from '@models';
 
 import TxHeader from './tx-header';
+import Summaries from './summaries';
 import TransactionsList from './txs-list';
 import TransactionsCalendar from './txs-calendar';
 
@@ -22,6 +23,8 @@ const Transactions = () => {
 	return (
 		<Root $top={insets.top}>
 			<TxHeader activeMonth={activeMonth} />
+
+			<Summaries />
 
 			{viewMode === 'list' && <TransactionsList />}
 			{viewMode === 'calendar' && <TransactionsCalendar activeMonth={activeMonth} setActiveMonth={setActiveMonth} />}

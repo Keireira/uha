@@ -13,7 +13,7 @@ import useCalendarTxs from './use-calendar-txs';
 import type { CalendarEntryT } from '../calendar-entry.d';
 
 const useCalendar = (date: Date) => {
-	const { total, txsByDate } = useCalendarTxs(date);
+	const { txsByDate } = useCalendarTxs(date);
 
 	const calendar = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
@@ -46,8 +46,7 @@ const useCalendar = (date: Date) => {
 
 	return {
 		calendar,
-		txsByDate,
-		monthTotal: total
+		txsByDate
 	};
 };
 
