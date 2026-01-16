@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { lightFormat, isSameDay } from 'date-fns';
+import { lightFormat, isSameDay, isSameMonth } from 'date-fns';
 
 import { useAppModel } from '@models';
 import { useCalendarBones } from './hooks';
@@ -21,6 +21,7 @@ const CalendarEntry = ({ monthDate }: Props) => {
 	const handleScroll = useScrollDirection();
 	const { tx_dates } = useAppModel();
 	const selectedDate = useUnit(tx_dates.selected.$value);
+	const activeMonth = useUnit(tx_dates.activeMonth.$value);
 
 	const { txsByDate, calendar } = useCalendarBones(monthDate);
 
@@ -49,7 +50,7 @@ const CalendarEntry = ({ monthDate }: Props) => {
 					))}
 				</CalendarGrid>
 
-				<TxsAtDay txs={selectedDateTxs} />
+				{isSameMonth(selectedDate, activeMonth) && <TxsAtDay txs={selectedDateTxs} />}
 			</ScrollView>
 		</Root>
 	);

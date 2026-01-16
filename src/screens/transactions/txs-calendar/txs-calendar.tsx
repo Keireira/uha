@@ -1,9 +1,10 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { lightFormat, addMonths, subMonths } from 'date-fns';
+import { lightFormat, addMonths, subMonths, isBefore, isAfter } from 'date-fns';
 import { useUnit } from 'effector-react';
 
 import { useAppModel } from '@models';
 
+import EmptyEntry from './empty-entry';
 import CalendarEntry from './calendar-entry';
 import { Pager, Page } from './txs-calendar.styles';
 
@@ -15,6 +16,8 @@ const TxsCalendar = () => {
 
 	const { tx_dates } = useAppModel();
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const minActiveDate = useUnit(tx_dates.minActiveDate.$value);
+	const maxActiveDate = useUnit(tx_dates.maxActiveDate.$value);
 
 	/*
 	 * Unfortunately, if you swipe too fast, the pager will not be able to update the active month at time,
@@ -43,10 +46,16 @@ const TxsCalendar = () => {
 		const position = e.nativeEvent.position;
 
 		if (position === 0) {
-			tx_dates.activeMonth.set(subMonths(activeMonth, 1));
+			const nextMonth = subMonths(activeMonth, 1);
+			if (isBefore(nextMonth, minActiveDate)) return;
+
+			tx_dates.activeMonth.set(nextMonth);
 			pagerRef.current?.setPageWithoutAnimation(1);
 		} else if (position === 2) {
-			tx_dates.activeMonth.set(addMonths(activeMonth, 1));
+			const nextMonth = addMonths(activeMonth, 1);
+			if (isAfter(nextMonth, maxActiveDate)) return;
+
+			tx_dates.activeMonth.set(nextMonth);
 			pagerRef.current?.setPageWithoutAnimation(1);
 		}
 	};
@@ -61,7 +70,7 @@ const TxsCalendar = () => {
 			onPageSelected={onPageSelectedHd}
 		>
 			<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry monthDate={previousMonth} />
+				{isBefore(previousMonth, minActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={previousMonth} />}
 			</Page>
 
 			<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
@@ -69,7 +78,7 @@ const TxsCalendar = () => {
 			</Page>
 
 			<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry monthDate={nextMonth} />
+				{isAfter(nextMonth, maxActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={nextMonth} />}
 			</Page>
 		</Pager>
 	);

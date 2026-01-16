@@ -1,5 +1,5 @@
 import { createEvent, createStore, sample } from 'effector';
-import { startOfMonth, startOfToday } from 'date-fns';
+import { startOfMonth, endOfMonth, startOfToday } from 'date-fns';
 
 const createTxDatesModel = () => {
 	const $focusedDate = createStore<Date>(startOfToday());
@@ -26,6 +26,22 @@ const createTxDatesModel = () => {
 		target: $activeMonth
 	});
 
+	const $maxActiveDate = createStore<Date>(endOfMonth(new Date()));
+	const setMaxActiveDate = createEvent<Date>();
+
+	sample({
+		clock: setMaxActiveDate,
+		target: $maxActiveDate
+	});
+
+	const $minActiveDate = createStore<Date>(startOfMonth(new Date()));
+	const setMinActiveDate = createEvent<Date>();
+
+	sample({
+		clock: setMinActiveDate,
+		target: $minActiveDate
+	});
+
 	return {
 		/* currently shown month in the list view */
 		focused: {
@@ -41,6 +57,15 @@ const createTxDatesModel = () => {
 		activeMonth: {
 			$value: $activeMonth,
 			set: setActiveMonth
+		},
+		/* Limits of month generation in calendar view (look at useTransactions hook, this is where it sets) */
+		maxActiveDate: {
+			$value: $maxActiveDate,
+			set: setMaxActiveDate
+		},
+		minActiveDate: {
+			$value: $minActiveDate,
+			set: setMinActiveDate
 		}
 	};
 };

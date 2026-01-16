@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { startOfToday } from 'date-fns';
 import { useUnit } from 'effector-react';
-import { eq, asc, gte, and } from 'drizzle-orm';
+import { eq, asc, gte, and, min } from 'drizzle-orm';
+import { startOfToday, startOfMonth } from 'date-fns';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import {
@@ -19,6 +19,11 @@ import { buildWhereConditions } from './utils';
 import type { PreparedDbTxT } from '../types.d';
 import type { TimeModesT } from '@screens/transactions/models/types.d';
 
+type ReturnType = {
+	dbTxs: PreparedDbTxT[];
+	minDbTxsDate: Date | undefined;
+};
+
 const timeModeFilter = (timeMode: TimeModesT) => {
 	if (timeMode === 'future') {
 		const today = startOfToday();
@@ -29,13 +34,37 @@ const timeModeFilter = (timeMode: TimeModesT) => {
 	return undefined;
 };
 
-const useTransactionsQuery = (forcedTimeMode?: TimeModesT): PreparedDbTxT[] => {
+const useGetMinDbTxsDate = (timeMode: TimeModesT) => {
+	const { lenses } = useAppModel();
+	const lensesStore = useUnit(lenses.$store);
+
+	const { data: minDbTxsDate } = useLiveQuery(
+		db
+			.select({ minDate: min(transactionsTable.date) })
+			.from(transactionsTable)
+			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
+		[lensesStore.filters, timeMode]
+	);
+
+	const minDbTxsDateResult = useMemo(() => {
+		const dateTxt = minDbTxsDate?.[0]?.minDate;
+
+		return dateTxt ? startOfMonth(dateTxt) : undefined;
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [minDbTxsDate, timeMode]);
+
+	return minDbTxsDateResult;
+};
+
+const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
 	const timeMode = useMemo(() => {
 		return forcedTimeMode || lensesStore.time_mode;
 	}, [forcedTimeMode, lensesStore.time_mode]);
+
+	const minDbTxsDate = useGetMinDbTxsDate(timeMode);
 
 	const { data: dbTxs } = useLiveQuery(
 		db
@@ -75,7 +104,10 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): PreparedDbTxT[] => {
 		[lensesStore.filters, timeMode]
 	);
 
-	return dbTxs satisfies PreparedDbTxT[];
+	return {
+		dbTxs: dbTxs,
+		minDbTxsDate
+	} satisfies ReturnType;
 };
 
 export default useTransactionsQuery;
