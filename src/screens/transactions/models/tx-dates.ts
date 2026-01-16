@@ -37,7 +37,7 @@ const createTxDatesModel = () => {
 			$value: $selectedDate,
 			set: setSelectedDate
 		},
-		/* Calendar month that is shown (as primary) in the calendar view */
+		/* Calendar month that is shown (as primary calendar) in the calendar view */
 		activeMonth: {
 			$value: $activeMonth,
 			set: setActiveMonth

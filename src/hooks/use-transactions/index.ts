@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
+import { useUnit } from 'effector-react';
+
+import { useAppModel } from '@models';
 import { useTransactionsQuery } from './db-queries';
 import useCreatePhantomTxs from './use-create-phantom-txs';
 
-import type { TimeModesT } from '@screens/transactions/models/types.d';
+const useTransactions = () => {
+	const { view_mode } = useAppModel();
+	const viewMode = useUnit(view_mode.$mode);
 
-const useTransactions = (forcedTimeMode?: TimeModesT) => {
-	const dbTxs = useTransactionsQuery(forcedTimeMode);
+	const dbTxs = useTransactionsQuery(viewMode === 'calendar' ? 'all' : undefined);
 	const phantomTxs = useCreatePhantomTxs();
 
 	const sortedTxs = useMemo(() => {

@@ -15,7 +15,7 @@ const Transactions = () => {
 	const insets = useSafeAreaInsets();
 
 	const appModel = useAppModel();
-	const viewMode = useUnit(appModel.viewMode.$mode);
+	const viewMode = useUnit(appModel.view_mode.$mode);
 
 	return (
 		<Root $top={insets.top}>

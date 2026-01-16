@@ -20,11 +20,11 @@ const COLLAPSED = 1;
 const EXPANDED = 0;
 
 const useSummaryAnimations = () => {
-	const { scroll, viewMode } = useAppModel();
+	const { scroll, view_mode } = useAppModel();
 	const direction = useUnit(scroll.$direction);
-	const viewModeStore = useUnit(viewMode.$mode);
+	const viewMode = useUnit(view_mode.$mode);
 
-	const progress = useSharedValue(viewModeStore === 'calendar' ? COLLAPSED : EXPANDED);
+	const progress = useSharedValue(viewMode === 'calendar' ? COLLAPSED : EXPANDED);
 	/* https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/ */
 	const reducedMotion = useReducedMotion();
 
@@ -49,7 +49,7 @@ const useSummaryAnimations = () => {
 		 * yeah, yeah I know nested ternaries are ugly af
 		 */
 		/* prettier-ignore */
-		const target = viewModeStore === 'calendar'
+		const target = viewMode === 'calendar'
 			? COLLAPSED
 			: direction === 'down'
 				? COLLAPSED
@@ -57,7 +57,7 @@ const useSummaryAnimations = () => {
 
 		progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [direction, reducedMotion, viewModeStore]);
+	}, [direction, reducedMotion, viewMode]);
 
 	return {
 		summary: [animatedPaddingBottom],

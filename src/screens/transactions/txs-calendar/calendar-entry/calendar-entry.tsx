@@ -1,7 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import { lightFormat, isSameDay, startOfToday, isAfter } from 'date-fns';
+import React, { useMemo } from 'react';
+import { useUnit } from 'effector-react';
+import { lightFormat, isSameDay } from 'date-fns';
 
-import { useCalendar } from './hooks';
+import { useAppModel } from '@models';
+import { useCalendarBones } from './hooks';
 import { useScrollDirection } from '@hooks';
 
 import Day from './day';
@@ -15,18 +17,16 @@ import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const EMPTY_TXS: PreparedDbTxT[] = [];
 
-// @TODO: Improve date selection logic
-const CalendarEntry = ({ date }: Props) => {
+const CalendarEntry = ({ monthDate }: Props) => {
 	const handleScroll = useScrollDirection();
+	const { tx_dates } = useAppModel();
+	const selectedDate = useUnit(tx_dates.selected.$value);
 
-	const today = startOfToday();
-	const [selectedDay, setSelectedDay] = useState(isAfter(today, date) ? today : date);
-
-	const { txsByDate, calendar } = useCalendar(date);
+	const { txsByDate, calendar } = useCalendarBones(monthDate);
 
 	const selectedDateTxs = useMemo(() => {
-		return txsByDate[lightFormat(selectedDay, 'dd-MM-yyyy')];
-	}, [selectedDay, txsByDate]);
+		return txsByDate[lightFormat(selectedDate, 'dd-MM-yyyy')];
+	}, [selectedDate, txsByDate]);
 
 	return (
 		<Root>
@@ -40,9 +40,9 @@ const CalendarEntry = ({ date }: Props) => {
 								<Day
 									key={day.item_key}
 									{...day}
-									isSelected={isSameDay(day.raw, selectedDay)}
+									isSelected={isSameDay(day.raw, selectedDate)}
 									txs={txsByDate[day.item_key] || EMPTY_TXS}
-									setSelectedDay={setSelectedDay}
+									setSelectedDay={tx_dates.selected.set}
 								/>
 							))}
 						</WeekRow>

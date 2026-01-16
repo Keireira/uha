@@ -14,8 +14,8 @@ const createAppModel = () => {
 
 		/* tx-related models */
 		lenses: createLensesModel(),
-		viewMode: createViewModeModel(),
-		tx_dates: createTxDatesModel()
+		tx_dates: createTxDatesModel(),
+		view_mode: createViewModeModel()
 	};
 };
 

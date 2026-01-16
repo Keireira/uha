@@ -61,15 +61,15 @@ const TxsCalendar = () => {
 			onPageSelected={onPageSelectedHd}
 		>
 			<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry date={previousMonth} />
+				<CalendarEntry monthDate={previousMonth} />
 			</Page>
 
 			<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry date={currentMonth} />
+				<CalendarEntry monthDate={currentMonth} />
 			</Page>
 
 			<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry date={nextMonth} />
+				<CalendarEntry monthDate={nextMonth} />
 			</Page>
 		</Pager>
 	);

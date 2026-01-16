@@ -12,12 +12,12 @@ import useCalendarTxs from './use-calendar-txs';
 
 import type { CalendarEntryT } from '../calendar-entry.d';
 
-const useCalendar = (date: Date) => {
-	const { txsByDate } = useCalendarTxs(date);
+const useCalendarBones = (monthDate: Date) => {
+	const { txsByDate } = useCalendarTxs(monthDate);
 
 	const calendar = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
-			{ start: startOfMonth(date), end: endOfMonth(date) },
+			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
 			{ weekStartsOn: 1 }
 		);
 
@@ -30,7 +30,7 @@ const useCalendar = (date: Date) => {
 			const formattedDays = weekDays.map((day) => ({
 				raw: day,
 				item_key: lightFormat(day, 'dd-MM-yyyy'),
-				content: isSameMonth(day, date) ? lightFormat(day, 'd') : undefined
+				content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
 			}));
 
 			return formattedDays satisfies CalendarEntryT[];
@@ -42,7 +42,7 @@ const useCalendar = (date: Date) => {
 		}));
 
 		return formattedMonth;
-	}, [date]);
+	}, [monthDate]);
 
 	return {
 		calendar,
@@ -50,4 +50,4 @@ const useCalendar = (date: Date) => {
 	};
 };
 
-export default useCalendar;
+export default useCalendarBones;

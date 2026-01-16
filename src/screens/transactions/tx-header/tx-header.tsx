@@ -2,21 +2,21 @@ import React from 'react';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useFilterValues } from './hooks';
 
 import { useAppModel } from '@models';
+import { useFilterValues } from './hooks';
 
-import { ContextMenuFilters, TitleInteractive } from './components';
 import { FilterIcon, ListIcon, CalendarIcon } from '@ui/icons';
+import { ContextMenuFilters, TitleInteractive } from './components';
 import { Host, Button, ContextMenu, Divider } from '@expo/ui/swift-ui';
 import Root, { FilterBtn, GlassItem, GlassWrapper } from './tx-header.styles';
 
 const TxHeader = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	const { viewMode, lenses } = useAppModel();
+	const { view_mode, lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
-	const viewModeStore = useUnit(viewMode.$mode);
+	const viewMode = useUnit(view_mode.$mode);
 
 	const entries = useFilterValues();
 
@@ -42,14 +42,14 @@ const TxHeader = () => {
 
 			<GlassWrapper>
 				<GlassItem isInteractive $side="left">
-					{viewModeStore === 'list' && (
-						<FilterBtn onPress={() => viewMode.set('calendar')}>
+					{viewMode === 'list' && (
+						<FilterBtn onPress={() => view_mode.set('calendar')}>
 							<CalendarIcon color={theme.text.primary} width={20} height={20} />
 						</FilterBtn>
 					)}
 
-					{viewModeStore === 'calendar' && (
-						<FilterBtn onPress={() => viewMode.set('list')}>
+					{viewMode === 'calendar' && (
+						<FilterBtn onPress={() => view_mode.set('list')}>
 							<ListIcon color={theme.text.primary} width={20} height={20} />
 						</FilterBtn>
 					)}
@@ -59,7 +59,7 @@ const TxHeader = () => {
 					<Host>
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
-								{viewModeStore === 'list' && (
+								{viewMode === 'list' && (
 									<>
 										<Button systemImage="infinity" onPress={setAllTimeMode}>
 											{t(`transactions.time_mode.all`)}

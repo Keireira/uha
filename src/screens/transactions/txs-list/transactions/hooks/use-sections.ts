@@ -25,6 +25,7 @@ const getDateLabel = (date: Date, t: TI18nT) => {
 
 const calcTotalAmount = (txs: TransactionProps[]) => {
 	const total = txs.reduce((acc, tx) => acc + tx.price / (tx.denominator || 1), 0);
+
 	const formattedTotal = total.toLocaleString('en-US', {
 		style: 'currency',
 		currency: 'USD',

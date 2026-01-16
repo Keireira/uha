@@ -12,7 +12,7 @@ const useTitle = () => {
 	const { t } = useTranslation();
 	const appModel = useAppModel();
 	const lenses = useUnit(appModel.lenses.$store);
-	const viewMode = useUnit(appModel.viewMode.$mode);
+	const viewMode = useUnit(appModel.view_mode.$mode);
 	const activeMonth = useUnit(appModel.tx_dates.activeMonth.$value);
 
 	const title = useMemo(() => {

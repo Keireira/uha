@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { startOfToday } from 'date-fns';
 import { useUnit } from 'effector-react';
 import { eq, asc, gte, and } from 'drizzle-orm';
@@ -31,6 +32,10 @@ const timeModeFilter = (timeMode: TimeModesT) => {
 const useTransactionsQuery = (forcedTimeMode?: TimeModesT): PreparedDbTxT[] => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
+
+	const timeMode = useMemo(() => {
+		return forcedTimeMode || lensesStore.time_mode;
+	}, [forcedTimeMode, lensesStore.time_mode]);
 
 	const { data: dbTxs } = useLiveQuery(
 		db
@@ -66,8 +71,8 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): PreparedDbTxT[] => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(forcedTimeMode || lensesStore.time_mode))),
-		[lensesStore.filters, lensesStore.time_mode]
+			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
+		[lensesStore.filters, timeMode]
 	);
 
 	return dbTxs satisfies PreparedDbTxT[];

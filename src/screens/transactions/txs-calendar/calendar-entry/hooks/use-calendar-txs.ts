@@ -5,7 +5,7 @@ import { lightFormat, interval, isWithinInterval, startOfMonth, endOfMonth } fro
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const useCalendarTxs = (activeDate: Date) => {
-	const allTransactions = useTransactions('all');
+	const allTransactions = useTransactions();
 
 	const { start, end } = useMemo(
 		() => ({
