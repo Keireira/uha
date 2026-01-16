@@ -30,12 +30,9 @@ const useCalendarTxs = (activeDate: Date) => {
 			{} as Record<string, PreparedDbTxT[]>
 		);
 
-		const total = filteredTxs.reduce((acc, tx) => acc + tx.price / (tx.denominator || 1), 0);
-
 		return {
 			txs: filteredTxs,
-			txsByDate,
-			total
+			txsByDate
 		};
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [start, end, allTransactions.length]);

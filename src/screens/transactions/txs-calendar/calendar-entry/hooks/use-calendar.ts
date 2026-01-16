@@ -1,10 +1,7 @@
 import { useMemo } from 'react';
 import {
-	format,
 	lightFormat,
-	isSameYear,
 	isSameMonth,
-	startOfToday,
 	startOfMonth,
 	endOfWeek,
 	endOfMonth,
@@ -16,7 +13,7 @@ import useCalendarTxs from './use-calendar-txs';
 import type { CalendarEntryT } from '../calendar-entry.d';
 
 const useCalendar = (date: Date) => {
-	const { total, txsByDate } = useCalendarTxs(date);
+	const { txsByDate } = useCalendarTxs(date);
 
 	const calendar = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
@@ -47,17 +44,9 @@ const useCalendar = (date: Date) => {
 		return formattedMonth;
 	}, [date]);
 
-	const title = useMemo(() => {
-		const isCurrentYear = isSameYear(date, startOfToday());
-
-		return isCurrentYear ? format(date, 'LLLL') : format(date, 'LLLL, yyyy');
-	}, [date]);
-
 	return {
 		calendar,
-		txsByDate,
-		monthTotal: total,
-		formattedTitle: title
+		txsByDate
 	};
 };
 

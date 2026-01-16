@@ -16,17 +16,21 @@ const ANIMATION_CONFIG = {
 	stiffness: 500
 };
 
-const useSummaryAnimations = () => {
-	const { scroll } = useAppModel();
-	const direction = useUnit(scroll.$direction);
+const COLLAPSED = 1;
+const EXPANDED = 0;
 
-	const progress = useSharedValue(0);
+const useSummaryAnimations = () => {
+	const { scroll, viewMode } = useAppModel();
+	const direction = useUnit(scroll.$direction);
+	const viewModeStore = useUnit(viewMode.$mode);
+
+	const progress = useSharedValue(viewModeStore === 'calendar' ? 1 : 0);
 	/* https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/ */
 	const reducedMotion = useReducedMotion();
 
-	const opacity = useDerivedValue(() => interpolate(progress.value, [0, 1], [1, 0]));
-	const maxHeight = useDerivedValue(() => interpolate(progress.value, [0, 1], [16, 0]));
-	const paddingBottom = useDerivedValue(() => interpolate(progress.value, [0, 1], [28, 0]));
+	const opacity = useDerivedValue(() => interpolate(progress.value, [0, COLLAPSED], [1, EXPANDED]));
+	const maxHeight = useDerivedValue(() => interpolate(progress.value, [0, COLLAPSED], [16, EXPANDED]));
+	const paddingBottom = useDerivedValue(() => interpolate(progress.value, [0, COLLAPSED], [28, EXPANDED]));
 
 	const animatedOpacity = useAnimatedStyle(() => ({
 		opacity: opacity.value
@@ -39,11 +43,21 @@ const useSummaryAnimations = () => {
 	}));
 
 	useEffect(() => {
-		const target = direction === 'down' ? 1 : 0;
+		/* In the calendar mode, always stay collapsed (1)
+		 * In the list mode, collapse (1) on scroll down, expand (0) on scroll up
+		 *
+		 * yeah, yeah I know nested ternaries are ugly af
+		 */
+		/* prettier-ignore */
+		const target = viewModeStore === 'calendar'
+			? COLLAPSED
+			: direction === 'down'
+				? COLLAPSED
+				: EXPANDED;
 
 		progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [direction, reducedMotion]);
+	}, [direction, reducedMotion, viewModeStore]);
 
 	return {
 		summary: [animatedPaddingBottom],

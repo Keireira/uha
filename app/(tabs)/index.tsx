@@ -1,3 +1,3 @@
-import { TxsList } from '@screens';
+import { Transactions } from '@screens';
 
-export default TxsList;
+export default Transactions;

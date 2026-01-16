@@ -5,7 +5,6 @@ import { useCalendar } from './hooks';
 import { useScrollDirection } from '@hooks';
 
 import Day from './day';
-import Header from './header';
 import Weekdays from './weekdays';
 import TxsAtDay from './txs-at-day';
 import { ScrollView } from 'react-native';
@@ -23,7 +22,7 @@ const CalendarEntry = ({ date }: Props) => {
 	const today = startOfToday();
 	const [selectedDay, setSelectedDay] = useState(isAfter(today, date) ? today : date);
 
-	const { txsByDate, calendar, formattedTitle, monthTotal } = useCalendar(date);
+	const { txsByDate, calendar } = useCalendar(date);
 
 	const selectedDateTxs = useMemo(() => {
 		return txsByDate[lightFormat(selectedDay, 'dd-MM-yyyy')];
@@ -31,8 +30,6 @@ const CalendarEntry = ({ date }: Props) => {
 
 	return (
 		<Root>
-			<Header title={formattedTitle} total={monthTotal} />
-
 			<Weekdays />
 
 			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} onScroll={handleScroll}>

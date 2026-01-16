@@ -52,12 +52,6 @@ const TabLayout = () => {
 							</Navbar.Button>
 						</TabTrigger>
 
-						<TabTrigger name="calendar" href="/calendar" asChild>
-							<Navbar.Button>
-								<Navbar.Icon name="calendar" />
-							</Navbar.Button>
-						</TabTrigger>
-
 						<Navbar.CircleButton onPress={() => setIsModalOpened(true)} />
 
 						<TabTrigger name="library" href="/library" asChild>

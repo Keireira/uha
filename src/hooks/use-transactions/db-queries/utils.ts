@@ -2,7 +2,7 @@ import { inArray, and } from 'drizzle-orm';
 import { currenciesTable, servicesTable, tendersTable, categoriesTable } from '@db/schema';
 
 import type { SQL } from 'drizzle-orm';
-import type { AppliedFilterT } from '@models/app-model.d';
+import type { AppliedFilterT } from '@screens/transactions/models/types.d';
 
 /* Master Filters */
 const filterTypeToIdColumn = {

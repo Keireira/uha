@@ -15,8 +15,8 @@ import useTransactions from '@hooks/use-transactions';
 const useSummariesQuery = () => {
 	const transactions = useTransactions();
 
-	const { viewableDate } = useAppModel();
-	const activeDate = useUnit(viewableDate.$date);
+	const { focusedDate } = useAppModel();
+	const activeDate = useUnit(focusedDate.$date);
 
 	/*
 	 * for the optimized chain of rerenders

@@ -1,3 +1,3 @@
 export type Props = {
-	total: number;
+	activeMonth: Date;
 };
