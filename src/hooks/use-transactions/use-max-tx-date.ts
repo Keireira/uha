@@ -9,7 +9,7 @@ import type { PreparedSubscriptionT } from './types.d';
  * min horizon is 2 years,
  * max horizon is the end of a month of the most distant (latest) subscription
  */
-const findMaxPaymentDate = (subscriptions: PreparedSubscriptionT[]) => {
+const findMaxTxDate = (subscriptions: PreparedSubscriptionT[]) => {
 	const today = startOfToday();
 	const tomorrow = startOfTomorrow();
 
@@ -43,10 +43,10 @@ const findMaxPaymentDate = (subscriptions: PreparedSubscriptionT[]) => {
 	return maxR(endOfMonth(minHorizon), endOfMonth(maxHorizon)) satisfies Date;
 };
 
-const useMaxDate = (subscriptions: PreparedSubscriptionT[]) => {
-	const maxDate = useMemo(() => findMaxPaymentDate(subscriptions), [subscriptions]);
+const useMaxTxDate = (subscriptions: PreparedSubscriptionT[]) => {
+	const maxDate = useMemo(() => findMaxTxDate(subscriptions), [subscriptions]);
 
 	return maxDate;
 };
 
-export default useMaxDate;
+export default useMaxTxDate;

@@ -5,7 +5,7 @@ import { lightFormat, interval, isWithinInterval, startOfMonth, endOfMonth } fro
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const useCalendarTxs = (activeDate: Date) => {
-	const allTransactions = useTransactions('all');
+	const transactions = useTransactions();
 
 	const { start, end } = useMemo(
 		() => ({
@@ -15,8 +15,8 @@ const useCalendarTxs = (activeDate: Date) => {
 		[activeDate]
 	);
 
-	const transactions = useMemo(() => {
-		const filteredTxs = allTransactions.filter((tx) => isWithinInterval(new Date(tx.date), interval(start, end)));
+	const selectedTransactions = useMemo(() => {
+		const filteredTxs = transactions.filter((tx) => isWithinInterval(new Date(tx.date), interval(start, end)));
 
 		const txsByDate = filteredTxs.reduce(
 			(acc, tx) => {
@@ -30,14 +30,11 @@ const useCalendarTxs = (activeDate: Date) => {
 			{} as Record<string, PreparedDbTxT[]>
 		);
 
-		return {
-			txs: filteredTxs,
-			txsByDate
-		};
+		return txsByDate;
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [start, end, allTransactions.length]);
+	}, [start, end, transactions.length]);
 
-	return transactions;
+	return selectedTransactions;
 };
 
 export default useCalendarTxs;

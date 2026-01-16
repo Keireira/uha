@@ -8,13 +8,12 @@ import { ALL_TIME_MODES } from '@screens/transactions/models/lenses';
 
 import Root, { Title } from './title-interactive.styles';
 
-import type { Props } from './title-interactive.d';
-
-const useTitle = (activeMonth: Props['activeMonth']) => {
+const useTitle = () => {
 	const { t } = useTranslation();
 	const appModel = useAppModel();
 	const lenses = useUnit(appModel.lenses.$store);
-	const viewMode = useUnit(appModel.viewMode.$mode);
+	const viewMode = useUnit(appModel.view_mode.$mode);
+	const activeMonth = useUnit(appModel.tx_dates.activeMonth.$value);
 
 	const title = useMemo(() => {
 		if (viewMode === 'list') {
@@ -34,11 +33,11 @@ const useTitle = (activeMonth: Props['activeMonth']) => {
 	return title;
 };
 
-const TitleInteractive = ({ activeMonth }: Props) => {
+const TitleInteractive = () => {
+	const title = useTitle();
+
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
-
-	const title = useTitle(activeMonth);
 
 	const setNextTimeMode = () => {
 		const timeMode = lensesStore.time_mode;

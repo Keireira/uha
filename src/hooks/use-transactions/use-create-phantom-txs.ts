@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { useAppModel } from '@models';
 import * as Crypto from 'expo-crypto';
 import { useUnit } from 'effector-react';
-import { startOfTomorrow, isBefore, differenceInSeconds } from 'date-fns';
+import { startOfToday, startOfTomorrow, startOfMonth, isBefore, differenceInSeconds } from 'date-fns';
 
-import useMaxDate from './use-max-date';
+import useMaxTxDate from './use-max-tx-date';
 import { advanceDate, debugLogging } from './utils';
 import { useSubscriptionsQuery } from './db-queries';
 
@@ -65,7 +65,7 @@ const useCreatePhantomTxs = () => {
 	const lensesStore = useUnit(lenses.$store);
 
 	const preparedSubscriptions = useSubscriptionsQuery();
-	const maxDate = useMaxDate(preparedSubscriptions);
+	const maxDate = useMaxTxDate(preparedSubscriptions);
 
 	if (__DEV__ && WITH_LOGS) {
 		debugLogging(maxDate, preparedSubscriptions);
@@ -84,7 +84,11 @@ const useCreatePhantomTxs = () => {
 		return txs;
 	}, [preparedSubscriptions, maxDate, lensesStore.time_mode]);
 
-	return futureTxs.sort((a, b) => differenceInSeconds(a.date, b.date));
+	return {
+		phantomTxs: futureTxs.sort((a, b) => differenceInSeconds(a.date, b.date)),
+		minPhantomTxsDate: startOfMonth(startOfToday()),
+		maxDate
+	};
 };
 
 export default useCreatePhantomTxs;

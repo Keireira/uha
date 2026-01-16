@@ -5,5 +5,5 @@ export type CalendarEntryT = {
 };
 
 export type Props = {
-	date: Date;
+	monthDate: Date;
 };

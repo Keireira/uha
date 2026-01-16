@@ -237,6 +237,7 @@
     }
   },
   "calendar": {
-    "total": "Total"
+    "total": "Total",
+    "empty": "End of History"
   }
 }

@@ -9,7 +9,7 @@ import type { ViewModeModel, ViewModeT } from './types.d';
  * (maybe rename transactions view to just index view? or master? or whatever?)
  * - list (default)
  * - calendar
- * - subscriptions (though it's not actively related to transactions)
+ * - subscriptions (though it's not fully related to transactions)
  *
  * And we have to manage it somehow, as well as save it locally in the app,
  * so we can restore it when the app is reopened.
