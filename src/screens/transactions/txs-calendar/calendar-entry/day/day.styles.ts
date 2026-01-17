@@ -49,8 +49,11 @@ export default styled.Pressable<{ $isEmpty: boolean; $isSelected: boolean }>`
 	aspect-ratio: 1 / 1.5;
 	margin: 2px;
 	border-radius: 12px;
-	background-color: ${({ $isEmpty, $isSelected, theme }) =>
-		$isEmpty ? `${theme.surface.default}30` : $isSelected ? theme.accent.primary : theme.surface.default};
+	background-color: ${({ $isEmpty, $isSelected, theme }) => {
+		if ($isEmpty) return `${theme.surface.default}30`;
+
+		return $isSelected ? theme.accent.primary : theme.surface.default;
+	}};
 	padding: 6px;
 	display: flex;
 	flex-direction: column;
