@@ -4,8 +4,8 @@ import { useAppModel } from '@models';
 import { isHeaderSection } from '../utils';
 
 import type { ViewToken } from '@shopify/flash-list';
-import type { HeaderSectionT } from '../transactions.d';
-import type { TransactionProps } from '../transaction-card/transaction-card.d';
+import type { HeaderSectionT } from '../txs-list.d';
+import type { TransactionProps } from '../components/transaction-card/transaction-card.d';
 
 type ViewableItemsT = {
 	viewableItems: ViewToken<HeaderSectionT | TransactionProps>[];

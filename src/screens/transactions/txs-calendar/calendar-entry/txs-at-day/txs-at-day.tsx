@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Root, { EmptyView, EmptyText } from './txs-at-day.styles';
-import TransactionCard from '@screens/transactions/txs-list/transactions/transaction-card';
+import { TransactionCard } from '@screens/transactions/txs-list/components';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 

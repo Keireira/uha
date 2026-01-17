@@ -5,8 +5,8 @@ import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
 
 import useTransactions from '@hooks/use-transactions';
 
-import type { HeaderSectionT, TI18nT } from '../transactions.d';
-import type { TransactionProps } from '../transaction-card/transaction-card.d';
+import type { HeaderSectionT, TI18nT } from '../txs-list.d';
+import type { TransactionProps } from '../components/transaction-card/transaction-card.d';
 
 /* Generate transactions sections */
 const makeGroups = groupBy((tx: TransactionProps) => {
