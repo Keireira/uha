@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { useUnit } from 'effector-react';
 // import { Platform } from 'react-native';
+
+import { useAppModel } from '@models';
 
 import { Navbar, Crossroad } from '@elements';
 import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
 // import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 
 const TabLayout = () => {
+	const { view_mode } = useAppModel();
+	const viewMode = useUnit(view_mode.$mode);
+
 	const [isModalOpened, setIsModalOpened] = useState(false);
 	// const isiOS26 = Platform.OS === 'ios' && Number.parseInt(`${Platform.Version}`, 10) >= 26;
 
@@ -48,11 +54,9 @@ const TabLayout = () => {
 					<Navbar>
 						<TabTrigger name="home" href="/" asChild>
 							<Navbar.Button>
-								<Navbar.Icon name="list" />
+								<Navbar.Icon name={viewMode === 'list' ? 'list' : 'calendar'} />
 							</Navbar.Button>
 						</TabTrigger>
-
-						<Navbar.CircleButton onPress={() => setIsModalOpened(true)} />
 
 						<TabTrigger name="library" href="/library" asChild>
 							<Navbar.Button>
@@ -65,6 +69,8 @@ const TabLayout = () => {
 								<Navbar.Icon name="settings" />
 							</Navbar.Button>
 						</TabTrigger>
+
+						<Navbar.CircleButton onPress={() => setIsModalOpened(true)} />
 
 						<TabTrigger name="add-category" href="/add-category" />
 						<TabTrigger name="add-service" href="/add-service" />

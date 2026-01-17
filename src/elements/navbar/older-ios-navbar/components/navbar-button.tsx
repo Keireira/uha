@@ -13,7 +13,13 @@ const Root = styled.Pressable`
 	justify-content: center;
 `;
 
-const NavbarButton = ({ style, ...props }: React.ComponentProps<typeof Root>) => {
+type Props = React.PropsWithChildren<
+	{
+		isFocused?: boolean;
+	} & React.ComponentProps<typeof Root>
+>;
+
+const NavbarButton = ({ style, children, isFocused, ...props }: Props) => {
 	const onPressHd = (event: GestureResponderEvent) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
@@ -22,7 +28,13 @@ const NavbarButton = ({ style, ...props }: React.ComponentProps<typeof Root>) =>
 		}
 	};
 
-	return <Root {...props} onPress={onPressHd} />;
+	return (
+		<Root {...props} onPress={onPressHd}>
+			{React.Children.map(children, (child) =>
+				React.isValidElement(child) ? React.cloneElement(child as React.ReactElement<Props>, { isFocused }) : child
+			)}
+		</Root>
+	);
 };
 
 export default NavbarButton;
