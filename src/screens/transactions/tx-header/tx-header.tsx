@@ -40,6 +40,7 @@ const TxHeader = () => {
 		<Root>
 			<TitleInteractive />
 
+			{/* @TODO: Check if glass effect is supported, if not, use BlurView */}
 			<GlassWrapper>
 				<GlassItem isInteractive $side="left">
 					{viewMode === 'list' && (

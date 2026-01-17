@@ -241,6 +241,11 @@
   },
   "calendar": {
     "total": "Total",
-    "empty": "End of History"
+    "empty_1": "End of History",
+    "empty_2": "This is the End",
+    "empty_3": "Nothing to see here",
+    "empty_4": "No transactions beyond this point",
+    "empty_5": "Point of no return\n>>PONR",
+    "empty_6": "The Blackwall is near"
   }
 }

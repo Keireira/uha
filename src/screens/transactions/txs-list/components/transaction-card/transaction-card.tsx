@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { randomInt } from '@lib';
 import logos from '@assets/logos';
 import { useSettingsValue } from '@hooks';
 
@@ -9,10 +10,6 @@ import Root, { LogoSection, DescSection, PriceSection, BottomText } from './tran
 import type { TransactionProps } from './transaction-card.d';
 
 const STUB_KZT_RATE = 514.1;
-
-const randomInt = (min: number, max: number) => {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 
 /*
  * @TODO:

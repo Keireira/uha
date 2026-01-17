@@ -8,7 +8,6 @@ import { useCalendarBones } from './hooks';
 import { useScrollDirection } from '@hooks';
 
 import Day from './day';
-import Weekdays from './weekdays';
 import TxsAtDay from './txs-at-day';
 import { ScrollView, useWindowDimensions } from 'react-native';
 import Root, { CalendarGrid, WeekRow } from './calendar-entry.styles';
@@ -37,8 +36,6 @@ const CalendarEntry = ({ monthDate }: Props) => {
 
 	return (
 		<Root>
-			<Weekdays />
-
 			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} onScroll={handleScroll}>
 				<CalendarGrid>
 					{calendar.map((week) => (

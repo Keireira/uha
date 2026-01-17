@@ -8,3 +8,7 @@ export const Page = styled.View`
 export const Pager = styled(PagerView)`
 	flex: 1;
 `;
+
+export default styled.View`
+	flex: 1;
+`;

@@ -20,4 +20,5 @@ export const WeekdayCell = styled.View`
 export default styled.View`
 	flex-direction: row;
 	margin-bottom: 8px;
+	padding-horizontal: 16px;
 `;

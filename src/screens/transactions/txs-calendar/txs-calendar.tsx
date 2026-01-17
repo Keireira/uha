@@ -4,9 +4,10 @@ import { useUnit } from 'effector-react';
 
 import { useAppModel } from '@models';
 
+import Weekdays from './weekdays';
 import EmptyEntry from './empty-entry';
 import CalendarEntry from './calendar-entry';
-import { Pager, Page } from './txs-calendar.styles';
+import Root, { Pager, Page } from './txs-calendar.styles';
 
 import type { PagerRef } from './txs-calendar.d';
 import type { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
@@ -61,26 +62,30 @@ const TxsCalendar = () => {
 	};
 
 	return (
-		<Pager
-			ref={pagerRef}
-			pageMargin={0}
-			initialPage={1}
-			layoutDirection="ltr"
-			orientation="horizontal"
-			onPageSelected={onPageSelectedHd}
-		>
-			<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				{isBefore(previousMonth, minActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={previousMonth} />}
-			</Page>
+		<Root>
+			<Weekdays />
 
-			<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				<CalendarEntry monthDate={currentMonth} />
-			</Page>
+			<Pager
+				ref={pagerRef}
+				pageMargin={0}
+				initialPage={1}
+				layoutDirection="ltr"
+				orientation="horizontal"
+				onPageSelected={onPageSelectedHd}
+			>
+				<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+					{isBefore(previousMonth, minActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={previousMonth} />}
+				</Page>
 
-			<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-				{isAfter(nextMonth, maxActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={nextMonth} />}
-			</Page>
-		</Pager>
+				<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+					<CalendarEntry monthDate={currentMonth} />
+				</Page>
+
+				<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
+					{isAfter(nextMonth, maxActiveDate) ? <EmptyEntry /> : <CalendarEntry monthDate={nextMonth} />}
+				</Page>
+			</Pager>
+		</Root>
 	);
 };
 

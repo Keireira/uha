@@ -2,6 +2,7 @@ import { flatten } from 'ramda';
 import { useState, useEffect } from 'react';
 
 import db from '@db';
+import { randomInt } from '@lib';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { addDays, subDays, addMonths, addYears, addWeeks } from 'date-fns';
 import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
@@ -13,10 +14,6 @@ const BILLING_CYCLES = {
 	months: { min: 1, max: 12 },
 	years: { min: 1, max: 1 }
 } as const;
-
-const randomInt = (min: number, max: number) => {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 
 const createBillingCycleType = () => {
 	return Object.keys(BILLING_CYCLES)[
