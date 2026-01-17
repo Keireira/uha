@@ -14,7 +14,7 @@ import {
 import useTransactions from '@hooks/use-transactions';
 
 const useSummariesQuery = () => {
-	const transactions = useTransactions();
+	const transactions = useTransactions('useSummariesQuery');
 
 	const { tx_dates, view_mode } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);

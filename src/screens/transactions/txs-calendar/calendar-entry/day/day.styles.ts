@@ -23,7 +23,9 @@ export const LogoContainer = styled.View`
 `;
 
 export const OverflowText = styled(SmallText).attrs({
-	$bold: true
+	$bold: true,
+	numberOfLines: 1,
+	ellipsizeMode: 'clip'
 })`
 	color: ${({ theme }) => theme.static.white};
 	transform: rotate(-45deg);

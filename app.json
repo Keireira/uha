@@ -35,6 +35,7 @@
       "expo-router",
       "expo-dev-client",
       "expo-localization",
+      "@react-native-community/datetimepicker",
       [
         "@howincodes/expo-dynamic-app-icon",
         {

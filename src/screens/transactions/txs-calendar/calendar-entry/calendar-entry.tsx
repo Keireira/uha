@@ -9,6 +9,7 @@ import { useScrollDirection } from '@hooks';
 
 import Day from './day';
 import TxsAtDay from './txs-at-day';
+import EmptyEntry from '../empty-entry';
 import { ScrollView, useWindowDimensions } from 'react-native';
 import Root, { CalendarGrid, WeekRow } from './calendar-entry.styles';
 
@@ -17,14 +18,15 @@ import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const EMPTY_TXS: PreparedDbTxT[] = [];
 
-const CalendarEntry = ({ monthDate }: Props) => {
+const CalendarEntry = ({ monthDate, transactions }: Props) => {
 	const { width } = useWindowDimensions();
 	const handleScroll = useScrollDirection();
 
 	const { tx_dates } = useAppModel();
 	const selectedDate = useUnit(tx_dates.selected.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const { txsByDate, calendar } = useCalendarBones(monthDate);
+	const isTerminationView = useUnit(tx_dates.is_termination_view.$value);
+	const { txsByDate, calendar } = useCalendarBones(monthDate, transactions);
 
 	const selectedDateTxs = useMemo(() => {
 		return txsByDate[lightFormat(selectedDate, 'dd-MM-yyyy')];
@@ -33,6 +35,10 @@ const CalendarEntry = ({ monthDate }: Props) => {
 	const iconSize = useMemo(() => {
 		return roundToEven((width / 7) * 0.6);
 	}, [width]);
+
+	if (isTerminationView) {
+		return <EmptyEntry />;
+	}
 
 	return (
 		<Root>

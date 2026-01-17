@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useAppModel } from '@models';
 import * as Crypto from 'expo-crypto';
 import { useUnit } from 'effector-react';
-import { startOfToday, startOfTomorrow, startOfMonth, isBefore, differenceInSeconds } from 'date-fns';
+import { startOfToday, startOfTomorrow, startOfMonth, isBefore, differenceInSeconds, format } from 'date-fns';
 
 import useMaxTxDate from './use-max-tx-date';
 import { advanceDate, debugLogging } from './utils';
@@ -60,12 +60,12 @@ const createFutureTxs = (subscriptions: PreparedSubscriptionT[], maxPaymentDate:
 	return futureTxs;
 };
 
-const useCreatePhantomTxs = () => {
+const useCreatePhantomTxs = (debugLabel: string) => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
 	const preparedSubscriptions = useSubscriptionsQuery();
-	const maxDate = useMaxTxDate(preparedSubscriptions);
+	const maxDate = useMaxTxDate(preparedSubscriptions, debugLabel);
 
 	if (__DEV__ && WITH_LOGS) {
 		debugLogging(maxDate, preparedSubscriptions);

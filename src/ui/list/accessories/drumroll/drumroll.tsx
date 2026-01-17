@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { frame } from '@expo/ui/swift-ui/modifiers';
+
 import { View } from 'react-native';
 import { Host, BottomSheet, Picker } from '@expo/ui/swift-ui';
 import { Trigger, TriggerText } from './drumroll.styles';
@@ -27,7 +29,7 @@ const DrumrollAccessory = ({ actions, selectedIndex, trigger, onPress }: Accesso
 								variant="wheel"
 								selectedIndex={selectedIndex}
 								onOptionSelected={onPress}
-								style={{ minHeight: 200 }}
+								modifiers={[frame({ minHeight: 200 })]}
 							/>
 						</Host>
 					</View>

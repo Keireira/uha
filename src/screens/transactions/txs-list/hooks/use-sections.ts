@@ -37,7 +37,7 @@ const calcTotalAmount = (txs: TransactionProps[]) => {
 
 const useTransactionsSections = () => {
 	const { t } = useTranslation();
-	const transactions = useTransactions();
+	const transactions = useTransactions('useTransactionsSections');
 
 	const sections = useMemo(() => {
 		const groupedByDate = makeGroups(transactions);

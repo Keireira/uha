@@ -1,5 +1,5 @@
 import { createEvent, createStore, sample } from 'effector';
-import { startOfMonth, endOfMonth, startOfToday } from 'date-fns';
+import { startOfMonth, endOfMonth, startOfToday, addMonths, subMonths, isAfter, isBefore } from 'date-fns';
 
 const createTxDatesModel = () => {
 	const $focusedDate = createStore<Date>(startOfToday());
@@ -42,6 +42,23 @@ const createTxDatesModel = () => {
 		target: $minActiveDate
 	});
 
+	const $isTerminationView = createStore<boolean>(false);
+
+	sample({
+		clock: [$activeMonth, $minActiveDate, $maxActiveDate],
+		source: {
+			activeMonth: $activeMonth,
+			minActiveDate: $minActiveDate,
+			maxActiveDate: $maxActiveDate
+		},
+		fn: ({ activeMonth, minActiveDate, maxActiveDate }) => {
+			const nextMaxMonth = addMonths(activeMonth, 1);
+
+			return isBefore(activeMonth, minActiveDate) || isAfter(nextMaxMonth, maxActiveDate);
+		},
+		target: $isTerminationView
+	});
+
 	return {
 		/* currently shown month in the list view */
 		focused: {
@@ -52,6 +69,10 @@ const createTxDatesModel = () => {
 		selected: {
 			$value: $selectedDate,
 			set: setSelectedDate
+		},
+		/* To check whether or not we on the termination views of calendar */
+		is_termination_view: {
+			$value: $isTerminationView
 		},
 		/* Calendar month that is shown (as primary calendar) in the calendar view */
 		activeMonth: {
