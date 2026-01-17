@@ -214,6 +214,9 @@
     "ZWG": "Zimbabwean Gold"
   },
   "dates": {
+    "month": "Month",
+    "year": "Year",
+    "day": "Day",
     "today": "Today",
     "tomorrow": "Tomorrow",
     "yesterday": "Yesterday"
@@ -233,9 +236,7 @@
     "view_mode": {
       "list": "List",
       "calendar": "Calendar",
-      "subscriptions": "Subscriptions",
-      "month": "That month",
-      "year": "That year"
+      "subscriptions": "Subscriptions"
     }
   },
   "calendar": {

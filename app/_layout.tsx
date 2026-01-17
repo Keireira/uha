@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import appModel from '@models';
 import { useFonts } from 'expo-font';
@@ -39,21 +39,24 @@ const RootLayout = () => {
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
-	const isReadyToGo = loaded && seeded && areMigrationsReady;
+	const isAppReadyToGo = useMemo(() => {
+		return loaded && seeded && areMigrationsReady;
+	}, [loaded, seeded, areMigrationsReady]);
 
 	useEffect(() => {
-		if (!isReadyToGo) return;
+		if (!isAppReadyToGo) return;
 
 		SplashScreen.hideAsync();
-	}, [isReadyToGo]);
+	}, [isAppReadyToGo]);
 
-	if (!isReadyToGo) {
+	if (!isAppReadyToGo) {
 		return null;
 	}
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
+				{/* @TODO: Move to hooks & preload as well */}
 				<SyncSettings />
 
 				<ThemeProvider theme={theme}>

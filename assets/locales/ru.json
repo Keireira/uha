@@ -215,6 +215,9 @@
     "ZWG": "Зимбабвийское золото"
   },
   "dates": {
+    "month": "Месяц",
+    "year": "Год",
+    "day": "День",
     "today": "Сегодня",
     "tomorrow": "Завтра",
     "yesterday": "Вчера"
@@ -234,9 +237,7 @@
     "view_mode": {
       "list": "Список",
       "calendar": "Календарь",
-      "subscriptions": "Подписки",
-      "month": "Этот месяц",
-      "year": "Этот год"
+      "subscriptions": "Подписки"
     }
   },
   "calendar": {

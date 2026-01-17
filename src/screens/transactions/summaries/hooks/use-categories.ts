@@ -1,29 +1,10 @@
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 
-import type { SummariesQueryReturnT } from './use-summaries';
+import type { CategoryAccumulatorT, TransactionT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
 
 const DEFAULT_DENOMINATOR = 1;
 const __STUB_COLOR = '#ffffff';
-
-type CategoryT = {
-	id: string;
-	amount: number;
-	color: string;
-};
-
-type CategoryAccumulatorT = {
-	total: number;
-	byCategoryId: Record<string, CategoryT>;
-};
-
-type TransactionT = SummariesQueryReturnT['month'][number] | SummariesQueryReturnT['year'][number];
-
-type SummaryReturnT = {
-	formattedDate: string;
-	total: number;
-	categories: CategoryT[];
-};
 
 const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
@@ -66,13 +47,25 @@ const computeSummary = (data: TransactionT[]) => {
  * @TODO:
  *	- add support of RECALC
  */
+export const useDay = (transactions: SummariesQueryReturnT): SummaryReturnT => {
+	const summary = useMemo(() => computeSummary(transactions.day), [transactions.day]);
+	const formattedDate = useMemo(() => format(transactions.dates.day, 'dd'), [transactions.dates.day]);
+
+	return {
+		...summary,
+		formattedDate,
+		rawDate: transactions.dates.day
+	};
+};
+
 export const useMonth = (transactions: SummariesQueryReturnT): SummaryReturnT => {
 	const summary = useMemo(() => computeSummary(transactions.month), [transactions.month]);
 	const formattedDate = useMemo(() => format(transactions.dates.month, 'MMMM'), [transactions.dates.month]);
 
 	return {
 		...summary,
-		formattedDate
+		formattedDate,
+		rawDate: transactions.dates.month
 	};
 };
 
@@ -82,6 +75,7 @@ export const useYear = (transactions: SummariesQueryReturnT): SummaryReturnT => 
 
 	return {
 		...summary,
-		formattedDate
+		formattedDate,
+		rawDate: transactions.dates.year
 	};
 };

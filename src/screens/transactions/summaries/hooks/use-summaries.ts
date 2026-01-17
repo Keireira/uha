@@ -4,6 +4,7 @@ import { useUnit } from 'effector-react';
 import {
 	format,
 	interval,
+	isSameDay,
 	isWithinInterval,
 	startOfMonth as startOfMonthFn,
 	endOfMonth as endOfMonthFn,
@@ -18,6 +19,7 @@ const useSummariesQuery = () => {
 	const { tx_dates, view_mode } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const selectedDate = useUnit(tx_dates.selected.$value);
 	const viewMode = useUnit(view_mode.$mode);
 
 	/*
@@ -44,6 +46,10 @@ const useSummariesQuery = () => {
 		[startOfMonth]
 	);
 
+	const transactionsDay = useMemo(() => {
+		return transactions.filter((tx) => isSameDay(new Date(tx.date), selectedDate));
+	}, [selectedDate, transactions]);
+
 	const transactionsMonth = useMemo(() => {
 		const filteredTxs = transactions.filter((tx) =>
 			isWithinInterval(new Date(tx.date), interval(startOfMonth, endOfMonth))
@@ -63,15 +69,15 @@ const useSummariesQuery = () => {
 	}, [recalcYearKey, transactions.length]);
 
 	return {
+		day: transactionsDay,
 		year: transactionsYear,
 		month: transactionsMonth,
 		dates: {
+			day: selectedDate,
 			month: startOfMonth,
 			year: startOfYear
 		}
 	};
 };
-
-export type SummariesQueryReturnT = ReturnType<typeof useSummariesQuery>;
 
 export default useSummariesQuery;
