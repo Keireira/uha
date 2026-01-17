@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
 import { asc, like } from 'drizzle-orm';
-import { db } from '@src/sql-migrations';
+
+import db from '@db';
 import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 

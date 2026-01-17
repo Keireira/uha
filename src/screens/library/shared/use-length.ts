@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { db } from '@src/sql-migrations';
+import db from '@db';
 
 import type { Table } from 'drizzle-orm';
 

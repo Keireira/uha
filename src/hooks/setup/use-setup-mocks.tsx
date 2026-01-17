@@ -1,7 +1,7 @@
 import { flatten } from 'ramda';
 import { useState, useEffect } from 'react';
 
-import { db } from '@src/sql-migrations';
+import db from '@db';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { addDays, subDays, addMonths, addYears, addWeeks } from 'date-fns';
 import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
@@ -98,7 +98,7 @@ const buildMockTransactions = (subscriptions: SubscriptionT[]) => {
 	return flatten(transactions);
 };
 
-const useMockedSubscriptions = () => {
+const useSetupMocks = (areMigrationsReady: boolean) => {
 	const [seeded, setSeeded] = useState(false);
 
 	const { data: services } = useLiveQuery(db.select().from(servicesTable));
@@ -106,7 +106,7 @@ const useMockedSubscriptions = () => {
 
 	useEffect(() => {
 		const seedMockData = async () => {
-			if (!services.length || !tenders.length || seeded) return;
+			if (!services.length || !tenders.length || seeded || !areMigrationsReady) return;
 
 			await db.transaction(async (tx) => {
 				await tx.delete(transactionsTable);
@@ -125,15 +125,9 @@ const useMockedSubscriptions = () => {
 		};
 
 		seedMockData();
-	}, [services, tenders, seeded]);
+	}, [services, tenders, seeded, areMigrationsReady]);
 
 	return seeded;
 };
 
-const SetupMocks = () => {
-	useMockedSubscriptions();
-
-	return null;
-};
-
-export default SetupMocks;
+export default useSetupMocks;

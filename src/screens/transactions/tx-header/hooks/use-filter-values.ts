@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { db } from '@src/sql-migrations';
+import db from '@db';
 import { eq, isNull, inArray } from 'drizzle-orm';
 import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
 

@@ -1,5 +1,5 @@
 import { categoriesTable, tendersTable, servicesTable } from '@db/schema';
-import { db as drizzleDB } from '@src/sql-migrations';
+import drizzleDB from '@db';
 
 import type { InferSelectModel } from 'drizzle-orm';
 

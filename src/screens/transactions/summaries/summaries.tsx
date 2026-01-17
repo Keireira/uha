@@ -1,12 +1,19 @@
 import React from 'react';
+import { useUnit } from 'effector-react';
+import { useTranslation } from 'react-i18next';
 import { useYear, useMonth, useSummariesQuery, useSummaryAnimations } from './hooks';
 
+import { useAppModel } from '@models';
 import { useSettingsValue } from '@hooks';
 
 import { Text } from '@ui';
 import Root, { SummaryItem, CategoryChips, CategoryChip, DateText } from './summaries.styles';
 
 const Summaries = () => {
+	const { t } = useTranslation();
+	const { view_mode } = useAppModel();
+	const viewMode = useUnit(view_mode.$mode);
+
 	const transactions = useSummariesQuery();
 	const animations = useSummaryAnimations();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
@@ -25,7 +32,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<DateText>{month.formattedDate}</DateText>
+				<DateText>{viewMode === 'list' ? month.formattedDate : t('transactions.view_mode.month')}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{month.categories.map((category) => {
@@ -51,7 +58,7 @@ const Summaries = () => {
 					})}
 				</Text>
 
-				<DateText>{year.formattedDate}</DateText>
+				<DateText>{viewMode === 'list' ? year.formattedDate : t('transactions.view_mode.year')}</DateText>
 
 				<CategoryChips style={animations.categoryChips}>
 					{year.categories.map((category) => {

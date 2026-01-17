@@ -233,7 +233,9 @@
     "view_mode": {
       "list": "List",
       "calendar": "Calendar",
-      "subscriptions": "Subscriptions"
+      "subscriptions": "Subscriptions",
+      "month": "That month",
+      "year": "That year"
     }
   },
   "calendar": {

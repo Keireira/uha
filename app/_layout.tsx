@@ -8,9 +8,10 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
-import SqlMigrations from '@src/sql-migrations';
 import SyncSettings from '@src/sync-settings';
-import SetupMocks from '@src/setup-mocks';
+
+import { useSetupMocks, useSqlMigrations } from '@hooks/setup';
+
 import '@src/i18n';
 
 import { useGetTheme } from '@themes';
@@ -29,28 +30,30 @@ setNotificationHandler({
 const RootLayout = () => {
 	useFactoryModel(appModel);
 	const theme = useGetTheme();
+	const areMigrationsReady = useSqlMigrations();
+
+	/* Mocks */
+	const seeded = useSetupMocks(areMigrationsReady);
 
 	const [loaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
+	const isReadyToGo = loaded && seeded && areMigrationsReady;
+
 	useEffect(() => {
-		if (!loaded) return;
+		if (!isReadyToGo) return;
 
 		SplashScreen.hideAsync();
-	}, [loaded]);
+	}, [isReadyToGo]);
 
-	if (!loaded) {
+	if (!isReadyToGo) {
 		return null;
 	}
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<SqlMigrations>
-					<SetupMocks />
-				</SqlMigrations>
-
 				<SyncSettings />
 
 				<ThemeProvider theme={theme}>

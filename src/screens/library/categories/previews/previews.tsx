@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
+import db from '@db';
 import { asc, like } from 'drizzle-orm';
-import { db } from '@src/sql-migrations';
 import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 

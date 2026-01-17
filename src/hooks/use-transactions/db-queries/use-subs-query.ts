@@ -11,7 +11,7 @@ import {
 	transactionsTable,
 	subscriptionsTable
 } from '@db/schema';
-import { db } from '@src/sql-migrations';
+import db from '@db';
 import { buildWhereConditions } from './utils';
 
 import type { PreparedSubscriptionT } from '../types.d';

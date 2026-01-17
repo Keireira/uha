@@ -234,7 +234,9 @@
     "view_mode": {
       "list": "Список",
       "calendar": "Календарь",
-      "subscriptions": "Подписки"
+      "subscriptions": "Подписки",
+      "month": "Этот месяц",
+      "year": "Этот год"
     }
   },
   "calendar": {
