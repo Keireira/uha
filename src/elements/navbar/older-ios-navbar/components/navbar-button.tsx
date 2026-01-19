@@ -19,17 +19,24 @@ type Props = React.PropsWithChildren<
 	} & React.ComponentProps<typeof Root>
 >;
 
-const NavbarButton = ({ style, children, isFocused, ...props }: Props) => {
+const NavbarButton = ({ style, children, isFocused, onPress, onLongPress, ...props }: Props) => {
 	const onPressHd = (event: GestureResponderEvent) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-		if (props.onPress) {
-			props.onPress(event);
+		if (onPress) {
+			onPress(event);
 		}
 	};
 
+	const onLongPressHd = (event: GestureResponderEvent) => {
+		if (!onLongPress) return;
+
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+		onLongPress(event);
+	};
+
 	return (
-		<Root {...props} onPress={onPressHd}>
+		<Root {...props} onPress={onPressHd} onLongPress={onLongPressHd}>
 			{React.Children.map(children, (child) =>
 				React.isValidElement(child) ? React.cloneElement(child as React.ReactElement<Props>, { isFocused }) : child
 			)}

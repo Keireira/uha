@@ -12,8 +12,8 @@ import useCalendarTxs from './use-calendar-txs';
 
 import type { CalendarEntryT } from '../calendar-entry.d';
 
-const useCalendarBones = (monthDate: Date) => {
-	const txsByDate = useCalendarTxs(monthDate);
+const useCalendarBones = (monthDate: Date, transactions: PreparedDbTxT[]) => {
+	const txsByDate = useCalendarTxs(monthDate, transactions);
 
 	const calendar = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(

@@ -43,7 +43,7 @@ const findMaxTxDate = (subscriptions: PreparedSubscriptionT[]) => {
 	return maxR(endOfMonth(minHorizon), endOfMonth(maxHorizon)) satisfies Date;
 };
 
-const useMaxTxDate = (subscriptions: PreparedSubscriptionT[]) => {
+const useMaxTxDate = (subscriptions: PreparedSubscriptionT[], debugLabel?: string) => {
 	const maxDate = useMemo(() => findMaxTxDate(subscriptions), [subscriptions]);
 
 	return maxDate;

@@ -9,5 +9,6 @@ export default styled.View`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-bottom: 111px;
 	flex: 1;
 `;

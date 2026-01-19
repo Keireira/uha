@@ -24,7 +24,7 @@ export const CategoryChips = styled(Animated.View)`
 	margin-top: 8px;
 `;
 
-export default styled(Animated.View)<{ $isDisabled: boolean }>`
+export default styled(Animated.View)<{ $isDisabled?: boolean }>`
 	display: flex;
 	flex: 1;
 	gap: 4px;
