@@ -1,7 +1,7 @@
 {
   "expo": {
     "slug": "uha",
-    "version": "1.3.6",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
@@ -35,7 +35,6 @@
       "expo-router",
       "expo-dev-client",
       "expo-localization",
-      "@react-native-community/datetimepicker",
       [
         "@howincodes/expo-dynamic-app-icon",
         {

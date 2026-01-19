@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useAppModel } from '@models';
 import { isHeaderSection } from './utils';
 import { useScrollDirection } from '@hooks';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
@@ -11,7 +12,7 @@ import { HeaderCard, TransactionCard } from './components';
 import Root, { Masked, GroupedListContainer, ItemSeparator, BottomSpacer } from './txs-list.styles';
 
 import type { HeaderSectionT } from './txs-list.d';
-import type { ListRenderItemInfo } from '@shopify/flash-list';
+import type { ListRenderItemInfo, FlashListRef } from '@shopify/flash-list';
 import type { TransactionProps } from './components/transaction-card/transaction-card.d';
 
 const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | TransactionProps>) => {
@@ -23,12 +24,21 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 };
 
 const TxsList = () => {
-	const listRef = useRef(null);
+	const listRef = useRef<FlashListRef<HeaderSectionT | TransactionProps>>(null);
 	const insets = useSafeAreaInsets();
+	const { view_mode } = useAppModel();
 	const handleScroll = useScrollDirection();
 
 	const sections = useTransactionsSections();
 	const handleViewableItemsChanged = useGetViewableItem();
+
+	React.useEffect(() => {
+		const unsubscribe = view_mode.list.scrollToTop.watch(() => {
+			listRef.current?.scrollToOffset({ offset: 0, animated: true });
+		});
+
+		return () => unsubscribe();
+	}, [view_mode.list.scrollToTop]);
 
 	return (
 		<Masked

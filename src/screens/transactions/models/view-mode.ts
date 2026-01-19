@@ -23,9 +23,14 @@ const createViewModeModel = () => {
 		target: $viewMode
 	});
 
+	const scrollToTop = createEvent();
+
 	return {
 		$mode: $viewMode,
-		set: setViewMode
+		set: setViewMode,
+		list: {
+			scrollToTop
+		}
 	};
 };
 

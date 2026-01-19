@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useUnit } from 'effector-react';
-// import { Platform } from 'react-native';
+import { startOfToday, startOfMonth } from 'date-fns';
 
 import { useAppModel } from '@models';
 
@@ -9,41 +9,29 @@ import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
 // import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 
 const TabLayout = () => {
-	const { view_mode } = useAppModel();
+	const { view_mode, tx_dates } = useAppModel();
 	const viewMode = useUnit(view_mode.$mode);
 
 	const [isModalOpened, setIsModalOpened] = useState(false);
-	// const isiOS26 = Platform.OS === 'ios' && Number.parseInt(`${Platform.Version}`, 10) >= 26;
 
-	// if (isiOS26) {
-	// 	return (
-	// 		<NativeTabs minimizeBehavior="onScrollDown">
-	// 			<NativeTabs.Trigger name="index">
-	// 				<Icon sf="list.bullet" />
-	// 				<Label hidden>Home</Label>
-	// 			</NativeTabs.Trigger>
+	const onTransactionsPress = () => {
+		if (viewMode === 'list') {
+			view_mode.list.scrollToTop();
+		}
 
-	// 			<NativeTabs.Trigger name="calendar">
-	// 				<Icon sf="calendar" />
-	// 				<Label hidden>Home</Label>
-	// 			</NativeTabs.Trigger>
+		if (viewMode === 'calendar') {
+			const today = startOfToday();
 
-	// 			<NativeTabs.Trigger name="library">
-	// 				<Icon sf="books.vertical" />
-	// 				<Label hidden>Library</Label>
-	// 			</NativeTabs.Trigger>
+			tx_dates.selected.set(today);
+			tx_dates.activeMonth.set(startOfMonth(today));
+		}
+	};
 
-	// 			<NativeTabs.Trigger name="settings">
-	// 				<Icon sf="gearshape" />
-	// 				<Label hidden>Settings</Label>
-	// 			</NativeTabs.Trigger>
-
-	// 			<NativeTabs.Trigger name="search" role="search">
-	// 				<Icon sf="plus" />
-	// 			</NativeTabs.Trigger>
-	// 		</NativeTabs>
-	// 	);
-	// }
+	// const onTransactionsLongPress = () => {
+	// 	if (viewMode === 'calendar') {
+	// 		console.log('SHOW CONTEXT MENU WITH POSSIBLE VIEWS: list, calendar, subscriptions');
+	// 	}
+	// };
 
 	return (
 		<>
@@ -53,7 +41,8 @@ const TabLayout = () => {
 				<TabList asChild>
 					<Navbar>
 						<TabTrigger name="home" href="/" asChild>
-							<Navbar.Button>
+							{/* @TODO: Remove singleton later */}
+							<Navbar.Button onPress={onTransactionsPress} onLongPress={onTransactionsPress}>
 								<Navbar.Icon name={viewMode === 'list' ? 'list' : 'calendar'} />
 							</Navbar.Button>
 						</TabTrigger>

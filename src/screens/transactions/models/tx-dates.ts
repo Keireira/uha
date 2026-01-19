@@ -1,5 +1,5 @@
 import { createEvent, createStore, sample } from 'effector';
-import { startOfMonth, endOfMonth, startOfToday, addMonths, subMonths, isAfter, isBefore } from 'date-fns';
+import { startOfMonth, endOfMonth, startOfToday, addMonths, isAfter, isBefore } from 'date-fns';
 
 const createTxDatesModel = () => {
 	const $focusedDate = createStore<Date>(startOfToday());
