@@ -1,57 +1,22 @@
-import { useMemo, useCallback } from 'react';
-import { splitEvery, groupBy } from 'ramda';
-import {
-	format,
-	eachMonthOfInterval,
-	startOfYear,
-	endOfYear,
-	lightFormat,
-	interval,
-	isWithinInterval,
-	eachDayOfInterval,
-	startOfMonth,
-	endOfMonth
-} from 'date-fns';
+import { useMemo } from 'react';
+import { splitEvery } from 'ramda';
+import { format, eachMonthOfInterval, startOfYear, endOfYear, lightFormat, interval, isWithinInterval } from 'date-fns';
 
 import { useAppModel } from '@models';
 import { useUnit } from 'effector-react';
+import useDaysWithTxs from './use-days-with-txs';
 
-import type { HeaderRowT, QuarterRowT } from '../year.d';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
+import type { ItemT, HeaderRowT, QuarterRowT } from '../year.d';
+
+const LIST_KEY_PREFIX = 'calendar-year-quarter-month';
 
 const useCalendar = (transactions: PreparedDbTxT[]) => {
 	const { tx_dates } = useAppModel();
 	const maxDate = useUnit(tx_dates.maxActiveDate.$value);
 	const minDate = useUnit(tx_dates.minActiveDate.$value);
 
-	const withTransactions = useMemo(() => {
-		const makeGroups = groupBy((tx: PreparedDbTxT) => {
-			return lightFormat(tx.date, 'yyyy-MM-dd');
-		});
-
-		const groupedByDate = makeGroups(transactions);
-
-		const withTxs = Object.entries(groupedByDate).reduce(
-			(acc, [key, txs]) => {
-				if (!txs) return acc;
-
-				return {
-					...acc,
-					[key]: txs.length > 0
-				};
-			},
-			{} as Record<string, boolean>
-		);
-
-		return withTxs;
-	}, [transactions]);
-
-	const withTransactionsFn = useCallback(
-		(date: Date) => {
-			return withTransactions[lightFormat(date, 'yyyy-MM-dd')] ?? false;
-		},
-		[withTransactions]
-	);
+	const daysWithTxsFn = useDaysWithTxs(transactions);
 
 	const rows = useMemo(() => {
 		const allMonthsList = eachMonthOfInterval({
@@ -62,7 +27,7 @@ const useCalendar = (transactions: PreparedDbTxT[]) => {
 		const quarters = splitEvery(3, allMonthsList);
 		const years = splitEvery(4, quarters);
 
-		const flatten = years.flatMap((yearQuarters) => {
+		const flattenYears = years.flatMap((yearQuarters) => {
 			const january = yearQuarters[0][0];
 
 			const headerRow: HeaderRowT = {
@@ -70,41 +35,31 @@ const useCalendar = (transactions: PreparedDbTxT[]) => {
 				title: lightFormat(january, 'yyyy')
 			};
 
-			const quarterRows = yearQuarters.reduce((acc, quarter) => {
-				const quarterRow: QuarterRowT = {
-					kind: 'quarter',
-					data: quarter.map((month) => {
-						const isMonthInRange = isWithinInterval(month, interval(minDate, maxDate));
+			const quarterRows: QuarterRowT[] = [];
 
-						const daysWithTransactions = eachDayOfInterval({
-							start: startOfMonth(month),
-							end: endOfMonth(month)
-						}).filter(withTransactionsFn);
+			for (const quarter of yearQuarters) {
+				const mappedMonths = quarter.map((month) => ({
+					list_key: `${LIST_KEY_PREFIX}-${lightFormat(month, 'yyyy-MM')}`,
+					monthDate: month,
+					title: format(month, 'MMM'),
+					daysWithTxs: daysWithTxsFn(month),
+					isMonthInRange: isWithinInterval(month, interval(minDate, maxDate))
+				}));
 
-						return {
-							list_key: `calendar-year-quarter-month-${lightFormat(month, 'dd-MM-yyyy')}`,
-							monthDate: month,
-							isMonthInRange,
-							title: format(month, 'MMM'),
-							daysWithTransactions
-						};
-					})
-				};
+				const isQuarterInRange = mappedMonths.some((m) => m.isMonthInRange);
 
-				const withTransactionsInQuarter = quarterRow.data.some((month) => {
-					return isWithinInterval(month.monthDate, interval(minDate, maxDate));
-				});
-
-				return withTransactionsInQuarter ? [...acc, quarterRow] : acc;
-			}, [] as QuarterRowT[]);
+				if (isQuarterInRange) {
+					quarterRows.push(mappedMonths);
+				}
+			}
 
 			return [headerRow, ...quarterRows];
 		});
 
-		return flatten;
-	}, [minDate, maxDate, withTransactionsFn]);
+		return flattenYears;
+	}, [minDate, maxDate, daysWithTxsFn]);
 
-	return rows satisfies (HeaderRowT | QuarterRowT)[];
+	return rows satisfies ItemT[];
 };
 
 export default useCalendar;

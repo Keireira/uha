@@ -4,16 +4,14 @@ import Root, { DayNumber, Mark } from './day-preview.styles';
 
 import type { Props } from './day-preview.d';
 
-const DayPreview = ({ content, isSelected, isMonthInRange, withTransactions }: Props) => {
+const DayPreview = ({ content, isSelected, withTransactions }: Props) => {
 	if (!content) {
-		return <Root $isSelected={false} $isInRange={isMonthInRange} $isEmpty />;
+		return <Root $isSelected={false} $isEmpty />;
 	}
 
 	return (
-		<Root $isSelected={isSelected} $isInRange={isMonthInRange}>
-			<DayNumber $isSelected={isSelected} $isInRange={isMonthInRange}>
-				{content}
-			</DayNumber>
+		<Root $isSelected={isSelected}>
+			<DayNumber $isSelected={isSelected}>{content}</DayNumber>
 
 			{withTransactions && <Mark />}
 		</Root>

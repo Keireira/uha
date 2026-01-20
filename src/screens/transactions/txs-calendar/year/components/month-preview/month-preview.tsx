@@ -20,7 +20,7 @@ import type { QuarterRowDataT } from '../../year.d';
 
 type Props = QuarterRowDataT;
 
-const MonthPreview = ({ monthDate, daysWithTransactions, title, isMonthInRange }: Props) => {
+const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Props) => {
 	const { tx_dates, view_mode } = useAppModel();
 	const selectedDate = useUnit(tx_dates.selected.$value);
 
@@ -52,20 +52,19 @@ const MonthPreview = ({ monthDate, daysWithTransactions, title, isMonthInRange }
 	};
 
 	return (
-		<MonthCard onPress={onPressMonth} disabled={!isMonthInRange}>
-			<MonthHeader $isInRange={isMonthInRange}>{title}</MonthHeader>
+		<MonthCard onPress={onPressMonth} $isMonthInRange={isMonthInRange} disabled={!isMonthInRange}>
+			<MonthHeader>{title}</MonthHeader>
 
 			<DaysGrid>
 				{days.map((day) => {
 					const isSelected = isSameDayFn(day.raw, selectedDate);
-					const withTransactions = daysWithTransactions.includes(day.raw);
+					const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
 
 					return (
 						<DayPreview
 							key={day.item_key}
 							content={day.content}
 							isSelected={isSelected}
-							isMonthInRange={isMonthInRange}
 							withTransactions={withTransactions}
 						/>
 					);

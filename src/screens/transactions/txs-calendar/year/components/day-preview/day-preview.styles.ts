@@ -8,21 +8,15 @@ export const Mark = styled.View`
 	border-radius: 50px;
 `;
 
-export const DayNumber = styled(SmallText)<{ $isSelected: boolean; $isInRange: boolean }>`
-	color: ${({ $isSelected, $isInRange, theme }) => {
-		if (!$isInRange) return theme.text.secondary;
-		if ($isSelected) return theme.static.white;
-
-		return theme.text.primary;
-	}};
+export const DayNumber = styled(SmallText)<{ $isSelected: boolean }>`
+	color: ${({ $isSelected, theme }) => ($isSelected ? theme.static.white : theme.text.primary)};
 	font-weight: ${({ $isSelected }) => ($isSelected ? '700' : '400')};
 `;
 
-export default styled.View<{ $isSelected: boolean; $isInRange: boolean; $isEmpty?: boolean }>`
+export default styled.View<{ $isSelected: boolean; $isEmpty?: boolean }>`
 	width: 14.28%;
 	align-items: center;
 	justify-content: center;
-	opacity: ${({ $isInRange }) => ($isInRange ? 1 : 0.444)};
 	${({ $isSelected, theme }) => {
 		return $isSelected ? `background-color: ${theme.accent.primary};` : '';
 	}};

@@ -3,12 +3,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useCalendar } from './hooks';
 import { useScrollDirection } from '@hooks';
-import { getItemType, keyExtractor, renderQuarterRow } from './utils';
+import { isHeaderSection, getItemType, keyExtractor } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
 import Root, { BottomSpacer } from './year.styles';
+import { HeaderRow, QuarterRow } from './components';
 
-import type { Props } from './year.d';
+import type { Props, ItemT } from './year.d';
+import type { ListRenderItemInfo } from '@shopify/flash-list';
+
+const renderQuarterRow = ({ item }: ListRenderItemInfo<ItemT>) => {
+	if (isHeaderSection(item)) {
+		return <HeaderRow {...item} />;
+	}
+
+	return <QuarterRow quarterMonths={item} />;
+};
 
 const Year = ({ transactions }: Props) => {
 	const listRef = useRef(null);

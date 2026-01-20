@@ -11,15 +11,12 @@ export type HeaderRowT = {
 
 export type QuarterRowDataT = {
 	list_key: string;
-	monthDate: Date; // dd-MM-yyyy (3 months per row)
+	monthDate: Date; // 3 months per row
 	isMonthInRange: boolean;
 	title: string; // Sep
-	daysWithTransactions: Date[]; // dd-MM-yyyy[]
+	daysWithTxs: Set<string>; // dd-MM-yyyy[]
 };
 
-export type QuarterRowT = {
-	kind: 'quarter';
-	data: QuarterRowDataT[];
-};
+export type QuarterRowT = QuarterRowDataT[];
 
 export type ItemT = HeaderRowT | QuarterRowT;
