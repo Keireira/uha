@@ -1,11 +1,10 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { lightFormat, addMonths, subMonths, isAfter, isBefore } from 'date-fns';
+import { lightFormat, addMonths, subMonths, isAfter } from 'date-fns';
 import { useUnit } from 'effector-react';
 
 import { useAppModel } from '@models';
 
 import Weekdays from './weekdays';
-import EmptyEntry from './empty-entry';
 import CalendarEntry from './calendar-entry';
 import { Pager, Page } from './month.styles';
 
@@ -21,7 +20,7 @@ const Month = ({ transactions }: Props) => {
 	const minActiveDate = useUnit(tx_dates.minActiveDate.$value);
 
 	const isAtMaxBoundary = isAfter(addMonths(activeMonth, 1), maxActiveDate);
-	const isAtMinBoundary = isBefore(activeMonth, minActiveDate);
+	const isAtMinBoundary = !isAfter(activeMonth, minActiveDate);
 
 	/*
 	 * Unfortunately, if you swipe too fast, the pager will not be able to update the active month at time,
@@ -48,38 +47,14 @@ const Month = ({ transactions }: Props) => {
 
 	const onPageSelectedHd = (e: PagerViewOnPageSelectedEvent) => {
 		const position = e.nativeEvent.position;
-		console.log('PAGE SELECTED:', position);
-		// console.log(e.target);
 
-		// Block forward swipe at max boundary
-		if (isAtMaxBoundary && position === 2) {
-			pagerRef.current?.setPageWithoutAnimation(1);
-			return;
-		}
-
-		// Block backward swipe at min boundary
-		if (isAtMinBoundary && position === 0) {
-			pagerRef.current?.setPageWithoutAnimation(1);
-			return;
-		}
-
-		let nextMonth: Date | undefined;
-
-		if (position === 0) {
-			nextMonth = subMonths(activeMonth, 1);
-		} else if (position === 2) {
-			nextMonth = addMonths(activeMonth, 1);
-		}
-
-		if (!nextMonth) return;
-
-		if (position === 0) {
-			tx_dates.activeMonth.set(nextMonth);
+		if (position === 0 && !isAtMinBoundary) {
+			tx_dates.activeMonth.set(subMonths(activeMonth, 1));
 			pagerRef.current?.setPageWithoutAnimation(1);
 		}
 
-		if (position === 2 && !isAfter(currentMonth, subMonths(maxActiveDate, 1))) {
-			tx_dates.activeMonth.set(nextMonth);
+		if (position === 2 && !isAtMaxBoundary) {
+			tx_dates.activeMonth.set(addMonths(activeMonth, 1));
 			pagerRef.current?.setPageWithoutAnimation(1);
 		}
 	};
@@ -97,11 +72,7 @@ const Month = ({ transactions }: Props) => {
 				onPageSelected={onPageSelectedHd}
 			>
 				<Page key={`${lightFormat(previousMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-					{isBefore(subMonths(activeMonth, 1), minActiveDate) ? (
-						<EmptyEntry />
-					) : (
-						<CalendarEntry monthDate={previousMonth} transactions={transactions} />
-					)}
+					<CalendarEntry monthDate={previousMonth} transactions={transactions} />
 				</Page>
 
 				<Page key={`${lightFormat(currentMonth, 'dd-MM-yyyy')}_calendar_entry`}>
@@ -109,11 +80,7 @@ const Month = ({ transactions }: Props) => {
 				</Page>
 
 				<Page key={`${lightFormat(nextMonth, 'dd-MM-yyyy')}_calendar_entry`}>
-					{isAfter(currentMonth, subMonths(maxActiveDate, 1)) ? (
-						<EmptyEntry />
-					) : (
-						<CalendarEntry monthDate={nextMonth} transactions={transactions} />
-					)}
+					<CalendarEntry monthDate={nextMonth} transactions={transactions} />
 				</Page>
 			</Pager>
 		</>
