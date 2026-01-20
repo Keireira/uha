@@ -9,8 +9,6 @@ import useDaysWithTxs from './use-days-with-txs';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 import type { ItemT, HeaderRowT, QuarterRowT } from '../year.d';
 
-const LIST_KEY_PREFIX = 'calendar-year-quarter-month';
-
 const useCalendar = (transactions: PreparedDbTxT[]) => {
 	const { tx_dates } = useAppModel();
 	const maxDate = useUnit(tx_dates.maxActiveDate.$value);
@@ -39,7 +37,7 @@ const useCalendar = (transactions: PreparedDbTxT[]) => {
 
 			for (const quarter of yearQuarters) {
 				const mappedMonths = quarter.map((month) => ({
-					list_key: `${LIST_KEY_PREFIX}-${lightFormat(month, 'yyyy-MM')}`,
+					list_key: `calendar-year-quarter-month-${lightFormat(month, 'yyyy-MM')}`,
 					monthDate: month,
 					title: format(month, 'MMM'),
 					daysWithTxs: daysWithTxsFn(month),

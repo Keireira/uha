@@ -1,70 +1,64 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import {
-	lightFormat,
-	isSameDay as isSameDayFn,
-	endOfMonth,
-	startOfMonth,
 	endOfWeek,
+	endOfMonth,
+	lightFormat,
 	isSameMonth,
+	startOfMonth,
 	eachDayOfInterval,
 	eachWeekOfInterval
 } from 'date-fns';
+
+import { useAppModel } from '@models';
+
 import DayPreview from '../day-preview';
 import { MonthCard, MonthHeader, DaysGrid } from './month-preview.styles';
 
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
-
-import type { CalendarEntryT } from '../../../txs-calendar.d';
 import type { QuarterRowDataT } from '../../year.d';
 
-type Props = QuarterRowDataT;
-
-const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Props) => {
+const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
 	const { tx_dates, view_mode } = useAppModel();
-	const selectedDate = useUnit(tx_dates.selected.$value);
 
-	const weekStartDates = eachWeekOfInterval(
-		{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
-		{ weekStartsOn: 1 }
-	);
+	const days = useMemo(() => {
+		const weekStartDates = eachWeekOfInterval(
+			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
+			{ weekStartsOn: 1 }
+		);
 
-	const weeks = weekStartDates.map((weekStartDate) => {
-		const weekDays = eachDayOfInterval({
-			start: weekStartDate,
-			end: endOfWeek(weekStartDate, { weekStartsOn: 1 })
+		const allDays = weekStartDates.flatMap((weekStartDate) => {
+			const weekDays = eachDayOfInterval({
+				start: weekStartDate,
+				end: endOfWeek(weekStartDate, { weekStartsOn: 1 })
+			});
+
+			return weekDays.map((day) => ({
+				raw: day,
+				item_key: `calendar-year-day-${lightFormat(day, 'dd-MM-yyyy')}`,
+				content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
+			}));
 		});
 
-		const formattedDays = weekDays.map((day) => ({
-			raw: day,
-			item_key: `calendar-year-day-${lightFormat(day, 'dd-MM-yyyy')}`,
-			content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
-		}));
+		return allDays;
+	}, [monthDate]);
 
-		return formattedDays satisfies CalendarEntryT[];
-	});
-
-	const days = weeks.flatMap((week) => week);
-
-	const onPressMonth = () => {
+	const onPressMonth = useCallback(() => {
 		tx_dates.activeMonth.set(monthDate);
 		view_mode.calendar.setScale('month');
-	};
+	}, [monthDate, tx_dates, view_mode]);
 
 	return (
-		<MonthCard onPress={onPressMonth} $isMonthInRange={isMonthInRange} disabled={!isMonthInRange}>
+		<MonthCard $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>
 			<MonthHeader>{title}</MonthHeader>
 
 			<DaysGrid>
 				{days.map((day) => {
-					const isSelected = isSameDayFn(day.raw, selectedDate);
 					const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
 
 					return (
 						<DayPreview
 							key={day.item_key}
+							dayDate={day.raw}
 							content={day.content}
-							isSelected={isSelected}
 							withTransactions={withTransactions}
 						/>
 					);
