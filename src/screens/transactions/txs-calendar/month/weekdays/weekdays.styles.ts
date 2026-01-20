@@ -17,10 +17,8 @@ export const WeekdayCell = styled.View`
 	padding-vertical: 8px;
 `;
 
-export default styled.View<{ $isDisabled: boolean }>`
+export default styled.View`
 	flex-direction: row;
 	margin-bottom: 8px;
 	padding-horizontal: 16px;
-	opacity: ${({ $isDisabled }) => ($isDisabled ? 0.444 : 1)};
-	transition: opacity 166ms linear;
 `;

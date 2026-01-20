@@ -9,7 +9,6 @@ import { useScrollDirection } from '@hooks';
 
 import Day from './day';
 import TxsAtDay from './txs-at-day';
-import EmptyEntry from '../empty-entry';
 import { ScrollView, useWindowDimensions } from 'react-native';
 import Root, { CalendarGrid, WeekRow } from './calendar-entry.styles';
 
@@ -25,7 +24,6 @@ const CalendarEntry = ({ monthDate, transactions }: Props) => {
 	const { tx_dates } = useAppModel();
 	const selectedDate = useUnit(tx_dates.selected.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const isTerminationView = useUnit(tx_dates.is_termination_view.$value);
 	const { txsByDate, calendar } = useCalendarBones(monthDate, transactions);
 
 	const selectedDateTxs = useMemo(() => {
@@ -35,10 +33,6 @@ const CalendarEntry = ({ monthDate, transactions }: Props) => {
 	const iconSize = useMemo(() => {
 		return roundToEven((width / 7) * 0.6);
 	}, [width]);
-
-	if (isTerminationView) {
-		return <EmptyEntry />;
-	}
 
 	return (
 		<Root>

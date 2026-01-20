@@ -11,10 +11,9 @@ import { SummaryBlock } from './components';
 import { Props } from './summaries.d';
 
 const Summaries = ({ transactions }: Props) => {
-	const { view_mode, tx_dates } = useAppModel();
+	const { view_mode } = useAppModel();
 	const viewMode = useUnit(view_mode.$mode);
 	const isCalendarMode = viewMode === 'calendar';
-	const isTerminationView = useUnit(tx_dates.is_termination_view.$value);
 
 	const summaryTxs = useSummariesQuery(transactions);
 	const day = useDay(summaryTxs);
@@ -29,7 +28,7 @@ const Summaries = ({ transactions }: Props) => {
 					total={day.total}
 					formattedDate={day.formattedDate}
 					categories={day.categories}
-					isDisabled={!isSameMonth(day.rawDate, month.rawDate) || isTerminationView}
+					isDisabled={!isSameMonth(day.rawDate, month.rawDate)}
 				/>
 			)}
 
@@ -38,16 +37,9 @@ const Summaries = ({ transactions }: Props) => {
 				total={month.total}
 				formattedDate={month.formattedDate}
 				categories={month.categories}
-				isDisabled={isTerminationView && isCalendarMode}
 			/>
 
-			<SummaryBlock
-				clavis="year"
-				total={year.total}
-				formattedDate={year.formattedDate}
-				categories={year.categories}
-				isDisabled={isTerminationView && isCalendarMode}
-			/>
+			<SummaryBlock clavis="year" total={year.total} formattedDate={year.formattedDate} categories={year.categories} />
 		</Root>
 	);
 };
