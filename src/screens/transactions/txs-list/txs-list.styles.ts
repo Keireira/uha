@@ -5,12 +5,6 @@ export const Masked = styled(MaskedView)`
 	flex: 1;
 `;
 
-export const GroupedListContainer = styled.View`
-	flex: 1;
-	border-radius: 10px;
-	overflow: hidden;
-`;
-
 export const BottomSpacer = styled.View<{ $height: number }>`
 	height: ${({ $height }) => $height + 64}px;
 `;

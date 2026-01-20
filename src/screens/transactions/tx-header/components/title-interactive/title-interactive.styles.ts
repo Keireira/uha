@@ -1,25 +1,35 @@
 import styled from 'styled-components/native';
-import { Host } from '@expo/ui/swift-ui';
+
 import { H2 } from '@ui';
+import { GlassView, GlassContainer } from 'expo-glass-effect';
 
-/* Bottom Sheet */
-export const Pickers = styled.View`
+export const Stub = styled.View`
+	height: 40px;
+	width: 40px;
+`;
+
+export const YearButton = styled.Pressable`
+	border-radius: 12px;
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 4px;
+	padding-left: 12px;
+	padding-right: 16px;
+	height: 40px;
 `;
 
-export const ButtonsRow = styled.View`
-	flex-direction: row;
-	padding-top: 4px;
-`;
-
-export const InnerBottomSheet = styled.View`
+export const GlassItem = styled(GlassView)`
 	display: flex;
-	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 42px;
 `;
 
-export const SheetHost = styled(Host)`
-	position: absolute;
+export const GlassWrapper = styled(GlassContainer)`
+	padding-vertical: 8px;
 `;
 
 /* Trigger */
@@ -29,6 +39,5 @@ export const Title = styled(H2)`
 `;
 
 export default styled.Pressable`
-	padding-top: 12px;
-	padding-bottom: 12px;
+	padding-vertical: 11px;
 `;

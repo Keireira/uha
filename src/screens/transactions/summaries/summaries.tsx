@@ -8,16 +8,18 @@ import { useDay, useYear, useMonth, useSummariesQuery } from './hooks';
 import Root from './summaries.styles';
 import { SummaryBlock } from './components';
 
-const Summaries = () => {
+import { Props } from './summaries.d';
+
+const Summaries = ({ transactions }: Props) => {
 	const { view_mode, tx_dates } = useAppModel();
 	const viewMode = useUnit(view_mode.$mode);
 	const isCalendarMode = viewMode === 'calendar';
 	const isTerminationView = useUnit(tx_dates.is_termination_view.$value);
 
-	const transactions = useSummariesQuery();
-	const day = useDay(transactions);
-	const year = useYear(transactions);
-	const month = useMonth(transactions);
+	const summaryTxs = useSummariesQuery(transactions);
+	const day = useDay(summaryTxs);
+	const year = useYear(summaryTxs);
+	const month = useMonth(summaryTxs);
 
 	return (
 		<Root>

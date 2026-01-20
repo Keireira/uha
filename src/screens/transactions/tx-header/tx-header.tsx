@@ -2,21 +2,26 @@ import React from 'react';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
+import { format } from 'date-fns';
 
 import { useAppModel } from '@models';
 import { useFilterValues } from './hooks';
 
+import { H3 } from '@ui';
+import { GlassContainer } from 'expo-glass-effect';
 import { FilterIcon, ListIcon, CalendarIcon } from '@ui/icons';
 import { ContextMenuFilters, TitleInteractive } from './components';
 import { Host, Button, ContextMenu, Divider } from '@expo/ui/swift-ui';
-import Root, { FilterBtn, GlassItem, GlassWrapper } from './tx-header.styles';
+import Root, { FilterBtn, GlassItem } from './tx-header.styles';
 
 const TxHeader = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	const { view_mode, lenses } = useAppModel();
+	const { view_mode, lenses, tx_dates } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const viewMode = useUnit(view_mode.$mode);
+	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const calendarScale = useUnit(view_mode.calendar.$scale);
 
 	const entries = useFilterValues();
 
@@ -40,9 +45,11 @@ const TxHeader = () => {
 		<Root>
 			<TitleInteractive />
 
+			{viewMode === 'calendar' && calendarScale === 'month' && <H3>{format(activeMonth, 'MMMM')}</H3>}
+
 			{/* @TODO: Check if glass effect is supported, if not, use BlurView */}
-			<GlassWrapper>
-				<GlassItem isInteractive $side="left">
+			<GlassContainer>
+				<GlassItem isInteractive>
 					{viewMode === 'list' && (
 						<FilterBtn onPress={() => view_mode.set('calendar')}>
 							<CalendarIcon color={theme.text.primary} width={20} height={20} />
@@ -54,9 +61,7 @@ const TxHeader = () => {
 							<ListIcon color={theme.text.primary} width={20} height={20} />
 						</FilterBtn>
 					)}
-				</GlassItem>
 
-				<GlassItem isInteractive $side="right">
 					<Host>
 						<ContextMenu dismissBehavior="disabled">
 							<ContextMenu.Items>
@@ -110,7 +115,7 @@ const TxHeader = () => {
 						</ContextMenu>
 					</Host>
 				</GlassItem>
-			</GlassWrapper>
+			</GlassContainer>
 		</Root>
 	);
 };

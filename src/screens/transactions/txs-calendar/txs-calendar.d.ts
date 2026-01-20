@@ -1,4 +1,11 @@
-import React from 'react';
-import PagerView from 'react-native-pager-view';
+import type { PreparedDbTxT } from '@hooks/use-transactions';
 
-export type PagerRef = React.ComponentRef<typeof PagerView>;
+type Props = {
+	transactions: PreparedDbTxT[];
+};
+
+export type CalendarEntryT = {
+	raw: Date;
+	item_key: string;
+	content: string | undefined;
+};

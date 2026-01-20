@@ -56,6 +56,18 @@ pnpm install
 pnpm expo run:ios --device
 ```
 
+### Submit-2
+
+```sh
+brew install fastlane cocoapods
+
+# Build locally
+eas build --platform ios --profile production --local
+
+# Submit via EAS
+eas submit --platform ios
+```
+
 - <https://docs.expo.dev/workflow/android-studio-emulator/>
 - <https://docs.expo.dev/workflow/ios-simulator/>
 - pnpx expo install expo-dev-client

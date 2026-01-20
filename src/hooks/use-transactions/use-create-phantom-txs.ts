@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useAppModel } from '@models';
 import * as Crypto from 'expo-crypto';
 import { useUnit } from 'effector-react';
-import { startOfToday, startOfTomorrow, startOfMonth, isBefore, differenceInSeconds, format } from 'date-fns';
+import { startOfToday, startOfTomorrow, startOfMonth, isBefore, differenceInSeconds } from 'date-fns';
 
 import useMaxTxDate from './use-max-tx-date';
 import { advanceDate, debugLogging } from './utils';

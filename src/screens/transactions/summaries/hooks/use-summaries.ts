@@ -11,11 +11,9 @@ import {
 	startOfYear as startOfYearFn,
 	endOfYear as endOfYearFn
 } from 'date-fns';
-import useTransactions from '@hooks/use-transactions';
+import { PreparedDbTxT } from '@hooks/use-transactions';
 
-const useSummariesQuery = () => {
-	const transactions = useTransactions('useSummariesQuery');
-
+const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
 	const { tx_dates, view_mode } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);

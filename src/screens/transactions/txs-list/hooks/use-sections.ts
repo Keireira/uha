@@ -3,9 +3,8 @@ import { groupBy } from 'ramda';
 import { useTranslation } from 'react-i18next';
 import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
 
-import useTransactions from '@hooks/use-transactions';
-
 import type { HeaderSectionT, TI18nT } from '../txs-list.d';
+import type { PreparedDbTxT } from '@hooks/use-transactions';
 import type { TransactionProps } from '../components/transaction-card/transaction-card.d';
 
 /* Generate transactions sections */
@@ -35,9 +34,8 @@ const calcTotalAmount = (txs: TransactionProps[]) => {
 	return formattedTotal;
 };
 
-const useTransactionsSections = () => {
+const useTransactionsSections = (transactions: PreparedDbTxT[]) => {
 	const { t } = useTranslation();
-	const transactions = useTransactions('useTransactionsSections');
 
 	const sections = useMemo(() => {
 		const groupedByDate = makeGroups(transactions);

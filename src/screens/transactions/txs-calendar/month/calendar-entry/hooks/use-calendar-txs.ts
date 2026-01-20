@@ -1,12 +1,9 @@
 import { useMemo } from 'react';
-// import useTransactions from '@hooks/use-transactions';
 import { lightFormat, interval, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 
 const useCalendarTxs = (activeDate: Date, transactions: PreparedDbTxT[]) => {
-	// const transactions = useTransactions('useCalendarTxs');
-
 	const { start, end } = useMemo(
 		() => ({
 			start: startOfMonth(activeDate),

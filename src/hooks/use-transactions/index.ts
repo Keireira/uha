@@ -4,7 +4,6 @@ import { useUnit } from 'effector-react';
 import { useAppModel } from '@models';
 import { useTransactionsQuery } from './db-queries';
 import useCreatePhantomTxs from './use-create-phantom-txs';
-import { format } from 'date-fns';
 
 const useTransactions = (debugLabel: string) => {
 	const { view_mode, tx_dates } = useAppModel();

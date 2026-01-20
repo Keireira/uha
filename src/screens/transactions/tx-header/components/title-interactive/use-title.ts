@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUnit } from 'effector-react';
 
 import { useAppModel } from '@models';
-import { startOfToday, isSameYear, format } from 'date-fns';
+import { useUnit } from 'effector-react';
 
 const useTitle = () => {
 	const { t } = useTranslation();
@@ -14,21 +13,11 @@ const useTitle = () => {
 	const isTerminationView = useUnit(appModel.tx_dates.is_termination_view.$value);
 
 	const title = useMemo(() => {
-		if (isTerminationView && viewMode === 'calendar') {
-			return t('calendar.terminator');
-		}
-
 		if (viewMode === 'list') {
 			return t(`transactions.time_mode.${lenses.time_mode}`);
+		} else if (viewMode === 'subscriptions') {
+			return t('transactions.view_mode.subscriptions');
 		}
-
-		if (viewMode === 'calendar') {
-			const isCurrentYear = isSameYear(activeMonth, startOfToday());
-
-			return isCurrentYear ? format(activeMonth, 'LLLL') : format(activeMonth, 'LLLL, yyyy');
-		}
-
-		return t('transactions.view_mode.subscriptions');
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [isTerminationView, lenses.time_mode, viewMode, activeMonth]);
 

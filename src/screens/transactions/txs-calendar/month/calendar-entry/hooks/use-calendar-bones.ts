@@ -10,7 +10,8 @@ import {
 } from 'date-fns';
 import useCalendarTxs from './use-calendar-txs';
 
-import type { CalendarEntryT } from '../calendar-entry.d';
+import type { PreparedDbTxT } from '@hooks/use-transactions';
+import type { CalendarEntryT } from '../../../txs-calendar.d';
 
 const useCalendarBones = (monthDate: Date, transactions: PreparedDbTxT[]) => {
 	const txsByDate = useCalendarTxs(monthDate, transactions);
