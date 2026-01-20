@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -9,9 +9,10 @@ import { useTransactionsSections, useGetViewableItem } from './hooks';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { HeaderCard, TransactionCard } from './components';
-import Root, { Masked, GroupedListContainer, ItemSeparator, BottomSpacer } from './txs-list.styles';
+import Root, { Masked, ItemSeparator, BottomSpacer } from './txs-list.styles';
 
 import type { HeaderSectionT } from './txs-list.d';
+import type { PreparedDbTxT } from '@hooks/use-transactions';
 import type { ListRenderItemInfo, FlashListRef } from '@shopify/flash-list';
 import type { TransactionProps } from './components/transaction-card/transaction-card.d';
 
@@ -23,16 +24,20 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 	return <TransactionCard {...item} />;
 };
 
-const TxsList = () => {
+type Props = {
+	transactions: PreparedDbTxT[];
+};
+
+const TxsList = ({ transactions }: Props) => {
 	const listRef = useRef<FlashListRef<HeaderSectionT | TransactionProps>>(null);
 	const insets = useSafeAreaInsets();
 	const { view_mode } = useAppModel();
 	const handleScroll = useScrollDirection();
 
-	const sections = useTransactionsSections();
+	const sections = useTransactionsSections(transactions);
 	const handleViewableItemsChanged = useGetViewableItem();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const unsubscribe = view_mode.list.scrollToTop.watch(() => {
 			listRef.current?.scrollToOffset({ offset: 0, animated: true });
 		});
@@ -53,23 +58,21 @@ const TxsList = () => {
 			}
 		>
 			<Root>
-				<GroupedListContainer>
-					<FlashList
-						ref={listRef}
-						contentContainerStyle={{
-							gap: 16
-						}}
-						data={sections}
-						onScroll={handleScroll}
-						renderItem={renderRowItem}
-						showsVerticalScrollIndicator={false}
-						onViewableItemsChanged={handleViewableItemsChanged}
-						getItemType={(item) => (isHeaderSection(item) ? 'sectionHeader' : 'row')}
-						keyExtractor={(item) => (isHeaderSection(item) ? item.date : item.id)}
-						ItemSeparatorComponent={ItemSeparator}
-						ListFooterComponent={<BottomSpacer $height={insets.bottom} />}
-					/>
-				</GroupedListContainer>
+				<FlashList
+					ref={listRef}
+					contentContainerStyle={{
+						gap: 16
+					}}
+					data={sections}
+					onScroll={handleScroll}
+					renderItem={renderRowItem}
+					showsVerticalScrollIndicator={false}
+					onViewableItemsChanged={handleViewableItemsChanged}
+					getItemType={(item) => (isHeaderSection(item) ? 'sectionHeader' : 'row')}
+					keyExtractor={(item) => (isHeaderSection(item) ? item.date : item.id)}
+					ItemSeparatorComponent={ItemSeparator}
+					ListFooterComponent={<BottomSpacer $height={insets.bottom} />}
+				/>
 			</Root>
 		</Masked>
 	);

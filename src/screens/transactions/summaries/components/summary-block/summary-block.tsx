@@ -34,7 +34,6 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 
 	const isListMode = viewMode === 'list';
 	const isCalendarMode = viewMode === 'calendar';
-	const title = isListMode ? formattedDate : t(`dates.${clavis}`);
 
 	return (
 		<Root style={animations.summary} $isDisabled={isDisabled}>
@@ -49,7 +48,7 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 					: '—'}
 			</Text>
 
-			<DateText>{title}</DateText>
+			<DateText>{viewMode === 'list' ? formattedDate : t(`dates.${clavis}`)}</DateText>
 
 			<CategoryChips style={animations.categoryChips}>
 				{/* For the sake of smooth animation */}

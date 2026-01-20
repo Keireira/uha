@@ -25,11 +25,22 @@ const createViewModeModel = () => {
 
 	const scrollToTop = createEvent();
 
+	const $calendarScale = createStore<'year' | 'month'>('month');
+	const setCalendarScale = createEvent<'year' | 'month'>();
+	sample({
+		clock: setCalendarScale,
+		target: $calendarScale
+	});
+
 	return {
 		$mode: $viewMode,
 		set: setViewMode,
 		list: {
 			scrollToTop
+		},
+		calendar: {
+			$scale: $calendarScale,
+			setScale: setCalendarScale
 		}
 	};
 };

@@ -1,50 +1,33 @@
-import styled, { css } from 'styled-components/native';
-import { GlassView, GlassContainer } from 'expo-glass-effect';
+import styled from 'styled-components/native';
+import { GlassView } from 'expo-glass-effect';
 
-const leftSide = css`
-	border-bottom-right-radius: 0;
-	border-top-right-radius: 0;
-`;
-
-const rightSide = css`
-	border-bottom-left-radius: 0;
-	border-top-left-radius: 0;
-`;
-
-const sides = {
-	left: leftSide,
-	right: rightSide
-};
-
-export const GlassItem = styled(GlassView)<{ $side: 'left' | 'right' }>`
-	border-radius: 42px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	${({ $side }) => sides[$side]}
-`;
-
-export const GlassWrapper = styled(GlassContainer)`
+export const GlassItem = styled(GlassView)`
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+
+	border-radius: 42px;
+	padding-horizontal: 4px;
 `;
 
 export const FilterBtn = styled.Pressable`
-	border-radius: 12px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 48px;
+
+	border-radius: 12px;
 	padding-vertical: 8px;
+	padding-horizontal: 12px;
 `;
 
 export default styled.View`
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+
 	gap: 16px;
 	margin-bottom: 16px;
-	align-items: center;
 	padding-horizontal: 16px;
-	justify-content: space-between;
 `;
