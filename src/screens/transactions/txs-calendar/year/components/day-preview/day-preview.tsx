@@ -14,14 +14,16 @@ const DayPreview = ({ content, dayDate, withTransactions }: Props) => {
 	const isSelected = content ? isSameDay(dayDate, selectedDate) : false;
 
 	if (!content) {
-		return <Root $isSelected={false} $isEmpty />;
+		return <Root $isEmpty />;
 	}
 
 	return (
-		<Root $isSelected={isSelected}>
-			<DayNumber $isSelected={isSelected}>{content}</DayNumber>
+		<Root>
+			{(withTransactions || isSelected) && <Mark $isSelected={isSelected} />}
 
-			{withTransactions && <Mark />}
+			<DayNumber $withTransactions={withTransactions} $isSelected={isSelected} adjustsFontSizeToFit numberOfLines={1}>
+				{content}
+			</DayNumber>
 		</Root>
 	);
 };

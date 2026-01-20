@@ -13,4 +13,4 @@ const QuarterRow = ({ quarterMonths }: Props) => (
 	</Root>
 );
 
-export default QuarterRow;
+export default React.memo(QuarterRow);

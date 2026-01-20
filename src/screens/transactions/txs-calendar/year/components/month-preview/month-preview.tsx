@@ -8,18 +8,19 @@ import {
 	eachDayOfInterval,
 	eachWeekOfInterval
 } from 'date-fns';
+import { splitEvery } from 'ramda';
 
 import { useAppModel } from '@models';
 
 import DayPreview from '../day-preview';
-import { MonthCard, MonthHeader, DaysGrid } from './month-preview.styles';
+import Root, { MonthHeader, Week, DaysGrid } from './month-preview.styles';
 
 import type { QuarterRowDataT } from '../../year.d';
 
 const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
 	const { tx_dates, view_mode } = useAppModel();
 
-	const days = useMemo(() => {
+	const weeks = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
 			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
 			{ weekStartsOn: 1 }
@@ -33,12 +34,12 @@ const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Quarter
 
 			return weekDays.map((day) => ({
 				raw: day,
-				item_key: `calendar-year-day-${lightFormat(day, 'dd-MM-yyyy')}`,
+				item_key: `calendar-year-day-${lightFormat(day, 'yyyy-MM-dd')}`,
 				content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
 			}));
 		});
 
-		return allDays;
+		return splitEvery(7, allDays);
 	}, [monthDate]);
 
 	const onPressMonth = useCallback(() => {
@@ -47,24 +48,28 @@ const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Quarter
 	}, [monthDate, tx_dates, view_mode]);
 
 	return (
-		<MonthCard $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>
+		<Root $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>
 			<MonthHeader>{title}</MonthHeader>
 
 			<DaysGrid>
-				{days.map((day) => {
-					const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
+				{weeks.map((week) => {
+					const days = week.map((day) => {
+						const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
 
-					return (
-						<DayPreview
-							key={day.item_key}
-							dayDate={day.raw}
-							content={day.content}
-							withTransactions={withTransactions}
-						/>
-					);
+						return (
+							<DayPreview
+								key={day.item_key}
+								dayDate={day.raw}
+								content={day.content}
+								withTransactions={withTransactions}
+							/>
+						);
+					});
+
+					return <Week key={`week-${week[0].item_key}`}>{days}</Week>;
 				})}
 			</DaysGrid>
-		</MonthCard>
+		</Root>
 	);
 };
 

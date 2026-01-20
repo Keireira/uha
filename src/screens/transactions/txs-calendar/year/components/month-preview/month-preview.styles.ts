@@ -7,11 +7,14 @@ export const MonthHeader = styled(H5)`
 
 export const DaysGrid = styled.View`
 	flex: 1;
-	flex-direction: row;
-	flex-wrap: wrap;
+	flex-direction: column;
 `;
 
-export const MonthCard = styled.Pressable<{ $isMonthInRange: boolean }>`
-	width: 31%;
+export const Week = styled.View`
+	flex-direction: row;
+`;
+
+export default styled.Pressable<{ $isMonthInRange: boolean }>`
+	flex: 1;
 	opacity: ${({ $isMonthInRange }) => ($isMonthInRange ? 1 : 0.444)};
 `;

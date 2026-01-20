@@ -14,7 +14,7 @@ export type QuarterRowDataT = {
 	monthDate: Date; // 3 months per row
 	isMonthInRange: boolean;
 	title: string; // Sep
-	daysWithTxs: Set<string>; // dd-MM-yyyy[]
+	daysWithTxs: Set<string>; // yyyy-MM-dd[]
 };
 
 export type QuarterRowT = QuarterRowDataT[];

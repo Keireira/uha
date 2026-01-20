@@ -10,7 +10,7 @@ import Root, { BottomSpacer } from './year.styles';
 import { HeaderRow, QuarterRow } from './components';
 
 import type { Props, ItemT } from './year.d';
-import type { ListRenderItemInfo } from '@shopify/flash-list';
+import type { ListRenderItemInfo, FlashListRef } from '@shopify/flash-list';
 
 const renderQuarterRow = ({ item }: ListRenderItemInfo<ItemT>) => {
 	if (isHeaderSection(item)) {
@@ -21,7 +21,7 @@ const renderQuarterRow = ({ item }: ListRenderItemInfo<ItemT>) => {
 };
 
 const Year = ({ transactions }: Props) => {
-	const listRef = useRef(null);
+	const listRef = useRef<FlashListRef<ItemT>>(null);
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 

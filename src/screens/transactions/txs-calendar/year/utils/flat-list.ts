@@ -16,8 +16,8 @@ export const getItemType = (row: ItemT) => {
 
 export const keyExtractor = (row: ItemT) => {
 	if (isHeaderSection(row)) {
-		return `calendar-year-day-${row.title}`;
+		return `calendar-year-header-${row.title}`;
 	}
 
-	return `calendar-year-day-${lightFormat(row[0].monthDate, 'dd-MM-yyyy')}`;
+	return `calendar-year-quarter-${lightFormat(row[0].monthDate, 'yyyy-MM-dd')}`;
 };
