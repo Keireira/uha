@@ -1,4 +1,2 @@
-// export { default as TxsList } from './txs-list';
-// export { default as TxsCalendar } from './txs-calendar';
-
+export { default as TxDetailedView } from './tx-detailed-view';
 export { default } from './transactions';

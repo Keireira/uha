@@ -6,7 +6,7 @@ import { withFactory, useFactoryModel } from '@lib/effector';
 import * as SplashScreen from 'expo-splash-screen';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Stack } from 'expo-router';
+import { Stack, useRootNavigationState } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
 import SyncSettings from '@src/sync-settings';
 
@@ -31,6 +31,7 @@ const RootLayout = () => {
 	useFactoryModel(appModel);
 	const theme = useGetTheme();
 	const areMigrationsReady = useSqlMigrations();
+	const navigation = useRootNavigationState();
 
 	/* Mocks */
 	const seeded = useSetupMocks(areMigrationsReady);
@@ -40,8 +41,8 @@ const RootLayout = () => {
 	});
 
 	const isAppReadyToGo = useMemo(() => {
-		return loaded && seeded && areMigrationsReady;
-	}, [loaded, seeded, areMigrationsReady]);
+		return loaded && seeded && areMigrationsReady && navigation?.key;
+	}, [loaded, seeded, areMigrationsReady, navigation?.key]);
 
 	useEffect(() => {
 		if (!isAppReadyToGo) return;
@@ -66,8 +67,11 @@ const RootLayout = () => {
 							animation: 'none',
 							navigationBarHidden: true
 						}}
+						initialRouteName="index"
 					>
+						<Stack.Screen name="index" />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+						<Stack.Screen name="(crossroad)" options={{ headerShown: false }} />
 					</Stack>
 				</ThemeProvider>
 			</GestureHandlerRootView>

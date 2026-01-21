@@ -8,8 +8,8 @@ const lightThemeConfig: ThemeConfigT = {
 	},
 
 	background: {
-		default: '#f2f2f7'
-		// secondary: '#ffffff'
+		default: '#f2f2f7',
+		secondary: '#ffffff'
 		// tertiary: '#e5e5ea',
 		// elevated: '#ffffff'
 	},

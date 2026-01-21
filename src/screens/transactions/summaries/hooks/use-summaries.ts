@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useAppModel } from '@models';
 import { useUnit } from 'effector-react';
 import {
 	format,
@@ -11,14 +10,19 @@ import {
 	startOfYear as startOfYearFn,
 	endOfYear as endOfYearFn
 } from 'date-fns';
-import { PreparedDbTxT } from '@hooks/use-transactions';
+
+import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
+
+import type { PreparedDbTxT } from '@hooks';
 
 const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
-	const { tx_dates, view_mode } = useAppModel();
+	const { txViewMode } = useSearchParams();
+
+	const { tx_dates } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
 	const selectedDate = useUnit(tx_dates.selected.$value);
-	const viewMode = useUnit(view_mode.$mode);
 
 	/*
 	 * for the optimized chain of rerenders
@@ -26,12 +30,12 @@ const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
 	 * focusedDate -> startOfMonth -> recalcYearKey -> transactionsYear
 	 */
 	const startOfMonth = useMemo(() => {
-		if (viewMode === 'calendar') {
+		if (txViewMode === 'calendar') {
 			return startOfMonthFn(activeMonth);
 		}
 
 		return startOfMonthFn(focusedDate);
-	}, [viewMode, activeMonth, focusedDate]);
+	}, [txViewMode, activeMonth, focusedDate]);
 
 	const { recalcYearKey, recalcMonthKey, endOfMonth, startOfYear, endOfYear } = useMemo(
 		() => ({

@@ -1,8 +1,7 @@
 import React from 'react';
 import { isSameMonth } from 'date-fns';
-import { useUnit } from 'effector-react';
 
-import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
 import { useDay, useYear, useMonth, useSummariesQuery } from './hooks';
 
 import Root from './summaries.styles';
@@ -11,9 +10,7 @@ import { SummaryBlock } from './components';
 import { Props } from './summaries.d';
 
 const Summaries = ({ transactions }: Props) => {
-	const { view_mode } = useAppModel();
-	const viewMode = useUnit(view_mode.$mode);
-	const isCalendarMode = viewMode === 'calendar';
+	const { txViewMode } = useSearchParams();
 
 	const summaryTxs = useSummariesQuery(transactions);
 	const day = useDay(summaryTxs);
@@ -22,7 +19,7 @@ const Summaries = ({ transactions }: Props) => {
 
 	return (
 		<Root>
-			{isCalendarMode && (
+			{txViewMode === 'calendar' && (
 				<SummaryBlock
 					clavis="day"
 					total={day.total}

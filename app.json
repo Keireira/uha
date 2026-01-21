@@ -1,7 +1,7 @@
 {
   "expo": {
     "slug": "uha",
-    "version": "1.5.2",
+    "version": "1.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
@@ -17,6 +17,7 @@
           "uha",
           "уха"
         ],
+        "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
         "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments"

@@ -11,8 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { HeaderCard, TransactionCard } from './components';
 import Root, { Masked, ItemSeparator, BottomSpacer } from './txs-list.styles';
 
-import type { HeaderSectionT } from './txs-list.d';
-import type { PreparedDbTxT } from '@hooks/use-transactions';
+import type { HeaderSectionT, Props } from './txs-list.d';
 import type { ListRenderItemInfo, FlashListRef } from '@shopify/flash-list';
 import type { TransactionProps } from './components/transaction-card/transaction-card.d';
 
@@ -22,10 +21,6 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 	}
 
 	return <TransactionCard {...item} />;
-};
-
-type Props = {
-	transactions: PreparedDbTxT[];
 };
 
 const TxsList = ({ transactions }: Props) => {
