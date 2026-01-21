@@ -1,37 +1,30 @@
 import React, { useState } from 'react';
-import { useUnit } from 'effector-react';
 import { startOfToday, startOfMonth } from 'date-fns';
 
 import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
 
 import { Navbar, Crossroad } from '@elements';
 import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
-// import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 
 const TabLayout = () => {
+	const { txViewMode } = useSearchParams();
 	const { view_mode, tx_dates } = useAppModel();
-	const viewMode = useUnit(view_mode.$mode);
 
 	const [isModalOpened, setIsModalOpened] = useState(false);
 
 	const onTransactionsPress = () => {
-		if (viewMode === 'list') {
+		if (txViewMode === 'list') {
 			view_mode.list.scrollToTop();
 		}
 
-		if (viewMode === 'calendar') {
+		if (txViewMode === 'calendar') {
 			const today = startOfToday();
 
 			tx_dates.selected.set(today);
 			tx_dates.activeMonth.set(startOfMonth(today));
 		}
 	};
-
-	// const onTransactionsLongPress = () => {
-	// 	if (viewMode === 'calendar') {
-	// 		console.log('SHOW CONTEXT MENU WITH POSSIBLE VIEWS: list, calendar, subscriptions');
-	// 	}
-	// };
 
 	return (
 		<>
@@ -40,10 +33,10 @@ const TabLayout = () => {
 
 				<TabList asChild>
 					<Navbar>
-						<TabTrigger name="home" href="/" asChild>
+						<TabTrigger name="transactions" href="/transactions" asChild>
 							{/* @TODO: Remove singleton later */}
 							<Navbar.Button onPress={onTransactionsPress} onLongPress={onTransactionsPress}>
-								<Navbar.Icon name={viewMode === 'list' ? 'list' : 'calendar'} />
+								<Navbar.Icon name={txViewMode === 'list' ? 'list' : 'calendar'} />
 							</Navbar.Button>
 						</TabTrigger>
 

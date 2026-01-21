@@ -1,10 +1,8 @@
 import React from 'react';
-import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppModel } from '@models';
-import { useSettingsValue } from '@hooks';
 import { useSummaryAnimations } from '../../hooks';
+import { useSettingsValue, useSearchParams } from '@hooks';
 
 import { Text } from '@ui';
 import Root, { DateText, CategoryChip, CategoryChips } from './summary-block.styles';
@@ -26,8 +24,7 @@ const renderCategoryChips = (categories: CategoryT[], total: Props['total'], cla
 
 const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: Props) => {
 	const { t } = useTranslation();
-	const { view_mode } = useAppModel();
-	const viewMode = useUnit(view_mode.$mode);
+	const { txViewMode } = useSearchParams();
 	const animations = useSummaryAnimations();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
@@ -44,11 +41,11 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 					: '—'}
 			</Text>
 
-			<DateText>{viewMode === 'list' ? formattedDate : t(`dates.${clavis}`)}</DateText>
+			<DateText>{txViewMode === 'list' ? formattedDate : t(`dates.${clavis}`)}</DateText>
 
 			<CategoryChips style={animations.categoryChips}>
 				{/* For the sake of smooth animation */}
-				{viewMode === 'list' && renderCategoryChips(categories, total, clavis)}
+				{txViewMode === 'list' && renderCategoryChips(categories, total, clavis)}
 			</CategoryChips>
 		</Root>
 	);

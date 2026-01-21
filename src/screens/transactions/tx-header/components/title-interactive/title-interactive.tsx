@@ -4,6 +4,7 @@ import { useUnit } from 'effector-react';
 
 import useTitle from './use-title';
 import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
 import { useTheme } from 'styled-components/native';
 
 import { LargeText } from '@ui';
@@ -15,14 +16,14 @@ import { ALL_TIME_MODES } from '@screens/transactions/models/lenses';
 const TitleInteractive = () => {
 	const title = useTitle();
 	const theme = useTheme();
+	const { txViewMode } = useSearchParams();
 
 	const { lenses, view_mode, tx_dates } = useAppModel();
-	const viewMode = useUnit(view_mode.$mode);
 	const lensesStore = useUnit(lenses.$store);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
 	const calendarScale = useUnit(view_mode.calendar.$scale);
 
-	if (viewMode === 'list') {
+	if (txViewMode === 'list') {
 		const setNextTimeMode = () => {
 			const timeMode = lensesStore.time_mode;
 			const currentIndex = ALL_TIME_MODES.indexOf(timeMode);
@@ -38,7 +39,7 @@ const TitleInteractive = () => {
 		);
 	}
 
-	if (viewMode === 'calendar') {
+	if (txViewMode === 'calendar') {
 		const setNextCalendarScale = () => {
 			const nextScale = calendarScale === 'year' ? 'month' : 'year';
 			view_mode.calendar.setScale(nextScale);

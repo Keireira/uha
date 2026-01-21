@@ -1,7 +1,5 @@
 import { createEvent, createStore, sample } from 'effector';
 
-import type { ViewModeModel, ViewModeT } from './types.d';
-
 /*
  * EXPLANATION:
  *
@@ -15,14 +13,6 @@ import type { ViewModeModel, ViewModeT } from './types.d';
  * so we can restore it when the app is reopened.
  */
 const createViewModeModel = () => {
-	const $viewMode = createStore<ViewModeModel['view_mode']>('list');
-	const setViewMode = createEvent<ViewModeT>();
-
-	sample({
-		clock: setViewMode,
-		target: $viewMode
-	});
-
 	const scrollToTop = createEvent();
 
 	const $calendarScale = createStore<'year' | 'month'>('month');
@@ -33,8 +23,6 @@ const createViewModeModel = () => {
 	});
 
 	return {
-		$mode: $viewMode,
-		set: setViewMode,
 		list: {
 			scrollToTop
 		},

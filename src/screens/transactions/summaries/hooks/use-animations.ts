@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
 import { useUnit } from 'effector-react';
 import {
 	withSpring,
@@ -20,11 +21,11 @@ const COLLAPSED = 1;
 const EXPANDED = 0;
 
 const useSummaryAnimations = () => {
-	const { scroll, view_mode } = useAppModel();
+	const { scroll } = useAppModel();
+	const { txViewMode } = useSearchParams();
 	const direction = useUnit(scroll.$direction);
-	const viewMode = useUnit(view_mode.$mode);
 
-	const progress = useSharedValue(viewMode === 'calendar' ? COLLAPSED : EXPANDED);
+	const progress = useSharedValue(txViewMode === 'calendar' ? COLLAPSED : EXPANDED);
 	/* https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/ */
 	const reducedMotion = useReducedMotion();
 
@@ -49,7 +50,7 @@ const useSummaryAnimations = () => {
 		 * yeah, yeah I know nested ternaries are ugly af
 		 */
 		/* prettier-ignore */
-		const target = viewMode === 'calendar'
+		const target = txViewMode === 'calendar'
 			? COLLAPSED
 			: direction === 'down'
 				? COLLAPSED
@@ -57,7 +58,7 @@ const useSummaryAnimations = () => {
 
 		progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [direction, reducedMotion, viewMode]);
+	}, [direction, reducedMotion, txViewMode]);
 
 	return {
 		summary: [animatedPaddingBottom],

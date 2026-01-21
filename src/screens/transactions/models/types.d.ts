@@ -12,11 +12,3 @@ export type LensesModel = {
 	applied_filters: AppliedFilterT[];
 };
 // LENSES | End
-
-// VIEW MODE | Start
-export type ViewModeT = 'list' | 'calendar' | 'subscriptions';
-
-export type ViewModeModel = {
-	view_mode: ViewModeT;
-};
-// VIEW MODE | End

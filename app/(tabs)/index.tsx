@@ -1,3 +1,8 @@
-import { Transactions } from '@screens';
+import React from 'react';
+import { Redirect } from 'expo-router';
 
-export default Transactions;
+const Index = () => {
+	return <Redirect href="/transactions" />;
+};
+
+export default Index;
