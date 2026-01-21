@@ -1,10 +1,3 @@
-import React from 'react';
-import { Text } from 'react-native';
+import { TxDetailedView } from '@screens';
 
-const Route = () => {
-	console.log('A Transactions');
-
-	return <Text>A Transactions</Text>;
-};
-
-export default Route;
+export default TxDetailedView;

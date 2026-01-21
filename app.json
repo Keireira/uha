@@ -17,6 +17,7 @@
           "uha",
           "уха"
         ],
+        "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
         "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments"

@@ -18,7 +18,6 @@ const TabLayout = () => {
 
 		if (txViewMode === 'calendar') {
 			const today = startOfToday();
-
 			tx_dates.selected.set(today);
 			tx_dates.activeMonth.set(startOfMonth(today));
 		}
@@ -32,7 +31,7 @@ const TabLayout = () => {
 				<Navbar>
 					<TabTrigger name="transactions" href="/(tabs)/transactions" asChild>
 						{/* @TODO: Remove singleton later */}
-						<Navbar.Button onPress={onTransactionsPress} onLongPress={onTransactionsPress}>
+						<Navbar.Button onActivePress={onTransactionsPress} onLongPress={onTransactionsPress}>
 							<Navbar.Icon name={txViewMode === 'list' ? 'list' : 'calendar'} />
 						</Navbar.Button>
 					</TabTrigger>

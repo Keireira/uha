@@ -16,14 +16,21 @@ const Root = styled.Pressable`
 type Props = React.PropsWithChildren<
 	{
 		isFocused?: boolean;
+		onActivePress?: (event: GestureResponderEvent) => void;
 	} & React.ComponentProps<typeof Root>
 >;
 
-const NavbarButton = ({ style, children, isFocused, onPress, onLongPress, ...props }: Props) => {
+const NavbarButton = ({ style, children, isFocused, onPress, onLongPress, onActivePress, ...props }: Props) => {
 	const onPressHd = (event: GestureResponderEvent) => {
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		if (onActivePress && isFocused) {
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
 
-		if (onPress) {
+			onActivePress(event);
+		}
+
+		if (!isFocused && onPress) {
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
 			onPress(event);
 		}
 	};

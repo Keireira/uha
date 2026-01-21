@@ -8,8 +8,8 @@ const darkThemeConfig: ThemeConfigT = {
 	},
 
 	background: {
-		default: '#1c1c1e' // +
-		// secondary: '#2c2c2e'
+		default: '#1c1c1e', // +
+		secondary: '#2c2c2e'
 		// tertiary: '#3a3a3c',
 		// elevated: '#48484a'
 	},

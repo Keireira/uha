@@ -8,25 +8,22 @@ import { addDays, subDays, addMonths, addYears, addWeeks } from 'date-fns';
 import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
 import * as Crypto from 'expo-crypto';
 
-const FULL_BILLING_CYCLES = {
+const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
 	weeks: { min: 1, max: 52 },
 	months: { min: 1, max: 12 },
-	years: { min: 1, max: 5 }
+	years: { min: 1, max: 3 }
 } as const;
 
-// const SHORT_BILLING_CYCLES = {
+// const BILLING_CYCLES = {
 // 	days: { min: 1, max: 30 },
 // 	weeks: { min: 1, max: 4 },
 // 	months: { min: 1, max: 1 },
 // 	years: { min: 1, max: 1 }
 // } as const;
 
-const BILLING_CYCLES = FULL_BILLING_CYCLES;
-
-const SHORT_DAYS = randomInt(1, 180);
-
-// const FULL_DAYS = randomInt(365, 365 * 5);
+const DAYS = randomInt(1, 365);
+// const DAYS = randomInt(365, 365 * 5);
 
 const createBillingCycleType = () => {
 	return Object.keys(BILLING_CYCLES)[
@@ -54,7 +51,7 @@ const buildSubscription = (
 ): SubscriptionT => {
 	const tender = tenders[randomInt(0, tenders.length - 1)];
 	const billingCycleType = createBillingCycleType();
-	const days = SHORT_DAYS;
+	const days = DAYS;
 
 	return {
 		id: Crypto.randomUUID(),

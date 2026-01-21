@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 
 import { randomInt } from '@lib';
 import logos from '@assets/logos';
@@ -16,6 +17,7 @@ const STUB_KZT_RATE = 514.1;
  * Apply real currency rates and conversion logic here
  */
 const TransactionCard = ({
+	id,
 	currency,
 	price,
 	denominator,
@@ -26,6 +28,7 @@ const TransactionCard = ({
 	category_title,
 	color
 }: TransactionProps) => {
+	const router = useRouter();
 	const showConverted = randomInt(0, 1);
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
@@ -33,11 +36,19 @@ const TransactionCard = ({
 	const basePrice = price / (denominator || 1);
 
 	const withConversion = showConverted > 0;
-
 	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
 
+	const openTransactionView = () => {
+		router.push({
+			pathname: '/(tabs)/transactions/[transactionId]',
+			params: {
+				transactionId: id
+			}
+		});
+	};
+
 	return (
-		<Root>
+		<Root onPress={openTransactionView}>
 			<LogoSection>
 				<LogoView logoId={logoUrl} emoji={emoji} name={customName || title} size={48} color={color} />
 			</LogoSection>

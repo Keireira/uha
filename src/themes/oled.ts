@@ -8,7 +8,8 @@ const oledThemeConfig: ThemeConfigT = {
 	},
 
 	background: {
-		default: '#000000'
+		default: '#000000',
+		secondary: '#1c1c1e'
 	},
 
 	surface: {

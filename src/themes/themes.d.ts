@@ -11,7 +11,7 @@ export type ThemeConfigT = {
 
 	background: {
 		default: string;
-		// secondary: string;
+		secondary: string;
 		// tertiary: string;
 		// elevated: string;
 	};

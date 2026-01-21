@@ -31,7 +31,9 @@ const useTransactions = (debugLabel: string) => {
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [maxDate]);
 
-	return sortedTxs;
+	return {
+		transactions: sortedTxs
+	};
 };
 
 export * from './types.d';
