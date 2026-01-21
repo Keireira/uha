@@ -1,7 +1,7 @@
 import { useMemo, useEffect } from 'react';
 
 import { useAppModel } from '@models';
-import { useSearchParams } from '@hooks';
+import useSearchParams from '../use-search-params';
 import { useTransactionsQuery } from './db-queries';
 import useCreatePhantomTxs from './use-create-phantom-txs';
 
