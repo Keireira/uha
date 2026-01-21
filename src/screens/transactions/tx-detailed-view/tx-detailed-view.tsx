@@ -1,11 +1,24 @@
 import React from 'react';
+import { first } from '@lib';
 import { format } from 'date-fns';
 import { useLocalSearchParams } from 'expo-router';
 
-import { useSettingsValue } from '@hooks';
-import logos from '@assets/logos';
+import db from '@db';
+import { sql, gt, eq } from 'drizzle-orm';
+import {
+	transactionsTable,
+	currenciesTable,
+	servicesTable,
+	subscriptionsTable,
+	categoriesTable,
+	tendersTable
+} from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { H1, H4, SmallText, LogoView } from '@ui';
+import logos from '@assets/logos';
+import { useSettingsValue } from '@hooks';
+
+import { H1, Text, H4, SmallText, LogoView } from '@ui';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 import {
@@ -24,47 +37,87 @@ import {
 	StatusDot
 } from './tx-detailed-view.styles';
 
+import type { PreparedDbTxT } from '@hooks/use-transactions';
+
 const STUB_KZT_RATE = 514.1;
 
-const TxDetailedView = () => {
+const useTransaction = (): PreparedDbTxT | undefined => {
 	const { transactionId } = useLocalSearchParams<{ transactionId: string }>();
-	console.log('transactionId:', transactionId);
+
+	const { data: transaction } = useLiveQuery(
+		db
+			.select({
+				id: transactionsTable.id,
+				currency: currenciesTable.symbol,
+				denominator: currenciesTable.denominator,
+				price: transactionsTable.amount,
+				slug: servicesTable.slug,
+				title: servicesTable.title,
+				customName: subscriptionsTable.custom_name,
+				emoji: categoriesTable.emoji,
+				color: servicesTable.color,
+				date: transactionsTable.date,
+				isPhantom: gt(transactionsTable.date, sql`date('now')`),
+
+				/* category-related fields */
+				category_id: categoriesTable.id,
+				category_title: categoriesTable.title,
+				category_color: categoriesTable.color
+			})
+			.from(transactionsTable)
+			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
+			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
+			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
+			.where(eq(transactionsTable.id, transactionId))
+	);
+
+	return first(transaction);
+};
+
+const TxDetailedView = () => {
+	const transaction = useTransaction();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 
-	// TODO: Fetch actual transaction data using transactionId
-	// For now, using placeholder data structure
-	const tx = {
-		id: 'transactionId',
-		currency: '$',
-		denominator: 100,
-		price: 1299,
-		slug: 'spotify',
-		title: 'Spotify',
-		customName: null,
-		emoji: null,
-		color: '#1DB954',
-		date: new Date().toISOString(),
-		category_id: 1,
-		category_title: 'Subscriptions',
-		category_color: '#6d28d9',
-		isPhantom: true
-	};
+	if (!transaction) {
+		return (
+			<Root>
+				<Animated.View entering={FadeIn.duration(300)}>
+					<HeroSection>
+						<LogoView emoji="❌" size={80} />
 
-	const logoUrl = tx.slug ? logos[tx.slug as keyof typeof logos] : null;
-	const basePrice = tx.price / (tx.denominator || 1);
-	const convertedPrice = (tx.price * STUB_KZT_RATE) / (tx.denominator || 1);
-	const formattedDate = format(new Date(tx.date), 'EEEE, MMMM d, yyyy');
+						<H1>Transaction not found</H1>
+
+						<CategoryPill $color="red">
+							<Text>This is a phantom transaction</Text>
+						</CategoryPill>
+					</HeroSection>
+				</Animated.View>
+			</Root>
+		);
+	}
+
+	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
+	const basePrice = transaction.price / (transaction.denominator || 1);
+	const convertedPrice = (transaction.price * STUB_KZT_RATE) / (transaction.denominator || 1);
+	const formattedDate = format(new Date(transaction.date), 'EEEE, MMMM d, yyyy');
 
 	return (
 		<Root>
-			{/* Hero Section with Large Logo and Amount */}
 			<Animated.View entering={FadeIn.duration(300)}>
 				<HeroSection>
-					<LogoView logoId={logoUrl} emoji={tx.emoji} name={tx.customName || tx.title} size={80} color={tx.color} />
+					<LogoView
+						logoId={logoUrl}
+						emoji={transaction.emoji}
+						name={transaction.customName || transaction.title}
+						size={80}
+						color={transaction.color}
+					/>
 
 					<AmountContainer>
 						<H1 $weight={800}>
-							{tx.currency}
+							{transaction.currency}
 							{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
 						</H1>
 
@@ -73,22 +126,21 @@ const TxDetailedView = () => {
 						</ConvertedAmount>
 					</AmountContainer>
 
-					<H4 $weight={600}>{tx.customName || tx.title}</H4>
+					<H4 $weight={600}>{transaction.customName || transaction.title}</H4>
 
-					<CategoryPill $color={tx.category_color}>
-						<SmallText $weight={600}>{tx.category_title}</SmallText>
+					<CategoryPill $color={transaction.category_color}>
+						<SmallText $weight={600}>{transaction.category_title}</SmallText>
 					</CategoryPill>
 				</HeroSection>
 			</Animated.View>
 
-			{/* Transaction Details Card */}
 			<Animated.View entering={FadeInDown.delay(100).duration(400).springify()}>
 				<DetailCard>
 					<DetailRow>
 						<DetailLabel>Status</DetailLabel>
-						<StatusBadge $isPhantom={tx.isPhantom}>
-							<StatusDot $isPhantom={tx.isPhantom} />
-							<SmallText $weight={600}>{tx.isPhantom ? 'Planned' : 'Completed'}</SmallText>
+						<StatusBadge $isPhantom={transaction.isPhantom}>
+							<StatusDot $isPhantom={transaction.isPhantom} />
+							<SmallText $weight={600}>{transaction.isPhantom ? 'Planned' : 'Completed'}</SmallText>
 						</StatusBadge>
 					</DetailRow>
 
