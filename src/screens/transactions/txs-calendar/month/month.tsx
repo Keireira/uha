@@ -115,6 +115,8 @@ const Month = ({ transactions }: Props) => {
 
 			<Pager
 				ref={pagerRef}
+				overScrollMode="always"
+				overdrag
 				initialPage={currentIndex}
 				layoutDirection="ltr"
 				orientation="horizontal"
