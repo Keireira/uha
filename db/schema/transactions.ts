@@ -1,18 +1,24 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, real, index } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
 
 import { tendersTable } from './tenders';
 import { currenciesTable } from './currencies';
 import { subscriptionsTable } from './subscriptions';
 
+/*
+ * NB for myself: this is not related to price_history table!!
+ * If price_history will be changed, change these table's entries manually then
+ */
 export const transactionsTable = sqliteTable(
 	'transactions',
 	{
 		id: text().primaryKey(), // uuid v4
-		amount: real().notNull(), // change to ref to price_history table???
 		date: text()
 			.default(sql`(CURRENT_DATE)`)
 			.notNull(),
+
+		// in MINOR UNITS!!!! (100 for 1 USD, 1000 for 1000 JPY etc...)
+		amount: int({ mode: 'number' }).notNull(),
 		currency_id: text()
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...
@@ -22,7 +28,9 @@ export const transactionsTable = sqliteTable(
 
 		subscription_id: text()
 			.references(() => subscriptionsTable.id)
-			.notNull()
+			.notNull(),
+
+		is_phantom: int({ mode: 'boolean' }).default(false).notNull()
 	},
 	(table) => [
 		// WHERE subscription_id = <slug_name> ORDER BY date
