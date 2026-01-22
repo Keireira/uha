@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { eq, asc, gte, and, min } from 'drizzle-orm';
 import { startOfToday, startOfMonth } from 'date-fns';
+import { eq, asc, gte, and, min, max } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import {
@@ -21,7 +21,8 @@ import type { TimeModesT } from '@screens/transactions/models/types.d';
 
 type ReturnType = {
 	dbTxs: PreparedDbTxT[];
-	minDbTxsDate: Date | undefined;
+	minMonthDate: Date | undefined;
+	maxMonthDate: Date | undefined;
 };
 
 const timeModeFilter = (timeMode: TimeModesT) => {
@@ -34,7 +35,7 @@ const timeModeFilter = (timeMode: TimeModesT) => {
 	return undefined;
 };
 
-const useGetMinDbTxsDate = (timeMode: TimeModesT) => {
+const useGetMinMonthDate = (timeMode: TimeModesT) => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
@@ -56,6 +57,28 @@ const useGetMinDbTxsDate = (timeMode: TimeModesT) => {
 	return minDbTxsDateResult;
 };
 
+const useGetMaxMonthDate = (timeMode: TimeModesT) => {
+	const { lenses } = useAppModel();
+	const lensesStore = useUnit(lenses.$store);
+
+	const { data: maxDbTxsDate } = useLiveQuery(
+		db
+			.select({ maxDate: max(transactionsTable.date) })
+			.from(transactionsTable)
+			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
+		[lensesStore.filters, timeMode]
+	);
+
+	const maxDbTxsDateResult = useMemo(() => {
+		const dateTxt = maxDbTxsDate?.[0]?.maxDate;
+
+		return dateTxt ? startOfMonth(dateTxt) : undefined;
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [maxDbTxsDate, timeMode]);
+
+	return maxDbTxsDateResult;
+};
+
 const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
@@ -64,7 +87,8 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 		return forcedTimeMode || lensesStore.time_mode;
 	}, [forcedTimeMode, lensesStore.time_mode]);
 
-	const minDbTxsDate = useGetMinDbTxsDate(timeMode);
+	const minMonthDate = useGetMinMonthDate(timeMode);
+	const maxMonthDate = useGetMaxMonthDate(timeMode);
 
 	const { data: dbTxs } = useLiveQuery(
 		db
@@ -106,7 +130,8 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 
 	return {
 		dbTxs: dbTxs,
-		minDbTxsDate
+		minMonthDate,
+		maxMonthDate
 	} satisfies ReturnType;
 };
 

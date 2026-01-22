@@ -24,7 +24,6 @@ export const subscriptionsTable = sqliteTable(
 		billing_cycle_value: int().default(1).notNull(),
 
 		// in MINOR UNITS!!!! (100 for 1 USD, 1000 for 1000 JPY
-		// ref to price_history table???
 		current_price: int({ mode: 'number' }).notNull(),
 		current_currency_id: text()
 			.references(() => currenciesTable.id)

@@ -1,11 +1,10 @@
-import { flatten } from 'ramda';
 import { useState, useEffect } from 'react';
 
 import db from '@db';
 import { randomInt } from '@lib';
+import { subDays } from 'date-fns';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { addDays, subDays, addMonths, addYears, addWeeks } from 'date-fns';
-import { servicesTable, tendersTable, subscriptionsTable, transactionsTable } from '@db/schema';
+import { servicesTable, tendersTable, subscriptionsTable } from '@db/schema';
 import * as Crypto from 'expo-crypto';
 
 const BILLING_CYCLES = {
@@ -15,15 +14,7 @@ const BILLING_CYCLES = {
 	years: { min: 1, max: 3 }
 } as const;
 
-// const BILLING_CYCLES = {
-// 	days: { min: 1, max: 30 },
-// 	weeks: { min: 1, max: 4 },
-// 	months: { min: 1, max: 1 },
-// 	years: { min: 1, max: 1 }
-// } as const;
-
-const DAYS = randomInt(1, 365);
-// const DAYS = randomInt(365, 365 * 5);
+const DAYS = randomInt(1, 365 * 2);
 
 const createBillingCycleType = () => {
 	return Object.keys(BILLING_CYCLES)[
@@ -31,19 +22,7 @@ const createBillingCycleType = () => {
 	] as keyof typeof BILLING_CYCLES;
 };
 
-type TransactionT = typeof transactionsTable.$inferSelect;
 type SubscriptionT = typeof subscriptionsTable.$inferSelect;
-
-const generateTransaction = (subscription: SubscriptionT, nextPaymentDate: Date) => {
-	return {
-		id: Crypto.randomUUID(),
-		amount: subscription.current_price,
-		date: nextPaymentDate.toISOString(),
-		currency_id: subscription.current_currency_id,
-		tender_id: subscription.tender_id || '',
-		subscription_id: subscription.id
-	};
-};
 
 const buildSubscription = (
 	service: typeof servicesTable.$inferSelect,
@@ -63,49 +42,14 @@ const buildSubscription = (
 		billing_cycle_value: randomInt(BILLING_CYCLES[billingCycleType].min, BILLING_CYCLES[billingCycleType].max),
 
 		current_price: randomInt(125, 5555),
-		current_currency_id: 'USD', // @TODO: Current? Replace it (and price as well) with price history item
+		current_currency_id: 'USD',
 		first_payment_date: subDays(new Date(), days).toISOString(),
 		tender_id: tender.id,
 		cancellation_date: null
 	};
 };
 
-const buildMockTransactions = (subscriptions: SubscriptionT[]) => {
-	const transactions: TransactionT[][] = [];
-
-	for (const subscription of subscriptions) {
-		const subscriptionTransactions: TransactionT[] = [];
-
-		const today = new Date();
-		let nextPaymentDate = new Date(subscription.first_payment_date);
-		const cancellationDate = subscription.cancellation_date ? new Date(subscription.cancellation_date) : null;
-
-		while (nextPaymentDate < today || (cancellationDate && nextPaymentDate <= cancellationDate)) {
-			subscriptionTransactions.push(generateTransaction(subscription, nextPaymentDate));
-
-			switch (subscription.billing_cycle_type) {
-				case 'days':
-					nextPaymentDate = addDays(nextPaymentDate, subscription.billing_cycle_value);
-					break;
-				case 'weeks':
-					nextPaymentDate = addWeeks(nextPaymentDate, subscription.billing_cycle_value);
-					break;
-				case 'months':
-					nextPaymentDate = addMonths(nextPaymentDate, subscription.billing_cycle_value);
-					break;
-				case 'years':
-					nextPaymentDate = addYears(nextPaymentDate, subscription.billing_cycle_value);
-					break;
-			}
-		}
-
-		transactions.push(subscriptionTransactions);
-	}
-
-	return flatten(transactions);
-};
-
-const useSetupMocks = (areMigrationsReady: boolean) => {
+const useSetupMocks = () => {
 	const [seeded, setSeeded] = useState(false);
 
 	const { data: services } = useLiveQuery(db.select().from(servicesTable));
@@ -113,26 +57,23 @@ const useSetupMocks = (areMigrationsReady: boolean) => {
 
 	useEffect(() => {
 		const seedMockData = async () => {
-			if (!services.length || !tenders.length || seeded || !areMigrationsReady) return;
+			if (seeded || !services?.length || !tenders?.length) return;
 
 			await db.transaction(async (tx) => {
-				await tx.delete(transactionsTable);
 				await tx.delete(subscriptionsTable);
 			});
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
-			const transactionMocks = buildMockTransactions(subscriptionMocks);
 
 			await db.transaction(async (tx) => {
 				await tx.insert(subscriptionsTable).values(subscriptionMocks);
-				await tx.insert(transactionsTable).values(transactionMocks);
 			});
 
 			setSeeded(true);
 		};
 
 		seedMockData();
-	}, [services, tenders, seeded, areMigrationsReady]);
+	}, [services, tenders, seeded]);
 
 	return seeded;
 };

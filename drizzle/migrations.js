@@ -9,6 +9,7 @@ import m0004 from './0004_bumpy_eternals.sql';
 import m0005 from './0005_ambiguous_slipstream.sql';
 import m0006 from './0006_watery_thor.sql';
 import m0007 from './0007_stormy_crusher_hogan.sql';
+import m0008 from './0008_hot_spot.sql';
 
   export default {
     journal,
@@ -20,7 +21,8 @@ m0003,
 m0004,
 m0005,
 m0006,
-m0007
+m0007,
+m0008
     }
   }
   

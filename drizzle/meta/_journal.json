@@ -57,6 +57,13 @@
       "when": 1767690283967,
       "tag": "0007_stormy_crusher_hogan",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1769058195832,
+      "tag": "0008_hot_spot",
+      "breakpoints": true
     }
   ]
 }

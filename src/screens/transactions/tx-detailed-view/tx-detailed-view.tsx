@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { useLocalSearchParams } from 'expo-router';
 
 import db from '@db';
-import { sql, gt, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import {
 	transactionsTable,
 	currenciesTable,
@@ -57,7 +57,7 @@ const useTransaction = (): PreparedDbTxT | undefined => {
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
 				date: transactionsTable.date,
-				isPhantom: gt(transactionsTable.date, sql`date('now')`),
+				isPhantom: transactionsTable.is_phantom,
 
 				/* category-related fields */
 				category_id: categoriesTable.id,
