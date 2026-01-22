@@ -10,7 +10,7 @@ import { Stack, useRootNavigationState } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
 import SyncSettings from '@src/sync-settings';
 
-import { useSetupMocks, useSqlMigrations } from '@hooks/setup';
+import { useSetupMocks, useSqlMigrations, useFillUpMissedTxs } from '@hooks/setup';
 
 import '@src/i18n';
 
@@ -27,22 +27,16 @@ setNotificationHandler({
 	})
 });
 
-const RootLayout = () => {
-	useFactoryModel(appModel);
+const LoadStageTwo = () => {
+	const seeded = useSetupMocks();
+
 	const theme = useGetTheme();
-	const areMigrationsReady = useSqlMigrations();
 	const navigation = useRootNavigationState();
-
-	/* Mocks */
-	const seeded = useSetupMocks(areMigrationsReady);
-
-	const [loaded] = useFonts({
-		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
-	});
+	const areTxsFilled = useFillUpMissedTxs(seeded);
 
 	const isAppReadyToGo = useMemo(() => {
-		return loaded && seeded && areMigrationsReady && navigation?.key;
-	}, [loaded, seeded, areMigrationsReady, navigation?.key]);
+		return seeded && areTxsFilled && navigation?.key;
+	}, [seeded, areTxsFilled, navigation?.key]);
 
 	useEffect(() => {
 		if (!isAppReadyToGo) return;
@@ -79,9 +73,24 @@ const RootLayout = () => {
 	);
 };
 
-const WrappedRoot = withFactory({
-	Component: RootLayout,
+const LoadStageOne = () => {
+	useFactoryModel(appModel);
+	const areMigrationsReady = useSqlMigrations();
+
+	const [fontsLoaded] = useFonts({
+		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
+	});
+
+	if (!areMigrationsReady || !fontsLoaded) {
+		return null;
+	}
+
+	return <LoadStageTwo />;
+};
+
+const RootLayout = withFactory({
+	Component: LoadStageOne,
 	factory: appModel
 });
 
-export default WrappedRoot;
+export default RootLayout;

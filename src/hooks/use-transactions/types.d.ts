@@ -17,6 +17,7 @@ export type PreparedDbTxT = {
 	emoji: CategoryT['emoji'];
 	color: ServiceT['color'];
 	date: TransactionT['date'];
+	isPhantom: TransactionT['is_phantom'];
 
 	category_id: CategoryT['id'];
 	category_title: CategoryT['title'];

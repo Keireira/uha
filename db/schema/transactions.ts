@@ -5,10 +5,6 @@ import { tendersTable } from './tenders';
 import { currenciesTable } from './currencies';
 import { subscriptionsTable } from './subscriptions';
 
-/*
- * NB for myself: this is not related to price_history table!!
- * If price_history will be changed, change these table's entries manually then
- */
 export const transactionsTable = sqliteTable(
 	'transactions',
 	{
