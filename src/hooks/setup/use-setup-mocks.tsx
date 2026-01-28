@@ -24,6 +24,32 @@ const createBillingCycleType = () => {
 
 type SubscriptionT = typeof subscriptionsTable.$inferSelect;
 
+const CURRENCIES_POOL = [
+	'USD',
+	'EUR',
+	'KZT',
+	'RUB',
+	'GBP',
+	'CHF',
+	'JPY',
+	'CNY',
+	'INR',
+	'KGS',
+	'MNT',
+	'KRW',
+	'PHP',
+	'TJS',
+	'THB',
+	'KPW',
+	'UZS',
+	'VND',
+	'LAK',
+	'SGD',
+	'HKD',
+	'TWD',
+	'MOP'
+];
+
 const buildSubscription = (
 	service: typeof servicesTable.$inferSelect,
 	tenders: (typeof tendersTable.$inferSelect)[]
@@ -42,7 +68,7 @@ const buildSubscription = (
 		billing_cycle_value: randomInt(BILLING_CYCLES[billingCycleType].min, BILLING_CYCLES[billingCycleType].max),
 
 		current_price: randomInt(125, 5555),
-		current_currency_id: 'USD',
+		current_currency_id: CURRENCIES_POOL[randomInt(0, CURRENCIES_POOL.length - 1)],
 		first_payment_date: subDays(new Date(), days).toISOString(),
 		tender_id: tender.id,
 		cancellation_date: null
