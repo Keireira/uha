@@ -9,11 +9,13 @@ type GetRatesResponseT = {
 	}[];
 };
 
-export const getHistoryRates = (dates: string[], currencies?: string[]): Promise<GetRatesResponseT> => {
-	const queryParams: {
-		date: string;
-		currencies?: string;
-	} = {
+type QueryParamsT = {
+	date: string;
+	currencies?: string;
+};
+
+export const getHistoryRates = (dates: string[], currencies?: string[]) => {
+	const queryParams: QueryParamsT = {
 		date: dates.join(',')
 	};
 
@@ -29,5 +31,5 @@ export const getHistoryRates = (dates: string[], currencies?: string[]): Promise
 		}
 	});
 
-	return request;
+	return request satisfies Promise<GetRatesResponseT>;
 };
