@@ -1,16 +1,13 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
 
-import { randomInt } from '@lib';
 import logos from '@assets/logos';
-import { useSettingsValue } from '@hooks';
+import { useSettingsValue, useRates } from '@hooks';
 
 import { LargeText, H3, LogoView } from '@ui';
 import Root, { LogoSection, DescSection, PriceSection, BottomText } from './transaction-card.styles';
 
 import type { TransactionProps } from './transaction-card.d';
-
-const STUB_KZT_RATE = 514.1;
 
 /*
  * @TODO:
@@ -19,6 +16,7 @@ const STUB_KZT_RATE = 514.1;
 const TransactionCard = ({
 	id,
 	currency,
+	currency_code,
 	price,
 	denominator,
 	slug,
@@ -26,16 +24,19 @@ const TransactionCard = ({
 	title,
 	emoji,
 	category_title,
-	color
+	color,
+	date,
+	isPhantom
 }: TransactionProps) => {
 	const router = useRouter();
-	const showConverted = randomInt(0, 1);
+	const { r } = useRates(new Date(date), isPhantom, currency_code);
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
-	const convertedPrice = (price * STUB_KZT_RATE) / (denominator || 1);
+	const withConversion = currency_code !== recalcCurrencyCode;
 	const basePrice = price / (denominator || 1);
+	const convertedPrice = r(basePrice);
 
-	const withConversion = showConverted > 0;
 	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
 
 	const openTransactionView = () => {
@@ -78,7 +79,7 @@ const TransactionCard = ({
 
 				{withConversion && (
 					<BottomText numberOfLines={1} ellipsizeMode="tail" $align="right">
-						{showFractions ? convertedPrice.toFixed(2) : Math.round(convertedPrice)} ₸
+						{showFractions ? convertedPrice : Math.round(Number.parseInt(convertedPrice as string, 10))}
 					</BottomText>
 				)}
 			</PriceSection>

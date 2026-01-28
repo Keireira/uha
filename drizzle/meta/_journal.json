@@ -64,6 +64,13 @@
       "when": 1769058195832,
       "tag": "0008_hot_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1769629083911,
+      "tag": "0009_uneven_starbolt",
+      "breakpoints": true
     }
   ]
 }

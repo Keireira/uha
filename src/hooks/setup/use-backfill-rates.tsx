@@ -9,8 +9,6 @@ import { lt, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { currencyRatesTable, transactionsTable } from '@db/schema';
 
-const BASE_CURRENCY = 'USD';
-
 const useBackfillRates = () => {
 	const { data: txs } = useLiveQuery(
 		db
@@ -55,7 +53,6 @@ const useBackfillRates = () => {
 				for (const entry of response.data) {
 					const values = Object.entries(entry.rates).map(([target_currency_id, rate]) => ({
 						id: Crypto.randomUUID(),
-						base_currency_id: BASE_CURRENCY,
 						target_currency_id,
 						date: entry.date,
 						rate
@@ -74,11 +71,7 @@ const useBackfillRates = () => {
 						.insert(currencyRatesTable)
 						.values(batch)
 						.onConflictDoUpdate({
-							target: [
-								currencyRatesTable.base_currency_id,
-								currencyRatesTable.target_currency_id,
-								currencyRatesTable.date
-							],
+							target: [currencyRatesTable.target_currency_id, currencyRatesTable.date],
 							set: { rate: sql`excluded.rate` }
 						})
 						.execute();
