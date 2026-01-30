@@ -9,7 +9,14 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack, useRootNavigationState } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
 
-import { useSetupMocks, useSqlMigrations, useBackfillRates, useFillUpMissedTxs, useSyncSettings } from '@hooks/setup';
+import {
+	useSetupMocks,
+	useSqlMigrations,
+	useBackfillRates,
+	useFillUpMissedTxs,
+	useInitSettings,
+	useSyncSettings
+} from '@hooks/setup';
 
 import '@src/i18n';
 
@@ -59,6 +66,7 @@ const LoadFinalStage = () => {
 };
 
 const LoadStageTwo = () => {
+	useInitSettings();
 	useSyncSettings();
 	const seeded = useSetupMocks();
 
