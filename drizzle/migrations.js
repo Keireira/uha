@@ -11,6 +11,7 @@ import m0006 from './0006_watery_thor.sql';
 import m0007 from './0007_stormy_crusher_hogan.sql';
 import m0008 from './0008_hot_spot.sql';
 import m0009 from './0009_uneven_starbolt.sql';
+import m0010 from './0010_slimy_silvermane.sql';
 
   export default {
     journal,
@@ -24,7 +25,8 @@ m0005,
 m0006,
 m0007,
 m0008,
-m0009
+m0009,
+m0010
     }
   }
   
