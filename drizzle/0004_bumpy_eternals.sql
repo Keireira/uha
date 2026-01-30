@@ -1,1 +1,0 @@
-ALTER TABLE `transactions` ADD `status` text DEFAULT 'planned' NOT NULL;
