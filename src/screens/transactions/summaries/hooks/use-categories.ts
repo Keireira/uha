@@ -1,5 +1,12 @@
 import { useMemo } from 'react';
-import { format } from 'date-fns';
+import { format, lightFormat } from 'date-fns';
+
+import db from '@db';
+import { eq } from 'drizzle-orm';
+import { currencyRatesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
+import { useSettingsValue } from '@hooks';
 
 import type { CategoryAccumulatorT, TransactionT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
 
@@ -43,12 +50,40 @@ const computeSummary = (data: TransactionT[]) => {
 	};
 };
 
-/*
- * @TODO:
- *	- add support of RECALC
- */
 export const useDay = (transactions: SummariesQueryReturnT): SummaryReturnT => {
-	const summary = useMemo(() => computeSummary(transactions.day), [transactions.day]);
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+
+	const { data: rates } = useLiveQuery(
+		db
+			.select()
+			.from(currencyRatesTable)
+			.where(eq(currencyRatesTable.date, lightFormat(transactions.dates.day, 'yyyy-MM-dd'))),
+		[transactions.dates.day]
+	);
+
+	const summary = useMemo(() => {
+		if (!rates?.length) {
+			return computeSummary(transactions.day);
+		}
+
+		const txsWithRates = [];
+
+		const ratesMap = new Map(rates.map(({ target_currency_id, rate }) => [target_currency_id, rate]));
+		const recalcRate = ratesMap.get(recalcCurrencyCode) ?? 1;
+
+		for (const tx of transactions.day) {
+			const txToUsdRate = ratesMap.get(tx.currency_code) ?? 1;
+			const convertedToUsd = tx.price / txToUsdRate;
+
+			txsWithRates.push({
+				...tx,
+				price: convertedToUsd * recalcRate
+			});
+		}
+
+		return computeSummary(txsWithRates);
+	}, [transactions.day, rates, recalcCurrencyCode]);
+
 	const formattedDate = useMemo(() => format(transactions.dates.day, 'dd'), [transactions.dates.day]);
 
 	return {
@@ -58,6 +93,10 @@ export const useDay = (transactions: SummariesQueryReturnT): SummaryReturnT => {
 	};
 };
 
+/*
+ * @TODO:
+ *	- add support of RECALC
+ */
 export const useMonth = (transactions: SummariesQueryReturnT): SummaryReturnT => {
 	const summary = useMemo(() => computeSummary(transactions.month), [transactions.month]);
 	const formattedDate = useMemo(() => format(transactions.dates.month, 'MMMM'), [transactions.dates.month]);
@@ -69,6 +108,10 @@ export const useMonth = (transactions: SummariesQueryReturnT): SummaryReturnT =>
 	};
 };
 
+/*
+ * @TODO:
+ *	- add support of RECALC
+ */
 export const useYear = (transactions: SummariesQueryReturnT): SummaryReturnT => {
 	const summary = useMemo(() => computeSummary(transactions.year), [transactions.year]);
 	const formattedDate = useMemo(() => format(transactions.dates.year, 'yyyy'), [transactions.dates.year]);

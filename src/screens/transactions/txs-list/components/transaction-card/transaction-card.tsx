@@ -9,13 +9,8 @@ import Root, { LogoSection, DescSection, PriceSection, BottomText } from './tran
 
 import type { TransactionProps } from './transaction-card.d';
 
-/*
- * @TODO:
- * Apply real currency rates and conversion logic here
- */
 const TransactionCard = ({
 	id,
-	currency,
 	currency_code,
 	price,
 	denominator,
@@ -29,12 +24,13 @@ const TransactionCard = ({
 	isPhantom
 }: TransactionProps) => {
 	const router = useRouter();
-	const { r } = useRates(new Date(date), isPhantom, currency_code);
+	const { r, formatCurrency } = useRates(new Date(date), isPhantom, currency_code);
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const withConversion = currency_code !== recalcCurrencyCode;
 	const basePrice = price / (denominator || 1);
+	const formattedBasePrice = formatCurrency(basePrice, currency_code);
 	const convertedPrice = r(basePrice);
 
 	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
@@ -67,13 +63,11 @@ const TransactionCard = ({
 			<PriceSection $isSingle={!withConversion}>
 				{withConversion ? (
 					<LargeText numberOfLines={1} ellipsizeMode="tail" $weight={500} $align="right">
-						{currency}
-						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
+						{formattedBasePrice}
 					</LargeText>
 				) : (
 					<H3 numberOfLines={1} ellipsizeMode="tail" $weight={500} $align="right">
-						{currency}
-						{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
+						{formattedBasePrice}
 					</H3>
 				)}
 

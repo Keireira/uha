@@ -1,6 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import db from '@db';
+import { eq } from 'drizzle-orm';
+import { currenciesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
 import { useSummaryAnimations } from '../../hooks';
 import { useSettingsValue, useSearchParams } from '@hooks';
 
@@ -27,16 +32,21 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 	const { txViewMode } = useSearchParams();
 	const animations = useSummaryAnimations();
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const {
+		data: [currency]
+	} = useLiveQuery(db.select().from(currenciesTable).where(eq(currenciesTable.id, recalcCurrencyCode)).limit(1));
 
 	return (
 		<Root style={animations.summary} $isDisabled={isDisabled}>
 			<Text $bold>
-				{total > 0
-					? total.toLocaleString('en-US', {
+				{total > 0 && currency
+					? total.toLocaleString(currency.intl_locale, {
 							style: 'currency',
-							/* @TODO: add support of real currency */
-							currency: 'USD',
-							maximumFractionDigits: total > 1000 || !showFractions ? 0 : 2
+							currency: currency.id,
+							currencyDisplay: 'symbol',
+							minimumFractionDigits: total > 1000 || !showFractions ? 0 : currency.fraction_digits,
+							maximumFractionDigits: total > 1000 || !showFractions ? 0 : currency.fraction_digits
 						})
 					: '—'}
 			</Text>

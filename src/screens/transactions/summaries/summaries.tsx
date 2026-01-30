@@ -7,12 +7,10 @@ import { useDay, useYear, useMonth, useSummariesQuery } from './hooks';
 import Root from './summaries.styles';
 import { SummaryBlock } from './components';
 
-import { Props } from './summaries.d';
-
-const Summaries = ({ transactions }: Props) => {
+const Summaries = () => {
 	const { txViewMode } = useSearchParams();
 
-	const summaryTxs = useSummariesQuery(transactions);
+	const summaryTxs = useSummariesQuery();
 	const day = useDay(summaryTxs);
 	const year = useYear(summaryTxs);
 	const month = useMonth(summaryTxs);

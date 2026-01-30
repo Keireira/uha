@@ -27,7 +27,7 @@ const Transactions = () => {
 		<Root $top={insets.top}>
 			<TxHeader />
 
-			{withSummaries && <Summaries transactions={transactions} />}
+			{withSummaries && <Summaries />}
 
 			{txViewMode === 'list' && <TransactionsList transactions={transactions} />}
 			{txViewMode === 'calendar' && <TransactionsCalendar transactions={transactions} />}

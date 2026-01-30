@@ -12,12 +12,11 @@ import {
 } from 'date-fns';
 
 import { useAppModel } from '@models';
-import { useSearchParams } from '@hooks';
+import { useSearchParams, useTransactions } from '@hooks';
 
-import type { PreparedDbTxT } from '@hooks';
-
-const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
+const useSummariesQuery = () => {
 	const { txViewMode } = useSearchParams();
+	const { transactions } = useTransactions('useSummariesQuery');
 
 	const { tx_dates } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
