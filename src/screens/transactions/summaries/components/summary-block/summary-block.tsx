@@ -35,7 +35,9 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const {
 		data: [currency]
-	} = useLiveQuery(db.select().from(currenciesTable).where(eq(currenciesTable.id, recalcCurrencyCode)).limit(1));
+	} = useLiveQuery(db.select().from(currenciesTable).where(eq(currenciesTable.id, recalcCurrencyCode)).limit(1), [
+		recalcCurrencyCode
+	]);
 
 	return (
 		<Root style={animations.summary} $isDisabled={isDisabled}>
