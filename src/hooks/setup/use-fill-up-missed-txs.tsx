@@ -71,7 +71,7 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 	const { data: subscriptions } = useLiveQuery(db.select().from(subscriptionsTable));
 
 	useEffect(() => {
-		if (!areMocksSeeded) return;
+		if (!areMocksSeeded || filledUp) return;
 
 		const initialize = async () => {
 			const maxNextPaymentDate = findMaxNextPaymentDate(subscriptions);
@@ -95,7 +95,7 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 		};
 
 		initialize();
-	}, [areMocksSeeded, subscriptions]);
+	}, [areMocksSeeded, subscriptions, filledUp]);
 
 	return filledUp;
 };

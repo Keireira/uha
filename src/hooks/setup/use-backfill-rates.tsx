@@ -37,7 +37,9 @@ const useBackfillRates = () => {
 	}, [txs]);
 
 	useEffect(() => {
-		if (!newDates.length) return;
+		if (!newDates.length) {
+			return;
+		}
 
 		const splitted = splitEvery(10, newDates);
 		const promises = [];
@@ -46,7 +48,7 @@ const useBackfillRates = () => {
 			promises.push(getHistoryRates(dates));
 		}
 
-		Promise.all(promises).then((responses) => {
+		Promise.all(promises).then(async (responses) => {
 			const valueToInsert = [];
 
 			for (const response of responses) {
@@ -65,7 +67,7 @@ const useBackfillRates = () => {
 			/* because of sqlite limit on the number of parameters in a single query */
 			const batches = splitEvery(150, valueToInsert);
 
-			db.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				for (const batch of batches) {
 					await tx
 						.insert(currencyRatesTable)
@@ -76,7 +78,7 @@ const useBackfillRates = () => {
 						})
 						.execute();
 				}
-			}).catch(console.error);
+			});
 		});
 	}, [newDates]);
 };

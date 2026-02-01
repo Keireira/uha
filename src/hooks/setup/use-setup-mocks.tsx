@@ -85,13 +85,10 @@ const useSetupMocks = () => {
 		const seedMockData = async () => {
 			if (seeded || !services?.length || !tenders?.length) return;
 
-			await db.transaction(async (tx) => {
-				await tx.delete(subscriptionsTable);
-			});
-
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
 
 			await db.transaction(async (tx) => {
+				await tx.delete(subscriptionsTable);
 				await tx.insert(subscriptionsTable).values(subscriptionMocks);
 			});
 
