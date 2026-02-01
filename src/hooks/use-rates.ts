@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { lightFormat } from 'date-fns';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import db from '@db';
 import { and, eq, lte, desc } from 'drizzle-orm';
 import { useSettingsValue } from './use-settings';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { currenciesTable, currencyRatesTable } from '@db/schema';
 
 const useRates = (date: Date, isPhantom: boolean, txCurrencyCode: string) => {

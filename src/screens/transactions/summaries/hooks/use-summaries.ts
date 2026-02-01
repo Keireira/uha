@@ -14,7 +14,22 @@ import {
 import { useAppModel } from '@models';
 import { useSearchParams, useTransactions } from '@hooks';
 
-const useSummariesQuery = () => {
+import type { PreparedDbTxT } from '@hooks/use-transactions';
+
+type ReturnT = {
+	day: PreparedDbTxT[];
+	year: PreparedDbTxT[];
+	month: PreparedDbTxT[];
+	dates: {
+		day: Date;
+		monthStart: Date;
+		monthEnd: Date;
+		yearStart: Date;
+		yearEnd: Date;
+	};
+};
+
+const useSummariesQuery = (): ReturnT => {
 	const { txViewMode } = useSearchParams();
 	const { transactions } = useTransactions('useSummariesQuery');
 
@@ -75,10 +90,12 @@ const useSummariesQuery = () => {
 		month: transactionsMonth,
 		dates: {
 			day: selectedDate,
-			month: startOfMonth,
-			year: startOfYear
+			monthStart: startOfMonth,
+			monthEnd: endOfMonth,
+			yearStart: startOfYear,
+			yearEnd: endOfYear
 		}
-	};
+	} satisfies ReturnT;
 };
 
 export default useSummariesQuery;
