@@ -98,13 +98,13 @@ const useSummariesQuery = (): ReturnT => {
 			dayRaw: selectedDate,
 			dayFormatted: lightFormat(selectedDate, 'yyyy-MM-dd'),
 			monthStartRaw: startOfMonth,
-			monthStartFormatted: lightFormat(startOfMonth, 'yyyy-MM'),
+			monthStartFormatted: lightFormat(startOfMonth, 'yyyy-MM-dd'),
 			monthEndRaw: endOfMonth,
-			monthEndFormatted: lightFormat(endOfMonth, 'yyyy-MM'),
+			monthEndFormatted: lightFormat(endOfMonth, 'yyyy-MM-dd'),
 			yearStartRaw: startOfYear,
-			yearStartFormatted: lightFormat(startOfYear, 'yyyy'),
+			yearStartFormatted: lightFormat(startOfYear, 'yyyy-MM-dd'),
 			yearEndRaw: endOfYear,
-			yearEndFormatted: lightFormat(endOfYear, 'yyyy')
+			yearEndFormatted: lightFormat(endOfYear, 'yyyy-MM-dd')
 		}
 	} satisfies ReturnT;
 };

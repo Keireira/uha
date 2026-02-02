@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { format } from 'date-fns';
+import { format, lightFormat } from 'date-fns';
 
 import db from '@db';
-import { eq } from 'drizzle-orm';
+import { eq, between } from 'drizzle-orm';
 import { currencyRatesTable } from '@db/schema';
 
 import { useSettingsValue } from '@hooks/use-settings';
@@ -10,9 +10,11 @@ import { useSettingsValue } from '@hooks/use-settings';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 import type { CategoryAccumulatorT, TransactionT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
 type LastKnownRatesT = Map<string, number>;
+type CurrencyRateT = typeof currencyRatesTable.$inferSelect;
 
 const DEFAULT_DENOMINATOR = 1;
 const __STUB_COLOR = '#ffffff';
+const DEFAULT_SUMMARY = { total: 0, categories: [] };
 
 const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
@@ -35,7 +37,7 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) =>
 
 const computeSummary = (data: TransactionT[]) => {
 	if (!data.length) {
-		return { total: 0, categories: [] };
+		return DEFAULT_SUMMARY;
 	}
 
 	const result = data.reduce(formatCategoryPredicate, {
@@ -51,18 +53,64 @@ const computeSummary = (data: TransactionT[]) => {
 	};
 };
 
+const calcRatesMap = (ratesInRange: Omit<CurrencyRateT, 'id'>[]) => {
+	const ratesMap = new Map<string, Map<string, number>>();
+
+	if (!ratesInRange?.length) {
+		return;
+	}
+
+	for (const rate of ratesInRange) {
+		if (!ratesMap.has(rate.date)) {
+			ratesMap.set(rate.date, new Map<string, number>());
+		}
+
+		ratesMap.get(rate.date)!.set(rate.target_currency_id, rate.rate);
+	}
+
+	return ratesMap;
+};
+
+const updatePrices = (
+	transactions: TransactionT[],
+	rates: Map<string, Map<string, number>>,
+	recalcCurrencyCode: string,
+	lastKnownRates: LastKnownRatesT
+) => {
+	const txsWithRates = [];
+
+	for (const tx of transactions) {
+		const ratesByDate = rates?.get(lightFormat(tx.date, 'yyyy-MM-dd')) || lastKnownRates;
+
+		const recalcRate = ratesByDate.get(recalcCurrencyCode) ?? 1;
+		const txToUsdRate = ratesByDate.get(tx.currency_code) ?? 1;
+		const convertedToUsd = tx.price / txToUsdRate;
+
+		txsWithRates.push({
+			...tx,
+			price: convertedToUsd * recalcRate
+		});
+	}
+
+	return txsWithRates;
+};
+
 export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const ratesOnDate = useMemo(() => {
 		return db
-			.select()
+			.select({
+				date: currencyRatesTable.date,
+				rate: currencyRatesTable.rate,
+				target_currency_id: currencyRatesTable.target_currency_id
+			})
 			.from(currencyRatesTable)
 			.where(eq(currencyRatesTable.date, transactions.dates.dayFormatted))
 			.all();
 	}, [transactions.dates.dayFormatted]);
 
-	const relatedRates = useMemo(() => {
+	const rates = useMemo(() => {
 		if (!ratesOnDate?.length) {
 			return lastKnownRates;
 		}
@@ -75,14 +123,14 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 
 		return nextRates;
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [ratesOnDate, transactions.dates.dayFormatted]);
+	}, [ratesOnDate]);
 
 	const summary = useMemo(() => {
 		const txsWithRates: PreparedDbTxT[] = [];
-		const recalcRate = relatedRates.get(recalcCurrencyCode) || 1;
+		const recalcRate = rates.get(recalcCurrencyCode) || 1;
 
 		for (const tx of transactions.day) {
-			const txToUsdRate = relatedRates.get(tx.currency_code) || 1;
+			const txToUsdRate = rates.get(tx.currency_code) || 1;
 			const convertedToUsd = tx.price / txToUsdRate;
 
 			txsWithRates.push({
@@ -92,9 +140,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		}
 
 		return computeSummary(txsWithRates);
-	}, [relatedRates, recalcCurrencyCode, transactions.day]);
-
-	// const summary = useMemo(() => computeSummary(transactions.day), [transactions.day]);
+	}, [rates, recalcCurrencyCode, transactions.day]);
 
 	const formattedDate = useMemo(() => {
 		return format(transactions.dates.dayRaw, 'dd');
@@ -109,7 +155,35 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 };
 
 export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
-	const summary = useMemo(() => computeSummary(transactions.month), [transactions.month]);
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+
+	const ratesInRange = useMemo(() => {
+		return db
+			.select({
+				date: currencyRatesTable.date,
+				rate: currencyRatesTable.rate,
+				target_currency_id: currencyRatesTable.target_currency_id
+			})
+			.from(currencyRatesTable)
+			.where(
+				between(currencyRatesTable.date, transactions.dates.monthStartFormatted, transactions.dates.monthEndFormatted)
+			)
+			.all();
+	}, [transactions.dates.monthStartFormatted, transactions.dates.monthEndFormatted]);
+
+	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
+
+	const summary = useMemo(() => {
+		if (!rates) {
+			return DEFAULT_SUMMARY;
+		}
+
+		const txsWithRates = updatePrices(transactions.month, rates, recalcCurrencyCode, lastKnownRates);
+
+		return computeSummary(txsWithRates);
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [rates, recalcCurrencyCode, transactions.month]);
+
 	const formattedDate = useMemo(
 		() => format(transactions.dates.monthStartRaw, 'MMMM'),
 		[transactions.dates.monthStartRaw]
@@ -123,7 +197,35 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 };
 
 export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
-	const summary = useMemo(() => computeSummary(transactions.year), [transactions.year]);
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+
+	const ratesInRange = useMemo(() => {
+		return db
+			.select({
+				date: currencyRatesTable.date,
+				rate: currencyRatesTable.rate,
+				target_currency_id: currencyRatesTable.target_currency_id
+			})
+			.from(currencyRatesTable)
+			.where(
+				between(currencyRatesTable.date, transactions.dates.yearStartFormatted, transactions.dates.yearEndFormatted)
+			)
+			.all();
+	}, [transactions.dates.yearStartFormatted, transactions.dates.yearEndFormatted]);
+
+	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
+
+	const summary = useMemo(() => {
+		if (!rates) {
+			return DEFAULT_SUMMARY;
+		}
+
+		const txsWithRates = updatePrices(transactions.year, rates, recalcCurrencyCode, lastKnownRates);
+
+		return computeSummary(txsWithRates);
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [rates, recalcCurrencyCode, transactions.year]);
+
 	const formattedDate = useMemo(
 		() => format(transactions.dates.yearStartRaw, 'yyyy'),
 		[transactions.dates.yearStartRaw]
