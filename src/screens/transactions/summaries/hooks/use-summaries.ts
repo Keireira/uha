@@ -5,6 +5,7 @@ import {
 	interval,
 	isSameDay,
 	isWithinInterval,
+	lightFormat,
 	startOfMonth as startOfMonthFn,
 	endOfMonth as endOfMonthFn,
 	startOfYear as startOfYearFn,
@@ -12,12 +13,31 @@ import {
 } from 'date-fns';
 
 import { useAppModel } from '@models';
-import { useSearchParams } from '@hooks';
+import { useSearchParams, useTransactions } from '@hooks';
 
-import type { PreparedDbTxT } from '@hooks';
+import type { PreparedDbTxT } from '@hooks/use-transactions';
 
-const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
+type ReturnT = {
+	day: PreparedDbTxT[];
+	year: PreparedDbTxT[];
+	month: PreparedDbTxT[];
+	dates: {
+		dayRaw: Date;
+		dayFormatted: string;
+		monthStartRaw: Date;
+		monthStartFormatted: string;
+		monthEndRaw: Date;
+		monthEndFormatted: string;
+		yearStartRaw: Date;
+		yearStartFormatted: string;
+		yearEndRaw: Date;
+		yearEndFormatted: string;
+	};
+};
+
+const useSummariesQuery = (): ReturnT => {
 	const { txViewMode } = useSearchParams();
+	const { transactions } = useTransactions('useSummariesQuery');
 
 	const { tx_dates } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
@@ -75,11 +95,18 @@ const useSummariesQuery = (transactions: PreparedDbTxT[]) => {
 		year: transactionsYear,
 		month: transactionsMonth,
 		dates: {
-			day: selectedDate,
-			month: startOfMonth,
-			year: startOfYear
+			dayRaw: selectedDate,
+			dayFormatted: lightFormat(selectedDate, 'yyyy-MM-dd'),
+			monthStartRaw: startOfMonth,
+			monthStartFormatted: lightFormat(startOfMonth, 'yyyy-MM-dd'),
+			monthEndRaw: endOfMonth,
+			monthEndFormatted: lightFormat(endOfMonth, 'yyyy-MM-dd'),
+			yearStartRaw: startOfYear,
+			yearStartFormatted: lightFormat(startOfYear, 'yyyy-MM-dd'),
+			yearEndRaw: endOfYear,
+			yearEndFormatted: lightFormat(endOfYear, 'yyyy-MM-dd')
 		}
-	};
+	} satisfies ReturnT;
 };
 
 export default useSummariesQuery;

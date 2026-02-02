@@ -9,6 +9,7 @@ export type CategoryT = typeof categoriesTable.$inferSelect;
 export type PreparedDbTxT = {
 	id: TransactionT['id'];
 	currency: CurrencyT['symbol'];
+	currency_code: CurrencyT['id'];
 	denominator: CurrencyT['denominator'];
 	price: TransactionT['amount'];
 	slug: ServiceT['slug'];

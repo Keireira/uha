@@ -4,7 +4,7 @@ import { Appearance } from 'react-native';
 import { setSettingsValue, useSettingsValue } from '@hooks';
 import SettingsBridgeModule from '@modules/settings-bridge';
 
-const SyncSettings = () => {
+const useSyncSettings = () => {
 	const theme = useSettingsValue<'dark' | 'light'>('theme');
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrency = useSettingsValue<string>('recalc_currency_code');
@@ -34,8 +34,6 @@ const SyncSettings = () => {
 			setSettingsValue('recalc_currency_code', 'USD');
 		}
 	}, [defaultCurrency, recalcCurrency]);
-
-	return null;
 };
 
-export default SyncSettings;
+export default useSyncSettings;

@@ -2,16 +2,10 @@ import { useMemo } from 'react';
 import { useLocales } from 'expo-localization';
 import { useTranslation } from 'react-i18next';
 
-import {
-	SIGNS_BY_CODES,
-	DEFAULT_SIGN,
-	EUROPEAN_CURRENCIES,
-	DEFAULT_CURRENCIES,
-	AMERICAN_CURRENCIES,
-	ASIAN_CURRENCIES,
-	MIDDLE_EAST_CURRENCIES,
-	OCEANIAN_CURRENCIES
-} from '@assets/currencies';
+import db from '@db';
+import { asc } from 'drizzle-orm';
+import { currenciesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import type { ContextMenuAction } from 'react-native-context-menu-view';
 
@@ -25,156 +19,119 @@ const sortCurrenciesList = (currenciesList: ContextMenuAction[]) => {
 	return sorted;
 };
 
+const DEFAULT_CURRENCIES = ['USD', 'EUR'];
+
 const useGetCurrenciesList = (): ContextMenuAction[] => {
 	const locales = useLocales();
 	const { t } = useTranslation();
+	const { data: currencies } = useLiveQuery(db.select().from(currenciesTable).orderBy(asc(currenciesTable.region)), []);
 
 	const currenciesList = useMemo(() => {
-		const forbiddenCodes: string[] = [];
+		const defaultCodes: string[] = [];
 
-		// DEFAULT CURRENCIES
+		const currenciesIndex: Record<string, { title: string; actions: ContextMenuAction[] }> = {
+			europe: {
+				title: t('settings.currencies.europe'),
+				actions: []
+			},
+			north_america: {
+				title: t('settings.currencies.north_america'),
+				actions: []
+			},
+			central_america: {
+				title: t('settings.currencies.central_america'),
+				actions: []
+			},
+			south_america: {
+				title: t('settings.currencies.south_america'),
+				actions: []
+			},
+			caribbean: {
+				title: t('settings.currencies.caribbean'),
+				actions: []
+			},
+			central_asia: {
+				title: t('settings.currencies.central_asia'),
+				actions: []
+			},
+			south_asia: {
+				title: t('settings.currencies.south_asia'),
+				actions: []
+			},
+			east_asia: {
+				title: t('settings.currencies.east_asia'),
+				actions: []
+			},
+			southeast_asia: {
+				title: t('settings.currencies.southeast_asia'),
+				actions: []
+			},
+			oceania: {
+				title: t('settings.currencies.oceania'),
+				actions: []
+			},
+			africa: {
+				title: t('settings.currencies.africa'),
+				actions: []
+			},
+			cryptocurrency: {
+				title: t('settings.currencies.cryptocurrency'),
+				actions: []
+			},
+			other: {
+				title: t('settings.currencies.other'),
+				actions: []
+			}
+		};
+
+		/* Default currencies (usd, eur) */
 		const currenciesActions: ContextMenuAction[] = DEFAULT_CURRENCIES.map((currency) => {
-			forbiddenCodes.push(currency);
+			defaultCodes.push(currency);
 
 			return {
 				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
+				subtitle: currency
 			};
 		});
 
+		/* Add locale's currency as default one */
 		if (locales[0].currencyCode) {
-			currenciesActions.push({
-				title: t(`currencies.${locales[0].currencyCode}`),
-				subtitle: locales[0].currencyCode,
-				systemIcon: SIGNS_BY_CODES[locales[0].currencyCode as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
-			});
+			const localeCurrency = locales[0].currencyCode;
 
-			forbiddenCodes.push(locales[0].currencyCode);
+			if (!defaultCodes.includes(localeCurrency)) {
+				currenciesActions.push({
+					title: t(`currencies.${localeCurrency}`),
+					subtitle: localeCurrency
+				});
+
+				defaultCodes.push(locales[0].currencyCode);
+			}
 		}
 
-		// EUROPEAN CURRENCIES
-		const europeanCurrencies = EUROPEAN_CURRENCIES.reduce((acc, currency) => {
-			if (forbiddenCodes.includes(currency)) {
-				return acc;
-			}
-
-			const nextAction = {
-				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
+		/* Add any other currency */
+		for (const currency of currencies) {
+			const currencyAction: ContextMenuAction = {
+				title: t(`currencies.${currency.id}`),
+				subtitle: currency.id
 			};
 
-			return [...acc, nextAction];
-		}, [] as ContextMenuAction[]);
+			currenciesIndex[currency.region] ??= {
+				title: t(`settings.currencies.${currency.region}`),
+				actions: []
+			};
 
-		if (europeanCurrencies.length > 0) {
-			const sortedEuropeanCurrencies = sortCurrenciesList(europeanCurrencies);
-
-			currenciesActions.push({
-				title: t('settings.currencies.european'),
-				actions: sortedEuropeanCurrencies
-			});
+			currenciesIndex[currency.region].actions.push(currencyAction);
 		}
 
-		// ASIAN CURRENCIES
-		const asianCurrencies = ASIAN_CURRENCIES.reduce((acc, currency) => {
-			if (forbiddenCodes.includes(currency)) {
-				return acc;
-			}
-
-			const nextAction = {
-				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
-			};
-
-			return [...acc, nextAction];
-		}, [] as ContextMenuAction[]);
-
-		if (asianCurrencies.length > 0) {
-			const sortedAsianCurrencies = sortCurrenciesList(asianCurrencies);
-
+		for (const region of Object.values(currenciesIndex)) {
 			currenciesActions.push({
-				title: t('settings.currencies.asian'),
-				actions: sortedAsianCurrencies
-			});
-		}
-
-		// MIDDLE EAST CURRENCIES
-		const middleEastCurrencies = MIDDLE_EAST_CURRENCIES.reduce((acc, currency) => {
-			if (forbiddenCodes.includes(currency)) {
-				return acc;
-			}
-
-			const nextAction = {
-				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
-			};
-
-			return [...acc, nextAction];
-		}, [] as ContextMenuAction[]);
-
-		if (middleEastCurrencies.length > 0) {
-			const sortedMiddleEastCurrencies = sortCurrenciesList(middleEastCurrencies);
-
-			currenciesActions.push({
-				title: t('settings.currencies.babah'),
-				actions: sortedMiddleEastCurrencies
-			});
-		}
-
-		// AMERICAN CURRENCIES
-		const americanCurrencies = AMERICAN_CURRENCIES.reduce((acc, currency) => {
-			if (forbiddenCodes.includes(currency)) {
-				return acc;
-			}
-
-			const nextAction = {
-				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
-			};
-
-			return [...acc, nextAction];
-		}, [] as ContextMenuAction[]);
-
-		if (americanCurrencies.length > 0) {
-			const sortedAmericanCurrencies = sortCurrenciesList(americanCurrencies);
-
-			currenciesActions.push({
-				title: t('settings.currencies.american'),
-				actions: sortedAmericanCurrencies
-			});
-		}
-
-		// OCEANIAN CURRENCIES
-		const oceanianCurrencies = OCEANIAN_CURRENCIES.reduce((acc, currency) => {
-			if (forbiddenCodes.includes(currency)) {
-				return acc;
-			}
-
-			const nextAction = {
-				title: t(`currencies.${currency}`),
-				subtitle: currency,
-				systemIcon: SIGNS_BY_CODES[currency as keyof typeof SIGNS_BY_CODES] || DEFAULT_SIGN
-			};
-
-			return [...acc, nextAction];
-		}, [] as ContextMenuAction[]);
-
-		if (oceanianCurrencies.length > 0) {
-			const sortedOceanianCurrencies = sortCurrenciesList(oceanianCurrencies);
-
-			currenciesActions.push({
-				title: t('settings.currencies.maori'),
-				actions: sortedOceanianCurrencies
+				title: region.title,
+				actions: sortCurrenciesList(region.actions)
 			});
 		}
 
 		return currenciesActions;
-	}, [t]);
+	}, [currencies, locales, t]);
 
 	return currenciesList;
 };

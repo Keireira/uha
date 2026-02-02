@@ -95,6 +95,7 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 			.select({
 				id: transactionsTable.id,
 				currency: currenciesTable.symbol,
+				currency_code: currenciesTable.id,
 				denominator: currenciesTable.denominator,
 				price: transactionsTable.amount,
 				slug: servicesTable.slug,
@@ -103,6 +104,7 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
 				date: transactionsTable.date,
+				isPhantom: transactionsTable.is_phantom,
 
 				/* category-related fields */
 				category_id: categoriesTable.id,

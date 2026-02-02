@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
+import * as Crypto from 'expo-crypto';
+import { subDays } from 'date-fns';
+import { randomInt } from '@lib';
 
 import db from '@db';
-import { randomInt } from '@lib';
-import { subDays } from 'date-fns';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { servicesTable, tendersTable, subscriptionsTable } from '@db/schema';
-import * as Crypto from 'expo-crypto';
 
 const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
@@ -23,6 +22,32 @@ const createBillingCycleType = () => {
 };
 
 type SubscriptionT = typeof subscriptionsTable.$inferSelect;
+
+const CURRENCIES_POOL = [
+	'USD',
+	'EUR',
+	'KZT',
+	'RUB',
+	'GBP',
+	'CHF',
+	'JPY',
+	'CNY',
+	'INR',
+	'KGS',
+	'MNT',
+	'KRW',
+	'PHP',
+	'TJS',
+	'THB',
+	'KPW',
+	'UZS',
+	'VND',
+	'LAK',
+	'SGD',
+	'HKD',
+	'TWD',
+	'MOP'
+];
 
 const buildSubscription = (
 	service: typeof servicesTable.$inferSelect,
@@ -42,38 +67,35 @@ const buildSubscription = (
 		billing_cycle_value: randomInt(BILLING_CYCLES[billingCycleType].min, BILLING_CYCLES[billingCycleType].max),
 
 		current_price: randomInt(125, 5555),
-		current_currency_id: 'USD',
+		current_currency_id: CURRENCIES_POOL[randomInt(0, CURRENCIES_POOL.length - 1)],
 		first_payment_date: subDays(new Date(), days).toISOString(),
 		tender_id: tender.id,
 		cancellation_date: null
 	};
 };
 
-const useSetupMocks = () => {
+const useSetupMocks = (areSettingsReady: boolean) => {
 	const [seeded, setSeeded] = useState(false);
 
-	const { data: services } = useLiveQuery(db.select().from(servicesTable));
-	const { data: tenders } = useLiveQuery(db.select().from(tendersTable));
-
 	useEffect(() => {
-		const seedMockData = async () => {
-			if (seeded || !services?.length || !tenders?.length) return;
+		if (seeded || !areSettingsReady) return;
 
-			await db.transaction(async (tx) => {
-				await tx.delete(subscriptionsTable);
-			});
+		const seedMockData = async () => {
+			const services = await db.select().from(servicesTable).all();
+			const tenders = await db.select().from(tendersTable).all();
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
 
-			await db.transaction(async (tx) => {
-				await tx.insert(subscriptionsTable).values(subscriptionMocks);
-			});
+			await db.delete(subscriptionsTable);
+			console.log('Subscriptions deleted');
+			await db.insert(subscriptionsTable).values(subscriptionMocks);
+			console.log('New subscriptions inserted');
 
 			setSeeded(true);
 		};
 
 		seedMockData();
-	}, [services, tenders, seeded]);
+	}, [seeded, areSettingsReady]);
 
 	return seeded;
 };

@@ -1,11 +1,5 @@
 import useSummariesQuery from './hooks/use-summaries';
 
-import { PreparedDbTxT } from '@hooks/use-transactions';
-
-export type Props = {
-	transactions: PreparedDbTxT[];
-};
-
 export type SummariesQueryReturnT = ReturnType<typeof useSummariesQuery>;
 
 export type CategoryT = {

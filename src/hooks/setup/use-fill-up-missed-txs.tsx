@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { max as maxR } from 'ramda';
+import { max as maxR, splitEvery } from 'ramda';
 import * as Crypto from 'expo-crypto';
 import { advanceDate } from '@hooks/use-transactions/utils';
 import { startOfToday, addYears, endOfYear, isAfter, isBefore } from 'date-fns';
@@ -71,27 +71,34 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 	const { data: subscriptions } = useLiveQuery(db.select().from(subscriptionsTable));
 
 	useEffect(() => {
-		if (!areMocksSeeded) return;
+		if (!areMocksSeeded || filledUp) return;
 
 		const initialize = async () => {
-			await db.transaction(async (tx) => {
-				await tx.delete(transactionsTable);
-			});
-
 			const maxNextPaymentDate = findMaxNextPaymentDate(subscriptions);
 			const generatedTransactions = createTransactions(subscriptions, maxNextPaymentDate);
 
-			await db.transaction(async (tx) => {
-				if (!generatedTransactions.length) return;
+			/* because of sqlite limit on the number of parameters in a single query */
+			const batches = splitEvery(150, generatedTransactions);
 
-				await tx.insert(transactionsTable).values(generatedTransactions);
-			});
+			await db
+				.transaction(async (tx) => {
+					await tx.delete(transactionsTable);
 
-			setFilledUp(true);
+					if (generatedTransactions.length) {
+						let i = 1;
+						for (const batch of batches) {
+							console.log(`batch: ${i} of ${batches.length} DONE`);
+							await tx.insert(transactionsTable).values(batch);
+							i++;
+						}
+					}
+				})
+				.then(() => setFilledUp(true))
+				.catch(console.error);
 		};
 
 		initialize();
-	}, [areMocksSeeded, subscriptions]);
+	}, [areMocksSeeded, subscriptions, filledUp]);
 
 	return filledUp;
 };

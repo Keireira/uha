@@ -5,64 +5,15 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1753038859056,
-      "tag": "0000_elite_bullseye",
+      "when": 1769773482202,
+      "tag": "0000_pink_shaman",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1753038863131,
-      "tag": "0001_marvelous_major_mapleleaf",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1767057801902,
-      "tag": "0002_shocking_doorman",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1767058368990,
-      "tag": "0003_skinny_norman_osborn",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1767320880307,
-      "tag": "0004_bumpy_eternals",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1767578226049,
-      "tag": "0005_ambiguous_slipstream",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1767683960426,
-      "tag": "0006_watery_thor",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "6",
-      "when": 1767690283967,
-      "tag": "0007_stormy_crusher_hogan",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "6",
-      "when": 1769058195832,
-      "tag": "0008_hot_spot",
+      "when": 1769773484636,
+      "tag": "0001_lying_eternals",
       "breakpoints": true
     }
   ]

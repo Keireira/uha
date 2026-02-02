@@ -8,6 +8,12 @@ const normalize = (value: any) => {
 	return [0, 1].includes(value) ? value === 1 : value;
 };
 
+export const setSettingsValue = (key: string, value: any) => {
+	Settings.set({ [key]: value });
+
+	settingsEmitter.emit(key, value);
+};
+
 export const useSettingsValue = <T>(key: string): T => {
 	const [value, setValue] = useState<T>(() => {
 		const raw = Settings.get(key);
@@ -24,10 +30,4 @@ export const useSettingsValue = <T>(key: string): T => {
 	}, [key]);
 
 	return value;
-};
-
-export const setSettingsValue = (key: string, value: any) => {
-	Settings.set({ [key]: value });
-
-	settingsEmitter.emit(key, value);
 };

@@ -8,9 +8,15 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack, useRootNavigationState } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
-import SyncSettings from '@src/sync-settings';
 
-import { useSetupMocks, useSqlMigrations, useFillUpMissedTxs } from '@hooks/setup';
+import {
+	useSetupMocks,
+	useSqlMigrations,
+	useBackfillRates,
+	useFillUpMissedTxs,
+	useInitSettings,
+	useSyncSettings
+} from '@hooks/setup';
 
 import '@src/i18n';
 
@@ -27,33 +33,19 @@ setNotificationHandler({
 	})
 });
 
-const LoadStageTwo = () => {
-	const seeded = useSetupMocks();
-
+const LoadFinalStage = () => {
+	useBackfillRates();
 	const theme = useGetTheme();
-	const navigation = useRootNavigationState();
-	const areTxsFilled = useFillUpMissedTxs(seeded);
-
-	const isAppReadyToGo = useMemo(() => {
-		return seeded && areTxsFilled && navigation?.key;
-	}, [seeded, areTxsFilled, navigation?.key]);
 
 	useEffect(() => {
-		if (!isAppReadyToGo) return;
+		if (!theme) return;
 
 		SplashScreen.hideAsync();
-	}, [isAppReadyToGo]);
-
-	if (!isAppReadyToGo) {
-		return null;
-	}
+	}, [theme]);
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				{/* @TODO: Move to hooks & preload as well */}
-				<SyncSettings />
-
 				<ThemeProvider theme={theme}>
 					<Stack
 						screenOptions={{
@@ -73,15 +65,34 @@ const LoadStageTwo = () => {
 	);
 };
 
-const LoadStageOne = () => {
-	useFactoryModel(appModel);
-	const areMigrationsReady = useSqlMigrations();
+const LoadStageTwo = () => {
+	const areSettingsReady = useInitSettings();
+	useSyncSettings();
+	const seeded = useSetupMocks(areSettingsReady);
 
 	const [fontsLoaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
-	if (!areMigrationsReady || !fontsLoaded) {
+	const navigation = useRootNavigationState();
+	const areTxsFilled = useFillUpMissedTxs(seeded);
+
+	const isAppReadyToGo = useMemo(() => {
+		return seeded && areTxsFilled && fontsLoaded && areSettingsReady && navigation?.key;
+	}, [seeded, areTxsFilled, fontsLoaded, areSettingsReady, navigation?.key]);
+
+	if (!isAppReadyToGo) {
+		return null;
+	}
+
+	return <LoadFinalStage />;
+};
+
+const LoadStageOne = () => {
+	useFactoryModel(appModel);
+	const areMigrationsReady = useSqlMigrations();
+
+	if (!areMigrationsReady) {
 		return null;
 	}
 
