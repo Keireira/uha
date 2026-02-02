@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
-import { format, lightFormat } from 'date-fns';
+import { format } from 'date-fns';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
 import { currencyRatesTable } from '@db/schema';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useSettingsValue } from '@hooks/use-settings';
 
@@ -55,12 +54,13 @@ const computeSummary = (data: TransactionT[]) => {
 export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
-	const { data: ratesOnDate } = useLiveQuery(
-		db
+	const ratesOnDate = useMemo(() => {
+		return db
 			.select()
 			.from(currencyRatesTable)
-			.where(eq(currencyRatesTable.date, lightFormat(transactions.dates.day, 'yyyy-MM-dd')))
-	);
+			.where(eq(currencyRatesTable.date, transactions.dates.dayFormatted))
+			.all();
+	}, [transactions.dates.dayFormatted]);
 
 	const relatedRates = useMemo(() => {
 		if (!ratesOnDate?.length) {
@@ -74,7 +74,8 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		}
 
 		return nextRates;
-	}, [ratesOnDate?.length, transactions.dates.day, lastKnownRates]);
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [ratesOnDate, transactions.dates.dayFormatted]);
 
 	const summary = useMemo(() => {
 		const txsWithRates: PreparedDbTxT[] = [];
@@ -93,33 +94,44 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		return computeSummary(txsWithRates);
 	}, [relatedRates, recalcCurrencyCode, transactions.day]);
 
-	const formattedDate = useMemo(() => format(transactions.dates.day, 'dd'), [transactions.dates.day]);
+	// const summary = useMemo(() => computeSummary(transactions.day), [transactions.day]);
+
+	const formattedDate = useMemo(() => {
+		return format(transactions.dates.dayRaw, 'dd');
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [transactions.dates.dayFormatted]);
 
 	return {
 		...summary,
 		formattedDate,
-		rawDate: transactions.dates.day
+		rawDate: transactions.dates.dayRaw
 	};
 };
 
 export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const summary = useMemo(() => computeSummary(transactions.month), [transactions.month]);
-	const formattedDate = useMemo(() => format(transactions.dates.monthStart, 'MMMM'), [transactions.dates.monthStart]);
+	const formattedDate = useMemo(
+		() => format(transactions.dates.monthStartRaw, 'MMMM'),
+		[transactions.dates.monthStartRaw]
+	);
 
 	return {
 		...summary,
 		formattedDate,
-		rawDate: transactions.dates.monthStart
+		rawDate: transactions.dates.monthStartRaw
 	};
 };
 
 export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const summary = useMemo(() => computeSummary(transactions.year), [transactions.year]);
-	const formattedDate = useMemo(() => format(transactions.dates.yearStart, 'yyyy'), [transactions.dates.yearStart]);
+	const formattedDate = useMemo(
+		() => format(transactions.dates.yearStartRaw, 'yyyy'),
+		[transactions.dates.yearStartRaw]
+	);
 
 	return {
 		...summary,
 		formattedDate,
-		rawDate: transactions.dates.yearStart
+		rawDate: transactions.dates.yearStartRaw
 	};
 };

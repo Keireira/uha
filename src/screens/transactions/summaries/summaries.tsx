@@ -1,5 +1,5 @@
 import React from 'react';
-import { isSameMonth, lightFormat } from 'date-fns';
+import { isSameMonth } from 'date-fns';
 
 import { useSearchParams } from '@hooks';
 import { useDay, useYear, useMonth, useSummariesQuery, useGetLastKnownRates } from './hooks';
@@ -12,9 +12,9 @@ const Summaries = () => {
 
 	const summaryTxs = useSummariesQuery();
 	const lastKnownRates = useGetLastKnownRates(
-		lightFormat(summaryTxs.dates.day, 'yyyy-MM-dd'),
-		lightFormat(summaryTxs.dates.monthStart, 'yyyy-MM-dd'),
-		lightFormat(summaryTxs.dates.yearStart, 'yyyy-MM-dd')
+		summaryTxs.dates.dayFormatted,
+		summaryTxs.dates.monthStartFormatted,
+		summaryTxs.dates.yearStartFormatted
 	);
 
 	const day = useDay(summaryTxs, lastKnownRates);

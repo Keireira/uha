@@ -86,10 +86,10 @@ const useSetupMocks = (areSettingsReady: boolean) => {
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
 
-			// await db.transaction(async (tx) => {
 			await db.delete(subscriptionsTable);
+			console.log('Subscriptions deleted');
 			await db.insert(subscriptionsTable).values(subscriptionMocks);
-			// });
+			console.log('New subscriptions inserted');
 
 			setSeeded(true);
 		};

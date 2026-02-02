@@ -85,8 +85,11 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 					await tx.delete(transactionsTable);
 
 					if (generatedTransactions.length) {
+						let i = 1;
 						for (const batch of batches) {
+							console.log(`batch: ${i} of ${batches.length} DONE`);
 							await tx.insert(transactionsTable).values(batch);
+							i++;
 						}
 					}
 				})

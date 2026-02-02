@@ -5,6 +5,7 @@ import {
 	interval,
 	isSameDay,
 	isWithinInterval,
+	lightFormat,
 	startOfMonth as startOfMonthFn,
 	endOfMonth as endOfMonthFn,
 	startOfYear as startOfYearFn,
@@ -21,11 +22,16 @@ type ReturnT = {
 	year: PreparedDbTxT[];
 	month: PreparedDbTxT[];
 	dates: {
-		day: Date;
-		monthStart: Date;
-		monthEnd: Date;
-		yearStart: Date;
-		yearEnd: Date;
+		dayRaw: Date;
+		dayFormatted: string;
+		monthStartRaw: Date;
+		monthStartFormatted: string;
+		monthEndRaw: Date;
+		monthEndFormatted: string;
+		yearStartRaw: Date;
+		yearStartFormatted: string;
+		yearEndRaw: Date;
+		yearEndFormatted: string;
 	};
 };
 
@@ -89,11 +95,16 @@ const useSummariesQuery = (): ReturnT => {
 		year: transactionsYear,
 		month: transactionsMonth,
 		dates: {
-			day: selectedDate,
-			monthStart: startOfMonth,
-			monthEnd: endOfMonth,
-			yearStart: startOfYear,
-			yearEnd: endOfYear
+			dayRaw: selectedDate,
+			dayFormatted: lightFormat(selectedDate, 'yyyy-MM-dd'),
+			monthStartRaw: startOfMonth,
+			monthStartFormatted: lightFormat(startOfMonth, 'yyyy-MM'),
+			monthEndRaw: endOfMonth,
+			monthEndFormatted: lightFormat(endOfMonth, 'yyyy-MM'),
+			yearStartRaw: startOfYear,
+			yearStartFormatted: lightFormat(startOfYear, 'yyyy'),
+			yearEndRaw: endOfYear,
+			yearEndFormatted: lightFormat(endOfYear, 'yyyy')
 		}
 	} satisfies ReturnT;
 };
