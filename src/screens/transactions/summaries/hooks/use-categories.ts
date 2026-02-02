@@ -59,8 +59,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		db
 			.select()
 			.from(currencyRatesTable)
-			.where(eq(currencyRatesTable.date, lightFormat(transactions.dates.day, 'yyyy-MM-dd'))),
-		[transactions.dates.day]
+			.where(eq(currencyRatesTable.date, lightFormat(transactions.dates.day, 'yyyy-MM-dd')))
 	);
 
 	const relatedRates = useMemo(() => {
@@ -75,8 +74,6 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		}
 
 		return nextRates;
-		/* I don't want a loop here */
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [ratesOnDate?.length, transactions.dates.day, lastKnownRates]);
 
 	const summary = useMemo(() => {

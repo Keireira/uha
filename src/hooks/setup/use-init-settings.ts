@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Settings } from 'react-native';
 
 import db from '@db';
@@ -7,7 +7,11 @@ import { userTable } from '@db/schema';
 import { setSettingsValue } from '../use-settings';
 
 const useInitSettings = () => {
+	const [isReady, setIsReady] = useState(false);
+
 	useEffect(() => {
+		if (isReady) return;
+
 		const execute = async () => {
 			const userData = await db.select().from(userTable).limit(1).get();
 			const { theme, oled_mode, max_horizon, with_color_grading, recalc_currency, default_currency } = userData || {};
@@ -42,10 +46,14 @@ const useInitSettings = () => {
 			if (initDefaultCurrency === undefined) {
 				setSettingsValue('default_currency', default_currency);
 			}
+
+			setIsReady(true);
 		};
 
 		execute();
 	}, []);
+
+	return isReady;
 };
 
 export default useInitSettings;

@@ -4,7 +4,6 @@ import { subDays } from 'date-fns';
 import { randomInt } from '@lib';
 
 import db from '@db';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { servicesTable, tendersTable, subscriptionsTable } from '@db/schema';
 
 const BILLING_CYCLES = {
@@ -75,28 +74,28 @@ const buildSubscription = (
 	};
 };
 
-const useSetupMocks = () => {
+const useSetupMocks = (areSettingsReady: boolean) => {
 	const [seeded, setSeeded] = useState(false);
 
-	const { data: services } = useLiveQuery(db.select().from(servicesTable));
-	const { data: tenders } = useLiveQuery(db.select().from(tendersTable));
-
 	useEffect(() => {
+		if (seeded || !areSettingsReady) return;
+
 		const seedMockData = async () => {
-			if (seeded || !services?.length || !tenders?.length) return;
+			const services = await db.select().from(servicesTable).all();
+			const tenders = await db.select().from(tendersTable).all();
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
 
-			await db.transaction(async (tx) => {
-				await tx.delete(subscriptionsTable);
-				await tx.insert(subscriptionsTable).values(subscriptionMocks);
-			});
+			// await db.transaction(async (tx) => {
+			await db.delete(subscriptionsTable);
+			await db.insert(subscriptionsTable).values(subscriptionMocks);
+			// });
 
 			setSeeded(true);
 		};
 
 		seedMockData();
-	}, [services, tenders, seeded]);
+	}, [seeded, areSettingsReady]);
 
 	return seeded;
 };
