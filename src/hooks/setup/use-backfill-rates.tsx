@@ -53,7 +53,11 @@ const useBackfillRates = () => {
 
 			for (const response of responses) {
 				for (const entry of response.data) {
-					console.log(`Rate entry: ${entry.date} DONE`);
+					if (__DEV__) {
+						console.log(
+							`\x1b[34m[BACKFILL RATES]:\x1b[0m Rate entry for: \x1b[33m${entry.date}\x1b[0m has been \x1b[32mDOWNLOADED\x1b[0m`
+						);
+					}
 
 					const values = Object.entries(entry.rates).map(([target_currency_id, rate]) => ({
 						id: Crypto.randomUUID(),

@@ -87,7 +87,11 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 					if (generatedTransactions.length) {
 						let i = 1;
 						for (const batch of batches) {
-							console.log(`batch: ${i} of ${batches.length} DONE`);
+							if (__DEV__) {
+								console.log(
+									`\x1b[34m[FILL UP MISSED TXS]:\x1b[30m batch\x1b[0m ${i} \x1b[30mof\x1b[0m \x1b[34m${batches.length}\x1b[0m \x1b[32mDONE\x1b[0m`
+								);
+							}
 							await tx.insert(transactionsTable).values(batch);
 							i++;
 						}

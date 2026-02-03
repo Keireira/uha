@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { path } from 'ramda';
 import i18n from '@src/i18n';
@@ -10,7 +10,7 @@ import { useScrollDirection, setSettingsValue, useSettingsValue } from '@hooks';
 
 import { Wrapper, List } from '@ui';
 import { AppLogoPicker } from '@elements';
-import { useColorScheme, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
@@ -24,7 +24,6 @@ const SettingsScreen = () => {
 
 	const notificationStatus = useNotifications();
 
-	const colorScheme = useColorScheme();
 	const theme = useSettingsValue<'dark' | 'light'>('theme');
 
 	const isOledEnabled = useSettingsValue<boolean>('oled_mode');
@@ -37,10 +36,6 @@ const SettingsScreen = () => {
 	const currenciesList = useGetCurrenciesList();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
-
-	useEffect(() => {
-		setSettingsValue('theme', colorScheme);
-	}, [colorScheme]);
 
 	const changeColorScheme = (isDarkMode: boolean) => {
 		setSettingsValue('theme', isDarkMode ? 'dark' : 'light');

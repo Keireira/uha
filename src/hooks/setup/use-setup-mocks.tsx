@@ -85,11 +85,19 @@ const useSetupMocks = (areSettingsReady: boolean) => {
 			const tenders = await db.select().from(tendersTable).all();
 
 			const subscriptionMocks = services.map((service) => buildSubscription(service, tenders));
+			if (__DEV__) {
+				console.log('\x1b[34m[SETUP MOCKS]: \x1b[33mNew subscriptions has been created\x1b[0m');
+			}
 
 			await db.delete(subscriptionsTable);
-			console.log('Subscriptions deleted');
+			if (__DEV__) {
+				console.log('\x1b[34m[SETUP MOCKS]: \x1b[31mOld subscriptions has been deleted\x1b[0m');
+			}
+
 			await db.insert(subscriptionsTable).values(subscriptionMocks);
-			console.log('New subscriptions inserted');
+			if (__DEV__) {
+				console.log('\x1b[34m[SETUP MOCKS]: \x1b[32mNew subscriptions has been inserted\x1b[0m');
+			}
 
 			setSeeded(true);
 		};

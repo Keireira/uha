@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Switch } from 'react-native';
+// import { useSettingsValue } from '@hooks';
 
 import type { AccessorySwitchT } from './switch.d';
 
