@@ -37,6 +37,12 @@ const SettingsScreen = () => {
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 
+	const explainCurrency = useSettingsValue<boolean>('explain_currency');
+
+	const changeExplainCurrency = (isEnabled: boolean) => {
+		setSettingsValue('explain_currency', isEnabled);
+	};
+
 	const changeColorScheme = (isDarkMode: boolean) => {
 		setSettingsValue('theme', isDarkMode ? 'dark' : 'light');
 	};
@@ -97,6 +103,15 @@ const SettingsScreen = () => {
 						type: 'switch',
 						value: showFractions,
 						onPress: changeCurrencyFractions
+					}
+				},
+				{
+					id: 'currency-explain',
+					title: t('settings.currencies.explain'),
+					accessory: {
+						type: 'switch',
+						value: explainCurrency,
+						onPress: changeExplainCurrency
 					}
 				}
 			]

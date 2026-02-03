@@ -7,6 +7,7 @@ export const userTable = sqliteTable('user', {
 	oled_mode: int({ mode: 'boolean' }).default(false).notNull(),
 	max_horizon: int().default(3).notNull(),
 	with_color_grading: int({ mode: 'boolean' }).default(true).notNull(),
+	explain_currency: int({ mode: 'boolean' }).default(true).notNull(),
 	recalc_currency: text()
 		.references(() => currenciesTable.id)
 		.notNull(), // e.g. 'USD' | 'RUB' | ...

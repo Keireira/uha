@@ -173,6 +173,7 @@
       "default": "Основная валюта",
       "recalc": "Валюта для пересчёта",
       "fractions": "Показывать дроби",
+      "explain": "Тег валюты",
 
       "africa": "Африка",
       "europe": "Европа",
@@ -214,6 +215,9 @@
     "yesterday": "Вчера"
   },
   "transactions": {
+    "details": {
+      "not_found": "Транзакция не найдена"
+    },
     "filters": {
       "category": "По категории",
       "service": "По сервису",
