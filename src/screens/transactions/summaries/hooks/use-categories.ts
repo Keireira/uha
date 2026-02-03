@@ -73,7 +73,7 @@ const calcRatesMap = (ratesInRange: Omit<CurrencyRateT, 'id'>[]) => {
 
 const updatePrices = (
 	transactions: TransactionT[],
-	rates: Map<string, Map<string, number>>,
+	rates: Map<string, Map<string, number>> | undefined,
 	recalcCurrencyCode: string,
 	lastKnownRates: LastKnownRatesT
 ) => {
@@ -174,8 +174,8 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
 
 	const summary = useMemo(() => {
-		if (!rates) {
-			return DEFAULT_SUMMARY;
+		if (__DEV__) {
+			console.log(`\x1b[34m[ACTION]\x1b[0m Summary for \x1b[4m\x1b[1;33mMONTH\x1b[0m has been re-calculated`);
 		}
 
 		const txsWithRates = updatePrices(transactions.month, rates, recalcCurrencyCode, lastKnownRates);
@@ -216,8 +216,8 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
 
 	const summary = useMemo(() => {
-		if (!rates) {
-			return DEFAULT_SUMMARY;
+		if (__DEV__) {
+			console.log(`\x1b[34m[ACTION]\x1b[0m Summary for \x1b[4m\x1b[1;32mYEAR\x1b[0m has been re-calculated`);
 		}
 
 		const txsWithRates = updatePrices(transactions.year, rates, recalcCurrencyCode, lastKnownRates);
