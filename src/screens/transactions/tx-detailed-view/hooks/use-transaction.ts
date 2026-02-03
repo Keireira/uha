@@ -42,6 +42,7 @@ const useTransaction = (): PreparedDbTxT | undefined => {
 
 				/* tender-related fields */
 				tender_id: tendersTable.id,
+				tender_emoji: tendersTable.emoji,
 				tender_title: tendersTable.title,
 				tender_comment: tendersTable.comment
 			})

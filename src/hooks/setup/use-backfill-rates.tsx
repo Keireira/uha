@@ -48,44 +48,48 @@ const useBackfillRates = () => {
 			promises.push(getHistoryRates(dates));
 		}
 
-		Promise.all(promises).then(async (responses) => {
-			const valueToInsert = [];
+		Promise.all(promises)
+			.then(async (responses) => {
+				const valueToInsert = [];
 
-			for (const response of responses) {
-				for (const entry of response.data) {
-					if (__DEV__) {
-						console.log(
-							`\x1b[34m[BACKFILL RATES]:\x1b[0m Rate entry for: \x1b[33m${entry.date}\x1b[0m has been \x1b[32mDOWNLOADED\x1b[0m`
-						);
+				for (const response of responses) {
+					for (const entry of response.data) {
+						if (__DEV__) {
+							console.log(
+								`\x1b[34m[BACKFILL RATES]:\x1b[0m Rate entry for: \x1b[33m${entry.date}\x1b[0m has been \x1b[32mDOWNLOADED\x1b[0m`
+							);
+						}
+
+						const values = Object.entries(entry.rates).map(([target_currency_id, rate]) => ({
+							id: Crypto.randomUUID(),
+							target_currency_id,
+							date: entry.date,
+							rate
+						}));
+
+						valueToInsert.push(...values);
 					}
-
-					const values = Object.entries(entry.rates).map(([target_currency_id, rate]) => ({
-						id: Crypto.randomUUID(),
-						target_currency_id,
-						date: entry.date,
-						rate
-					}));
-
-					valueToInsert.push(...values);
 				}
-			}
 
-			/* because of sqlite limit on the number of parameters in a single query */
-			const batches = splitEvery(150, valueToInsert);
+				/* because of sqlite limit on the number of parameters in a single query */
+				const batches = splitEvery(150, valueToInsert);
 
-			await db.transaction(async (tx) => {
-				for (const batch of batches) {
-					await tx
-						.insert(currencyRatesTable)
-						.values(batch)
-						.onConflictDoUpdate({
-							target: [currencyRatesTable.target_currency_id, currencyRatesTable.date],
-							set: { rate: sql`excluded.rate` }
-						})
-						.execute();
-				}
+				await db.transaction(async (tx) => {
+					for (const batch of batches) {
+						await tx
+							.insert(currencyRatesTable)
+							.values(batch)
+							.onConflictDoUpdate({
+								target: [currencyRatesTable.target_currency_id, currencyRatesTable.date],
+								set: { rate: sql`excluded.rate` }
+							})
+							.execute();
+					}
+				});
+			})
+			.catch((error) => {
+				console.log('\x1b[31m[BACKFILL RATES]:\x1b[0m Error:', error);
 			});
-		});
 	}, [newDates]);
 };
 

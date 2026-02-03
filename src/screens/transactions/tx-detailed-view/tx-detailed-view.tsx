@@ -9,8 +9,26 @@ import { useSettingsValue, useRates } from '@hooks';
 import { useDateLabel, useTransaction } from './hooks';
 
 import { SymbolView } from 'expo-symbols';
-import { H3, H6, Text, LogoView } from '@ui';
-import Root, { Header, HeadDetails, Section, SectionItem, Title, Tags, Tag } from './tx-detailed-view.styles';
+import { Divider } from '@expo/ui/swift-ui';
+import { H2, H6, LargeText, Text, LogoView } from '@ui';
+import Root, {
+	Header,
+	HeadDetails,
+	Section,
+	SectionItem,
+	Title,
+	DividerHost,
+	Prices,
+	BasePrice,
+	ConvertedPrice,
+	Tags,
+	Tag,
+	TenderWrap,
+	TenderLogo,
+	TenderInfo,
+	TenderTitle,
+	TenderComment
+} from './tx-detailed-view.styles';
 
 const DetailedView = (transaction) => {
 	const theme = useTheme();
@@ -28,19 +46,20 @@ const DetailedView = (transaction) => {
 
 	return (
 		<Root>
+			{/* Header section */}
 			<Header>
 				<LogoView
 					logoId={logoUrl}
 					emoji={transaction.emoji}
 					name={transaction.customName || transaction.title}
-					size={64}
+					size={80}
 					color={transaction.color}
 				/>
 
 				<HeadDetails>
-					<H3 numberOfLines={1} ellipsizeMode="tail">
+					<H2 numberOfLines={1} ellipsizeMode="tail">
 						{transaction?.customName || transaction?.title}
-					</H3>
+					</H2>
 
 					<Title>
 						{transaction.isPhantom && <SymbolView name="clock" tintColor={theme.accent.primary} size={18} />}
@@ -52,81 +71,63 @@ const DetailedView = (transaction) => {
 				</HeadDetails>
 			</Header>
 
+			{/* Tags section */}
 			<Tags>
 				<Tag $color={transaction.category_color}>
-					<Text $color={darken(transaction.category_color, 25)} numberOfLines={1} ellipsizeMode="tail" $weight={700}>
+					<Text $color={darken(transaction.category_color, 25)} $weight={700} numberOfLines={1} ellipsizeMode="tail">
 						{transaction.category_title}
 					</Text>
 				</Tag>
 
 				{explainCurrency && (
 					<Tag $color={theme.accent.tertiary}>
-						<Text $color={theme.accent.tertiary} numberOfLines={1} ellipsizeMode="tail" $weight={700}>
+						<Text $color={theme.accent.tertiary} $weight={700} numberOfLines={1} ellipsizeMode="tail">
 							{t(`currencies.${transaction.currency_code}`)}
 						</Text>
 					</Tag>
 				)}
 			</Tags>
 
-			<Section>
-				<SectionItem>
-					<H6 $color={theme.text.tertiary} $weight={500}>
-						RAW AMOUNT
-					</H6>
+			{/* Divider section */}
+			<DividerHost>
+				<Divider />
+			</DividerHost>
 
-					<H3 numberOfLines={1} ellipsizeMode="tail">
-						{formattedBasePrice}
-					</H3>
-				</SectionItem>
+			{/* Price section */}
+			<Prices>
+				<BasePrice numberOfLines={1} ellipsizeMode="tail">
+					{formattedBasePrice}
+				</BasePrice>
 
 				{transaction.currency_code !== recalcCurrencyCode && (
-					<SectionItem>
-						<H6 $color={theme.text.tertiary} $weight={500}>
-							RE-CALCED
-						</H6>
-
-						<H3 numberOfLines={1} ellipsizeMode="tail">
-							{transaction.isPhantom ? '≈' : '='}
-							{convertedPrice}
-						</H3>
-					</SectionItem>
+					<ConvertedPrice numberOfLines={1} ellipsizeMode="tail">
+						≈&nbsp;{convertedPrice}
+					</ConvertedPrice>
 				)}
-			</Section>
+			</Prices>
 
+			{/* Tender section */}
+			{transaction.tender_title && (
+				<TenderWrap>
+					<TenderLogo>
+						<LargeText>{transaction.tender_emoji}</LargeText>
+					</TenderLogo>
+
+					<TenderInfo>
+						<TenderTitle>via {transaction.tender_title}</TenderTitle>
+						{transaction.tender_comment && <TenderComment>{transaction.tender_comment}</TenderComment>}
+					</TenderInfo>
+				</TenderWrap>
+			)}
+
+			{/* Notes section */}
 			<Section>
-				<H6 $color={theme.text.tertiary} $weight={500}>
-					via {transaction.tender_title}
-				</H6>
+				<SectionItem>
+					<H6 $color={theme.text.tertiary}>NOTES</H6>
 
-				<Text>{transaction.tender_comment}</Text>
+					<Text>{transaction.comment}</Text>
+				</SectionItem>
 			</Section>
-
-			<Section>
-				<H6 $color={theme.text.tertiary} $weight={500}>
-					NOTES
-				</H6>
-
-				<Text>{transaction.comment}</Text>
-			</Section>
-		</Root>
-	);
-};
-
-const NoTransaction = () => {
-	const theme = useTheme();
-	const { t } = useTranslation();
-
-	return (
-		<Root>
-			<Header>
-				<LogoView emoji="❌" size={64} color={theme.accent.primary} />
-
-				<HeadDetails>
-					<H3 numberOfLines={1} ellipsizeMode="tail">
-						{t('transactions.details.not_found')}
-					</H3>
-				</HeadDetails>
-			</Header>
 		</Root>
 	);
 };
@@ -135,7 +136,7 @@ const TxDetailedView = () => {
 	const transaction = useTransaction();
 
 	if (!transaction) {
-		return <NoTransaction />;
+		return null;
 	}
 
 	return <DetailedView {...transaction} date={new Date(transaction.date)} />;
