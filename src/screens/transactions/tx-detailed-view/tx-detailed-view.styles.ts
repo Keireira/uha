@@ -1,23 +1,7 @@
 import styled from 'styled-components/native';
 import { BaseText } from '@ui';
 
-/* Root */
-
-export default styled.ScrollView.attrs({
-	contentContainerStyle: {
-		flexDirection: 'row',
-		alignItems: 'stretch',
-		paddingTop: 48,
-		paddingRight: 24,
-		paddingBottom: 36,
-		paddingLeft: 20
-	}
-})`
-	flex: 1;
-`;
-
-/*Accent Rail */
-
+/* Accent Rail */
 export const AccentRail = styled.View`
 	width: 6px;
 	border-radius: 3px;
@@ -38,7 +22,6 @@ export const Content = styled.View`
 `;
 
 /* Price section */
-
 export const PriceSection = styled.View`
 	flex-direction: column;
 	align-items: flex-start;
@@ -60,7 +43,6 @@ export const PriceConverted = styled(BaseText)`
 `;
 
 /* Horizontal Rule */
-
 export const Rule = styled.View`
 	height: 1px;
 	width: 100%;
@@ -70,7 +52,6 @@ export const Rule = styled.View`
 `;
 
 /* Merchant section */
-
 export const MerchantSection = styled.View`
 	flex-direction: row;
 	align-items: center;
@@ -102,7 +83,6 @@ export const DateText = styled(BaseText)`
 `;
 
 /* Swiss Label */
-
 export const Label = styled(BaseText)`
 	font-size: 11px;
 	font-weight: 700;
@@ -112,7 +92,6 @@ export const Label = styled(BaseText)`
 `;
 
 /* Metadata Grid */
-
 export const MetaGrid = styled.View`
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -132,7 +111,6 @@ export const MetaValue = styled(BaseText)<{ $color?: string }>`
 `;
 
 /* Tender / Payment section */
-
 export const TenderRow = styled.View`
 	flex-direction: row;
 	align-items: center;
@@ -155,10 +133,26 @@ export const TenderComment = styled(BaseText)`
 `;
 
 /* Notes section */
-
-export const NoteText = styled(BaseText)`
+export const NoteInput = styled.TextInput`
+	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 22px;
-	color: ${({ theme }) => theme.text.secondary};
+	color: ${({ theme }) => theme.text.primary};
+	padding: 0;
+	margin: 0;
+	min-height: 22px;
+`;
+
+export default styled.ScrollView.attrs({
+	contentContainerStyle: {
+		flexDirection: 'row',
+		alignItems: 'stretch',
+		paddingTop: 48,
+		paddingRight: 24,
+		paddingBottom: 36,
+		paddingLeft: 20
+	}
+})`
+	flex: 1;
 `;

@@ -43,7 +43,7 @@ const buildTransaction = (subscription: SubscriptionT, nextPaymentDate: Date) =>
 		tender_id: subscription.tender_id || '',
 		subscription_id: subscription.id,
 		is_phantom: isAfter(nextPaymentDate, today),
-		comment: `${subscription.current_currency_id}`
+		comment: ''
 	} satisfies TransactionT;
 };
 

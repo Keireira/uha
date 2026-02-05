@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useTheme } from 'styled-components/native';
 
 import logos from '@assets/logos';
 import { useSettingsValue, useRates } from '@hooks';
-import { useDateLabel, useTransaction } from './hooks';
+import { useDateLabel, useTransaction, useUpdateComment } from './hooks';
 
 import { SymbolView } from 'expo-symbols';
 import { LogoView } from '@ui';
@@ -30,7 +30,7 @@ import Root, {
 	TenderEmoji,
 	TenderDetails,
 	TenderComment,
-	NoteText
+	NoteInput
 } from './tx-detailed-view.styles';
 
 const DetailedView = (transaction) => {
@@ -47,6 +47,22 @@ const DetailedView = (transaction) => {
 	const dateLabel = useDateLabel(transaction.date);
 	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
 
+	const [note, setNote] = useState(transaction.comment ?? '');
+	const saveComment = useUpdateComment(transaction.id);
+
+	useEffect(() => {
+		setNote(transaction.comment ?? '');
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [transaction.id]);
+
+	const handleBlur = useCallback(() => {
+		const trimmed = note.trim();
+
+		if (trimmed !== (transaction.comment ?? '')) {
+			saveComment(trimmed);
+		}
+	}, [note, transaction.comment, saveComment]);
+
 	return (
 		<Root>
 			<AccentRail>
@@ -62,7 +78,7 @@ const DetailedView = (transaction) => {
 
 					{transaction.currency_code !== recalcCurrencyCode && (
 						<PriceConverted numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
-							≈ {convertedPrice}
+							≈&nbsp;{convertedPrice}
 						</PriceConverted>
 					)}
 				</PriceSection>
@@ -141,16 +157,22 @@ const DetailedView = (transaction) => {
 					</>
 				)}
 
-				{transaction.comment && (
-					<>
-						<Rule />
+				<Rule />
 
-						<MetaItem>
-							<Label>Notes</Label>
-							<NoteText>{transaction.comment}</NoteText>
-						</MetaItem>
-					</>
-				)}
+				<MetaItem>
+					<Label>Notes</Label>
+
+					<NoteInput
+						value={note}
+						onChangeText={setNote}
+						onBlur={handleBlur}
+						placeholder="Tap to add a note"
+						placeholderTextColor={theme.text.tertiary}
+						multiline
+						scrollEnabled={false}
+						textAlignVertical="top"
+					/>
+				</MetaItem>
 			</Content>
 		</Root>
 	);
