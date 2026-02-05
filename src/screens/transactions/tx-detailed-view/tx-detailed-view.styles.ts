@@ -6,6 +6,7 @@ export const AccentRail = styled.View`
 	width: 6px;
 	border-radius: 3px;
 	overflow: hidden;
+	background-color: ${({ theme }) => theme.static.white};
 `;
 
 export const AccentSegment = styled.View<{ $color?: string }>`
@@ -22,10 +23,10 @@ export const Content = styled.View`
 `;
 
 /* Price section */
-export const PriceSection = styled.View`
+export const PriceSection = styled.View<{ $withConversion: boolean }>`
 	flex-direction: column;
 	align-items: flex-start;
-	margin-bottom: 12px;
+	margin-bottom: ${({ $withConversion }) => ($withConversion ? 12 : 0)}px;
 `;
 
 export const PriceMain = styled(BaseText)`
@@ -38,7 +39,7 @@ export const PriceMain = styled(BaseText)`
 export const PriceConverted = styled(BaseText)`
 	font-size: 18px;
 	font-weight: 500;
-	color: ${({ theme }) => theme.text.tertiary};
+	color: ${({ theme }) => (theme.tint === 'dark' ? theme.text.secondary : theme.text.tertiary)};
 	margin-top: 6px;
 `;
 
@@ -88,7 +89,7 @@ export const Label = styled(BaseText)`
 	font-weight: 700;
 	letter-spacing: 2px;
 	text-transform: uppercase;
-	color: ${({ theme }) => theme.text.tertiary};
+	color: ${({ theme }) => theme.text.secondary};
 `;
 
 /* Metadata Grid */
@@ -133,6 +134,12 @@ export const TenderComment = styled(BaseText)`
 `;
 
 /* Notes section */
+export const NoteField = styled.View<{ $focused?: boolean }>`
+	background-color: ${({ $focused, theme }) => ($focused ? `${theme.border.default}18` : `${theme.border.default}0C`)};
+	border-radius: 6px;
+	padding: 10px 12px;
+`;
+
 export const NoteInput = styled.TextInput`
 	font-family: 'Nunito';
 	font-size: 15px;
@@ -145,6 +152,8 @@ export const NoteInput = styled.TextInput`
 `;
 
 export default styled.ScrollView.attrs({
+	automaticallyAdjustKeyboardInsets: true,
+	keyboardShouldPersistTaps: 'handled',
 	contentContainerStyle: {
 		flexDirection: 'row',
 		alignItems: 'stretch',

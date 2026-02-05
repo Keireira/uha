@@ -30,10 +30,13 @@ import Root, {
 	TenderEmoji,
 	TenderDetails,
 	TenderComment,
+	NoteField,
 	NoteInput
 } from './tx-detailed-view.styles';
 
-const DetailedView = (transaction) => {
+import type { Props } from './tx-detailed-view.props';
+
+const DetailedView = (transaction: Props) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const explainCurrency = useSettingsValue<boolean>('explain_currency');
@@ -48,6 +51,7 @@ const DetailedView = (transaction) => {
 	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
 
 	const [note, setNote] = useState(transaction.comment ?? '');
+	const [noteFocused, setNoteFocused] = useState(false);
 	const saveComment = useUpdateComment(transaction.id);
 
 	useEffect(() => {
@@ -56,6 +60,7 @@ const DetailedView = (transaction) => {
 	}, [transaction.id]);
 
 	const handleBlur = useCallback(() => {
+		setNoteFocused(false);
 		const trimmed = note.trim();
 
 		if (trimmed !== (transaction.comment ?? '')) {
@@ -63,15 +68,19 @@ const DetailedView = (transaction) => {
 		}
 	}, [note, transaction.comment, saveComment]);
 
+	const handleFocus = useCallback(() => {
+		setNoteFocused(true);
+	}, []);
+
 	return (
 		<Root>
 			<AccentRail>
-				<AccentSegment $color={transaction.category_color} />
-				<AccentSegment $color={transaction.color} />
+				<AccentSegment $color={transaction.color || transaction.category_color} />
+				<AccentSegment $color={transaction.category_color || transaction.color} />
 			</AccentRail>
 
 			<Content>
-				<PriceSection>
+				<PriceSection $withConversion={transaction.currency_code !== recalcCurrencyCode}>
 					<PriceMain numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
 						{formattedBasePrice}
 					</PriceMain>
@@ -162,16 +171,19 @@ const DetailedView = (transaction) => {
 				<MetaItem>
 					<Label>{t('transactions.details.notes')}</Label>
 
-					<NoteInput
-						value={note}
-						onChangeText={setNote}
-						onBlur={handleBlur}
-						placeholder={t('transactions.details.notes_placeholder')}
-						placeholderTextColor={theme.text.tertiary}
-						multiline
-						scrollEnabled={false}
-						textAlignVertical="top"
-					/>
+					<NoteField $focused={noteFocused}>
+						<NoteInput
+							value={note}
+							onChangeText={setNote}
+							onFocus={handleFocus}
+							onBlur={handleBlur}
+							placeholder={t('transactions.details.notes_placeholder')}
+							placeholderTextColor={theme.text.tertiary}
+							multiline
+							scrollEnabled={false}
+							textAlignVertical="top"
+						/>
+					</NoteField>
 				</MetaItem>
 			</Content>
 		</Root>

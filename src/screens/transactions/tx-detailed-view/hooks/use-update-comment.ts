@@ -6,8 +6,8 @@ import { transactionsTable } from '@db/schema';
 
 const useUpdateComment = (transactionId: string) => {
 	const updateComment = useCallback(
-		(comment: string) => {
-			db.update(transactionsTable).set({ comment }).where(eq(transactionsTable.id, transactionId));
+		async (comment: string) => {
+			await db.update(transactionsTable).set({ comment }).where(eq(transactionsTable.id, transactionId));
 		},
 		[transactionId]
 	);
