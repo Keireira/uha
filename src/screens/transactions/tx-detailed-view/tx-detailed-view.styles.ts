@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { Text, H1, H4 } from '@ui';
 import { Host } from '@expo/ui/swift-ui';
+import { Text } from '@ui';
 
 export const TenderComment = styled(Text)`
 	color: ${({ theme }) => theme.text.secondary};
@@ -20,22 +20,21 @@ export const TenderLogo = styled.View`
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	width: 25%;
-	min-width: 100px;
+	width: 20%;
+	min-width: 75px;
 	aspect-ratio: 1.586 / 1;
 	border-radius: 8px;
-	background-color: ${({ theme }) => theme.background.secondary};
+	background-color: ${({ theme }) => theme.background.default};
 `;
 
 export const TenderWrap = styled.View`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 16px;
+	justify-content: flex-start;
 	border-radius: 8px;
 	gap: 12px;
 	margin-top: 24px;
-	background-color: ${({ theme }) => theme.background.default};
 `;
 
 export const SectionItem = styled.View<{ $backgroundColor?: string }>`
@@ -57,18 +56,14 @@ export const Section = styled.View`
 `;
 
 /* Prices section styles */
-export const ConvertedPrice = styled(H4)`
-	color: ${({ theme }) => theme.text.secondary};
-`;
-
-export const BasePrice = styled(H1)``;
-
 export const Prices = styled.View`
 	flex: 1;
 	flex-direction: column;
-	align-items: flex-start;
-	justify-content: flex-start;
+	align-items: center;
+	justify-content: center;
 	gap: 4px;
+	margin-bottom: 24px;
+	margin-top: 36px;
 `;
 
 /* Divider section styles */

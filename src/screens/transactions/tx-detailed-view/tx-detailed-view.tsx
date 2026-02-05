@@ -10,7 +10,7 @@ import { useDateLabel, useTransaction } from './hooks';
 
 import { SymbolView } from 'expo-symbols';
 import { Divider } from '@expo/ui/swift-ui';
-import { H2, H6, LargeText, Text, LogoView } from '@ui';
+import { H1, H2, H6, LargeText, Text, LogoView } from '@ui';
 import Root, {
 	Header,
 	HeadDetails,
@@ -19,8 +19,6 @@ import Root, {
 	Title,
 	DividerHost,
 	Prices,
-	BasePrice,
-	ConvertedPrice,
 	Tags,
 	Tag,
 	TenderWrap,
@@ -88,23 +86,32 @@ const DetailedView = (transaction) => {
 				)}
 			</Tags>
 
-			{/* Divider section */}
+			{/* Divider section #1 */}
 			<DividerHost>
 				<Divider />
 			</DividerHost>
 
 			{/* Price section */}
 			<Prices>
-				<BasePrice numberOfLines={1} ellipsizeMode="tail">
+				<H1 numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
 					{formattedBasePrice}
-				</BasePrice>
+				</H1>
 
 				{transaction.currency_code !== recalcCurrencyCode && (
-					<ConvertedPrice numberOfLines={1} ellipsizeMode="tail">
-						≈&nbsp;{convertedPrice}
-					</ConvertedPrice>
+					<>
+						<H1 $color={theme.text.secondary}>&nbsp;≈&nbsp;</H1>
+
+						<H1 numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5} $color={theme.accent.tertiary}>
+							{convertedPrice}
+						</H1>
+					</>
 				)}
 			</Prices>
+
+			{/* Divider section #2 */}
+			<DividerHost>
+				<Divider />
+			</DividerHost>
 
 			{/* Tender section */}
 			{transaction.tender_title && (
@@ -114,8 +121,15 @@ const DetailedView = (transaction) => {
 					</TenderLogo>
 
 					<TenderInfo>
-						<TenderTitle>via {transaction.tender_title}</TenderTitle>
-						{transaction.tender_comment && <TenderComment>{transaction.tender_comment}</TenderComment>}
+						<TenderTitle numberOfLines={1} ellipsizeMode="tail">
+							via {transaction.tender_title}
+						</TenderTitle>
+
+						{transaction.tender_comment && (
+							<TenderComment numberOfLines={1} ellipsizeMode="tail">
+								transaction.tender_comment
+							</TenderComment>
+						)}
 					</TenderInfo>
 				</TenderWrap>
 			)}
