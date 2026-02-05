@@ -1,10 +1,11 @@
-import { subscriptionsTable, transactionsTable, currenciesTable, servicesTable, categoriesTable } from '@db/schema';
+import { subscriptionsTable, transactionsTable, currenciesTable, servicesTable, categoriesTable, tendersTable } from '@db/schema';
 
 export type TransactionT = typeof transactionsTable.$inferSelect;
 export type SubscriptionT = typeof subscriptionsTable.$inferSelect;
 export type CurrencyT = typeof currenciesTable.$inferSelect;
 export type ServiceT = typeof servicesTable.$inferSelect;
 export type CategoryT = typeof categoriesTable.$inferSelect;
+export type TenderT = typeof tendersTable.$inferSelect;
 
 export type PreparedDbTxT = {
 	id: TransactionT['id'];
@@ -19,10 +20,16 @@ export type PreparedDbTxT = {
 	color: ServiceT['color'];
 	date: TransactionT['date'];
 	isPhantom: TransactionT['is_phantom'];
+	comment: TransactionT['comment'];
 
 	category_id: CategoryT['id'];
 	category_title: CategoryT['title'];
 	category_color: CategoryT['color'];
+
+	tender_id: TenderT['id'] | null;
+	tender_emoji: TenderT['emoji'] | null;
+	tender_title: TenderT['title'] | null;
+	tender_comment: TenderT['comment'] | null;
 };
 
 export type PreparedSubscriptionT = SubscriptionT & {

@@ -173,6 +173,7 @@
       "default": "Default Currency",
       "recalc": "Recalc Currency",
       "fractions": "Show Fractions",
+      "explain": "Currency Tag",
 
       "africa": "Africa",
       "europe": "Europe",
@@ -214,6 +215,14 @@
     "yesterday": "Yesterday"
   },
   "transactions": {
+    "details": {
+      "not_found": "Transaction not found",
+      "category": "Category",
+      "currency": "Currency",
+      "payment": "Payment",
+      "notes": "Notes",
+      "notes_placeholder": "Tap to add a note"
+    },
     "filters": {
       "category": "By Category",
       "service": "By Service",

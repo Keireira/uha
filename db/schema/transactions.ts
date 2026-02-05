@@ -26,7 +26,9 @@ export const transactionsTable = sqliteTable(
 			.references(() => subscriptionsTable.id)
 			.notNull(),
 
-		is_phantom: int({ mode: 'boolean' }).default(false).notNull()
+		is_phantom: int({ mode: 'boolean' }).default(false).notNull(),
+
+		comment: text().default('')
 	},
 	(table) => [
 		// WHERE subscription_id = <slug_name> ORDER BY date

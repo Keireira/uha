@@ -1,168 +1,191 @@
-import React from 'react';
-import { first } from '@lib';
-import { format } from 'date-fns';
-import { useLocalSearchParams } from 'expo-router';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import db from '@db';
-import { eq } from 'drizzle-orm';
-import {
-	transactionsTable,
-	currenciesTable,
-	servicesTable,
-	subscriptionsTable,
-	categoriesTable,
-	tendersTable
-} from '@db/schema';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useTheme } from 'styled-components/native';
 
 import logos from '@assets/logos';
-import { useSettingsValue } from '@hooks';
+import { useSettingsValue, useRates } from '@hooks';
+import { useDateLabel, useTransaction, useUpdateComment } from './hooks';
 
-import { H1, Text, H4, SmallText, LogoView } from '@ui';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-
-import {
-	Root,
-	HeroSection,
-	AmountContainer,
-	CurrencyBadge,
-	DetailCard,
-	DetailRow,
-	DetailLabel,
-	DetailValue,
-	CategoryPill,
-	Divider,
-	ConvertedAmount,
-	StatusBadge,
-	StatusDot
+import { SymbolView } from 'expo-symbols';
+import { LogoView } from '@ui';
+import Root, {
+	AccentRail,
+	AccentSegment,
+	Content,
+	PriceSection,
+	PriceMain,
+	PriceConverted,
+	Rule,
+	MerchantSection,
+	MerchantInfo,
+	MerchantName,
+	DateRow,
+	DateText,
+	Label,
+	MetaGrid,
+	MetaItem,
+	MetaValue,
+	TenderRow,
+	TenderEmoji,
+	TenderDetails,
+	TenderComment,
+	NoteInput
 } from './tx-detailed-view.styles';
 
-import type { PreparedDbTxT } from '@hooks/use-transactions';
+const DetailedView = (transaction) => {
+	const theme = useTheme();
+	const { t } = useTranslation();
+	const explainCurrency = useSettingsValue<boolean>('explain_currency');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const { r, formatCurrency } = useRates(transaction.date, transaction.isPhantom, transaction.currency_code);
 
-const STUB_KZT_RATE = 514.1;
-
-const useTransaction = (): PreparedDbTxT | undefined => {
-	const { transactionId } = useLocalSearchParams<{ transactionId: string }>();
-
-	const { data: transaction } = useLiveQuery(
-		db
-			.select({
-				id: transactionsTable.id,
-				currency: currenciesTable.symbol,
-				denominator: currenciesTable.denominator,
-				price: transactionsTable.amount,
-				slug: servicesTable.slug,
-				title: servicesTable.title,
-				customName: subscriptionsTable.custom_name,
-				emoji: categoriesTable.emoji,
-				color: servicesTable.color,
-				date: transactionsTable.date,
-				isPhantom: transactionsTable.is_phantom,
-
-				/* category-related fields */
-				category_id: categoriesTable.id,
-				category_title: categoriesTable.title,
-				category_color: categoriesTable.color
-			})
-			.from(transactionsTable)
-			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
-			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
-			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
-			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.where(eq(transactionsTable.id, transactionId))
-	);
-
-	return first(transaction);
-};
-
-const TxDetailedView = () => {
-	const transaction = useTransaction();
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
-
-	if (!transaction) {
-		return (
-			<Root>
-				<Animated.View entering={FadeIn.duration(300)}>
-					<HeroSection>
-						<LogoView emoji="❌" size={80} />
-
-						<H1>Transaction not found</H1>
-
-						<CategoryPill $color="red">
-							<Text>This is a phantom transaction</Text>
-						</CategoryPill>
-					</HeroSection>
-				</Animated.View>
-			</Root>
-		);
-	}
-
-	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
 	const basePrice = transaction.price / (transaction.denominator || 1);
-	const convertedPrice = (transaction.price * STUB_KZT_RATE) / (transaction.denominator || 1);
-	const formattedDate = format(new Date(transaction.date), 'EEEE, MMMM d, yyyy');
+	const formattedBasePrice = formatCurrency(basePrice, transaction.currency_code);
+	const convertedPrice = r(basePrice);
+
+	const dateLabel = useDateLabel(transaction.date);
+	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
+
+	const [note, setNote] = useState(transaction.comment ?? '');
+	const saveComment = useUpdateComment(transaction.id);
+
+	useEffect(() => {
+		setNote(transaction.comment ?? '');
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [transaction.id]);
+
+	const handleBlur = useCallback(() => {
+		const trimmed = note.trim();
+
+		if (trimmed !== (transaction.comment ?? '')) {
+			saveComment(trimmed);
+		}
+	}, [note, transaction.comment, saveComment]);
 
 	return (
 		<Root>
-			<Animated.View entering={FadeIn.duration(300)}>
-				<HeroSection>
+			<AccentRail>
+				<AccentSegment $color={transaction.category_color} />
+				<AccentSegment $color={transaction.color} />
+			</AccentRail>
+
+			<Content>
+				<PriceSection>
+					<PriceMain numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
+						{formattedBasePrice}
+					</PriceMain>
+
+					{transaction.currency_code !== recalcCurrencyCode && (
+						<PriceConverted numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
+							≈&nbsp;{convertedPrice}
+						</PriceConverted>
+					)}
+				</PriceSection>
+
+				<Rule />
+
+				<MerchantSection>
 					<LogoView
 						logoId={logoUrl}
 						emoji={transaction.emoji}
 						name={transaction.customName || transaction.title}
-						size={80}
+						size={56}
 						color={transaction.color}
 					/>
 
-					<AmountContainer>
-						<H1 $weight={800}>
-							{transaction.currency}
-							{showFractions ? basePrice.toFixed(2) : Math.round(basePrice)}
-						</H1>
+					<MerchantInfo>
+						<MerchantName numberOfLines={1} ellipsizeMode="tail">
+							{transaction?.customName || transaction?.title}
+						</MerchantName>
 
-						<ConvertedAmount>
-							≈ {showFractions ? convertedPrice.toFixed(2) : Math.round(convertedPrice)} ₸
-						</ConvertedAmount>
-					</AmountContainer>
+						<DateRow>
+							{transaction.isPhantom && <SymbolView name="clock" tintColor={theme.accent.primary} size={14} />}
 
-					<H4 $weight={600}>{transaction.customName || transaction.title}</H4>
+							<DateText numberOfLines={1} ellipsizeMode="tail">
+								{dateLabel}
+							</DateText>
+						</DateRow>
+					</MerchantInfo>
+				</MerchantSection>
 
-					<CategoryPill $color={transaction.category_color}>
-						<SmallText $weight={600}>{transaction.category_title}</SmallText>
-					</CategoryPill>
-				</HeroSection>
-			</Animated.View>
+				<Rule />
 
-			<Animated.View entering={FadeInDown.delay(100).duration(400).springify()}>
-				<DetailCard>
-					<DetailRow>
-						<DetailLabel>Status</DetailLabel>
-						<StatusBadge $isPhantom={transaction.isPhantom}>
-							<StatusDot $isPhantom={transaction.isPhantom} />
-							<SmallText $weight={600}>{transaction.isPhantom ? 'Planned' : 'Completed'}</SmallText>
-						</StatusBadge>
-					</DetailRow>
+				<MetaGrid>
+					<MetaItem>
+						<Label>{t('transactions.details.category')}</Label>
 
-					<Divider />
+						<MetaValue numberOfLines={1} ellipsizeMode="tail">
+							{transaction.category_title}
+						</MetaValue>
+					</MetaItem>
 
-					<DetailRow>
-						<DetailLabel>Date</DetailLabel>
-						<DetailValue>{formattedDate}</DetailValue>
-					</DetailRow>
+					{explainCurrency && (
+						<MetaItem>
+							<Label>{t('transactions.details.currency')}</Label>
 
-					<Divider />
+							<MetaValue numberOfLines={1} ellipsizeMode="tail">
+								{t(`currencies.${transaction.currency_code}`)}
+							</MetaValue>
+						</MetaItem>
+					)}
+				</MetaGrid>
 
-					<DetailRow>
-						<DetailLabel>Base Currency</DetailLabel>
-						<CurrencyBadge>
-							<SmallText $weight={600}>USD</SmallText>
-						</CurrencyBadge>
-					</DetailRow>
-				</DetailCard>
-			</Animated.View>
+				{transaction.tender_title && (
+					<>
+						<Rule />
+
+						<MetaItem>
+							<Label>{t('transactions.details.payment')}</Label>
+
+							<TenderRow>
+								<TenderEmoji>{transaction.tender_emoji}</TenderEmoji>
+
+								<TenderDetails>
+									<MetaValue numberOfLines={1} ellipsizeMode="tail">
+										{transaction.tender_title}
+									</MetaValue>
+
+									{transaction.tender_comment && (
+										<TenderComment numberOfLines={1} ellipsizeMode="tail">
+											{transaction.tender_comment}
+										</TenderComment>
+									)}
+								</TenderDetails>
+							</TenderRow>
+						</MetaItem>
+					</>
+				)}
+
+				<Rule />
+
+				<MetaItem>
+					<Label>{t('transactions.details.notes')}</Label>
+
+					<NoteInput
+						value={note}
+						onChangeText={setNote}
+						onBlur={handleBlur}
+						placeholder={t('transactions.details.notes_placeholder')}
+						placeholderTextColor={theme.text.tertiary}
+						multiline
+						scrollEnabled={false}
+						textAlignVertical="top"
+					/>
+				</MetaItem>
+			</Content>
 		</Root>
 	);
+};
+
+const TxDetailedView = () => {
+	const transaction = useTransaction();
+
+	if (!transaction) {
+		return null;
+	}
+
+	return <DetailedView {...transaction} date={new Date(transaction.date)} />;
 };
 
 export default TxDetailedView;

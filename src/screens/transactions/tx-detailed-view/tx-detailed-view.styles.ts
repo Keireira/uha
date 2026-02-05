@@ -1,91 +1,158 @@
 import styled from 'styled-components/native';
-import { Text, SmallText } from '@ui';
+import { BaseText } from '@ui';
 
-export const StatusBadge = styled.View<{ $isPhantom?: boolean }>`
-	flex-direction: row;
-	align-items: center;
-	gap: 6px;
-	background-color: ${({ $isPhantom, theme }) =>
-		$isPhantom ? `${theme.semantic.warning}20` : `${theme.semantic.success}20`};
-	padding: 6px 12px;
-	border-radius: 8px;
-`;
-
-export const StatusDot = styled.View<{ $isPhantom?: boolean }>`
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	background-color: ${({ $isPhantom, theme }) => ($isPhantom ? theme.semantic.warning : theme.semantic.success)};
-`;
-
-export const Root = styled.ScrollView.attrs({
-	contentContainerStyle: {
-		paddingHorizontal: 20,
-		paddingTop: 8,
-		paddingBottom: 40,
-		gap: 24
-	}
-})`
-	flex: 1;
-`;
-
-export const HeroSection = styled.View`
-	align-items: center;
-	padding-vertical: 24px;
-	gap: 12px;
-`;
-
-export const AmountContainer = styled.View`
-	align-items: center;
-	margin-top: 16px;
-	gap: 4px;
-`;
-
-export const ConvertedAmount = styled(SmallText)`
-	color: ${({ theme }) => theme.text.secondary};
-	font-weight: 500;
-`;
-
-export const CategoryPill = styled.View<{ $color: string }>`
-	background-color: ${({ $color }) => `${$color}25`};
-	padding: 6px 14px;
-	border-radius: 20px;
-	margin-top: 4px;
-`;
-
-export const DetailCard = styled.View`
-	background-color: ${({ theme }) => theme.surface.default};
-	border-radius: 16px;
-	padding: 4px 0;
+/* Accent Rail */
+export const AccentRail = styled.View`
+	width: 6px;
+	border-radius: 3px;
 	overflow: hidden;
 `;
 
-export const DetailRow = styled.View`
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 14px 16px;
+export const AccentSegment = styled.View<{ $color?: string }>`
+	flex: 1;
+	background-color: ${({ $color, theme }) => $color || theme.accent.primary};
+	opacity: 0.85;
 `;
 
-export const DetailLabel = styled(Text)`
-	color: ${({ theme }) => theme.text.secondary};
-	font-weight: 500;
+export const Content = styled.View`
+	flex: 1;
+	flex-direction: column;
+	padding-left: 24px;
+	padding-vertical: 20px;
 `;
 
-export const DetailValue = styled(Text)<{ $mono?: boolean }>`
+/* Price section */
+export const PriceSection = styled.View`
+	flex-direction: column;
+	align-items: flex-start;
+	margin-bottom: 12px;
+`;
+
+export const PriceMain = styled(BaseText)`
+	font-size: 38px;
+	font-weight: 800;
 	color: ${({ theme }) => theme.text.primary};
+	line-height: 44px;
+`;
+
+export const PriceConverted = styled(BaseText)`
+	font-size: 18px;
+	font-weight: 500;
+	color: ${({ theme }) => theme.text.tertiary};
+	margin-top: 6px;
+`;
+
+/* Horizontal Rule */
+export const Rule = styled.View`
+	height: 1px;
+	width: 100%;
+	background-color: ${({ theme }) => theme.border.default};
+	opacity: 0.25;
+	margin-vertical: 24px;
+`;
+
+/* Merchant section */
+export const MerchantSection = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+`;
+
+export const MerchantInfo = styled.View`
+	flex: 1;
+	flex-direction: column;
+	gap: 4px;
+`;
+
+export const MerchantName = styled(BaseText)`
+	font-size: 22px;
+	font-weight: 700;
+	color: ${({ theme }) => theme.text.primary};
+`;
+
+export const DateRow = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+`;
+
+export const DateText = styled(BaseText)`
+	font-size: 14px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
+/* Swiss Label */
+export const Label = styled(BaseText)`
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: ${({ theme }) => theme.text.tertiary};
+`;
+
+/* Metadata Grid */
+export const MetaGrid = styled.View`
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 32px;
+`;
+
+export const MetaItem = styled.View`
+	flex-direction: column;
+	gap: 6px;
+	min-width: 100px;
+`;
+
+export const MetaValue = styled(BaseText)<{ $color?: string }>`
+	font-size: 16px;
 	font-weight: 600;
-	font-family: ${({ $mono }) => ($mono ? 'monospace' : 'Nunito')};
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 `;
 
-export const CurrencyBadge = styled.View`
-	background-color: ${({ theme }) => theme.accent.primary}25;
-	padding: 4px 10px;
-	border-radius: 8px;
+/* Tender / Payment section */
+export const TenderRow = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
 `;
 
-export const Divider = styled.View`
-	height: 0.5px;
-	background-color: ${({ theme }) => `${theme.border.default}60`};
-	margin-left: 16px;
+export const TenderEmoji = styled(BaseText)`
+	font-size: 22px;
+`;
+
+export const TenderDetails = styled.View`
+	flex-direction: column;
+	gap: 2px;
+`;
+
+export const TenderComment = styled(BaseText)`
+	font-size: 14px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
+/* Notes section */
+export const NoteInput = styled.TextInput`
+	font-family: 'Nunito';
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 22px;
+	color: ${({ theme }) => theme.text.primary};
+	padding: 0;
+	margin: 0;
+	min-height: 22px;
+`;
+
+export default styled.ScrollView.attrs({
+	contentContainerStyle: {
+		flexDirection: 'row',
+		alignItems: 'stretch',
+		paddingTop: 48,
+		paddingRight: 24,
+		paddingBottom: 36,
+		paddingLeft: 20
+	}
+})`
+	flex: 1;
 `;

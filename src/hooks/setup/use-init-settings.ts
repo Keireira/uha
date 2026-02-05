@@ -14,7 +14,8 @@ const useInitSettings = () => {
 
 		const execute = async () => {
 			const userData = await db.select().from(userTable).limit(1).get();
-			const { theme, oled_mode, max_horizon, with_color_grading, recalc_currency, default_currency } = userData || {};
+			const { theme, oled_mode, max_horizon, with_color_grading, recalc_currency, default_currency, explain_currency } =
+				userData || {};
 
 			const initTheme = Settings.get('theme');
 			const initOledMode = Settings.get('oled_mode');
@@ -22,6 +23,11 @@ const useInitSettings = () => {
 			const initWithColorGrading = Settings.get('with_color_grading');
 			const initRecalcCurrency = Settings.get('recalc_currency');
 			const initDefaultCurrency = Settings.get('default_currency');
+			const initExplainCurrency = Settings.get('explain_currency');
+
+			if (initExplainCurrency === undefined) {
+				setSettingsValue('explain_currency', explain_currency);
+			}
 
 			if (initTheme === undefined) {
 				setSettingsValue('theme', theme);
