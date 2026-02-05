@@ -216,7 +216,12 @@
   },
   "transactions": {
     "details": {
-      "not_found": "Транзакция не найдена"
+      "not_found": "Транзакция не найдена",
+      "category": "Категория",
+      "currency": "Валюта",
+      "payment": "Оплата",
+      "notes": "Заметки",
+      "notes_placeholder": "Добавить заметку"
     },
     "filters": {
       "category": "По категории",

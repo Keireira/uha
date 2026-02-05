@@ -113,7 +113,7 @@ const DetailedView = (transaction) => {
 
 				<MetaGrid>
 					<MetaItem>
-						<Label>Category</Label>
+						<Label>{t('transactions.details.category')}</Label>
 
 						<MetaValue numberOfLines={1} ellipsizeMode="tail">
 							{transaction.category_title}
@@ -122,7 +122,7 @@ const DetailedView = (transaction) => {
 
 					{explainCurrency && (
 						<MetaItem>
-							<Label>Currency</Label>
+							<Label>{t('transactions.details.currency')}</Label>
 
 							<MetaValue numberOfLines={1} ellipsizeMode="tail">
 								{t(`currencies.${transaction.currency_code}`)}
@@ -136,7 +136,7 @@ const DetailedView = (transaction) => {
 						<Rule />
 
 						<MetaItem>
-							<Label>Payment</Label>
+							<Label>{t('transactions.details.payment')}</Label>
 
 							<TenderRow>
 								<TenderEmoji>{transaction.tender_emoji}</TenderEmoji>
@@ -160,13 +160,13 @@ const DetailedView = (transaction) => {
 				<Rule />
 
 				<MetaItem>
-					<Label>Notes</Label>
+					<Label>{t('transactions.details.notes')}</Label>
 
 					<NoteInput
 						value={note}
 						onChangeText={setNote}
 						onBlur={handleBlur}
-						placeholder="Tap to add a note"
+						placeholder={t('transactions.details.notes_placeholder')}
 						placeholderTextColor={theme.text.tertiary}
 						multiline
 						scrollEnabled={false}

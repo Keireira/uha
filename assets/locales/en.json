@@ -216,7 +216,12 @@
   },
   "transactions": {
     "details": {
-      "not_found": "Transaction not found"
+      "not_found": "Transaction not found",
+      "category": "Category",
+      "currency": "Currency",
+      "payment": "Payment",
+      "notes": "Notes",
+      "notes_placeholder": "Tap to add a note"
     },
     "filters": {
       "category": "By Category",
