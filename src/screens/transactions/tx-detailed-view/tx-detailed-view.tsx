@@ -3,29 +3,34 @@ import { useTranslation } from 'react-i18next';
 
 import { useTheme } from 'styled-components/native';
 
-import { darken } from '@lib';
 import logos from '@assets/logos';
 import { useSettingsValue, useRates } from '@hooks';
 import { useDateLabel, useTransaction } from './hooks';
 
 import { SymbolView } from 'expo-symbols';
-import { Divider } from '@expo/ui/swift-ui';
-import { H1, H2, H6, LargeText, Text, LogoView } from '@ui';
+import { LogoView } from '@ui';
 import Root, {
-	Header,
-	HeadDetails,
-	Section,
-	SectionItem,
-	Title,
-	DividerHost,
-	Prices,
-	Tags,
-	Tag,
-	TenderWrap,
-	TenderLogo,
-	TenderInfo,
-	TenderTitle,
-	TenderComment
+	AccentRail,
+	AccentSegment,
+	Content,
+	PriceSection,
+	PriceMain,
+	PriceConverted,
+	Rule,
+	MerchantSection,
+	MerchantInfo,
+	MerchantName,
+	DateRow,
+	DateText,
+	Label,
+	MetaGrid,
+	MetaItem,
+	MetaValue,
+	TenderRow,
+	TenderEmoji,
+	TenderDetails,
+	TenderComment,
+	NoteText
 } from './tx-detailed-view.styles';
 
 const DetailedView = (transaction) => {
@@ -44,104 +49,109 @@ const DetailedView = (transaction) => {
 
 	return (
 		<Root>
-			{/* Header section */}
-			<Header>
-				<LogoView
-					logoId={logoUrl}
-					emoji={transaction.emoji}
-					name={transaction.customName || transaction.title}
-					size={80}
-					color={transaction.color}
-				/>
+			<AccentRail>
+				<AccentSegment $color={transaction.category_color} />
+				<AccentSegment $color={transaction.color} />
+			</AccentRail>
 
-				<HeadDetails>
-					<H2 numberOfLines={1} ellipsizeMode="tail">
-						{transaction?.customName || transaction?.title}
-					</H2>
+			<Content>
+				<PriceSection>
+					<PriceMain numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
+						{formattedBasePrice}
+					</PriceMain>
 
-					<Title>
-						{transaction.isPhantom && <SymbolView name="clock" tintColor={theme.accent.primary} size={18} />}
+					{transaction.currency_code !== recalcCurrencyCode && (
+						<PriceConverted numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
+							≈ {convertedPrice}
+						</PriceConverted>
+					)}
+				</PriceSection>
 
-						<Text $color={theme.text.secondary} numberOfLines={1} ellipsizeMode="tail">
-							{dateLabel}
-						</Text>
-					</Title>
-				</HeadDetails>
-			</Header>
+				<Rule />
 
-			{/* Tags section */}
-			<Tags>
-				<Tag $color={transaction.category_color}>
-					<Text $color={darken(transaction.category_color, 25)} $weight={700} numberOfLines={1} ellipsizeMode="tail">
-						{transaction.category_title}
-					</Text>
-				</Tag>
+				<MerchantSection>
+					<LogoView
+						logoId={logoUrl}
+						emoji={transaction.emoji}
+						name={transaction.customName || transaction.title}
+						size={56}
+						color={transaction.color}
+					/>
 
-				{explainCurrency && (
-					<Tag $color={theme.accent.tertiary}>
-						<Text $color={theme.accent.tertiary} $weight={700} numberOfLines={1} ellipsizeMode="tail">
-							{t(`currencies.${transaction.currency_code}`)}
-						</Text>
-					</Tag>
-				)}
-			</Tags>
+					<MerchantInfo>
+						<MerchantName numberOfLines={1} ellipsizeMode="tail">
+							{transaction?.customName || transaction?.title}
+						</MerchantName>
 
-			{/* Divider section #1 */}
-			<DividerHost>
-				<Divider />
-			</DividerHost>
+						<DateRow>
+							{transaction.isPhantom && <SymbolView name="clock" tintColor={theme.accent.primary} size={14} />}
 
-			{/* Price section */}
-			<Prices>
-				<H1 numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
-					{formattedBasePrice}
-				</H1>
+							<DateText numberOfLines={1} ellipsizeMode="tail">
+								{dateLabel}
+							</DateText>
+						</DateRow>
+					</MerchantInfo>
+				</MerchantSection>
 
-				{transaction.currency_code !== recalcCurrencyCode && (
+				<Rule />
+
+				<MetaGrid>
+					<MetaItem>
+						<Label>Category</Label>
+
+						<MetaValue numberOfLines={1} ellipsizeMode="tail">
+							{transaction.category_title}
+						</MetaValue>
+					</MetaItem>
+
+					{explainCurrency && (
+						<MetaItem>
+							<Label>Currency</Label>
+
+							<MetaValue numberOfLines={1} ellipsizeMode="tail">
+								{t(`currencies.${transaction.currency_code}`)}
+							</MetaValue>
+						</MetaItem>
+					)}
+				</MetaGrid>
+
+				{transaction.tender_title && (
 					<>
-						<H1 $color={theme.text.secondary}>&nbsp;≈&nbsp;</H1>
+						<Rule />
 
-						<H1 numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5} $color={theme.accent.tertiary}>
-							{convertedPrice}
-						</H1>
+						<MetaItem>
+							<Label>Payment</Label>
+
+							<TenderRow>
+								<TenderEmoji>{transaction.tender_emoji}</TenderEmoji>
+
+								<TenderDetails>
+									<MetaValue numberOfLines={1} ellipsizeMode="tail">
+										{transaction.tender_title}
+									</MetaValue>
+
+									{transaction.tender_comment && (
+										<TenderComment numberOfLines={1} ellipsizeMode="tail">
+											{transaction.tender_comment}
+										</TenderComment>
+									)}
+								</TenderDetails>
+							</TenderRow>
+						</MetaItem>
 					</>
 				)}
-			</Prices>
 
-			{/* Divider section #2 */}
-			<DividerHost>
-				<Divider />
-			</DividerHost>
+				{transaction.comment && (
+					<>
+						<Rule />
 
-			{/* Tender section */}
-			{transaction.tender_title && (
-				<TenderWrap>
-					<TenderLogo>
-						<LargeText>{transaction.tender_emoji}</LargeText>
-					</TenderLogo>
-
-					<TenderInfo>
-						<TenderTitle numberOfLines={1} ellipsizeMode="tail">
-							via {transaction.tender_title}
-						</TenderTitle>
-
-						{transaction.tender_comment && (
-							<TenderComment numberOfLines={1} ellipsizeMode="tail">
-								transaction.tender_comment
-							</TenderComment>
-						)}
-					</TenderInfo>
-				</TenderWrap>
-			)}
-
-			{/* Notes section */}
-			<Section>
-				<SectionItem>
-					<H6 $color={theme.text.tertiary}>NOTES</H6>
-
-					<Text>{transaction.comment}</Text>
-				</SectionItem>
-			</Section>
+						<MetaItem>
+							<Label>Notes</Label>
+							<NoteText>{transaction.comment}</NoteText>
+						</MetaItem>
+					</>
+				)}
+			</Content>
 		</Root>
 	);
 };
