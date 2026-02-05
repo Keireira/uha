@@ -1,7 +1,7 @@
 {
   "expo": {
     "slug": "uha",
-    "version": "1.9.0",
+    "version": "1.10.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
@@ -29,7 +29,8 @@
     },
     "locales": {
       "en": "./assets/locales/en.json",
-      "ru": "./assets/locales/ru.json"
+      "ru": "./assets/locales/ru.json",
+      "kk": "./assets/locales/kk.json"
     },
     "plugins": [
       "expo-font",

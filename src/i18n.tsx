@@ -5,16 +5,19 @@ import * as Localization from 'expo-localization';
 
 import english from '@locales/en.json';
 import russian from '@locales/ru.json';
-import { enUS, ru } from 'date-fns/locale';
+import kazakh from '@locales/kk.json';
+import { enUS, ru, kk } from 'date-fns/locale';
 
 const resources = {
 	en: { translation: english },
-	ru: { translation: russian }
+	ru: { translation: russian },
+	kk: { translation: kazakh }
 };
 
 const dateFnsLocales = {
 	en: enUS,
-	ru: ru
+	ru: ru,
+	kk: kk
 };
 
 const initI18n = () => {
@@ -24,7 +27,7 @@ const initI18n = () => {
 		resources,
 		lng: langCode,
 		fallbackLng: 'en',
-		supportedLngs: ['en', 'ru'],
+		supportedLngs: ['en', 'ru', 'kk'],
 		interpolation: {
 			escapeValue: false
 		}
