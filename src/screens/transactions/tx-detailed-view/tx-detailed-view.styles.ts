@@ -134,12 +134,6 @@ export const TenderComment = styled(BaseText)`
 `;
 
 /* Notes section */
-export const NoteField = styled.View<{ $focused?: boolean }>`
-	background-color: ${({ $focused, theme }) => ($focused ? `${theme.border.default}18` : `${theme.border.default}0C`)};
-	border-radius: 6px;
-	padding: 10px 12px;
-`;
-
 export const NoteInput = styled.TextInput`
 	font-family: 'Nunito';
 	font-size: 15px;

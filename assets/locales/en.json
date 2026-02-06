@@ -101,7 +101,7 @@
     "CNY": "Chinese Yuan",
     "HKD": "Hong Kong Dollar",
     "JPY": "Japanese Yen",
-    "KRW": "South Korean Won",
+    "KRW": "Korean Won",
     "MOP": "Macanese Pataca",
     "TWD": "New Taiwan Dollar",
     "KHR": "Cambodian Riel",
@@ -222,7 +222,7 @@
       "currency": "Currency",
       "payment": "Payment",
       "notes": "Notes",
-      "notes_placeholder": "Tap to add a note"
+      "notes_placeholder": "Tap to add a comment"
     },
     "filters": {
       "category": "By Category",

@@ -30,7 +30,6 @@ import Root, {
 	TenderEmoji,
 	TenderDetails,
 	TenderComment,
-	NoteField,
 	NoteInput
 } from './tx-detailed-view.styles';
 
@@ -51,7 +50,6 @@ const DetailedView = (transaction: Props) => {
 	const logoUrl = transaction.slug ? logos[transaction.slug as keyof typeof logos] : null;
 
 	const [note, setNote] = useState(transaction.comment ?? '');
-	const [noteFocused, setNoteFocused] = useState(false);
 	const saveComment = useUpdateComment(transaction.id);
 
 	useEffect(() => {
@@ -60,17 +58,12 @@ const DetailedView = (transaction: Props) => {
 	}, [transaction.id]);
 
 	const handleBlur = useCallback(() => {
-		setNoteFocused(false);
 		const trimmed = note.trim();
 
 		if (trimmed !== (transaction.comment ?? '')) {
 			saveComment(trimmed);
 		}
 	}, [note, transaction.comment, saveComment]);
-
-	const handleFocus = useCallback(() => {
-		setNoteFocused(true);
-	}, []);
 
 	return (
 		<Root>
@@ -171,19 +164,16 @@ const DetailedView = (transaction: Props) => {
 				<MetaItem>
 					<Label>{t('transactions.details.notes')}</Label>
 
-					<NoteField $focused={noteFocused}>
-						<NoteInput
-							value={note}
-							onChangeText={setNote}
-							onFocus={handleFocus}
-							onBlur={handleBlur}
-							placeholder={t('transactions.details.notes_placeholder')}
-							placeholderTextColor={theme.text.tertiary}
-							multiline
-							scrollEnabled={false}
-							textAlignVertical="top"
-						/>
-					</NoteField>
+					<NoteInput
+						value={note}
+						onChangeText={setNote}
+						onBlur={handleBlur}
+						placeholder={t('transactions.details.notes_placeholder')}
+						placeholderTextColor={theme.text.tertiary}
+						multiline
+						scrollEnabled={false}
+						textAlignVertical="top"
+					/>
 				</MetaItem>
 			</Content>
 		</Root>
