@@ -1,20 +1,27 @@
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
+import { Text } from '@ui';
+
+export const Label = styled(Text)`
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	color: ${({ theme }) => theme.text.tertiary};
+`;
 
 export const AnimateMe = styled(Animated.View)`
 	transform: scale(1);
 	align-self: center;
-	width: 84px;
-	height: 84px;
-	overflow: hidden;
-	border-radius: 24px;
 `;
 
 export default styled.Pressable`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
-	flex: 1;
-	background-color: #33333310;
+	height: 88px;
+	width: 88px;
+	border-radius: 20px;
+	border-width: 1px;
+	border-color: ${({ theme }) => `${theme.border.default}30`};
 `;

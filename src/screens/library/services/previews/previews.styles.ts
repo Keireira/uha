@@ -1,16 +1,21 @@
-import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import { Text } from '@ui';
 
-export const SnapMark = styled.View<{ $left?: boolean; $right?: boolean }>`
-	width: 0;
-	${({ $left }) => $left && 'margin-left: -12px;'}
-	${({ $right }) => $right && 'margin-right: -12px;'}
+export const GridItem = styled.View<{ $width: number }>`
+	width: ${({ $width }) => $width}px;
 `;
 
-export default styled(ScrollView).attrs({
-	horizontal: true,
-	showsHorizontalScrollIndicator: false,
-	contentContainerStyle: {
-		gap: 24
-	}
-})``;
+export const EmptyText = styled(Text)`
+	font-size: 13px;
+	font-weight: 500;
+	color: ${({ theme }) => theme.text.tertiary};
+	text-align: center;
+	padding: 32px 0;
+	letter-spacing: 0.5px;
+`;
+
+export default styled.View`
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 8px;
+`;

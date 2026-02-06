@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useTheme } from 'styled-components/native';
 import { asc, like } from 'drizzle-orm';
 
 import db from '@db';
@@ -13,6 +14,7 @@ import type { Props } from './list.d';
 
 const CategoriesListScreen = ({ search }: Props) => {
 	const router = useRouter();
+	const theme = useTheme();
 
 	const { data: categories } = useLiveQuery(
 		db
@@ -30,8 +32,7 @@ const CategoriesListScreen = ({ search }: Props) => {
 	return (
 		<Root>
 			<Header hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={navigateTo}>
-				<ArrowLeftIcon width={18} height={18} color="#333" />
-
+				<ArrowLeftIcon width={14} height={14} color={theme.text.tertiary} />
 				<HeaderTitle>Library</HeaderTitle>
 			</Header>
 

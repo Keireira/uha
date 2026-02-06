@@ -3,18 +3,26 @@ import styled from 'styled-components/native';
 import { Text } from '@ui';
 
 export const Title = styled(Text)`
-	font-size: 16px;
+	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
+	letter-spacing: 2px;
+	color: ${({ theme }) => theme.text.tertiary};
+`;
+
+export const Rule = styled.View`
+	flex: 1;
+	height: 1px;
+	background-color: ${({ theme }) => theme.border.default};
+	opacity: 0.3;
 `;
 
 export const HeaderLink = styled.Pressable`
 	flex-direction: row;
-	justify-content: flex-start;
 	align-items: center;
-	gap: 2px;
+	gap: 12px;
 `;
 
 export default styled.View`
-	gap: 12px;
+	gap: 16px;
 `;

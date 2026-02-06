@@ -6,8 +6,8 @@ import type { PropsT } from './preview-item.d';
 
 const PreviewItem = ({ title, emoji, color }: PropsT) => {
 	return (
-		<Root $color={color}>
-			<IconWrapper>
+		<Root>
+			<IconWrapper tintColor={color}>
 				<IconText>{emoji}</IconText>
 			</IconWrapper>
 

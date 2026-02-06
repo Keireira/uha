@@ -3,7 +3,7 @@ import { useWindowDimensions } from 'react-native';
 
 import db from '@db';
 import { asc, like } from 'drizzle-orm';
-import { tendersTable } from '@db/schema';
+import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
@@ -11,7 +11,7 @@ import Root, { GridItem, EmptyText } from './previews.styles';
 
 import type { Props } from './previews.d';
 
-const COLUMNS = 2;
+const COLUMNS = 4;
 const GAP = 8;
 const PADDING = 20;
 
@@ -20,12 +20,12 @@ const Previews = ({ search }: Props) => {
 	const [canRender, setCanRender] = useState(false);
 	const itemWidth = (screenWidth - PADDING * 2 - GAP * (COLUMNS - 1)) / COLUMNS;
 
-	const { data: payments } = useLiveQuery(
+	const { data: currencies } = useLiveQuery(
 		db
 			.select()
-			.from(tendersTable)
-			.where(like(tendersTable.title, `%${search.trim()}%`))
-			.orderBy(asc(tendersTable.title)),
+			.from(currenciesTable)
+			.where(like(currenciesTable.id, `%${search.trim().toUpperCase()}%`))
+			.orderBy(asc(currenciesTable.id)),
 		[search]
 	);
 
@@ -37,15 +37,15 @@ const Previews = ({ search }: Props) => {
 		return () => clearTimeout(timeout);
 	}, []);
 
-	if (!payments.length) {
-		return <EmptyText>No payment methods</EmptyText>;
+	if (!currencies.length) {
+		return <EmptyText>No currencies</EmptyText>;
 	}
 
 	return (
 		<Root>
-			{canRender && payments.map((payment) => (
-				<GridItem key={payment.id} $width={itemWidth}>
-					<PreviewItem {...payment} />
+			{canRender && currencies.map((currency) => (
+				<GridItem key={currency.id} $width={itemWidth}>
+					<PreviewItem {...currency} />
 				</GridItem>
 			))}
 		</Root>

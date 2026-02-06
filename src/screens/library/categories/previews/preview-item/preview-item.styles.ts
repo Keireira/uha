@@ -1,36 +1,37 @@
 import styled from 'styled-components/native';
-
+import { GlassView } from 'expo-glass-effect';
 import { Text } from '@ui';
-import { BlurView } from 'expo-blur';
 
-export const Title = styled(Text)`
-	font-size: 18px;
-	text-shadow: 0 0 4px white;
-`;
-
-export const IconWrapper = styled(BlurView).attrs({
-	intensity: 25,
-	tint: 'prominent'
+export const Title = styled(Text).attrs({
+	numberOfLines: 2
 })`
-	width: 48px;
-	height: 48px;
-	border-radius: 8px;
-	overflow: hidden;
-	background-color: #ffffff20;
+	font-size: 12px;
+	font-weight: 600;
+	text-align: center;
+	letter-spacing: 0.3px;
+	color: ${({ theme }) => theme.text.primary};
 `;
 
 export const IconText = styled(Text)`
 	font-size: 28px;
-	line-height: 48px;
+	line-height: 52px;
 	text-align: center;
 `;
 
-export default styled.Pressable<{ $color: string }>`
-	display: flex;
-	flex-direction: row;
-	gap: 18px;
+export const IconWrapper = styled(GlassView)`
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	overflow: hidden;
 	align-items: center;
-	padding: 18px 36px 18px 18px;
-	background-color: ${({ $color }) => `${$color}50`};
-	border-radius: 12px;
+	justify-content: center;
+`;
+
+export default styled.Pressable`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 8px;
 `;

@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
+import { SymbolView } from 'expo-symbols';
 
 import { useAppModel } from '@models';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from '../../hooks';
@@ -29,7 +30,6 @@ import Root, {
 	ItemsSection,
 	ItemPressable,
 	CheckCircle,
-	CheckIcon,
 	ImpliedDot,
 	ItemTextGroup,
 	ItemTitle,
@@ -104,7 +104,7 @@ const FilterSheet = () => {
 			const { title, subtitle } = resolveTitle(activeTab, entry);
 			const isSelected = activeIds.has(entry.id);
 			const isEligible = !hasOtherFilters || eligible.has(entry.id);
-			const isImplied = !isSelected && hasOtherFilters && eligible.has(entry.id);
+			const isImplied = activeTab !== 'service' && !isSelected && hasOtherFilters && eligible.has(entry.id);
 			const enriched: FilterEntryT = { id: entry.id, title, subtitle, isSelected, isEligible, isImplied };
 
 			if (isSelected) selected.push(enriched);
@@ -192,6 +192,7 @@ const FilterSheet = () => {
 			<TabBarRow>
 				{TABS.map((tab) => {
 					const isActive = activeTab === tab;
+
 					return (
 						<TabGlass
 							key={tab}
@@ -220,7 +221,11 @@ const FilterSheet = () => {
 							<DimWrapper $dimmed={!entry.isEligible && !entry.isSelected}>
 								<ItemPressable onPress={() => handleItemPress(entry.id, entry.isSelected)}>
 									<CheckCircle $selected={entry.isSelected} $implied={entry.isImplied}>
-										{entry.isSelected ? <CheckIcon>✓</CheckIcon> : entry.isImplied ? <ImpliedDot /> : null}
+										{entry.isSelected ? (
+											<SymbolView name="checkmark" size={13} weight="bold" tintColor={theme.text.inverse} />
+										) : entry.isImplied ? (
+											<ImpliedDot />
+										) : null}
 									</CheckCircle>
 
 									<ItemTextGroup>

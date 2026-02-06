@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useTheme } from 'styled-components/native';
 
 import db from '@db';
 import { asc, like, eq } from 'drizzle-orm';
@@ -13,8 +14,9 @@ import Root, { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, I
 
 import type { Props } from './list.d';
 
-const CategoriesListScreen = ({ search }: Props) => {
+const ServicesListScreen = ({ search }: Props) => {
 	const router = useRouter();
+	const theme = useTheme();
 
 	const { data: services } = useLiveQuery(
 		db
@@ -33,8 +35,7 @@ const CategoriesListScreen = ({ search }: Props) => {
 	return (
 		<Root>
 			<Header hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={navigateTo}>
-				<ArrowLeftIcon width={18} height={18} color="#333" />
-
+				<ArrowLeftIcon width={14} height={14} color={theme.text.tertiary} />
 				<HeaderTitle>Library</HeaderTitle>
 			</Header>
 
@@ -45,7 +46,7 @@ const CategoriesListScreen = ({ search }: Props) => {
 				return (
 					<ServiceRoot key={services.id}>
 						<Icon $color={color}>
-							<LogoView name={services.title} logoId={logoUrl} color={color} size={48} />
+							<LogoView name={services.title} logoId={logoUrl} color={color} size={36} />
 						</Icon>
 
 						<Description>
@@ -59,4 +60,4 @@ const CategoriesListScreen = ({ search }: Props) => {
 	);
 };
 
-export default CategoriesListScreen;
+export default ServicesListScreen;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useWindowDimensions } from 'react-native';
 
 import db from '@db';
 import { asc, like } from 'drizzle-orm';
@@ -6,23 +7,25 @@ import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
-import Section from '@screens/library/section';
-import Root, { SnapMark } from './previews.styles';
-import { ToAll, NoItems, useLength } from '@screens/library/shared';
+import Root, { GridItem, EmptyText } from './previews.styles';
 
 import type { Props } from './previews.d';
 
-const Previews = ({ search, setFound }: Props) => {
-	const length = useLength(categoriesTable);
+const COLUMNS = 3;
+const GAP = 8;
+const PADDING = 20;
+
+const Previews = ({ search }: Props) => {
+	const { width: screenWidth } = useWindowDimensions();
 	const [canRender, setCanRender] = useState(false);
+	const itemWidth = (screenWidth - PADDING * 2 - GAP * (COLUMNS - 1)) / COLUMNS;
 
 	const { data: categories } = useLiveQuery(
 		db
 			.select()
 			.from(categoriesTable)
 			.where(like(categoriesTable.title, `%${search.trim()}%`))
-			.orderBy(asc(categoriesTable.title))
-			.limit(6),
+			.orderBy(asc(categoriesTable.title)),
 		[search]
 	);
 
@@ -34,29 +37,18 @@ const Previews = ({ search, setFound }: Props) => {
 		return () => window.clearTimeout(timeout);
 	}, []);
 
-	useEffect(() => {
-		setFound(categories.length);
-	}, [setFound, categories.length]);
-
-	// For search results only
-	if (!categories.length && search.length > 0) {
-		return null;
+	if (!categories.length) {
+		return <EmptyText>No categories</EmptyText>;
 	}
 
 	return (
-		<Section title="Categories" to="/(tabs)/library/categories-list">
-			<Root>
-				<SnapMark $left />
-
-				{!categories.length && <NoItems title="No categories" />}
-
-				{canRender && categories.map((category) => <PreviewItem key={category.id} {...category} />)}
-
-				{canRender && categories.length >= 1 && length > 6 && <ToAll to="/(tabs)/library/categories-list" />}
-
-				<SnapMark $right />
-			</Root>
-		</Section>
+		<Root>
+			{canRender && categories.map((category) => (
+				<GridItem key={category.id} $width={itemWidth}>
+					<PreviewItem {...category} />
+				</GridItem>
+			))}
+		</Root>
 	);
 };
 

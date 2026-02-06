@@ -142,12 +142,6 @@ export const CheckCircle = styled.View<{ $selected: boolean; $implied: boolean }
 	border-color: ${({ theme, $implied }) => ($implied ? `${theme.accent.primary}90` : `${theme.text.secondary}30`)};
 `;
 
-export const CheckIcon = styled(Text)`
-	font-size: 13px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.text.inverse};
-`;
-
 export const ImpliedDot = styled.View`
 	width: 8px;
 	height: 8px;

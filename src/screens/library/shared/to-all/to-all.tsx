@@ -2,11 +2,9 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { ArrowRightIcon } from '@ui/icons';
-
 import type { Props } from './to-all.d';
 
-import Root, { AnimateMe } from './to-all.styles';
+import Root, { AnimateMe, Label } from './to-all.styles';
 
 const ANIM_CONFIG = {
 	mass: 0.35,
@@ -16,9 +14,9 @@ const ANIM_CONFIG = {
 
 const ToAll = ({ to }: Props) => {
 	const router = useRouter();
-	const iconScale = useSharedValue(1);
-	const iconScaledStyle = useAnimatedStyle(() => ({
-		transform: [{ scale: iconScale.value }]
+	const scale = useSharedValue(1);
+	const animStyle = useAnimatedStyle(() => ({
+		transform: [{ scale: scale.value }]
 	}));
 
 	const navigateTo = () => {
@@ -26,15 +24,15 @@ const ToAll = ({ to }: Props) => {
 	};
 
 	const animateIn = () => {
-		iconScale.value = withSpring(0.9, ANIM_CONFIG, () => {
-			iconScale.value = withSpring(1, ANIM_CONFIG);
+		scale.value = withSpring(0.92, ANIM_CONFIG, () => {
+			scale.value = withSpring(1, ANIM_CONFIG);
 		});
 	};
 
 	return (
-		<AnimateMe style={iconScaledStyle}>
+		<AnimateMe style={animStyle}>
 			<Root onPress={navigateTo} onPressIn={animateIn}>
-				<ArrowRightIcon width={28} height={28} />
+				<Label>All</Label>
 			</Root>
 		</AnimateMe>
 	);
