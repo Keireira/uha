@@ -7,13 +7,16 @@ import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, te
 import type { ActiveEntryT } from '../tx-header.d';
 
 const useFilterValues = () => {
+	// Services — with category title as subtitle
 	const { data: services } = useLiveQuery(
 		db
-			.selectDistinct({
+			.select({
 				id: servicesTable.id,
-				title: servicesTable.title
+				title: servicesTable.title,
+				subtitle: categoriesTable.title
 			})
 			.from(servicesTable)
+			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.where(
 				inArray(
 					servicesTable.id,
@@ -25,11 +28,13 @@ const useFilterValues = () => {
 			)
 	);
 
+	// Categories — emoji is prepended to title inline
 	const { data: categories } = useLiveQuery(
 		db
 			.selectDistinct({
 				id: categoriesTable.id,
-				title: categoriesTable.title
+				title: categoriesTable.title,
+				emoji: categoriesTable.emoji
 			})
 			.from(categoriesTable)
 			.where(
@@ -44,11 +49,13 @@ const useFilterValues = () => {
 			)
 	);
 
+	// Tenders — with comment as subtitle
 	const { data: tenders } = useLiveQuery(
 		db
 			.selectDistinct({
 				id: tendersTable.id,
-				title: tendersTable.title
+				title: tendersTable.title,
+				subtitle: tendersTable.comment
 			})
 			.from(tendersTable)
 			.where(
@@ -62,6 +69,8 @@ const useFilterValues = () => {
 			)
 	);
 
+	// Currencies — id is the code (e.g. "USD"), title is the code too
+	// The display name will be resolved via i18n in the component
 	const { data: currencies } = useLiveQuery(
 		db
 			.selectDistinct({
@@ -80,10 +89,22 @@ const useFilterValues = () => {
 			)
 	);
 
+	const coalesce = (data: { id: string; title: string; subtitle?: string | null }[]): ActiveEntryT[] =>
+		data.map(({ id, title, subtitle }) => ({
+			id,
+			title,
+			subtitle: subtitle ?? undefined
+		}));
+
+	const categoriesWithEmoji: ActiveEntryT[] = categories.map(({ id, title, emoji }) => ({
+		id,
+		title: emoji ? `${emoji}  ${title}` : title
+	}));
+
 	return {
-		services: services satisfies ActiveEntryT[],
-		categories: categories satisfies ActiveEntryT[],
-		tenders: tenders satisfies ActiveEntryT[],
+		services: coalesce(services),
+		categories: categoriesWithEmoji,
+		tenders: coalesce(tenders),
 		currencies: currencies satisfies ActiveEntryT[]
 	};
 };

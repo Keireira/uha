@@ -8,7 +8,7 @@ INSERT INTO "categories" ("id", "color", "emoji", "title") VALUES
 	('f3b9c4e2-5d7a-4c8e-8f9b-1a4d6e3c7b5f', '#6ab04c', '📚', 'Education'),
 	('e4a5d7f3-8b1c-4f6e-9c2d-5e8f1a7b4c9e', '#ff7979', '🎮', 'Entertainment'),
 	('d5c8e1f4-2a9b-4e3f-8d7c-6f9e2b5a8c1d', '#30336b', '🍔', 'Food'),
-	('b6f2a9e5-7c4d-4b8f-9e1a-3c5d7f8b2a6e', '#f9ca24', '👨💻', 'For Developers'),
+	('b6f2a9e5-7c4d-4b8f-9e1a-3c5d7f8b2a6e', '#f9ca24', '💻', 'For Developers'),
 	('c7e3d8f1-1b5a-4f9c-8e2d-4a6f9c3e7b1c', '#eb4d4b', '☁️', 'Hosting & SaaS'),
 	('a8d4f2e7-6c9b-4e1f-9d8a-2e5c8f1a4d7b', '#22a6b3', '📚', 'Magazines'),
 	('f9e1c5d8-3a7b-4f6e-8c9d-1d4e7a2f5c8b', '#4834d4', '🎯', 'Many-in-One'),
