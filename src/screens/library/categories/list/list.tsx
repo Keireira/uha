@@ -8,7 +8,7 @@ import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { ArrowLeftIcon } from '@ui/icons';
-import Root, { CategoryRoot, Emoji, Title, Header, HeaderTitle } from './list.styles';
+import Root, { CategoryRoot, Emoji, Title, Header, HeaderTitle, SectionLetter } from './list.styles';
 
 import type { Props } from './list.d';
 
@@ -36,12 +36,21 @@ const CategoriesListScreen = ({ search }: Props) => {
 				<HeaderTitle>Library</HeaderTitle>
 			</Header>
 
-			{categories.map((category) => (
-				<CategoryRoot key={category.id}>
-					<Emoji $color={category.color}>{category.emoji}</Emoji>
-					<Title>{category.title}</Title>
-				</CategoryRoot>
-			))}
+			{categories.map((category, index) => {
+				const letter = category.title.charAt(0).toUpperCase();
+				const prev = index > 0 ? categories[index - 1].title.charAt(0).toUpperCase() : '';
+
+				return (
+					<React.Fragment key={category.id}>
+						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
+
+						<CategoryRoot>
+							<Emoji $color={category.color}>{category.emoji}</Emoji>
+							<Title>{category.title}</Title>
+						</CategoryRoot>
+					</React.Fragment>
+				);
+			})}
 		</Root>
 	);
 };

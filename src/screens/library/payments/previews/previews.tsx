@@ -7,7 +7,7 @@ import { tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
-import Root, { GridItem, EmptyText } from './previews.styles';
+import Root, { GridItem, SectionHeader, SectionLetter, SectionRule, EmptyText } from './previews.styles';
 
 import type { Props } from './previews.d';
 
@@ -43,11 +43,26 @@ const Previews = ({ search }: Props) => {
 
 	return (
 		<Root>
-			{canRender && payments.map((payment) => (
-				<GridItem key={payment.id} $width={itemWidth}>
-					<PreviewItem {...payment} />
-				</GridItem>
-			))}
+			{canRender &&
+				payments.map((payment, index) => {
+					const letter = payment.title.charAt(0).toUpperCase();
+					const prev = index > 0 ? payments[index - 1].title.charAt(0).toUpperCase() : '';
+
+					return (
+						<React.Fragment key={payment.id}>
+							{letter !== prev && (
+								<SectionHeader>
+									<SectionLetter>{letter}</SectionLetter>
+									<SectionRule />
+								</SectionHeader>
+							)}
+
+							<GridItem $width={itemWidth}>
+								<PreviewItem {...payment} />
+							</GridItem>
+						</React.Fragment>
+					);
+				})}
 		</Root>
 	);
 };

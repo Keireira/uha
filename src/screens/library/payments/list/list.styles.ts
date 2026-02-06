@@ -60,6 +60,15 @@ export const PaymentRoot = styled.View`
 	border-bottom-color: ${({ theme }) => `${theme.border.default}15`};
 `;
 
+export const SectionLetter = styled(Text)`
+	font-size: 14px;
+	font-weight: 800;
+	color: ${({ theme }) => theme.text.tertiary};
+	letter-spacing: 1px;
+	padding-top: 20px;
+	padding-bottom: 4px;
+`;
+
 export default styled.View`
 	flex: 1;
 	gap: 0;

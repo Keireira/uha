@@ -7,7 +7,7 @@ import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
-import Root, { GridItem, EmptyText } from './previews.styles';
+import Root, { GridItem, SectionHeader, SectionLetter, SectionRule, EmptyText } from './previews.styles';
 
 import type { Props } from './previews.d';
 
@@ -43,11 +43,26 @@ const Previews = ({ search }: Props) => {
 
 	return (
 		<Root>
-			{canRender && categories.map((category) => (
-				<GridItem key={category.id} $width={itemWidth}>
-					<PreviewItem {...category} />
-				</GridItem>
-			))}
+			{canRender &&
+				categories.map((category, index) => {
+					const letter = category.title.charAt(0).toUpperCase();
+					const prev = index > 0 ? categories[index - 1].title.charAt(0).toUpperCase() : '';
+
+					return (
+						<React.Fragment key={category.id}>
+							{letter !== prev && (
+								<SectionHeader>
+									<SectionLetter>{letter}</SectionLetter>
+									<SectionRule />
+								</SectionHeader>
+							)}
+
+							<GridItem $width={itemWidth}>
+								<PreviewItem {...category} />
+							</GridItem>
+						</React.Fragment>
+					);
+				})}
 		</Root>
 	);
 };

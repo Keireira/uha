@@ -8,7 +8,7 @@ import { tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { ArrowLeftIcon } from '@ui/icons';
-import Root, { PaymentRoot, Emoji, Title, Subtitle, Header, HeaderTitle, Description } from './list.styles';
+import Root, { PaymentRoot, Emoji, Title, Subtitle, Header, HeaderTitle, Description, SectionLetter } from './list.styles';
 
 import type { Props } from './list.d';
 
@@ -36,16 +36,25 @@ const PaymentsListScreen = ({ search }: Props) => {
 				<HeaderTitle>Library</HeaderTitle>
 			</Header>
 
-			{payments.map((payment) => (
-				<PaymentRoot key={payment.id}>
-					<Emoji $color={payment.color}>{payment.emoji}</Emoji>
+			{payments.map((payment, index) => {
+				const letter = payment.title.charAt(0).toUpperCase();
+				const prev = index > 0 ? payments[index - 1].title.charAt(0).toUpperCase() : '';
 
-					<Description>
-						<Title $withComment={Boolean(payment.comment)}>{payment.title}</Title>
-						{payment.comment && <Subtitle>{payment.comment}</Subtitle>}
-					</Description>
-				</PaymentRoot>
-			))}
+				return (
+					<React.Fragment key={payment.id}>
+						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
+
+						<PaymentRoot>
+							<Emoji $color={payment.color}>{payment.emoji}</Emoji>
+
+							<Description>
+								<Title $withComment={Boolean(payment.comment)}>{payment.title}</Title>
+								{payment.comment && <Subtitle>{payment.comment}</Subtitle>}
+							</Description>
+						</PaymentRoot>
+					</React.Fragment>
+				);
+			})}
 		</Root>
 	);
 };
