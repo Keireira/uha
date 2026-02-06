@@ -6,11 +6,11 @@ import Root, { LogoGlass, Title } from './preview-item.styles';
 
 import type { PropsT } from './preview-item.d';
 
-const PreviewItem = ({ title, slug, color = '#333333' }: PropsT) => {
+const PreviewItem = ({ title, slug, color = '#333333', onPress }: PropsT) => {
 	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
 
 	return (
-		<Root>
+		<Root onPress={onPress}>
 			<LogoGlass tintColor={color}>
 				<LogoView name={title} logoId={logoUrl} color={color} size={40} />
 			</LogoGlass>

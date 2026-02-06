@@ -50,7 +50,7 @@ export const Emoji = styled(Text)<{ $color: string }>`
 	background-color: ${({ $color }) => `${$color}10`};
 `;
 
-export const PaymentRoot = styled.View`
+export const PaymentRoot = styled.Pressable`
 	flex-direction: row;
 	align-items: center;
 	gap: 14px;

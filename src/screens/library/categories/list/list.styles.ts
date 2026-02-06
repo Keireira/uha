@@ -40,7 +40,7 @@ export const Emoji = styled(Text)<{ $color: string }>`
 	background-color: ${({ $color }) => `${$color}10`};
 `;
 
-export const CategoryRoot = styled.View`
+export const CategoryRoot = styled.Pressable`
 	flex-direction: row;
 	align-items: center;
 	gap: 14px;

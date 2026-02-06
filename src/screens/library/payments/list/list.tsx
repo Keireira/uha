@@ -8,7 +8,16 @@ import { tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { ArrowLeftIcon } from '@ui/icons';
-import Root, { PaymentRoot, Emoji, Title, Subtitle, Header, HeaderTitle, Description, SectionLetter } from './list.styles';
+import Root, {
+	PaymentRoot,
+	Emoji,
+	Title,
+	Subtitle,
+	Header,
+	HeaderTitle,
+	Description,
+	SectionLetter
+} from './list.styles';
 
 import type { Props } from './list.d';
 
@@ -44,7 +53,11 @@ const PaymentsListScreen = ({ search }: Props) => {
 					<React.Fragment key={payment.id}>
 						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
 
-						<PaymentRoot>
+						<PaymentRoot
+							onPress={() =>
+								router.push({ pathname: '/(tabs)/library/[id]', params: { id: payment.id, type: 'payment' } })
+							}
+						>
 							<Emoji $color={payment.color}>{payment.emoji}</Emoji>
 
 							<Description>

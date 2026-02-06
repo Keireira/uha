@@ -21,7 +21,7 @@ export const LogoGlass = styled(GlassView)`
 	justify-content: center;
 `;
 
-export default styled.View`
+export default styled.Pressable`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Pressable, useWindowDimensions } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import db from '@db';
 import { asc, like } from 'drizzle-orm';
@@ -16,6 +17,7 @@ const GAP = 8;
 const PADDING = 20;
 
 const Previews = ({ search }: Props) => {
+	const router = useRouter();
 	const { width: screenWidth } = useWindowDimensions();
 	const [canRender, setCanRender] = useState(false);
 	const itemWidth = (screenWidth - PADDING * 2 - GAP * (COLUMNS - 1)) / COLUMNS;
@@ -58,7 +60,13 @@ const Previews = ({ search }: Props) => {
 							)}
 
 							<GridItem $width={itemWidth}>
-								<PreviewItem {...payment} />
+								<Pressable
+									onPress={() =>
+										router.push({ pathname: '/(tabs)/library/[id]', params: { id: payment.id, type: 'payment' } })
+									}
+								>
+									<PreviewItem {...payment} />
+								</Pressable>
 							</GridItem>
 						</React.Fragment>
 					);

@@ -10,7 +10,16 @@ import { servicesTable, categoriesTable } from '@db/schema';
 import { LogoView } from '@ui';
 import logos from '@assets/logos';
 import { ArrowLeftIcon } from '@ui/icons';
-import Root, { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, Icon, SectionLetter } from './list.styles';
+import Root, {
+	ServiceRoot,
+	Title,
+	Header,
+	HeaderTitle,
+	Subtitle,
+	Description,
+	Icon,
+	SectionLetter
+} from './list.styles';
 
 import type { Props } from './list.d';
 
@@ -50,7 +59,11 @@ const ServicesListScreen = ({ search }: Props) => {
 					<React.Fragment key={services.id}>
 						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
 
-						<ServiceRoot>
+						<ServiceRoot
+							onPress={() =>
+								router.push({ pathname: '/(tabs)/library/[id]', params: { id: services.id, type: 'service' } })
+							}
+						>
 							<Icon $color={color}>
 								<LogoView name={services.title} logoId={logoUrl} color={color} size={36} />
 							</Icon>

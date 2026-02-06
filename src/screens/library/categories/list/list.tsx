@@ -44,7 +44,11 @@ const CategoriesListScreen = ({ search }: Props) => {
 					<React.Fragment key={category.id}>
 						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
 
-						<CategoryRoot>
+						<CategoryRoot
+							onPress={() =>
+								router.push({ pathname: '/(tabs)/library/[id]', params: { id: category.id, type: 'category' } })
+							}
+						>
 							<Emoji $color={category.color}>{category.emoji}</Emoji>
 							<Title>{category.title}</Title>
 						</CategoryRoot>

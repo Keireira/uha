@@ -68,8 +68,8 @@ const DetailedView = (transaction: Props) => {
 	return (
 		<Root>
 			<AccentRail>
-				<AccentSegment $color={transaction.color || transaction.category_color} />
-				<AccentSegment $color={transaction.category_color || transaction.color} />
+				<AccentSegment $color={transaction.color || transaction.category_color} $flex={3} />
+				<AccentSegment $color={transaction.category_color || transaction.color} $flex={2} />
 			</AccentRail>
 
 			<Content>

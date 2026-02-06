@@ -51,7 +51,7 @@ export const Description = styled.View`
 	gap: 3px;
 `;
 
-export const ServiceRoot = styled.View`
+export const ServiceRoot = styled.Pressable`
 	flex-direction: row;
 	align-items: center;
 	gap: 14px;

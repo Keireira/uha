@@ -1,3 +1,5 @@
 import type { CategoryT } from '@models';
 
-export type PropsT = CategoryT;
+export type PropsT = CategoryT & {
+	onPress?: () => void;
+};
