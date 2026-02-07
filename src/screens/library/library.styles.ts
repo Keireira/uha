@@ -3,10 +3,25 @@ import { ScrollView } from 'react-native';
 import { GlassView } from 'expo-glass-effect';
 import { H1, Text } from '@ui';
 
+export const HeaderRow = styled.View`
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+`;
+
 export const ScreenTitle = styled(H1)`
 	font-size: 32px;
 	font-weight: 800;
 	letter-spacing: -0.5px;
+`;
+
+export const AddButton = styled.Pressable`
+	width: 36px;
+	height: 36px;
+	border-radius: 18px;
+	align-items: center;
+	justify-content: center;
+	background-color: ${({ theme }) => `${theme.surface.default}`};
 `;
 
 export const TabBar = styled(ScrollView).attrs({

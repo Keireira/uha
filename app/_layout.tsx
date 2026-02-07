@@ -57,7 +57,20 @@ const LoadFinalStage = () => {
 					>
 						<Stack.Screen name="index" />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-						<Stack.Screen name="(crossroad)" options={{ headerShown: false }} />
+						<Stack.Screen
+						name="(crossroad)"
+						options={{
+							headerShown: false,
+							presentation: 'formSheet',
+							gestureEnabled: true,
+							sheetAllowedDetents: [0.7, 0.92],
+							sheetLargestUndimmedDetentIndex: 'none',
+							sheetGrabberVisible: true,
+							sheetCornerRadius: -1,
+							animation: 'slide_from_bottom',
+							contentStyle: { backgroundColor: theme.background.default }
+						}}
+					/>
 					</Stack>
 				</ThemeProvider>
 			</GestureHandlerRootView>

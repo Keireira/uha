@@ -1,12 +1,3 @@
-import React from 'react';
-import { Text, Wrapper } from '@ui';
+import AddPaymentScreen from '@screens/crossroad/add-payment';
 
-const AddPayment = () => {
-	return (
-		<Wrapper>
-			<Text>Add Payment</Text>
-		</Wrapper>
-	);
-};
-
-export default AddPayment;
+export default AddPaymentScreen;

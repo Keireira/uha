@@ -1,12 +1,3 @@
-import React from 'react';
-import { Text, Wrapper } from '@ui';
+import AddCategoryScreen from '@screens/crossroad/add-category';
 
-const AddCategory = () => {
-	return (
-		<Wrapper>
-			<Text>Add Category</Text>
-		</Wrapper>
-	);
-};
-
-export default AddCategory;
+export default AddCategoryScreen;

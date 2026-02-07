@@ -1,12 +1,3 @@
-import React from 'react';
-import { Text, Wrapper } from '@ui';
+import AddServiceScreen from '@screens/crossroad/add-service';
 
-const AddService = () => {
-	return (
-		<Wrapper>
-			<Text>Add Service</Text>
-		</Wrapper>
-	);
-};
-
-export default AddService;
+export default AddServiceScreen;
