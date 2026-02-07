@@ -10,11 +10,9 @@ const useAddPayment = () => {
 
 	const [title, setTitle] = useState('');
 	const [emoji, setEmoji] = useState('');
-	const [color, setColor] = useState('#ff9f0a');
+	const [color, setColor] = useState('#f3a683');
 	const [isCard, setIsCard] = useState(true);
 	const [comment, setComment] = useState('');
-	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-	const [showColorPicker, setShowColorPicker] = useState(false);
 
 	const isValid = title.trim().length > 0 && emoji.length > 0 && color.length > 0;
 
@@ -33,24 +31,7 @@ const useAddPayment = () => {
 		router.back();
 	};
 
-	return {
-		title,
-		setTitle,
-		emoji,
-		setEmoji,
-		color,
-		setColor,
-		isCard,
-		setIsCard,
-		comment,
-		setComment,
-		showEmojiPicker,
-		setShowEmojiPicker,
-		showColorPicker,
-		setShowColorPicker,
-		isValid,
-		save
-	};
+	return { title, setTitle, emoji, setEmoji, color, setColor, isCard, setIsCard, comment, setComment, isValid, save };
 };
 
 export default useAddPayment;

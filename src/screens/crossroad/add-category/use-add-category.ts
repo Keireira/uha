@@ -10,9 +10,7 @@ const useAddCategory = () => {
 
 	const [title, setTitle] = useState('');
 	const [emoji, setEmoji] = useState('');
-	const [color, setColor] = useState('#ff9f0a');
-	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-	const [showColorPicker, setShowColorPicker] = useState(false);
+	const [color, setColor] = useState('#f3a683');
 
 	const isValid = title.trim().length > 0 && emoji.length > 0 && color.length > 0;
 
@@ -29,20 +27,7 @@ const useAddCategory = () => {
 		router.back();
 	};
 
-	return {
-		title,
-		setTitle,
-		emoji,
-		setEmoji,
-		color,
-		setColor,
-		showEmojiPicker,
-		setShowEmojiPicker,
-		showColorPicker,
-		setShowColorPicker,
-		isValid,
-		save
-	};
+	return { title, setTitle, emoji, setEmoji, color, setColor, isValid, save };
 };
 
 export default useAddCategory;

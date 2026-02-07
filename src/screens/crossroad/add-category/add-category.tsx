@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SymbolView } from 'expo-symbols';
 import { EmojiPicker, ColorPicker } from '@elements';
+import { colorMix, isTextDark } from '@lib/color-utils';
 import useAddCategory from './use-add-category';
 import {
 	Container,
@@ -12,12 +13,13 @@ import {
 	Title,
 	CloseGlass,
 	CloseInner,
-	Field,
-	FieldLabel,
-	EmojiPreview,
-	EmojiPreviewText,
-	PlaceholderText,
-	Input,
+	Preview,
+	PreviewEmoji,
+	PreviewPlaceholder,
+	NameInput,
+	Main,
+	Section,
+	Caption,
 	SaveButton,
 	SaveLabel
 } from './add-category.styles';
@@ -26,71 +28,53 @@ const AddCategoryScreen = () => {
 	const theme = useTheme();
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
-	const {
-		title,
-		setTitle,
-		emoji,
-		setEmoji,
-		color,
-		setColor,
-		showEmojiPicker,
-		setShowEmojiPicker,
-		showColorPicker,
-		setShowColorPicker,
-		isValid,
-		save
-	} = useAddCategory();
+	const { title, setTitle, emoji, setEmoji, color, setColor, isValid, save } = useAddCategory();
+
+	const dark = useMemo(() => isTextDark(color), [color]);
+	const previewBg = useMemo(() => colorMix(color, theme.background.default, 0.5), [color, theme.background.default]);
+	const iconColor = dark ? '#333333' : '#ffffff';
 
 	return (
-		<Container contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}>
-			<Header>
-				<Title>New Category</Title>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={() => router.back()} hitSlop={10}>
-						<SymbolView name="xmark" size={16} weight="bold" tintColor={theme.text.tertiary} />
-					</CloseInner>
-				</CloseGlass>
-			</Header>
+		<Container
+			style={{ backgroundColor: color }}
+			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
+		>
+				<Header>
+					<Title $dark={dark}>New Category</Title>
+					<CloseGlass isInteractive>
+						<CloseInner onPress={() => router.back()} hitSlop={10}>
+							<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
+						</CloseInner>
+					</CloseGlass>
+				</Header>
 
-			<Field>
-				<FieldLabel>Title</FieldLabel>
-				<Input
+				<Preview $bg={previewBg}>
+					{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder $dark={dark}>?</PreviewPlaceholder>}
+				</Preview>
+
+				<NameInput
+					$dark={dark}
 					value={title}
 					onChangeText={setTitle}
-					placeholder="e.g. Food & Drinks"
-					placeholderTextColor={`${theme.text.tertiary}75`}
-					autoFocus
+					placeholder="Category name"
+					placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
 				/>
-			</Field>
 
-			<Field>
-				<FieldLabel>Emoji</FieldLabel>
-				<EmojiPreview onPress={() => setShowEmojiPicker(!showEmojiPicker)}>
-					{emoji ? <EmojiPreviewText>{emoji}</EmojiPreviewText> : <PlaceholderText>Tap to pick</PlaceholderText>}
-				</EmojiPreview>
-				{showEmojiPicker && (
-					<EmojiPicker
-						selected={emoji}
-						onSelect={(e) => {
-							setEmoji(e);
-							setShowEmojiPicker(false);
-						}}
-					/>
-				)}
-			</Field>
+				<Main>
+					<Section>
+						<Caption $dark={dark}>Logo Emoji</Caption>
+						<EmojiPicker color={color} selected={emoji} onSelect={setEmoji} />
+					</Section>
 
-			<Field>
-				<FieldLabel>Color</FieldLabel>
-				<EmojiPreview onPress={() => setShowColorPicker(!showColorPicker)}>
-					<EmojiPreviewText style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: color }} />
-					<PlaceholderText>{color}</PlaceholderText>
-				</EmojiPreview>
-				{showColorPicker && <ColorPicker value={color} onSelect={setColor} />}
-			</Field>
+					<Section>
+						<Caption $dark={dark}>Support Color</Caption>
+						<ColorPicker value={color} onSelect={setColor} />
+					</Section>
+				</Main>
 
-			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-				<SaveLabel>Save</SaveLabel>
-			</SaveButton>
+				<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
+					<SaveLabel $dark={dark}>Create</SaveLabel>
+				</SaveButton>
 		</Container>
 	);
 };

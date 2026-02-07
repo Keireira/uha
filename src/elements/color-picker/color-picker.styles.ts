@@ -1,27 +1,29 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-	align-items: center;
-	gap: 16px;
-`;
-
-export const PreviewRow = styled.View`
+export const SwatchesList = styled.View`
 	flex-direction: row;
-	align-items: center;
-	gap: 12px;
+	flex-wrap: wrap;
+	gap: 10px;
 `;
 
-export const Swatch = styled.View<{ $color: string }>`
-	width: 40px;
-	height: 40px;
-	border-radius: 20px;
+export const Swatch = styled.Pressable<{ $color: string; $selected: boolean }>`
+	height: 36px;
+	width: 72px;
 	background-color: ${({ $color }) => $color};
+	border-radius: 50px;
+	border-width: ${({ $selected }) => ($selected ? '2.5px' : '0px')};
+	border-color: rgba(255, 255, 255, 0.9);
 `;
 
-export const HexLabel = styled.Text`
-	font-family: 'Nunito';
-	font-size: 14px;
-	font-weight: 600;
-	color: ${({ theme }) => theme.text.secondary};
-	text-transform: uppercase;
+export const CustomSwatch = styled.Pressable`
+	height: 36px;
+	width: 72px;
+	background-color: rgba(255, 255, 255, 0.15);
+	border-radius: 50px;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const PickerWrap = styled.View`
+	margin-top: 12px;
 `;

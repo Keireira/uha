@@ -3,25 +3,22 @@ import { GlassView } from 'expo-glass-effect';
 import { BaseText } from '@ui';
 
 export const Container = styled.ScrollView.attrs({
-	contentContainerStyle: {
-		paddingHorizontal: 24,
-		gap: 24
-	},
 	keyboardShouldPersistTaps: 'handled' as const,
 	showsVerticalScrollIndicator: false
-})``;
+})`
+	flex: 1;
+`;
 
 export const Header = styled.View`
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 32px;
 `;
 
-export const Title = styled(BaseText)`
+export const Title = styled(BaseText)<{ $dark: boolean }>`
 	font-size: 22px;
 	font-weight: 700;
-	color: ${({ theme }) => theme.text.primary};
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
 `;
 
 export const CloseGlass = styled(GlassView)`
@@ -38,17 +35,82 @@ export const CloseInner = styled.Pressable`
 	justify-content: center;
 `;
 
-export const FieldLabel = styled(BaseText)`
-	font-size: 11px;
-	font-weight: 600;
-	text-transform: uppercase;
-	color: ${({ theme }) => theme.text.secondary};
-	margin-bottom: 8px;
+export const Preview = styled.View<{ $bg: string }>`
+	align-self: center;
+	width: 128px;
+	height: 128px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 38px;
+	background-color: ${({ $bg }) => $bg};
 `;
 
-export const Field = styled.View``;
+export const PreviewInitial = styled(BaseText)<{ $dark: boolean }>`
+	font-size: 48px;
+	font-weight: 700;
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+`;
 
-export const Input = styled.TextInput`
+export const NameInput = styled.TextInput<{ $dark: boolean }>`
+	font-family: 'Nunito';
+	font-size: 24px;
+	font-weight: 700;
+	text-align: center;
+	padding: 0;
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+	background-color: transparent;
+`;
+
+export const Main = styled.View`
+	gap: 36px;
+`;
+
+export const Section = styled.View`
+	gap: 10px;
+`;
+
+export const Caption = styled(BaseText)<{ $dark: boolean }>`
+	font-size: 14px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+	opacity: 0.8;
+`;
+
+export const CategoryOption = styled.Pressable<{ $selected: boolean }>`
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 14px;
+	border-radius: 10px;
+	background-color: ${({ $selected }) => ($selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)')};
+`;
+
+export const CategoryEmoji = styled(BaseText)`
+	font-size: 20px;
+`;
+
+export const CategoryLabel = styled(BaseText)<{ $dark: boolean; $selected: boolean }>`
+	font-size: 14px;
+	font-weight: ${({ $selected }) => ($selected ? '700' : '500')};
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+	opacity: ${({ $selected }) => ($selected ? 1 : 0.7)};
+`;
+
+export const CategoriesList = styled.View`
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 8px;
+`;
+
+export const PlaceholderText = styled(BaseText)<{ $dark: boolean }>`
+	font-size: 15px;
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+	opacity: 0.5;
+`;
+
+export const SearchInput = styled.TextInput`
 	font-family: 'Nunito';
 	font-size: 16px;
 	padding: 12px 16px;
@@ -91,65 +153,23 @@ export const CreateButtonLabel = styled(BaseText)`
 	color: ${({ theme }) => theme.accent.primary};
 `;
 
-export const CategoryOption = styled.Pressable<{ $selected: boolean }>`
-	flex-direction: row;
-	align-items: center;
-	gap: 10px;
-	padding: 10px 14px;
-	border-radius: 10px;
-	background-color: ${({ theme, $selected }) => ($selected ? `${theme.accent.primary}20` : theme.surface.default)};
-	border-width: ${({ $selected }) => ($selected ? '1px' : '0px')};
-	border-color: ${({ theme }) => `${theme.accent.primary}40`};
-`;
-
-export const CategoryEmoji = styled(BaseText)`
-	font-size: 20px;
-`;
-
-export const CategoryLabel = styled(BaseText)<{ $selected: boolean }>`
-	font-size: 14px;
-	font-weight: ${({ $selected }) => ($selected ? '700' : '500')};
-	color: ${({ theme, $selected }) => ($selected ? theme.accent.primary : theme.text.primary)};
-`;
-
-export const CategoriesList = styled.View`
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 8px;
-`;
-
-export const PlaceholderText = styled(BaseText)`
-	font-size: 15px;
-	color: ${({ theme }) => theme.text.tertiary};
-`;
-
-export const EmojiPreview = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	gap: 12px;
-	padding: 12px 16px;
-	border-radius: 12px;
-	background-color: ${({ theme }) => theme.surface.default};
-`;
-
-export const SaveButton = styled.Pressable<{ $disabled: boolean }>`
-	height: 48px;
-	border-radius: 14px;
-	align-items: center;
-	justify-content: center;
-	background-color: ${({ theme }) => theme.accent.primary};
-	opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};
-	margin-top: 8px;
-`;
-
-export const SaveLabel = styled(BaseText)`
-	font-size: 16px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.static.white};
-`;
-
 export const Divider = styled.View`
 	height: 1px;
 	background-color: ${({ theme }) => `${theme.border.default}30`};
 	margin-vertical: 4px;
+`;
+
+export const SaveButton = styled.Pressable<{ $disabled: boolean }>`
+	height: 52px;
+	border-radius: 14px;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(255, 255, 255, 0.2);
+	opacity: ${({ $disabled }) => ($disabled ? 0.35 : 1)};
+`;
+
+export const SaveLabel = styled(BaseText)<{ $dark: boolean }>`
+	font-size: 17px;
+	font-weight: 700;
+	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
 `;

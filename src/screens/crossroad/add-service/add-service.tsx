@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoView } from '@ui';
 import { SymbolView } from 'expo-symbols';
 import { ColorPicker } from '@elements';
+import { colorMix, isTextDark } from '@lib/color-utils';
 import useAddService from './use-add-service';
 import {
 	Container,
@@ -14,23 +15,26 @@ import {
 	Title,
 	CloseGlass,
 	CloseInner,
-	Field,
-	FieldLabel,
-	Input,
-	ResultItem,
-	ResultTitle,
-	ResultSubtitle,
-	CreateButton,
-	CreateButtonLabel,
+	Preview,
+	PreviewInitial,
+	NameInput,
+	Main,
+	Section,
+	Caption,
 	CategoryOption,
 	CategoryEmoji,
 	CategoryLabel,
 	CategoriesList,
 	PlaceholderText,
-	EmojiPreview,
+	SearchInput,
+	ResultItem,
+	ResultTitle,
+	ResultSubtitle,
+	CreateButton,
+	CreateButtonLabel,
+	Divider,
 	SaveButton,
-	SaveLabel,
-	Divider
+	SaveLabel
 } from './add-service.styles';
 
 const AddServiceScreen = () => {
@@ -47,8 +51,6 @@ const AddServiceScreen = () => {
 		setColor,
 		selectedCategoryId,
 		setSelectedCategoryId,
-		showColorPicker,
-		setShowColorPicker,
 		categories,
 		filteredResults,
 		isValid,
@@ -56,65 +58,86 @@ const AddServiceScreen = () => {
 		save
 	} = useAddService();
 
+	const dark = useMemo(() => isTextDark(color), [color]);
+	const previewBg = useMemo(() => colorMix(color, theme.background.default, 0.5), [color, theme.background.default]);
+	const iconColor = mode === 'create' ? (dark ? '#333333' : '#ffffff') : theme.text.tertiary;
+	const initial = title.trim().charAt(0).toUpperCase() || '?';
+
+	if (mode === 'search') {
+		return (
+			<Container
+				contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
+			>
+				<Header>
+					<Title $dark={true}>New Service</Title>
+					<CloseGlass isInteractive>
+						<CloseInner onPress={() => router.back()} hitSlop={10}>
+							<SymbolView name="xmark" size={16} weight="bold" tintColor={theme.text.tertiary} />
+						</CloseInner>
+					</CloseGlass>
+				</Header>
+
+				<SearchInput
+					value={search}
+					onChangeText={setSearch}
+					placeholder="Search existing services..."
+					placeholderTextColor={`${theme.text.tertiary}75`}
+					autoFocus
+				/>
+
+				{filteredResults.length > 0 && (
+					<View>
+						{filteredResults.map((service) => (
+							<ResultItem key={service.id}>
+								<LogoView name={service.title} emoji={undefined} color={service.color} size={40} />
+								<View>
+									<ResultTitle>{service.title}</ResultTitle>
+									<ResultSubtitle>{service.slug}</ResultSubtitle>
+								</View>
+							</ResultItem>
+						))}
+					</View>
+				)}
+
+				<Divider />
+
+				<CreateButton onPress={switchToCreate}>
+					<CreateButtonLabel>+ Create Custom Service</CreateButtonLabel>
+				</CreateButton>
+			</Container>
+		);
+	}
+
 	return (
-		<Container contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}>
-			<Header>
-				<Title>New Service</Title>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={() => router.back()} hitSlop={10}>
-						<SymbolView name="xmark" size={16} weight="bold" tintColor={theme.text.tertiary} />
-					</CloseInner>
-				</CloseGlass>
-			</Header>
+		<Container
+			style={{ backgroundColor: color }}
+			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
+		>
+				<Header>
+					<Title $dark={dark}>New Service</Title>
+					<CloseGlass isInteractive>
+						<CloseInner onPress={() => router.back()} hitSlop={10}>
+							<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
+						</CloseInner>
+					</CloseGlass>
+				</Header>
 
-			{mode === 'search' ? (
-				<>
-					<Field>
-						<FieldLabel>Search</FieldLabel>
-						<Input
-							value={search}
-							onChangeText={setSearch}
-							placeholder="Search existing services..."
-							placeholderTextColor={`${theme.text.tertiary}75`}
-							autoFocus
-						/>
-					</Field>
+				<Preview $bg={previewBg}>
+					<PreviewInitial $dark={dark}>{initial}</PreviewInitial>
+				</Preview>
 
-					{filteredResults.length > 0 && (
-						<Field>
-							{filteredResults.map((service) => (
-								<ResultItem key={service.id}>
-									<LogoView name={service.title} emoji={undefined} color={service.color} size={40} />
-									<View>
-										<ResultTitle>{service.title}</ResultTitle>
-										<ResultSubtitle>{service.slug}</ResultSubtitle>
-									</View>
-								</ResultItem>
-							))}
-						</Field>
-					)}
+				<NameInput
+					$dark={dark}
+					value={title}
+					onChangeText={setTitle}
+					placeholder="Service name"
+					placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
+					autoFocus
+				/>
 
-					<Divider />
-
-					<CreateButton onPress={switchToCreate}>
-						<CreateButtonLabel>+ Create Custom Service</CreateButtonLabel>
-					</CreateButton>
-				</>
-			) : (
-				<>
-					<Field>
-						<FieldLabel>Title</FieldLabel>
-						<Input
-							value={title}
-							onChangeText={setTitle}
-							placeholder="e.g. Netflix"
-							placeholderTextColor={`${theme.text.tertiary}75`}
-							autoFocus
-						/>
-					</Field>
-
-					<Field>
-						<FieldLabel>Category</FieldLabel>
+				<Main>
+					<Section>
+						<Caption $dark={dark}>Category</Caption>
 						{categories.length > 0 ? (
 							<CategoriesList>
 								{categories.map((cat) => (
@@ -124,29 +147,26 @@ const AddServiceScreen = () => {
 										onPress={() => setSelectedCategoryId(cat.id)}
 									>
 										<CategoryEmoji>{cat.emoji}</CategoryEmoji>
-										<CategoryLabel $selected={selectedCategoryId === cat.id}>{cat.title}</CategoryLabel>
+										<CategoryLabel $dark={dark} $selected={selectedCategoryId === cat.id}>
+											{cat.title}
+										</CategoryLabel>
 									</CategoryOption>
 								))}
 							</CategoriesList>
 						) : (
-							<PlaceholderText>No categories yet. Create one first.</PlaceholderText>
+							<PlaceholderText $dark={dark}>No categories yet. Create one first.</PlaceholderText>
 						)}
-					</Field>
+					</Section>
 
-					<Field>
-						<FieldLabel>Color</FieldLabel>
-						<EmojiPreview onPress={() => setShowColorPicker(!showColorPicker)}>
-							<View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: color }} />
-							<PlaceholderText>{color}</PlaceholderText>
-						</EmojiPreview>
-						{showColorPicker && <ColorPicker value={color} onSelect={setColor} />}
-					</Field>
+					<Section>
+						<Caption $dark={dark}>Support Color</Caption>
+						<ColorPicker value={color} onSelect={setColor} />
+					</Section>
+				</Main>
 
-					<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-						<SaveLabel>Save</SaveLabel>
-					</SaveButton>
-				</>
-			)}
+				<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
+					<SaveLabel $dark={dark}>Create</SaveLabel>
+				</SaveButton>
 		</Container>
 	);
 };

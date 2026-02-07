@@ -13,16 +13,12 @@ const useAddService = () => {
 	const [search, setSearch] = useState('');
 	const [mode, setMode] = useState<'search' | 'create'>('search');
 
-	// Custom creation fields
 	const [title, setTitle] = useState('');
-	const [color, setColor] = useState('#ff9f0a');
+	const [color, setColor] = useState('#f3a683');
 	const [selectedCategoryId, setSelectedCategoryId] = useState('');
-	const [showColorPicker, setShowColorPicker] = useState(false);
 
-	// Load categories for picker
 	const { data: categories } = useLiveQuery(db.select().from(categoriesTable));
 
-	// Search existing services
 	const pattern = `%${search}%`;
 	const { data: searchResults } = useLiveQuery(
 		db
@@ -65,15 +61,12 @@ const useAddService = () => {
 		search,
 		setSearch,
 		mode,
-		setMode,
 		title,
 		setTitle,
 		color,
 		setColor,
 		selectedCategoryId,
 		setSelectedCategoryId,
-		showColorPicker,
-		setShowColorPicker,
 		categories: categories ?? [],
 		filteredResults,
 		isValid,
