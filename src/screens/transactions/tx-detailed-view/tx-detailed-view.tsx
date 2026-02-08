@@ -40,7 +40,7 @@ const DetailedView = (transaction: Props) => {
 	const { t } = useTranslation();
 	const explainCurrency = useSettingsValue<boolean>('explain_currency');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
-	const { r, formatCurrency } = useRates(transaction.date, transaction.isPhantom, transaction.currency_code);
+	const { r, formatCurrency, hasRate } = useRates(transaction.date, transaction.isPhantom, transaction.currency_code);
 
 	const basePrice = transaction.price / (transaction.denominator || 1);
 	const formattedBasePrice = formatCurrency(basePrice, transaction.currency_code);
@@ -73,12 +73,12 @@ const DetailedView = (transaction: Props) => {
 			</AccentRail>
 
 			<Content>
-				<PriceSection $withConversion={transaction.currency_code !== recalcCurrencyCode}>
+				<PriceSection $withConversion={transaction.currency_code !== recalcCurrencyCode && hasRate}>
 					<PriceMain numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
 						{formattedBasePrice}
 					</PriceMain>
 
-					{transaction.currency_code !== recalcCurrencyCode && (
+					{transaction.currency_code !== recalcCurrencyCode && hasRate && (
 						<PriceConverted numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.5}>
 							≈&nbsp;{convertedPrice}
 						</PriceConverted>

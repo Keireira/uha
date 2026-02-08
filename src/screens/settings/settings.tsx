@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { path } from 'ramda';
 import i18n from '@src/i18n';
@@ -7,6 +7,8 @@ import { openSettings } from 'expo-linking';
 import { useTranslation } from 'react-i18next';
 import { useGetCurrenciesList, useNotifications } from './hooks';
 import { useScrollDirection, setSettingsValue, useSettingsValue } from '@hooks';
+import { backfillRates } from '@hooks/setup';
+import Toast from 'react-native-toast-message';
 
 import { Wrapper, List } from '@ui';
 import { AppLogoPicker } from '@elements';
@@ -38,6 +40,29 @@ const SettingsScreen = () => {
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 
 	const explainCurrency = useSettingsValue<boolean>('explain_currency');
+
+	const [isRefreshing, setIsRefreshing] = useState(false);
+
+	const handleRefreshRates = useCallback(async () => {
+		setIsRefreshing(true);
+
+		try {
+			await backfillRates();
+
+			Toast.show({
+				type: 'success',
+				text1: t('rates.success_title')
+			});
+		} catch {
+			Toast.show({
+				type: 'error',
+				text1: t('rates.error_title'),
+				text2: t('rates.error_description')
+			});
+		} finally {
+			setIsRefreshing(false);
+		}
+	}, [t]);
 
 	const changeExplainCurrency = (isEnabled: boolean) => {
 		setSettingsValue('explain_currency', isEnabled);
@@ -112,6 +137,15 @@ const SettingsScreen = () => {
 						type: 'switch',
 						value: explainCurrency,
 						onPress: changeExplainCurrency
+					}
+				},
+				{
+					id: 'currency-refresh-rates',
+					title: t('settings.currencies.refresh_rates'),
+					accessory: {
+						type: 'plain-action',
+						trigger: isRefreshing ? '...' : t('settings.currencies.refresh_action'),
+						onPress: handleRefreshRates
 					}
 				}
 			]

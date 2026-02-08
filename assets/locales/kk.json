@@ -188,7 +188,9 @@
       "southeast_asia": "Оңтүстік-Шығыс Азия",
       "oceania": "Океания",
       "other": "Өзгелер",
-      "cryptocurrency": "Криптовалюталар"
+      "cryptocurrency": "Криптовалюталар",
+      "refresh_rates": "Валюта бағамдары",
+      "refresh_action": "Жаңарту"
     },
     "about": {
       "header": "Қолданба туралы",
@@ -250,6 +252,11 @@
       "calendar": "Күнтізбе",
       "subscriptions": "Жазылымдар"
     }
+  },
+  "rates": {
+    "error_title": "Бағамдарды жаңарту сәтсіз",
+    "error_description": "Валюта айырбастау дәл болмауы мүмкін",
+    "success_title": "Бағамдар жаңартылды"
   },
   "calendar": {
     "total": "Барлығы"

@@ -24,11 +24,11 @@ const TransactionCard = ({
 	isPhantom
 }: TransactionProps) => {
 	const router = useRouter();
-	const { r, formatCurrency } = useRates(new Date(date), isPhantom, currency_code);
+	const { r, formatCurrency, hasRate } = useRates(new Date(date), isPhantom, currency_code);
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
-	const withConversion = currency_code !== recalcCurrencyCode;
+	const withConversion = currency_code !== recalcCurrencyCode && hasRate;
 	const basePrice = price / (denominator || 1);
 	const formattedBasePrice = formatCurrency(basePrice, currency_code);
 	const convertedPrice = r(basePrice);

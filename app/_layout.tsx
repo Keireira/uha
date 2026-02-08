@@ -4,10 +4,12 @@ import appModel from '@models';
 import { useFonts } from 'expo-font';
 import { withFactory, useFactoryModel } from '@lib/effector';
 import * as SplashScreen from 'expo-splash-screen';
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
+import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack, useRootNavigationState } from 'expo-router';
 import { setNotificationHandler } from 'expo-notifications';
+
+import Toast from 'react-native-toast-message';
 
 import {
 	useSetupMocks,
@@ -21,6 +23,7 @@ import {
 import '@src/i18n';
 
 import { useGetTheme } from '@themes';
+import { toastConfig } from '@elements';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,6 +35,12 @@ setNotificationHandler({
 		shouldSetBadge: false
 	})
 });
+
+const AppToast = () => {
+	const insets = useSafeAreaInsets();
+
+	return <Toast config={toastConfig} topOffset={insets.top} />;
+};
 
 const LoadFinalStage = () => {
 	useBackfillRates();
@@ -72,6 +81,7 @@ const LoadFinalStage = () => {
 						}}
 					/>
 					</Stack>
+					<AppToast />
 				</ThemeProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>

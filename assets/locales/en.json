@@ -188,7 +188,9 @@
       "southeast_asia": "Southeast Asia",
       "oceania": "Oceania",
       "other": "Other",
-      "cryptocurrency": "Cryptocurrencies"
+      "cryptocurrency": "Cryptocurrencies",
+      "refresh_rates": "Exchange Rates",
+      "refresh_action": "Update"
     },
     "about": {
       "header": "About",
@@ -250,6 +252,11 @@
       "calendar": "Calendar",
       "subscriptions": "Subscriptions"
     }
+  },
+  "rates": {
+    "error_title": "Rates update failed",
+    "error_description": "Currency conversions may be inaccurate",
+    "success_title": "Rates updated"
   },
   "calendar": {
     "total": "Total"

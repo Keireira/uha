@@ -188,7 +188,9 @@
       "southeast_asia": "Юго-Восточная Азия",
       "oceania": "Океания",
       "other": "Иные",
-      "cryptocurrency": "Криптовалюты"
+      "cryptocurrency": "Криптовалюты",
+      "refresh_rates": "Курсы валют",
+      "refresh_action": "Обновить"
     },
     "about": {
       "header": "О приложении",
@@ -250,6 +252,11 @@
       "calendar": "Календарь",
       "subscriptions": "Подписки"
     }
+  },
+  "rates": {
+    "error_title": "Ошибка обновления курсов",
+    "error_description": "Конвертации могут быть неточными",
+    "success_title": "Курсы обновлены"
   },
   "calendar": {
     "total": "Всего"

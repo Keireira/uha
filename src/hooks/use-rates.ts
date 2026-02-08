@@ -74,9 +74,12 @@ const useRates = (date: Date, isPhantom: boolean, txCurrencyCode: string) => {
 		return formatCurrency(price, recalc?.id);
 	};
 
+	const hasRate = rate !== undefined && usdRate !== undefined;
+
 	return {
 		r: getRates,
-		formatCurrency
+		formatCurrency,
+		hasRate
 	};
 };
 
