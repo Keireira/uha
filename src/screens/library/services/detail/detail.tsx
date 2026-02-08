@@ -1,13 +1,11 @@
 import React from 'react';
 
 import logos from '@assets/logos';
-import { LogoView } from '@ui';
+import { LogoView, Divider, AccentRail } from '@ui';
 import { useService } from './use-service';
 import { formatPrice, formatCycle } from '../../format';
 
 import Root, {
-	AccentRail,
-	AccentBlock,
 	Content,
 	HeroSection,
 	LogoWrapper,
@@ -15,7 +13,6 @@ import Root, {
 	CategoryBadge,
 	CategoryEmoji,
 	CategoryName,
-	Rule,
 	Label,
 	CountBadge,
 	LabelRow,
@@ -36,10 +33,12 @@ const ServiceDetail = () => {
 
 	return (
 		<Root>
-			<AccentRail>
-				<AccentBlock $color={service.color} $flex={3} />
-				<AccentBlock $color={service.category_color} $flex={2} />
-			</AccentRail>
+			<AccentRail
+				segments={[
+					{ color: service.color, flex: 3 },
+					{ color: service.category_color, flex: 2 }
+				]}
+			/>
 
 			<Content>
 				<HeroSection>
@@ -55,7 +54,7 @@ const ServiceDetail = () => {
 					</CategoryBadge>
 				</HeroSection>
 
-				<Rule />
+				<Divider />
 
 				<LabelRow>
 					<Label>SUBSCRIPTIONS</Label>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import logos from '@assets/logos';
-import { LogoView } from '@ui';
+import { LogoView, Divider } from '@ui';
 import { useCategory } from './use-category';
 import { formatPrice, formatCycle } from '../../format';
 
@@ -11,7 +11,6 @@ import Root, {
 	HeroGlass,
 	HeroEmoji,
 	HeroTitle,
-	Rule,
 	Label,
 	CountBadge,
 	LabelRow,
@@ -39,7 +38,7 @@ const CategoryDetail = () => {
 				<HeroTitle>{category.title}</HeroTitle>
 			</HeroSection>
 
-			<Rule />
+			<Divider />
 
 			<LabelRow>
 				<Label>SUBSCRIPTIONS</Label>

@@ -222,7 +222,7 @@
       "not_found": "Transaction not found",
       "category": "Category",
       "currency": "Currency",
-      "payment": "Payment",
+      "payment": "Payment method",
       "notes": "Notes",
       "notes_placeholder": "Tap to add a comment"
     },

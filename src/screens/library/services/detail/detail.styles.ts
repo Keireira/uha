@@ -1,23 +1,9 @@
 import styled from 'styled-components/native';
 import { BaseText } from '@ui';
 
-/* Split rail — two color blocks with a gap */
-export const AccentRail = styled.View`
-	width: 6px;
-	gap: 3px;
-`;
-
-export const AccentBlock = styled.View<{ $color?: string; $flex?: number }>`
-	flex: ${({ $flex }) => $flex ?? 1};
-	border-radius: 3px;
-	background-color: ${({ $color, theme }) => $color || theme.accent.primary};
-	opacity: 0.85;
-`;
-
 export const Content = styled.View`
 	flex: 1;
 	flex-direction: column;
-	padding-left: 24px;
 	padding-vertical: 20px;
 `;
 
@@ -56,14 +42,6 @@ export const CategoryName = styled(BaseText)`
 	font-size: 14px;
 	font-weight: 400;
 	color: ${({ theme }) => theme.text.secondary};
-`;
-
-export const Rule = styled.View`
-	height: 1px;
-	width: 100%;
-	background-color: ${({ theme }) => theme.border.default};
-	opacity: 0.25;
-	margin-vertical: 24px;
 `;
 
 export const Label = styled(BaseText)`

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import logos from '@assets/logos';
-import { LogoView } from '@ui';
+import { LogoView, Divider } from '@ui';
 import { usePayment } from './use-payment';
 import { formatPrice, formatCycle } from '../../format';
 
@@ -15,7 +15,6 @@ import Root, {
 	MetaGrid,
 	MetaItem,
 	MetaValue,
-	Rule,
 	Label,
 	CountBadge,
 	LabelRow,
@@ -46,7 +45,7 @@ const PaymentDetail = () => {
 				{payment.comment ? <HeroComment>{payment.comment}</HeroComment> : null}
 			</HeroSection>
 
-			<Rule />
+			<Divider />
 
 			<MetaGrid>
 				<MetaItem>
@@ -55,7 +54,7 @@ const PaymentDetail = () => {
 				</MetaItem>
 			</MetaGrid>
 
-			<Rule />
+			<Divider />
 
 			<LabelRow>
 				<Label>SUBSCRIPTIONS</Label>

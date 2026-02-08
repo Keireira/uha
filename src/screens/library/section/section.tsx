@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
 
-import Root, { HeaderLink, Title, Rule } from './section.styles';
+import { Divider } from '@ui';
+import Root, { HeaderLink, Title } from './section.styles';
 
 import type { Props } from './section.d';
 
@@ -18,7 +19,8 @@ const Section = ({ children, title, to }: Props) => {
 		<Root>
 			<HeaderLink hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={navigateTo}>
 				<Title>{title}</Title>
-				<Rule />
+
+				<Divider gap={0} />
 			</HeaderLink>
 
 			{children}
