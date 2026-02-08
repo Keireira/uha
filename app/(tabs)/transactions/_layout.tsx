@@ -40,6 +40,22 @@ const Layout = () => {
 					}
 				}}
 			/>
+
+			<Stack.Screen
+				name="analytics"
+				options={{
+					gestureEnabled: true,
+					presentation: 'formSheet',
+					sheetAllowedDetents: [0.7, 0.92],
+					sheetLargestUndimmedDetentIndex: 'none',
+					sheetGrabberVisible: true,
+					sheetCornerRadius: -1,
+					animation: 'slide_from_bottom',
+					contentStyle: {
+						backgroundColor: theme.background.secondary
+					}
+				}}
+			/>
 		</Stack>
 	);
 };

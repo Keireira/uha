@@ -6,4 +6,5 @@ export type Props = {
 	formattedDate: string;
 	categories: CategoryT[];
 	isDisabled?: boolean;
+	onPress?: () => void;
 };
