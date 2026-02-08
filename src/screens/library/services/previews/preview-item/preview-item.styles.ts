@@ -1,34 +1,31 @@
 import styled from 'styled-components/native';
-
+import { GlassView } from 'expo-glass-effect';
 import { Text } from '@ui';
-import { LinearGradient } from 'expo-linear-gradient';
 
-export const Gradient = styled(LinearGradient)`
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-`;
-
-export const Title = styled(Text)`
-	font-size: 16px;
-	line-height: 20px;
+export const Title = styled(Text).attrs({
+	numberOfLines: 2
+})`
+	font-size: 12px;
+	font-weight: 600;
 	text-align: center;
-	font-weight: 400;
-	text-shadow: 0 0 4px white;
+	letter-spacing: 0.3px;
+	color: ${({ theme }) => theme.text.primary};
 `;
 
-export default styled.Pressable<{ $color: string }>`
-	position: relative;
+export const LogoGlass = styled(GlassView)`
+	width: 56px;
+	height: 56px;
+	border-radius: 16px;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+`;
+
+export default styled.Pressable`
 	display: flex;
-	width: 120px;
 	flex-direction: column;
-	gap: 18px;
+	gap: 10px;
 	align-items: center;
 	justify-content: flex-start;
-	background-color: #fff;
-	padding: 18px;
-	border-radius: 12px;
-	overflow: hidden;
+	padding: 10px 8px;
 `;

@@ -27,7 +27,7 @@ const renderCategoryChips = (categories: CategoryT[], total: Props['total'], cla
 	return categoryChips;
 };
 
-const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: Props) => {
+const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled, onPress }: Props) => {
 	const { t } = useTranslation();
 	const { txViewMode } = useSearchParams();
 	const animations = useSummaryAnimations();
@@ -40,7 +40,7 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled }: 
 	]);
 
 	return (
-		<Root style={animations.summary} $isDisabled={isDisabled}>
+		<Root style={animations.summary} $isDisabled={isDisabled} onTouchEnd={onPress}>
 			<Text $bold>
 				{total > 0 && currency
 					? total.toLocaleString(currency.intl_locale, {

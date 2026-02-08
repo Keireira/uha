@@ -3,8 +3,8 @@ import { ScrollView } from 'react-native';
 
 export default styled(ScrollView).attrs({
 	contentContainerStyle: {
-		gap: 48
+		gap: 24
 	}
 })`
-	padding-horizontal: 16px;
+	padding-horizontal: 20px;
 `;

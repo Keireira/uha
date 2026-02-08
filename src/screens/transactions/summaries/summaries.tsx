@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { isSameMonth } from 'date-fns';
+import { useRouter } from 'expo-router';
 
 import { useSearchParams } from '@hooks';
 import { useDay, useYear, useMonth, useSummariesQuery, useGetLastKnownRates } from './hooks';
@@ -8,6 +9,7 @@ import Root from './summaries.styles';
 import { SummaryBlock } from './components';
 
 const Summaries = () => {
+	const router = useRouter();
 	const { txViewMode } = useSearchParams();
 
 	const summaryTxs = useSummariesQuery();
@@ -21,6 +23,13 @@ const Summaries = () => {
 	const year = useYear(summaryTxs, lastKnownRates);
 	const month = useMonth(summaryTxs, lastKnownRates);
 
+	const openAnalytics = useCallback(
+		(clavis: string) => {
+			router.push({ pathname: '/(tabs)/transactions/analytics', params: { clavis } });
+		},
+		[router]
+	);
+
 	return (
 		<Root>
 			{txViewMode === 'calendar' && (
@@ -30,6 +39,7 @@ const Summaries = () => {
 					formattedDate={day.formattedDate}
 					categories={day.categories}
 					isDisabled={!isSameMonth(day.rawDate, month.rawDate)}
+					onPress={() => openAnalytics('day')}
 				/>
 			)}
 
@@ -38,9 +48,16 @@ const Summaries = () => {
 				total={month.total}
 				formattedDate={month.formattedDate}
 				categories={month.categories}
+				onPress={() => openAnalytics('month')}
 			/>
 
-			<SummaryBlock clavis="year" total={year.total} formattedDate={year.formattedDate} categories={year.categories} />
+			<SummaryBlock
+				clavis="year"
+				total={year.total}
+				formattedDate={year.formattedDate}
+				categories={year.categories}
+				onPress={() => openAnalytics('year')}
+			/>
 		</Root>
 	);
 };

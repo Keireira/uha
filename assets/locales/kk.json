@@ -188,7 +188,9 @@
       "southeast_asia": "Оңтүстік-Шығыс Азия",
       "oceania": "Океания",
       "other": "Өзгелер",
-      "cryptocurrency": "Криптовалюталар"
+      "cryptocurrency": "Криптовалюталар",
+      "refresh_rates": "Валюта бағамдары",
+      "refresh_action": "Жаңарту"
     },
     "about": {
       "header": "Қолданба туралы",
@@ -225,11 +227,21 @@
       "notes_placeholder": "Жазба қосу үшін басыңыз"
     },
     "filters": {
+      "title": "Сүзгілер",
       "category": "Санат бойынша",
       "service": "Қызмет бойынша",
       "tender": "Төлем тәсілі бойынша",
       "currency": "Негізгі валюта бойынша",
-      "clear": "Сүзгілерді тазалау"
+      "clear": "Тазалау",
+      "empty": "Элементтер жоқ",
+      "active": "Белсенді",
+      "refine_by": "Бойынша",
+      "tabs": {
+        "category": "Санат",
+        "service": "Қызмет",
+        "tender": "Төлем",
+        "currency": "Валюта"
+      }
     },
     "time_mode": {
       "future": "Алдағы",
@@ -240,6 +252,11 @@
       "calendar": "Күнтізбе",
       "subscriptions": "Жазылымдар"
     }
+  },
+  "rates": {
+    "error_title": "Бағамдарды жаңарту сәтсіз",
+    "error_description": "Валюта айырбастау дәл болмауы мүмкін",
+    "success_title": "Бағамдар жаңартылды"
   },
   "calendar": {
     "total": "Барлығы"

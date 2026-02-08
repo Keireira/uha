@@ -1,16 +1,15 @@
 import styled from 'styled-components/native';
 import { BaseText } from '@ui';
 
-/* Accent Rail */
+/* Split rail — two color blocks with a gap */
 export const AccentRail = styled.View`
 	width: 6px;
-	border-radius: 3px;
-	overflow: hidden;
-	background-color: ${({ theme }) => theme.static.white};
+	gap: 3px;
 `;
 
-export const AccentSegment = styled.View<{ $color?: string }>`
-	flex: 1;
+export const AccentSegment = styled.View<{ $color?: string; $flex?: number }>`
+	flex: ${({ $flex }) => $flex ?? 1};
+	border-radius: 3px;
 	background-color: ${({ $color, theme }) => $color || theme.accent.primary};
 	opacity: 0.85;
 `;

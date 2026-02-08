@@ -188,7 +188,9 @@
       "southeast_asia": "Southeast Asia",
       "oceania": "Oceania",
       "other": "Other",
-      "cryptocurrency": "Cryptocurrencies"
+      "cryptocurrency": "Cryptocurrencies",
+      "refresh_rates": "Exchange Rates",
+      "refresh_action": "Update"
     },
     "about": {
       "header": "About",
@@ -225,11 +227,21 @@
       "notes_placeholder": "Tap to add a comment"
     },
     "filters": {
+      "title": "Filters",
       "category": "By Category",
       "service": "By Service",
       "tender": "By Tender",
       "currency": "By Base Currency",
-      "clear": "Clear Filters"
+      "clear": "Clear",
+      "empty": "No items available",
+      "active": "Active",
+      "refine_by": "Refine by",
+      "tabs": {
+        "category": "Category",
+        "service": "Service",
+        "tender": "Tender",
+        "currency": "Currency"
+      }
     },
     "time_mode": {
       "future": "Upcoming",
@@ -240,6 +252,11 @@
       "calendar": "Calendar",
       "subscriptions": "Subscriptions"
     }
+  },
+  "rates": {
+    "error_title": "Rates update failed",
+    "error_description": "Currency conversions may be inaccurate",
+    "success_title": "Rates updated"
   },
   "calendar": {
     "total": "Total"

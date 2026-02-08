@@ -21,6 +21,16 @@ export const FilterBtn = styled.Pressable`
 	padding-horizontal: 12px;
 `;
 
+export const ActiveDot = styled.View`
+	position: absolute;
+	top: 6px;
+	right: 10px;
+	width: 7px;
+	height: 7px;
+	border-radius: 4px;
+	background-color: ${({ theme }) => theme.accent.primary};
+`;
+
 export default styled.View`
 	display: flex;
 	flex-direction: row;

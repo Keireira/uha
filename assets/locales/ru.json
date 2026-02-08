@@ -188,7 +188,9 @@
       "southeast_asia": "Юго-Восточная Азия",
       "oceania": "Океания",
       "other": "Иные",
-      "cryptocurrency": "Криптовалюты"
+      "cryptocurrency": "Криптовалюты",
+      "refresh_rates": "Курсы валют",
+      "refresh_action": "Обновить"
     },
     "about": {
       "header": "О приложении",
@@ -225,11 +227,21 @@
       "notes_placeholder": "Добавить заметку"
     },
     "filters": {
+      "title": "Фильтры",
       "category": "По категории",
       "service": "По сервису",
       "tender": "По способу оплаты",
       "currency": "По базовой валюту",
-      "clear": "Сбросить фильтры"
+      "clear": "Сбросить",
+      "empty": "Нет доступных элементов",
+      "active": "Активные",
+      "refine_by": "Уточнить по",
+      "tabs": {
+        "category": "Категория",
+        "service": "Сервис",
+        "tender": "Оплата",
+        "currency": "Валюта"
+      }
     },
     "time_mode": {
       "future": "Предстоящие",
@@ -240,6 +252,11 @@
       "calendar": "Календарь",
       "subscriptions": "Подписки"
     }
+  },
+  "rates": {
+    "error_title": "Ошибка обновления курсов",
+    "error_description": "Конвертации могут быть неточными",
+    "success_title": "Курсы обновлены"
   },
   "calendar": {
     "total": "Всего"

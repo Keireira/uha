@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useTheme } from 'styled-components/native';
 
 import db from '@db';
 import { asc, like, eq } from 'drizzle-orm';
@@ -9,14 +10,24 @@ import { servicesTable, categoriesTable } from '@db/schema';
 import { LogoView } from '@ui';
 import logos from '@assets/logos';
 import { ArrowLeftIcon } from '@ui/icons';
-import Root, { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, Icon } from './list.styles';
+import Root, {
+	ServiceRoot,
+	Title,
+	Header,
+	HeaderTitle,
+	Subtitle,
+	Description,
+	Icon,
+	SectionLetter
+} from './list.styles';
 
 import type { Props } from './list.d';
 
-const CategoriesListScreen = ({ search }: Props) => {
+const ServicesListScreen = ({ search }: Props) => {
 	const router = useRouter();
+	const theme = useTheme();
 
-	const { data: services } = useLiveQuery(
+	const { data } = useLiveQuery(
 		db
 			.select()
 			.from(servicesTable)
@@ -33,30 +44,40 @@ const CategoriesListScreen = ({ search }: Props) => {
 	return (
 		<Root>
 			<Header hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={navigateTo}>
-				<ArrowLeftIcon width={18} height={18} color="#333" />
-
+				<ArrowLeftIcon width={14} height={14} color={theme.text.tertiary} />
 				<HeaderTitle>Library</HeaderTitle>
 			</Header>
 
-			{services.map(({ categories, services }) => {
+			{data.map((row, index) => {
+				const { services, categories } = row;
 				const color = services.color || categories?.color || '#333333';
 				const logoUrl = services.slug ? logos[services.slug as keyof typeof logos] : null;
+				const letter = services.title.charAt(0).toUpperCase();
+				const prev = index > 0 ? data[index - 1].services.title.charAt(0).toUpperCase() : '';
 
 				return (
-					<ServiceRoot key={services.id}>
-						<Icon $color={color}>
-							<LogoView name={services.title} logoId={logoUrl} color={color} size={48} />
-						</Icon>
+					<React.Fragment key={services.id}>
+						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
 
-						<Description>
-							<Title $withComment={Boolean(categories?.title)}>{services.title}</Title>
-							{categories?.title && <Subtitle>{categories.title}</Subtitle>}
-						</Description>
-					</ServiceRoot>
+						<ServiceRoot
+							onPress={() =>
+								router.push({ pathname: '/(tabs)/library/[id]', params: { id: services.id, type: 'service' } })
+							}
+						>
+							<Icon $color={color}>
+								<LogoView name={services.title} logoId={logoUrl} color={color} size={36} />
+							</Icon>
+
+							<Description>
+								<Title $withComment={Boolean(categories?.title)}>{services.title}</Title>
+								{categories?.title && <Subtitle>{categories.title}</Subtitle>}
+							</Description>
+						</ServiceRoot>
+					</React.Fragment>
 				);
 			})}
 		</Root>
 	);
 };
 
-export default CategoriesListScreen;
+export default ServicesListScreen;

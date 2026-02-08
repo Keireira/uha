@@ -4,10 +4,10 @@ import Root, { IconWrapper, IconText, Title } from './preview-item.styles';
 
 import type { PropsT } from './preview-item.d';
 
-const PreviewItem = ({ title, emoji, color }: PropsT) => {
+const PreviewItem = ({ title, emoji, color, onPress }: PropsT) => {
 	return (
-		<Root $color={color}>
-			<IconWrapper>
+		<Root onPress={onPress}>
+			<IconWrapper tintColor={color}>
 				<IconText>{emoji}</IconText>
 			</IconWrapper>
 

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useWindowDimensions } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import db from '@db';
 import { asc, like } from 'drizzle-orm';
@@ -6,23 +8,26 @@ import { servicesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import PreviewItem from './preview-item';
-import Section from '@screens/library/section';
-import Root, { SnapMark } from './previews.styles';
-import { ToAll, NoItems, useLength } from '@screens/library/shared';
+import Root, { GridItem, SectionHeader, SectionLetter, SectionRule, EmptyText } from './previews.styles';
 
 import type { Props } from './previews.d';
 
-const Previews = ({ search, setFound }: Props) => {
-	const length = useLength(servicesTable);
+const COLUMNS = 3;
+const GAP = 8;
+const PADDING = 20;
+
+const Previews = ({ search }: Props) => {
+	const router = useRouter();
+	const { width: screenWidth } = useWindowDimensions();
 	const [canRender, setCanRender] = useState(false);
+	const itemWidth = (screenWidth - PADDING * 2 - GAP * (COLUMNS - 1)) / COLUMNS;
 
 	const { data: services } = useLiveQuery(
 		db
 			.select()
 			.from(servicesTable)
 			.where(like(servicesTable.title, `%${search.trim()}%`))
-			.orderBy(asc(servicesTable.title))
-			.limit(6),
+			.orderBy(asc(servicesTable.title)),
 		[search]
 	);
 
@@ -34,29 +39,38 @@ const Previews = ({ search, setFound }: Props) => {
 		return () => clearTimeout(timeout);
 	}, []);
 
-	useEffect(() => {
-		setFound(services.length);
-	}, [setFound, services.length]);
-
-	// For search results only
-	if (!services.length && search.length > 0) {
-		return null;
+	if (!services.length) {
+		return <EmptyText>No services</EmptyText>;
 	}
 
 	return (
-		<Section title="Services (apps)" to="/(tabs)/library/services-list">
-			<Root>
-				<SnapMark $left />
+		<Root>
+			{canRender &&
+				services.map((service, index) => {
+					const letter = service.title.charAt(0).toUpperCase();
+					const prev = index > 0 ? services[index - 1].title.charAt(0).toUpperCase() : '';
 
-				{!services.length && <NoItems title="No services" />}
+					return (
+						<React.Fragment key={service.id}>
+							{letter !== prev && (
+								<SectionHeader>
+									<SectionLetter>{letter}</SectionLetter>
+									<SectionRule />
+								</SectionHeader>
+							)}
 
-				{canRender && services.map((service) => <PreviewItem key={service.id} {...service} />)}
-
-				{canRender && services.length >= 1 && length > 6 && <ToAll to="/(tabs)/library/services-list" />}
-
-				<SnapMark $right />
-			</Root>
-		</Section>
+							<GridItem $width={itemWidth}>
+								<PreviewItem
+									{...service}
+									onPress={() =>
+										router.push({ pathname: '/(tabs)/library/[id]', params: { id: service.id, type: 'service' } })
+									}
+								/>
+							</GridItem>
+						</React.Fragment>
+					);
+				})}
+		</Root>
 	);
 };
 
