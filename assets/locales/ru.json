@@ -222,9 +222,9 @@
       "not_found": "Транзакция не найдена",
       "category": "Категория",
       "currency": "Валюта",
-      "payment": "Оплата",
+      "payment": "Метод оплаты",
       "notes": "Заметки",
-      "notes_placeholder": "Добавить заметку"
+      "notes_placeholder": "Нажмите, чтобы добавить заметку"
     },
     "filters": {
       "title": "Фильтры",

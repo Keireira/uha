@@ -10,13 +10,6 @@ export const Title = styled(Text)`
 	color: ${({ theme }) => theme.text.tertiary};
 `;
 
-export const Rule = styled.View`
-	flex: 1;
-	height: 1px;
-	background-color: ${({ theme }) => theme.border.default};
-	opacity: 0.3;
-`;
-
 export const HeaderLink = styled.Pressable`
 	flex-direction: row;
 	align-items: center;

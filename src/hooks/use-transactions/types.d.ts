@@ -1,4 +1,11 @@
-import { subscriptionsTable, transactionsTable, currenciesTable, servicesTable, categoriesTable, tendersTable } from '@db/schema';
+import {
+	subscriptionsTable,
+	transactionsTable,
+	currenciesTable,
+	servicesTable,
+	categoriesTable,
+	tendersTable
+} from '@db/schema';
 
 export type TransactionT = typeof transactionsTable.$inferSelect;
 export type SubscriptionT = typeof subscriptionsTable.$inferSelect;

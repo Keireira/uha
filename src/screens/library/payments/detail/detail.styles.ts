@@ -65,14 +65,6 @@ export const MetaValue = styled(BaseText)`
 	color: ${({ theme }) => theme.text.primary};
 `;
 
-export const Rule = styled.View`
-	height: 1px;
-	width: 100%;
-	background-color: ${({ theme }) => theme.border.default};
-	opacity: 0.25;
-	margin-vertical: 24px;
-`;
-
 export const Label = styled(BaseText)`
 	font-size: 11px;
 	font-weight: 700;
