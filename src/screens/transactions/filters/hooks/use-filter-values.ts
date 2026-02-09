@@ -4,7 +4,7 @@ import db from '@db';
 import { eq, isNull, inArray } from 'drizzle-orm';
 import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
 
-import type { ActiveEntryT } from '../tx-header.d';
+import type { ActiveEntryT } from '../filters.d';
 
 const useFilterValues = () => {
 	// Services — with category title as subtitle

@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components/native';
 import { SymbolView } from 'expo-symbols';
 
 import { useAppModel } from '@models';
-import { useFilterValues, useEligibleIds, useAutoTimeMode } from '../../hooks';
+import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
 import Root, {
 	Header,
@@ -39,9 +39,9 @@ import Root, {
 	EligibilityDivider,
 	EmptyState,
 	EmptyText
-} from './filter-sheet.styles';
+} from './filters.styles';
 
-import type { FilterTabT, FilterEntryT } from './filter-sheet.d';
+import type { FilterTabT, FilterEntryT } from './filters.d';
 
 const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
 
@@ -104,12 +104,27 @@ const FilterSheet = () => {
 			const { title, subtitle } = resolveTitle(activeTab, entry);
 			const isSelected = activeIds.has(entry.id);
 			const isEligible = !hasOtherFilters || eligible.has(entry.id);
-			const isImplied = activeTab !== 'service' && !isSelected && hasOtherFilters && eligible.has(entry.id);
-			const enriched: FilterEntryT = { id: entry.id, title, subtitle, isSelected, isEligible, isImplied };
+			const isImplied =
+				activeTab === 'service' && activeIds.size > 0
+					? false
+					: !isSelected && hasOtherFilters && eligible.has(entry.id);
 
-			if (isSelected) selected.push(enriched);
-			else if (isEligible) unselectedEligible.push(enriched);
-			else unselectedIneligible.push(enriched);
+			const enriched: FilterEntryT = {
+				id: entry.id,
+				title,
+				subtitle,
+				isSelected,
+				isEligible,
+				isImplied
+			};
+
+			if (isSelected) {
+				selected.push(enriched);
+			} else if (isEligible) {
+				unselectedEligible.push(enriched);
+			} else {
+				unselectedIneligible.push(enriched);
+			}
 		}
 
 		return [...selected, ...unselectedEligible, ...unselectedIneligible];

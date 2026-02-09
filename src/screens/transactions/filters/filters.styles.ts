@@ -6,7 +6,6 @@ export const Header = styled.View`
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	padding-horizontal: 24px;
 	margin-bottom: 12px;
 `;
 
@@ -19,7 +18,6 @@ export const TitleRow = styled.View`
 export const AccentRule = styled.View`
 	height: 2px;
 	background-color: ${({ theme }) => theme.accent.primary};
-	margin-horizontal: 24px;
 	margin-bottom: 20px;
 	border-radius: 1px;
 	opacity: 0.3;
@@ -61,7 +59,6 @@ export const ClearButtonText = styled(Text)`
 `;
 
 export const TimeModeGlassGroup = styled(GlassContainer)`
-	margin-horizontal: 24px;
 	margin-bottom: 20px;
 `;
 
@@ -92,7 +89,6 @@ export const TabBarRow = styled.ScrollView.attrs({
 	horizontal: true,
 	showsHorizontalScrollIndicator: false,
 	contentContainerStyle: {
-		paddingHorizontal: 24,
 		gap: 6
 	}
 })`
@@ -120,9 +116,7 @@ export const TabLabel = styled(Text)<{ $active: boolean }>`
 	letter-spacing: 0.2px;
 `;
 
-export const ItemsSection = styled.View`
-	padding-horizontal: 24px;
-`;
+export const ItemsSection = styled.View``;
 
 export const ItemPressable = styled.Pressable`
 	flex-direction: row;
@@ -197,9 +191,13 @@ export const EmptyText = styled(Text)`
 `;
 
 export default styled.ScrollView.attrs({
+	automaticallyAdjustKeyboardInsets: true,
+	keyboardShouldPersistTaps: 'handled',
 	contentContainerStyle: {
-		paddingTop: 20,
-		paddingBottom: 40
+		paddingTop: 24,
+		paddingRight: 24,
+		paddingBottom: 24,
+		paddingLeft: 24
 	}
 })`
 	flex: 1;

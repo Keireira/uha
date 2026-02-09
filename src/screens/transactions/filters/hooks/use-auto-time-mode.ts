@@ -1,33 +1,27 @@
 import { useEffect, useRef } from 'react';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { startOfToday } from 'date-fns';
-import { and, gte, count } from 'drizzle-orm';
-import { eq } from 'drizzle-orm';
 
-import db from '@db';
 import {
-	transactionsTable,
-	subscriptionsTable,
+	tendersTable,
 	servicesTable,
-	categoriesTable,
 	currenciesTable,
-	tendersTable
+	categoriesTable,
+	transactionsTable,
+	subscriptionsTable
 } from '@db/schema';
+import db from '@db';
+import { and, gte, count, eq } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { buildWhereConditions } from '@hooks/use-transactions/db-queries/utils';
 
-import type { AppliedFilterT } from '@screens/transactions/models/types.d';
-import type { TimeModesT } from '@screens/transactions/models/types.d';
+import type { AppliedFilterT, TimeModesT } from '@screens/transactions/models/types.d';
 
 /**
  * When filters are active and time_mode is 'future', check if there
  * are zero upcoming transactions but some past ones. If so, auto-switch
  * to 'all' mode so the user sees results.
  */
-const useAutoTimeMode = (
-	filters: AppliedFilterT[],
-	timeMode: TimeModesT,
-	setTimeMode: (mode: TimeModesT) => void
-) => {
+const useAutoTimeMode = (filters: AppliedFilterT[], timeMode: TimeModesT, setTimeMode: (mode: TimeModesT) => void) => {
 	const hasFilters = filters.length > 0;
 	const today = startOfToday();
 

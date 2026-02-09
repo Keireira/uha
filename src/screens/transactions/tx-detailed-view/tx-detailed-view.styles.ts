@@ -14,7 +14,7 @@ export default styled.ScrollView.attrs({
 		alignItems: 'stretch',
 		paddingTop: 48,
 		paddingRight: 24,
-		paddingBottom: 36,
+		paddingBottom: 24,
 		paddingLeft: 20
 	}
 })`

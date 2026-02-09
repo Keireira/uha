@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import db from '@db';
-import { and, eq, isNull, inArray } from 'drizzle-orm';
+import { eq, isNull } from 'drizzle-orm';
 import { servicesTable, subscriptionsTable } from '@db/schema';
 
+import type { FilterTabT } from '../filters.d';
 import type { AppliedFilterT } from '@screens/transactions/models/types.d';
-import type { FilterTabT } from '../components/filter-sheet/filter-sheet.d';
 
 /**
  * Returns sets of eligible IDs for each filter tab, based on which
@@ -16,22 +16,10 @@ import type { FilterTabT } from '../components/filter-sheet/filter-sheet.d';
  * are only those whose category_id matches a subscription in that category.
  */
 const useEligibleIds = (filters: AppliedFilterT[]) => {
-	const categoryFilters = useMemo(
-		() => filters.filter((f) => f.type === 'category').map((f) => f.value),
-		[filters]
-	);
-	const serviceFilters = useMemo(
-		() => filters.filter((f) => f.type === 'service').map((f) => f.value),
-		[filters]
-	);
-	const tenderFilters = useMemo(
-		() => filters.filter((f) => f.type === 'tender').map((f) => f.value),
-		[filters]
-	);
-	const currencyFilters = useMemo(
-		() => filters.filter((f) => f.type === 'currency').map((f) => f.value),
-		[filters]
-	);
+	const categoryFilters = useMemo(() => filters.filter((f) => f.type === 'category').map((f) => f.value), [filters]);
+	const serviceFilters = useMemo(() => filters.filter((f) => f.type === 'service').map((f) => f.value), [filters]);
+	const tenderFilters = useMemo(() => filters.filter((f) => f.type === 'tender').map((f) => f.value), [filters]);
+	const currencyFilters = useMemo(() => filters.filter((f) => f.type === 'currency').map((f) => f.value), [filters]);
 
 	// Get all active subscriptions (non-cancelled)
 	const { data: subscriptions } = useLiveQuery(

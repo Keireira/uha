@@ -61,7 +61,7 @@ export const Label = styled(SmallText).attrs({
 	font-weight: 700;
 	letter-spacing: 2px;
 	text-transform: uppercase;
-	color: ${({ theme }) => theme.text.tertiary};
+	color: ${({ theme }) => (theme.tint === 'dark' ? theme.text.secondary : theme.text.tertiary)};
 `;
 
 export const MetaItem = styled.View`
