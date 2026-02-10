@@ -9,6 +9,7 @@ export const Content = styled.View`
 export default styled.ScrollView.attrs({
 	automaticallyAdjustKeyboardInsets: true,
 	keyboardShouldPersistTaps: 'handled',
+	showsVerticalScrollIndicator: false,
 	contentContainerStyle: {
 		flexDirection: 'row',
 		alignItems: 'stretch',

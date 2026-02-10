@@ -1,8 +1,10 @@
-import { inArray, and } from 'drizzle-orm';
-import { currenciesTable, servicesTable, tendersTable, categoriesTable } from '@db/schema';
+import { startOfToday } from 'date-fns';
+
+import { inArray, gte, and } from 'drizzle-orm';
+import { transactionsTable, currenciesTable, servicesTable, tendersTable, categoriesTable } from '@db/schema';
 
 import type { SQL } from 'drizzle-orm';
-import type { AppliedFilterT } from '@screens/transactions/models/types.d';
+import type { AppliedFilterT, TimeModesT } from '@screens/transactions/models/types.d';
 
 /* Master Filters */
 const filterTypeToIdColumn = {
@@ -32,4 +34,22 @@ export const buildWhereConditions = (filters: AppliedFilterT[]) => {
 	}
 
 	return conditions.length > 0 ? and(...conditions) : undefined;
+};
+
+export const timeModeClause = (timeMode: TimeModesT) => {
+	if (timeMode === 'future') {
+		const today = startOfToday();
+
+		return gte(transactionsTable.date, today.toISOString());
+	}
+
+	return undefined;
+};
+
+export const globalFiltersClause = (withFilters: boolean, filters: AppliedFilterT[]) => {
+	if (withFilters) {
+		return buildWhereConditions(filters);
+	}
+
+	return undefined;
 };

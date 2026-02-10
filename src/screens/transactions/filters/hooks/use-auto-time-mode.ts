@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { startOfToday } from 'date-fns';
+import { useRef, useEffect } from 'react';
+import { startOfToday, lightFormat } from 'date-fns';
 
 import {
 	tendersTable,
@@ -12,20 +12,19 @@ import {
 import db from '@db';
 import { and, gte, count, eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { buildWhereConditions } from '@hooks/use-transactions/db-queries/utils';
+import { buildWhereConditions } from '@hooks/use-transactions';
 
 import type { AppliedFilterT, TimeModesT } from '@screens/transactions/models/types.d';
 
 /**
  * When filters are active and time_mode is 'future', check if there
  * are zero upcoming transactions but some past ones. If so, auto-switch
- * to 'all' mode so the user sees results.
+ * to 'all' mode so the user can see results.
  */
 const useAutoTimeMode = (filters: AppliedFilterT[], timeMode: TimeModesT, setTimeMode: (mode: TimeModesT) => void) => {
 	const hasFilters = filters.length > 0;
 	const today = startOfToday();
 
-	// Count future transactions matching current filters
 	const { data: futureCount } = useLiveQuery(
 		db
 			.select({ value: count() })
@@ -35,11 +34,10 @@ const useAutoTimeMode = (filters: AppliedFilterT[], timeMode: TimeModesT, setTim
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.where(and(buildWhereConditions(filters), gte(transactionsTable.date, today.toISOString()))),
+			.where(and(buildWhereConditions(filters), gte(transactionsTable.date, lightFormat(today, 'yyyy-MM-dd')))),
 		[filters]
 	);
 
-	// Count all-time transactions matching current filters
 	const { data: allTimeCount } = useLiveQuery(
 		db
 			.select({ value: count() })

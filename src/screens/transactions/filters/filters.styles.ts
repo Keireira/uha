@@ -192,6 +192,7 @@ export const EmptyText = styled(Text)`
 
 export default styled.ScrollView.attrs({
 	automaticallyAdjustKeyboardInsets: true,
+	showsVerticalScrollIndicator: false,
 	keyboardShouldPersistTaps: 'handled',
 	contentContainerStyle: {
 		paddingTop: 24,
