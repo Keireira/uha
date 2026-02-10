@@ -46,6 +46,8 @@ import type { FilterTabT, FilterEntryT } from './filters.d';
 const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
 
 const FilterSheet = () => {
+	useAutoTimeMode();
+
 	const { t } = useTranslation();
 	const theme = useTheme();
 
@@ -53,9 +55,6 @@ const FilterSheet = () => {
 	const lensesStore = useUnit(lenses.$store);
 	const entries = useFilterValues();
 	const eligibleIds = useEligibleIds(lensesStore.filters);
-
-	/* Auto-switch to 'all' when filters have no future results but have past ones */
-	useAutoTimeMode(lensesStore.filters, lensesStore.time_mode, lenses.time_mode.set);
 
 	const [activeTab, setActiveTab] = useState<FilterTabT>('category');
 

@@ -1,12 +1,22 @@
 import { useMemo } from 'react';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import db from '@db';
 import { eq, isNull } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { servicesTable, subscriptionsTable } from '@db/schema';
 
 import type { FilterTabT } from '../filters.d';
-import type { AppliedFilterT } from '@screens/transactions/models/types.d';
+import type { FilterTypeT, AppliedFilterT } from '@screens/transactions/models/types.d';
+
+const noFilters = (filters: string[]) => !filters.length;
+
+const filterByType = (type: FilterTypeT) => (acc: string[], filter: AppliedFilterT) => {
+	if (filter.type === type) {
+		acc.push(filter.value);
+	}
+
+	return acc;
+};
 
 /**
  * Returns sets of eligible IDs for each filter tab, based on which
@@ -15,13 +25,19 @@ import type { AppliedFilterT } from '@screens/transactions/models/types.d';
  * E.g. if "Entertainment" category is selected, eligible services
  * are only those whose category_id matches a subscription in that category.
  */
-const useEligibleIds = (filters: AppliedFilterT[]) => {
-	const categoryFilters = useMemo(() => filters.filter((f) => f.type === 'category').map((f) => f.value), [filters]);
-	const serviceFilters = useMemo(() => filters.filter((f) => f.type === 'service').map((f) => f.value), [filters]);
-	const tenderFilters = useMemo(() => filters.filter((f) => f.type === 'tender').map((f) => f.value), [filters]);
-	const currencyFilters = useMemo(() => filters.filter((f) => f.type === 'currency').map((f) => f.value), [filters]);
+const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
+	const filters = useMemo(() => {
+		const result: Record<FilterTabT, string[]> = {
+			category: appliedFilters.reduce(filterByType('category'), [] as string[]),
+			service: appliedFilters.reduce(filterByType('service'), [] as string[]),
+			tender: appliedFilters.reduce(filterByType('tender'), [] as string[]),
+			currency: appliedFilters.reduce(filterByType('currency'), [] as string[])
+		};
 
-	// Get all active subscriptions (non-cancelled)
+		return result;
+	}, [appliedFilters]);
+
+	/* Get all active subscriptions */
 	const { data: subscriptions } = useLiveQuery(
 		db
 			.select({
@@ -43,40 +59,44 @@ const useEligibleIds = (filters: AppliedFilterT[]) => {
 			currency: new Set()
 		};
 
-		if (!subscriptions.length) return result;
-
-		const hasFilters = (arr: string[]) => arr.length > 0;
+		if (!subscriptions.length) {
+			return result;
+		}
 
 		for (const sub of subscriptions) {
-			// For each tab, check if the subscription matches ALL other tab filters
-			const matchesCategory = !hasFilters(categoryFilters) || categoryFilters.includes(sub.category_id);
-			const matchesService = !hasFilters(serviceFilters) || serviceFilters.includes(sub.service_id);
-			const matchesTender = !hasFilters(tenderFilters) || !sub.tender_id || tenderFilters.includes(sub.tender_id);
-			const matchesCurrency = !hasFilters(currencyFilters) || currencyFilters.includes(sub.currency_id);
+			/**
+			 * For each tab, check if the subscription matches all other tab filters
+			 * - noFilters: obv you will match sub if no filters has been applied
+			 * - tender_id: may be null, but we can check if it's included in the filters anyway, so '!' is needed
+			 */
+			const matchesCategory = noFilters(filters.category) || filters.category.includes(sub.category_id);
+			const matchesService = noFilters(filters.service) || filters.service.includes(sub.service_id);
+			const matchesTender = noFilters(filters.tender) || filters.tender.includes(sub.tender_id!);
+			const matchesCurrency = noFilters(filters.currency) || filters.currency.includes(sub.currency_id);
 
-			// Eligible for category tab: subscription matches service + tender + currency filters
+			/* Eligible for category tab: subscription matches 'service + tender + currency' filters */
 			if (matchesService && matchesTender && matchesCurrency) {
 				result.category.add(sub.category_id);
 			}
 
-			// Eligible for service tab: subscription matches category + tender + currency filters
+			/* Eligible for service tab: subscription matches 'category + tender + currency' filters */
 			if (matchesCategory && matchesTender && matchesCurrency) {
 				result.service.add(sub.service_id);
 			}
 
-			// Eligible for tender tab: subscription matches category + service + currency filters
+			/* Eligible for tender tab: subscription matches 'category + service + currency' filters */
 			if (sub.tender_id && matchesCategory && matchesService && matchesCurrency) {
 				result.tender.add(sub.tender_id);
 			}
 
-			// Eligible for currency tab: subscription matches category + service + tender filters
+			/* Eligible for currency tab: subscription matches 'category + service + tender' filters */
 			if (matchesCategory && matchesService && matchesTender) {
 				result.currency.add(sub.currency_id);
 			}
 		}
 
 		return result;
-	}, [subscriptions, categoryFilters, serviceFilters, tenderFilters, currencyFilters]);
+	}, [subscriptions, filters]);
 
 	return eligibleIds;
 };

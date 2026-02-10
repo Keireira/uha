@@ -62,7 +62,7 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 				tender_comment: tendersTable.comment
 			})
 			.from(transactionsTable)
-			/*
+			/**
 			 * !!! @NB for myself:
 			 *
 			 * `.innerJoin()` if we're sure we don't have null values

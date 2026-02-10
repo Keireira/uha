@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { useAppModel } from '@models';
 import useSearchParams from '../use-search-params';
@@ -8,8 +8,7 @@ const useTransactions = (debugLabel: string) => {
 	const { txViewMode } = useSearchParams();
 	const { tx_dates } = useAppModel();
 
-	const forcedTimeMode = useMemo(() => (txViewMode === 'calendar' ? 'all' : undefined), [txViewMode]);
-
+	const forcedTimeMode = txViewMode === 'calendar' ? 'all' : undefined;
 	const [minMonthDate, maxMonthDate] = useTxDatesRange(forcedTimeMode);
 	const transactions = useTransactionsQuery({
 		withFilters: true,

@@ -6,8 +6,32 @@ import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, te
 
 import type { ActiveEntryT } from '../filters.d';
 
+type CoalesceDataT = {
+	id: string;
+	title: string;
+	emoji?: string | null;
+	subtitle?: string | null;
+};
+
+const coalesce = (data: CoalesceDataT[]): ActiveEntryT[] => {
+	const result = data.map(({ id, title, subtitle, emoji }) => ({
+		id,
+		title: emoji ? `${emoji}  ${title}` : title,
+		subtitle: subtitle ?? undefined
+	}));
+
+	return result satisfies ActiveEntryT[];
+};
+
+type UseFilterValuesReturnT = {
+	services: ActiveEntryT[];
+	categories: ActiveEntryT[];
+	tenders: ActiveEntryT[];
+	currencies: ActiveEntryT[];
+};
+
 const useFilterValues = () => {
-	// Services — with category title as subtitle
+	/* Filtered Services */
 	const { data: services } = useLiveQuery(
 		db
 			.select({
@@ -28,7 +52,7 @@ const useFilterValues = () => {
 			)
 	);
 
-	// Categories — emoji is prepended to title inline
+	/* Filtered Categories */
 	const { data: categories } = useLiveQuery(
 		db
 			.selectDistinct({
@@ -49,12 +73,13 @@ const useFilterValues = () => {
 			)
 	);
 
-	// Tenders — with comment as subtitle
+	/* Filtered Tenders */
 	const { data: tenders } = useLiveQuery(
 		db
 			.selectDistinct({
 				id: tendersTable.id,
 				title: tendersTable.title,
+				emoji: tendersTable.emoji,
 				subtitle: tendersTable.comment
 			})
 			.from(tendersTable)
@@ -69,8 +94,11 @@ const useFilterValues = () => {
 			)
 	);
 
-	// Currencies — id is the code (e.g. "USD"), title is the code too
-	// The display name will be resolved via i18n in the component
+	/**
+	 * Filtered Currencies
+	 * - id is the code (e.g. "USD"), title is the code too btw
+	 * - display name will be resolved via i18n in the component
+	 */
 	const { data: currencies } = useLiveQuery(
 		db
 			.selectDistinct({
@@ -89,24 +117,12 @@ const useFilterValues = () => {
 			)
 	);
 
-	const coalesce = (data: { id: string; title: string; subtitle?: string | null }[]): ActiveEntryT[] =>
-		data.map(({ id, title, subtitle }) => ({
-			id,
-			title,
-			subtitle: subtitle ?? undefined
-		}));
-
-	const categoriesWithEmoji: ActiveEntryT[] = categories.map(({ id, title, emoji }) => ({
-		id,
-		title: emoji ? `${emoji}  ${title}` : title
-	}));
-
 	return {
 		services: coalesce(services),
-		categories: categoriesWithEmoji,
+		categories: coalesce(categories),
 		tenders: coalesce(tenders),
-		currencies: currencies satisfies ActiveEntryT[]
-	};
+		currencies: coalesce(currencies)
+	} satisfies UseFilterValuesReturnT;
 };
 
 export default useFilterValues;

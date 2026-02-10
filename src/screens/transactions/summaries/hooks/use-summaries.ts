@@ -44,7 +44,7 @@ const useSummariesQuery = (): ReturnT => {
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
 	const selectedDate = useUnit(tx_dates.selected.$value);
 
-	/*
+	/**
 	 * for the optimized chain of rerenders
 	 * focusedDate -> startOfMonth -> recalcMonthKey -> transactionsMonth
 	 * focusedDate -> startOfMonth -> recalcYearKey -> transactionsYear
