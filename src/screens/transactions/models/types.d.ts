@@ -1,6 +1,6 @@
 // LENSES | Start
 export type TimeModesT = 'all' | 'future';
-export type FilterTypeT = 'category' | 'service' | 'tender' | 'currency' | 'list';
+export type FilterTypeT = 'category' | 'service' | 'tender' | 'currency';
 
 export type AppliedFilterT = {
 	type: FilterTypeT;

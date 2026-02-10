@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useUnit } from 'effector-react';
-import { startOfToday, startOfMonth } from 'date-fns';
-import { eq, asc, gte, and, min, max } from 'drizzle-orm';
+import { eq, asc, and } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import {
@@ -14,81 +13,25 @@ import {
 } from '@db/schema';
 import db from '@db';
 import { useAppModel } from '@models';
-import { buildWhereConditions } from './utils';
+import { timeModeClause, globalFiltersClause } from './utils';
 
+import type { SQL } from 'drizzle-orm';
 import type { PreparedDbTxT } from '../types.d';
 import type { TimeModesT } from '@screens/transactions/models/types.d';
 
-type ReturnType = {
-	dbTxs: PreparedDbTxT[];
-	minMonthDate: Date | undefined;
-	maxMonthDate: Date | undefined;
+type UseTransactionsQueryParams = {
+	withFilters: boolean;
+	forcedTimeMode?: TimeModesT;
+	customWhere?: SQL;
 };
 
-const timeModeFilter = (timeMode: TimeModesT) => {
-	if (timeMode === 'future') {
-		const today = startOfToday();
-
-		return gte(transactionsTable.date, today.toISOString());
-	}
-
-	return undefined;
-};
-
-const useGetMinMonthDate = (timeMode: TimeModesT) => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
-
-	const { data: minDbTxsDate } = useLiveQuery(
-		db
-			.select({ minDate: min(transactionsTable.date) })
-			.from(transactionsTable)
-			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
-		[lensesStore.filters, timeMode]
-	);
-
-	const minDbTxsDateResult = useMemo(() => {
-		const dateTxt = minDbTxsDate?.[0]?.minDate;
-
-		return dateTxt ? startOfMonth(dateTxt) : undefined;
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [minDbTxsDate, timeMode]);
-
-	return minDbTxsDateResult;
-};
-
-const useGetMaxMonthDate = (timeMode: TimeModesT) => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
-
-	const { data: maxDbTxsDate } = useLiveQuery(
-		db
-			.select({ maxDate: max(transactionsTable.date) })
-			.from(transactionsTable)
-			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
-		[lensesStore.filters, timeMode]
-	);
-
-	const maxDbTxsDateResult = useMemo(() => {
-		const dateTxt = maxDbTxsDate?.[0]?.maxDate;
-
-		return dateTxt ? startOfMonth(dateTxt) : undefined;
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [maxDbTxsDate, timeMode]);
-
-	return maxDbTxsDateResult;
-};
-
-const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
+const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseTransactionsQueryParams) => {
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 
 	const timeMode = useMemo(() => {
 		return forcedTimeMode || lensesStore.time_mode;
 	}, [forcedTimeMode, lensesStore.time_mode]);
-
-	const minMonthDate = useGetMinMonthDate(timeMode);
-	const maxMonthDate = useGetMaxMonthDate(timeMode);
 
 	const { data: dbTxs } = useLiveQuery(
 		db
@@ -105,14 +48,21 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 				color: servicesTable.color,
 				date: transactionsTable.date,
 				isPhantom: transactionsTable.is_phantom,
+				comment: transactionsTable.comment,
 
 				/* category-related fields */
 				category_id: categoriesTable.id,
 				category_title: categoriesTable.title,
-				category_color: categoriesTable.color
+				category_color: categoriesTable.color,
+
+				/* tender-related fields */
+				tender_id: tendersTable.id,
+				tender_emoji: tendersTable.emoji,
+				tender_title: tendersTable.title,
+				tender_comment: tendersTable.comment
 			})
 			.from(transactionsTable)
-			/*
+			/**
 			 * !!! @NB for myself:
 			 *
 			 * `.innerJoin()` if we're sure we don't have null values
@@ -126,15 +76,11 @@ const useTransactionsQuery = (forcedTimeMode?: TimeModesT): ReturnType => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(and(buildWhereConditions(lensesStore.filters), timeModeFilter(timeMode))),
+			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode), customWhere)),
 		[lensesStore.filters, timeMode]
 	);
 
-	return {
-		dbTxs: dbTxs,
-		minMonthDate,
-		maxMonthDate
-	} satisfies ReturnType;
+	return dbTxs satisfies PreparedDbTxT[];
 };
 
 export default useTransactionsQuery;

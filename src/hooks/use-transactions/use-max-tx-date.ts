@@ -5,7 +5,7 @@ import { isAfter, isBefore, startOfToday, startOfTomorrow, addYears, endOfMonth 
 
 import type { PreparedSubscriptionT } from './types.d';
 
-/*
+/**
  * min horizon is 2 years,
  * max horizon is the end of a month of the most distant (latest) subscription
  */

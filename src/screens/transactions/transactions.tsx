@@ -16,7 +16,7 @@ const Transactions = () => {
 	const insets = useSafeAreaInsets();
 	const { txViewMode } = useSearchParams();
 	/* @TODO: Move to effector?? */
-	const { transactions } = useTransactions('Transactions');
+	const transactions = useTransactions('From Transactions');
 
 	const { view_mode } = useAppModel();
 	const calendarScale = useUnit(view_mode.calendar.$scale);

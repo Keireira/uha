@@ -9,12 +9,13 @@ export const Content = styled.View`
 export default styled.ScrollView.attrs({
 	automaticallyAdjustKeyboardInsets: true,
 	keyboardShouldPersistTaps: 'handled',
+	showsVerticalScrollIndicator: false,
 	contentContainerStyle: {
 		flexDirection: 'row',
 		alignItems: 'stretch',
 		paddingTop: 48,
 		paddingRight: 24,
-		paddingBottom: 36,
+		paddingBottom: 24,
 		paddingLeft: 20
 	}
 })`

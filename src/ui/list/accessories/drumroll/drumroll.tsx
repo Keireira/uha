@@ -15,7 +15,7 @@ const DrumrollAccessory = ({ actions, selectedIndex, trigger, onPress }: Accesso
 		<View>
 			<Host>
 				<BottomSheet isOpened={isOpened} onIsOpenedChange={setIsOpened}>
-					{/*
+					{/**
 					Without setting height of the child, BottomSheet does not work correctly:
 					The further down we scroll, the smaller in height BottomSheet became.
 					Definitely a bug in the alpha version of expo/ui

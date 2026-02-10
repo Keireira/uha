@@ -2,13 +2,18 @@ import { useEffect } from 'react';
 
 import { useAppModel } from '@models';
 import useSearchParams from '../use-search-params';
-import { useTransactionsQuery } from './db-queries';
+import { useTransactionsQuery, useTxDatesRange } from './db-queries';
 
 const useTransactions = (debugLabel: string) => {
-	const { tx_dates } = useAppModel();
 	const { txViewMode } = useSearchParams();
+	const { tx_dates } = useAppModel();
 
-	const { dbTxs, minMonthDate, maxMonthDate } = useTransactionsQuery(txViewMode === 'calendar' ? 'all' : undefined);
+	const forcedTimeMode = txViewMode === 'calendar' ? 'all' : undefined;
+	const [minMonthDate, maxMonthDate] = useTxDatesRange(forcedTimeMode);
+	const transactions = useTransactionsQuery({
+		withFilters: true,
+		forcedTimeMode
+	});
 
 	useEffect(() => {
 		/* We need that date for calendar view only for now */
@@ -24,10 +29,9 @@ const useTransactions = (debugLabel: string) => {
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [maxMonthDate]);
 
-	return {
-		transactions: dbTxs
-	};
+	return transactions;
 };
 
 export * from './types.d';
+export { useTransactionsQuery, buildWhereConditions } from './db-queries';
 export default useTransactions;

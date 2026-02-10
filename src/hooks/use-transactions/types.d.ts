@@ -40,7 +40,7 @@ export type PreparedDbTxT = {
 };
 
 export type PreparedSubscriptionT = SubscriptionT & {
-	/*
+	/**
 	 * We may, or we may not, have a latest transaction date for a subscription
 	 * If we don't, we will use the first payment date as a fallback later
 	 */

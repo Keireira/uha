@@ -8,3 +8,9 @@ export type FilterEntryT = {
 	isEligible: boolean;
 	isImplied: boolean;
 };
+
+export type ActiveEntryT = {
+	id: string;
+	title: string;
+	subtitle?: string;
+};
