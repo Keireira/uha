@@ -37,14 +37,14 @@ type ReturnT = {
 
 const useSummariesQuery = (): ReturnT => {
 	const { txViewMode } = useSearchParams();
-	const { transactions } = useTransactions('useSummariesQuery');
+	const transactions = useTransactions('From useSummariesQuery');
 
 	const { tx_dates } = useAppModel();
 	const focusedDate = useUnit(tx_dates.focused.$value);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
 	const selectedDate = useUnit(tx_dates.selected.$value);
 
-	/*
+	/**
 	 * for the optimized chain of rerenders
 	 * focusedDate -> startOfMonth -> recalcMonthKey -> transactionsMonth
 	 * focusedDate -> startOfMonth -> recalcYearKey -> transactionsYear

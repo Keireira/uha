@@ -1,3 +1,3 @@
-import { FilterSheet } from '@screens/transactions/tx-header/components';
+import { FiltersSheet } from '@screens/transactions';
 
-export default FilterSheet;
+export default FiltersSheet;
