@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import { useAppModel } from '@models';
+import { useSearchParams } from '@hooks';
 
-import { CircleButton, InlineTitleIOS } from '@ui';
 import Root, {
 	HeaderRow,
 	Title,
@@ -16,9 +16,10 @@ import Root, {
 	TabsBarRow,
 	TabGlass,
 	TabInner,
-	TabLabel,
-	ButtonStub
+	TabLabel
 } from './header.styles';
+import { View } from 'react-native';
+import { TextButton, CircleButton, InlineTitleIOS } from '@ui';
 
 import type { Props, FilterTabT } from './header.d';
 
@@ -29,7 +30,8 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 	const router = useRouter();
 	const { t } = useTranslation();
 
-	const { lenses } = useAppModel();
+	const { txViewMode } = useSearchParams();
+	const { view_mode, lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const totalActiveCount = lensesStore.filters.length;
 
@@ -45,11 +47,14 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 
 	const clearSheet = () => {
 		lenses.filters.clear();
-		router.back();
 	};
 
 	const confirmSheet = () => {
 		router.back();
+
+		if (txViewMode === 'list') {
+			view_mode.list.scrollToTop();
+		}
 	};
 
 	const handleTabPress = (tab: FilterTabT) => {
@@ -60,23 +65,11 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 	return (
 		<Root intensity={25} tint={theme.tint}>
 			<HeaderRow>
-				{/**
-					* WHY:
-					* - There is a bug where the Button jumps when it appears
-
-					* THE REASON:
-					* 	CircleButton's matchContents doesn't produce exactly a 42x42 RN layout box.
-					* 	Even though the SwiftUI frame modifier is set to 42x42, the controlSize="large" button has a larger intrinsic content size and matchContents sizes the Host view to that intrinsic size rather than the constrained frame.
-					* 	So the right-side CircleButton ends up wider than the 42x42 ButtonStub it replaces.
-
-					* THE SIMPLEST FIX:
-					* - Wrap the conditional right slot in a fixed-size container so the layout is stable regardless of what's inside
-					**/}
-				<ButtonStub>
+				<View>
 					{totalActiveCount > 0 && (
-						<CircleButton size={42} onPress={clearSheet} systemImage="xmark" role="destructive" />
+						<TextButton onPress={clearSheet} role="destructive" title={t('transactions.filters.clear')} />
 					)}
-				</ButtonStub>
+				</View>
 
 				<Title>
 					<InlineTitleIOS>{t('transactions.filters.title')}</InlineTitleIOS>
