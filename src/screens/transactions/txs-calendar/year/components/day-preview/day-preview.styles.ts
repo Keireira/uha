@@ -7,7 +7,7 @@ export const Mark = styled.View<{ $isSelected: boolean }>`
 	left: 50%;
 	width: 16px;
 	aspect-ratio: 1 / 1;
-	background-color: ${({ $isSelected, theme }) => ($isSelected ? theme.accent.primary : theme.accent.secondary)};
+	background-color: ${({ $isSelected, theme }) => ($isSelected ? theme.accent.orange : theme.accent.purple)};
 	border-radius: 50px;
 	transform: translateX(-8px) translateY(-8px);
 `;

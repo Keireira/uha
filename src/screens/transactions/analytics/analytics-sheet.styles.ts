@@ -52,7 +52,7 @@ export const TabBarRow = styled.ScrollView.attrs({
 export const TabGlass = styled(GlassView)<{ $active: boolean }>`
 	border-radius: 20px;
 	overflow: hidden;
-	background-color: ${({ theme, $active }) => ($active ? `${theme.accent.primary}20` : 'transparent')};
+	background-color: ${({ theme, $active }) => ($active ? `${theme.accent.orange}20` : 'transparent')};
 	border-width: ${({ $active }) => ($active ? '0px' : '1px')};
 	border-color: ${({ theme }) => `${theme.border.default}40`};
 `;

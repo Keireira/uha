@@ -32,9 +32,17 @@ const darkThemeConfig: ThemeConfigT = {
 	},
 
 	accent: {
-		primary: '#ff9f0a',
-		secondary: '#6d28d9', // +
-		tertiary: '#0a84ff'
+		blue: '#0A84FF',
+		green: '#30D158',
+		orange: '#FF9F0A',
+		red: '#FF453A',
+		purple: '#BF5AF2',
+		pink: '#FF375F',
+		yellow: '#FFD60A',
+		teal: '#64D2FF',
+		indigo: '#5E5CE6',
+		mint: '#63E6E2',
+		cyan: '#64D2FF'
 	},
 
 	semantic: {

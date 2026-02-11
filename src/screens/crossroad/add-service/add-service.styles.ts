@@ -143,14 +143,14 @@ export const CreateButton = styled.Pressable`
 	gap: 8px;
 	padding: 14px 16px;
 	border-radius: 12px;
-	background-color: ${({ theme }) => `${theme.accent.primary}15`};
+	background-color: ${({ theme }) => `${theme.accent.orange}15`};
 	margin-top: 4px;
 `;
 
 export const CreateButtonLabel = styled(BaseText)`
 	font-size: 15px;
 	font-weight: 600;
-	color: ${({ theme }) => theme.accent.primary};
+	color: ${({ theme }) => theme.accent.orange};
 `;
 
 export const Divider = styled.View`

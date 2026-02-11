@@ -60,7 +60,7 @@ const LibraryScreen = () => {
 							key={tab.key}
 							$active={isActive}
 							isInteractive
-							tintColor={isActive ? theme.accent.primary : undefined}
+							tintColor={isActive ? theme.accent.orange : undefined}
 						>
 							<TabInner onPress={() => setActiveTab(tab.key)}>
 								<TabLabel $active={isActive}>{tab.label}</TabLabel>

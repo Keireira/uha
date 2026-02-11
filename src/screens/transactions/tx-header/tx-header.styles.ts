@@ -28,7 +28,7 @@ export const ActiveDot = styled.View`
 	width: 7px;
 	height: 7px;
 	border-radius: 4px;
-	background-color: ${({ theme }) => theme.accent.primary};
+	background-color: ${({ theme }) => theme.accent.orange};
 `;
 
 export default styled.View`
