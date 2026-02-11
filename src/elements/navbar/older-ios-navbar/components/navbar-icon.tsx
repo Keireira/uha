@@ -14,7 +14,7 @@ type Props = {
 const NavbarIcon = ({ name, isFocused }: Props) => {
 	const theme = useTheme();
 	const iconStyles = useIconAnimations(isFocused);
-	const indexIconColor = isFocused ? theme.accent.primary : theme.text.primary;
+	const indexIconColor = isFocused ? theme.accent.orange : theme.text.primary;
 
 	const renderIcon = () => {
 		switch (name) {

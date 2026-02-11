@@ -75,3 +75,19 @@ export const LargeText = styled(BaseText)<TextProps>`
 	text-align: ${({ $align }) => $align || 'left'};
 	font-weight: ${({ $weight, $bold }) => $weight || ($bold ? '700' : '400')};
 `;
+
+// iOS Titles
+export const LargeTitleIOS = styled(BaseText)<TextProps>`
+	font-size: 34px;
+	font-weight: 700;
+`;
+
+export const InlineTitleIOS = styled(BaseText)<TextProps>`
+	font-size: 17px;
+	font-weight: 600;
+`;
+
+export const SubtitleIOS = styled(BaseText)<TextProps>`
+	font-size: 12px;
+	font-weight: 400;
+`;

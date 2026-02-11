@@ -25,7 +25,7 @@ const Merchant = ({ date, slug, emoji, customName, title, color, isPhantom }: Pr
 				</Name>
 
 				<DateRow>
-					{isPhantom && <SymbolView name="clock" tintColor={theme.accent.primary} size={14} />}
+					{isPhantom && <SymbolView name="clock" tintColor={theme.accent.orange} size={14} />}
 
 					<DateText numberOfLines={1} ellipsizeMode="tail">
 						{dateLabel}

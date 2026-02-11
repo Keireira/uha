@@ -52,10 +52,7 @@ const AnalyticsSheet = () => {
 	const theme = useTheme();
 	const [activeClavis, setActiveClavis] = useState(clavis ?? 'month');
 
-	const tabs = useMemo(
-		() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')),
-		[clavis]
-	);
+	const tabs = useMemo(() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')), [clavis]);
 
 	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
@@ -87,10 +84,8 @@ const AnalyticsSheet = () => {
 					style: 'currency',
 					currency: currency.id,
 					currencyDisplay: 'symbol',
-					minimumFractionDigits:
-						activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits,
-					maximumFractionDigits:
-						activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits
+					minimumFractionDigits: activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits,
+					maximumFractionDigits: activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits
 				})
 			: '—';
 
@@ -129,12 +124,7 @@ const AnalyticsSheet = () => {
 					const isActive = activeClavis === tab;
 
 					return (
-						<TabGlass
-							key={tab}
-							$active={isActive}
-							isInteractive
-							tintColor={isActive ? theme.accent.primary : undefined}
-						>
+						<TabGlass key={tab} $active={isActive} isInteractive tintColor={isActive ? theme.accent.orange : undefined}>
 							<TabInner onPress={() => handleTabPress(tab)}>
 								<TabLabel $active={isActive}>{t(`dates.${tab}`)}</TabLabel>
 							</TabInner>

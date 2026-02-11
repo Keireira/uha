@@ -232,6 +232,7 @@
       "service": "By Service",
       "tender": "By Tender",
       "currency": "By Base Currency",
+      "done": "Done",
       "clear": "Clear",
       "empty": "No items available",
       "active": "Active",

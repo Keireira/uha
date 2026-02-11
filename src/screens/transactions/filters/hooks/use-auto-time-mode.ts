@@ -73,7 +73,7 @@ const useAutoTimeMode = () => {
 
 		if (futureCount.value === 0 && allTimeCount.value > 0 && timeMode === 'future' && hasFilters) {
 			lenses.time_mode.set('all');
-		} else if ((futureCount.value > 0 && timeMode === 'all') || !hasFilters) {
+		} else if (futureCount.value > 0 && timeMode === 'all' && hasFilters) {
 			lenses.time_mode.set('future');
 		}
 

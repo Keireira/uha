@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
@@ -9,24 +8,9 @@ import { SymbolView } from 'expo-symbols';
 import { useAppModel } from '@models';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
+import { Header } from './components';
 import Root, {
-	Header,
-	TitleRow,
-	Title,
-	AccentRule,
-	CountGlass,
-	CountText,
-	ClearGlass,
-	ClearButtonText,
-	TimeModeGlassGroup,
-	TimeModeRow,
-	TimeModeGlass,
-	TimeModeInner,
-	TimeModeLabel,
-	TabBarRow,
-	TabGlass,
-	TabInner,
-	TabLabel,
+	Container,
 	ItemsSection,
 	ItemPressable,
 	CheckCircle,
@@ -43,8 +27,6 @@ import Root, {
 
 import type { FilterTabT, FilterEntryT } from './filters.d';
 
-const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
-
 const FilterSheet = () => {
 	useAutoTimeMode();
 
@@ -57,16 +39,6 @@ const FilterSheet = () => {
 	const eligibleIds = useEligibleIds(lensesStore.filters);
 
 	const [activeTab, setActiveTab] = useState<FilterTabT>('category');
-
-	const tabLabels: Record<FilterTabT, string> = useMemo(
-		() => ({
-			category: t('transactions.filters.tabs.category'),
-			service: t('transactions.filters.tabs.service'),
-			tender: t('transactions.filters.tabs.tender'),
-			currency: t('transactions.filters.tabs.currency')
-		}),
-		[t]
-	);
 
 	const entriesMap = useMemo(
 		() => ({
@@ -143,118 +115,45 @@ const FilterSheet = () => {
 		[activeTab, lenses.filters]
 	);
 
-	const handleClear = useCallback(() => {
-		lenses.filters.clear();
-		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-	}, [lenses.filters]);
-
-	const handleTabPress = useCallback((tab: FilterTabT) => {
-		setActiveTab(tab);
-		Haptics.selectionAsync();
-	}, []);
-
-	const handleTimeModePress = useCallback(
-		(mode: 'all' | 'future') => {
-			lenses.time_mode.set(mode);
-			Haptics.selectionAsync();
-		},
-		[lenses.time_mode]
-	);
-
-	const totalActiveCount = lensesStore.filters.length;
-	const isAllMode = lensesStore.time_mode === 'all';
-
 	return (
-		<Root>
-			<Header>
-				<TitleRow>
-					<Title>{t('transactions.filters.title')}</Title>
-					{totalActiveCount > 0 && (
-						<CountGlass tintColor={theme.accent.primary}>
-							<CountText>{totalActiveCount}</CountText>
-						</CountGlass>
+		<Container>
+			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
+
+			<Root>
+				<ItemsSection>
+					{sortedEntries.length === 0 ? (
+						<EmptyState>
+							<EmptyText>{t('transactions.filters.empty')}</EmptyText>
+						</EmptyState>
+					) : (
+						sortedEntries.map((entry, index) => (
+							<React.Fragment key={entry.id}>
+								{index === ineligibleStartIndex && index > 0 && <EligibilityDivider />}
+
+								<DimWrapper $dimmed={!entry.isEligible && !entry.isSelected}>
+									<ItemPressable onPress={() => handleItemPress(entry.id, entry.isSelected)}>
+										<CheckCircle $selected={entry.isSelected} $implied={entry.isImplied}>
+											{entry.isSelected ? (
+												<SymbolView name="checkmark" size={13} weight="bold" tintColor={theme.text.inverse} />
+											) : entry.isImplied ? (
+												<ImpliedDot />
+											) : null}
+										</CheckCircle>
+
+										<ItemTextGroup>
+											<ItemTitle $hasSubtitle={Boolean(entry.subtitle)}>{entry.title}</ItemTitle>
+											{entry.subtitle ? <ItemSubtitle>{entry.subtitle}</ItemSubtitle> : null}
+										</ItemTextGroup>
+									</ItemPressable>
+								</DimWrapper>
+
+								{index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1 && <ItemSeparator />}
+							</React.Fragment>
+						))
 					)}
-				</TitleRow>
-
-				{totalActiveCount > 0 && (
-					<Pressable onPress={handleClear} hitSlop={8}>
-						<ClearGlass glassEffectStyle="clear" isInteractive>
-							<ClearButtonText>{t('transactions.filters.clear')}</ClearButtonText>
-						</ClearGlass>
-					</Pressable>
-				)}
-			</Header>
-
-			<AccentRule />
-
-			<TimeModeGlassGroup>
-				<TimeModeRow>
-					<TimeModeGlass $active={isAllMode} isInteractive>
-						<TimeModeInner onPress={() => handleTimeModePress('all')}>
-							<TimeModeLabel $active={isAllMode}>{t('transactions.time_mode.all')}</TimeModeLabel>
-						</TimeModeInner>
-					</TimeModeGlass>
-
-					<TimeModeGlass $active={!isAllMode} isInteractive>
-						<TimeModeInner onPress={() => handleTimeModePress('future')}>
-							<TimeModeLabel $active={!isAllMode}>{t('transactions.time_mode.future')}</TimeModeLabel>
-						</TimeModeInner>
-					</TimeModeGlass>
-				</TimeModeRow>
-			</TimeModeGlassGroup>
-
-			<TabBarRow>
-				{TABS.map((tab) => {
-					const isActive = activeTab === tab;
-
-					return (
-						<TabGlass
-							key={tab}
-							$active={isActive}
-							isInteractive
-							tintColor={isActive ? theme.accent.primary : undefined}
-						>
-							<TabInner onPress={() => handleTabPress(tab)}>
-								<TabLabel $active={isActive}>{tabLabels[tab]}</TabLabel>
-							</TabInner>
-						</TabGlass>
-					);
-				})}
-			</TabBarRow>
-
-			<ItemsSection>
-				{sortedEntries.length === 0 ? (
-					<EmptyState>
-						<EmptyText>{t('transactions.filters.empty')}</EmptyText>
-					</EmptyState>
-				) : (
-					sortedEntries.map((entry, index) => (
-						<React.Fragment key={entry.id}>
-							{index === ineligibleStartIndex && index > 0 && <EligibilityDivider />}
-
-							<DimWrapper $dimmed={!entry.isEligible && !entry.isSelected}>
-								<ItemPressable onPress={() => handleItemPress(entry.id, entry.isSelected)}>
-									<CheckCircle $selected={entry.isSelected} $implied={entry.isImplied}>
-										{entry.isSelected ? (
-											<SymbolView name="checkmark" size={13} weight="bold" tintColor={theme.text.inverse} />
-										) : entry.isImplied ? (
-											<ImpliedDot />
-										) : null}
-									</CheckCircle>
-
-									<ItemTextGroup>
-										<ItemTitle $hasSubtitle={Boolean(entry.subtitle)}>{entry.title}</ItemTitle>
-										{entry.subtitle ? <ItemSubtitle>{entry.subtitle}</ItemSubtitle> : null}
-									</ItemTextGroup>
-								</ItemPressable>
-							</DimWrapper>
-
-							{index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1 && <ItemSeparator />}
-						</React.Fragment>
-					))
-				)}
-			</ItemsSection>
-		</Root>
+				</ItemsSection>
+			</Root>
+		</Container>
 	);
 };
 

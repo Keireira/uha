@@ -38,7 +38,7 @@ export const OverflowBadge = styled.View`
 	bottom: 0;
 	width: 60%;
 	height: 110%;
-	background-color: ${({ theme }) => theme.accent.secondary};
+	background-color: ${({ theme }) => theme.accent.purple};
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -54,7 +54,7 @@ export default styled.Pressable<{ $isEmpty: boolean; $isSelected: boolean }>`
 	background-color: ${({ $isEmpty, $isSelected, theme }) => {
 		if ($isEmpty) return `${theme.surface.default}30`;
 
-		return $isSelected ? theme.accent.primary : theme.surface.default;
+		return $isSelected ? theme.accent.orange : theme.surface.default;
 	}};
 	padding: 6px;
 	display: flex;

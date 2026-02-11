@@ -30,9 +30,17 @@ export type ThemeConfigT = {
 		inverse: string;
 	};
 	accent: {
-		primary: string;
-		secondary: string;
-		tertiary: string;
+		blue: string;
+		green: string;
+		orange: string;
+		red: string;
+		purple: string;
+		pink: string;
+		yellow: string;
+		teal: string;
+		indigo: string;
+		mint: string;
+		cyan: string;
 	};
 	semantic: {
 		success: string;

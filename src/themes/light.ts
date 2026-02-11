@@ -32,9 +32,17 @@ const lightThemeConfig: ThemeConfigT = {
 	},
 
 	accent: {
-		primary: '#ff9f0a',
-		secondary: '#6d28d9',
-		tertiary: '#007aff'
+		blue: '#007AFF',
+		green: '#34C759',
+		orange: '#FF9500',
+		red: '#FF3B30',
+		purple: '#AF52DE',
+		pink: '#FF2D55',
+		yellow: '#FFCC00',
+		teal: '#5AC8FA',
+		indigo: '#5856D6',
+		mint: '#00C7BE',
+		cyan: '#32ADE6'
 	},
 
 	semantic: {
