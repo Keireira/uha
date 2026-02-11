@@ -80,14 +80,17 @@ export const LargeText = styled(BaseText)<TextProps>`
 export const LargeTitleIOS = styled(BaseText)<TextProps>`
 	font-size: 34px;
 	font-weight: 700;
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 `;
 
 export const InlineTitleIOS = styled(BaseText)<TextProps>`
 	font-size: 17px;
 	font-weight: 600;
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 `;
 
 export const SubtitleIOS = styled(BaseText)<TextProps>`
 	font-size: 12px;
 	font-weight: 400;
+	color: ${({ $color, theme }) => $color || theme.text.primary};
 `;

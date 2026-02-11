@@ -3,15 +3,6 @@ import { GlassView } from 'expo-glass-effect';
 import { Text } from '@ui';
 import { BlurView } from 'expo-blur';
 
-export const ButtonStub = styled.View`
-	width: 42px;
-	height: 42px;
-	min-width: 42px;
-	min-height: 42px;
-	align-items: center;
-	justify-content: center;
-`;
-
 export const CountGlass = styled(GlassView)`
 	border-radius: 10px;
 	min-width: 24px;
@@ -58,12 +49,18 @@ export const TabsBarRow = styled.ScrollView.attrs({
 `;
 
 export const Title = styled.View`
-	flex-direction: row;
+	position: absolute;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
 	align-items: center;
+	flex-direction: row;
 	gap: 10px;
 `;
 
 export const HeaderRow = styled.View`
+	position: relative;
 	bottom: 8px;
 	left: 0;
 	right: 0;

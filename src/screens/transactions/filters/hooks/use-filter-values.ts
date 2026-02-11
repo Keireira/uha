@@ -1,8 +1,15 @@
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import db from '@db';
-import { eq, isNull, inArray } from 'drizzle-orm';
-import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
+import { eq, inArray } from 'drizzle-orm';
+import {
+	tendersTable,
+	servicesTable,
+	categoriesTable,
+	currenciesTable,
+	transactionsTable,
+	subscriptionsTable
+} from '@db/schema';
 
 import type { ActiveEntryT } from '../filters.d';
 
@@ -45,9 +52,9 @@ const useFilterValues = () => {
 				inArray(
 					servicesTable.id,
 					db
-						.select({ id: subscriptionsTable.service_id })
+						.selectDistinct({ id: subscriptionsTable.service_id })
 						.from(subscriptionsTable)
-						.where(isNull(subscriptionsTable.cancellation_date))
+						.innerJoin(transactionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 				)
 			)
 	);
@@ -65,10 +72,9 @@ const useFilterValues = () => {
 				inArray(
 					categoriesTable.id,
 					db
-						.select({ id: servicesTable.category_id })
-						.from(servicesTable)
-						.innerJoin(subscriptionsTable, eq(subscriptionsTable.service_id, servicesTable.id))
-						.where(isNull(subscriptionsTable.cancellation_date))
+						.selectDistinct({ id: subscriptionsTable.category_id })
+						.from(subscriptionsTable)
+						.innerJoin(transactionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 				)
 			)
 	);
@@ -83,15 +89,7 @@ const useFilterValues = () => {
 				subtitle: tendersTable.comment
 			})
 			.from(tendersTable)
-			.where(
-				inArray(
-					tendersTable.id,
-					db
-						.select({ id: subscriptionsTable.tender_id })
-						.from(subscriptionsTable)
-						.where(isNull(subscriptionsTable.cancellation_date))
-				)
-			)
+			.where(inArray(tendersTable.id, db.selectDistinct({ id: transactionsTable.tender_id }).from(transactionsTable)))
 	);
 
 	/**
@@ -107,13 +105,7 @@ const useFilterValues = () => {
 			})
 			.from(currenciesTable)
 			.where(
-				inArray(
-					currenciesTable.id,
-					db
-						.select({ id: subscriptionsTable.current_currency_id })
-						.from(subscriptionsTable)
-						.where(isNull(subscriptionsTable.cancellation_date))
-				)
+				inArray(currenciesTable.id, db.selectDistinct({ id: transactionsTable.currency_id }).from(transactionsTable))
 			)
 	);
 
