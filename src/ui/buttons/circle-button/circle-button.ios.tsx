@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Host, Button } from '@expo/ui/swift-ui';
 import { useTheme } from 'styled-components/native';
 import { frame, glassEffect, foregroundStyle } from '@expo/ui/swift-ui/modifiers';
-
-import { Host, Button } from '@expo/ui/swift-ui';
 
 import type { Props } from './circle-button.d';
 
@@ -26,7 +25,7 @@ const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, symbolColor, ..
 						glass: {
 							interactive: true,
 							variant: 'regular',
-							tint: glassTint || `${theme.background.default}80`
+							tint: glassTint || theme.background.default
 						}
 					}),
 					foregroundStyle({

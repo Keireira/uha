@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import * as Haptics from 'expo-haptics';
 import { useUnit } from 'effector-react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -8,22 +7,40 @@ import { useTheme } from 'styled-components/native';
 import { useAppModel } from '@models';
 import { useSearchParams } from '@hooks';
 
-import Root, {
-	HeaderRow,
-	Title,
-	CountGlass,
-	CountText,
-	TabsBarRow,
-	TabGlass,
-	TabInner,
-	TabLabel
-} from './header.styles';
+import Tab from './tab';
 import { View } from 'react-native';
-import { TextButton, CircleButton, InlineTitleIOS } from '@ui';
+import { LinearGradient } from 'expo-linear-gradient';
+import { TextButton, CircleButton, InlineTitleIOS, SmallText } from '@ui';
+import Root, { HeaderRow, Title, Counter, TabsBarRow, Masked } from './header.styles';
 
 import type { Props, FilterTabT } from './header.d';
 
 const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
+
+const useCounters = (): Record<FilterTabT | 'total', number> => {
+	const { lenses } = useAppModel();
+	const lensesStore = useUnit(lenses.$store);
+
+	const counters = useMemo(() => {
+		const sizes = {
+			category: 0,
+			service: 0,
+			tender: 0,
+			currency: 0
+		};
+
+		for (const filter of lensesStore.filters) {
+			sizes[filter.type] += 1;
+		}
+
+		return sizes;
+	}, [lensesStore.filters]);
+
+	return {
+		...counters,
+		total: lensesStore.filters.length
+	};
+};
 
 const Header = ({ activeTab, setActiveTab }: Props) => {
 	const theme = useTheme();
@@ -32,18 +49,7 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 
 	const { txViewMode } = useSearchParams();
 	const { view_mode, lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
-	const totalActiveCount = lensesStore.filters.length;
-
-	const tabLabels: Record<FilterTabT, string> = useMemo(
-		() => ({
-			category: t('transactions.filters.tabs.category'),
-			service: t('transactions.filters.tabs.service'),
-			tender: t('transactions.filters.tabs.tender'),
-			currency: t('transactions.filters.tabs.currency')
-		}),
-		[t]
-	);
+	const counters = useCounters();
 
 	const clearSheet = () => {
 		lenses.filters.clear();
@@ -57,16 +63,11 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 		}
 	};
 
-	const handleTabPress = (tab: FilterTabT) => {
-		setActiveTab(tab);
-		Haptics.selectionAsync();
-	};
-
 	return (
 		<Root intensity={25} tint={theme.tint}>
 			<HeaderRow>
 				<View>
-					{totalActiveCount > 0 && (
+					{counters.total > 0 && (
 						<TextButton onPress={clearSheet} role="destructive" title={t('transactions.filters.clear')} />
 					)}
 				</View>
@@ -74,10 +75,12 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 				<Title>
 					<InlineTitleIOS>{t('transactions.filters.title')}</InlineTitleIOS>
 
-					{totalActiveCount > 0 && (
-						<CountGlass tintColor={theme.accent.orange}>
-							<CountText>{totalActiveCount}</CountText>
-						</CountGlass>
+					{counters.total > 0 && (
+						<Counter tintColor={theme.accent.orange}>
+							<SmallText $bold $color={theme.text.inverse}>
+								{counters.total}
+							</SmallText>
+						</Counter>
 					)}
 				</Title>
 
@@ -90,19 +93,30 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 				/>
 			</HeaderRow>
 
-			<TabsBarRow>
-				{TABS.map((tab) => {
-					const isActive = activeTab === tab;
-
-					return (
-						<TabGlass key={tab} $active={isActive} isInteractive tintColor={isActive ? theme.accent.orange : undefined}>
-							<TabInner onPress={() => handleTabPress(tab)}>
-								<TabLabel $active={isActive}>{tabLabels[tab]}</TabLabel>
-							</TabInner>
-						</TabGlass>
-					);
-				})}
-			</TabsBarRow>
+			<Masked
+				maskElement={
+					<LinearGradient
+						colors={['transparent', 'black', 'black', 'transparent']}
+						locations={[0, 0.03, 0.97, 1]}
+						start={{ x: 0, y: 0 }}
+						end={{ x: 1, y: 0 }}
+						style={{ flex: 1 }}
+					/>
+				}
+			>
+				<TabsBarRow>
+					{TABS.map((tab) => (
+						<Tab
+							key={tab}
+							tab={tab}
+							counter={counters[tab]}
+							setActiveTab={setActiveTab}
+							isActive={activeTab === tab}
+							label={t(`transactions.filters.tabs.${tab}`)}
+						/>
+					))}
+				</TabsBarRow>
+			</Masked>
 		</Root>
 	);
 };

@@ -1,51 +1,30 @@
 import styled from 'styled-components/native';
-import { GlassView } from 'expo-glass-effect';
-import { Text } from '@ui';
+
 import { BlurView } from 'expo-blur';
+import { GlassView } from 'expo-glass-effect';
 
-export const CountGlass = styled(GlassView)`
-	border-radius: 10px;
-	min-width: 24px;
-	align-items: center;
-	overflow: hidden;
-	padding: 2px 9px;
-	background-color: ${({ theme }) => theme.accent.orange};
-`;
+import MaskedView from '@react-native-masked-view/masked-view';
 
-export const CountText = styled(Text)`
-	font-size: 13px;
-	font-weight: 800;
-	color: ${({ theme }) => theme.text.inverse};
-`;
-
-export const TabGlass = styled(GlassView)<{ $active: boolean }>`
-	border-radius: 20px;
-	overflow: hidden;
-	background-color: ${({ theme, $active }) => ($active ? `${theme.accent.orange}20` : 'transparent')};
-	border-width: ${({ $active }) => ($active ? '0px' : '1px')};
-	border-color: ${({ theme }) => `${theme.border.default}40`};
-`;
-
-export const TabInner = styled.Pressable`
-	padding-horizontal: 16px;
-	padding-vertical: 8px;
-`;
-
-export const TabLabel = styled(Text)<{ $active: boolean }>`
-	font-size: 12px;
-	font-weight: ${({ $active }) => ($active ? '700' : '500')};
-	color: ${({ theme, $active }) => ($active ? theme.text.primary : theme.text.secondary)};
-	letter-spacing: 0.2px;
+export const Masked = styled(MaskedView)`
+	flex: 1;
+	margin-horizontal: -18px;
 `;
 
 export const TabsBarRow = styled.ScrollView.attrs({
 	horizontal: true,
 	showsHorizontalScrollIndicator: false,
 	contentContainerStyle: {
-		gap: 6
+		gap: 6,
+		paddingVertical: 4,
+		paddingHorizontal: 18
 	}
-})`
-	flex-grow: 0;
+})``;
+
+export const Counter = styled(GlassView)`
+	align-items: center;
+	border-radius: 12px;
+	padding: 2px 8px;
+	background-color: ${({ theme }) => theme.accent.orange};
 `;
 
 export const Title = styled.View`
@@ -53,20 +32,19 @@ export const Title = styled.View`
 	left: 0;
 	right: 0;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	flex-direction: row;
-	gap: 10px;
+	justify-content: center;
+	gap: 12px;
 `;
 
 export const HeaderRow = styled.View`
 	position: relative;
-	bottom: 8px;
 	left: 0;
 	right: 0;
 	flex-direction: row;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
 `;
 
 export default styled(BlurView)`
@@ -75,7 +53,9 @@ export default styled(BlurView)`
 	left: 0;
 	right: 0;
 	z-index: 10;
-	padding: 26px 18px 18px 18px;
-	gap: 12px;
+	padding: 18px;
+	gap: 18px;
 	flex-direction: column;
+	border-bottom-width: 1px;
+	border-bottom-color: ${({ theme }) => `${theme.border.default}40`};
 `;
