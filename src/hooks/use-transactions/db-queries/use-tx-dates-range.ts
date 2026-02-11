@@ -5,8 +5,15 @@ import { timeModeClause, globalFiltersClause } from './utils';
 
 import db from '@db';
 import { useAppModel } from '@models';
-import { and, min, max } from 'drizzle-orm';
-import { transactionsTable } from '@db/schema';
+import { and, min, max, eq } from 'drizzle-orm';
+import {
+	tendersTable,
+	servicesTable,
+	categoriesTable,
+	currenciesTable,
+	transactionsTable,
+	subscriptionsTable
+} from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import type { TimeModesT } from '@screens/transactions/models/types.d';
@@ -19,6 +26,11 @@ export const useGetMinMonthDate = (timeMode: TimeModesT, withFilters: boolean = 
 		db
 			.select({ minDate: min(transactionsTable.date) })
 			.from(transactionsTable)
+			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
+			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
+			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode))),
 		[lensesStore.filters, timeMode]
 	);
@@ -41,6 +53,11 @@ export const useGetMaxMonthDate = (timeMode: TimeModesT, withFilters: boolean = 
 		db
 			.select({ maxDate: max(transactionsTable.date) })
 			.from(transactionsTable)
+			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
+			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
+			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode))),
 		[lensesStore.filters, timeMode]
 	);
