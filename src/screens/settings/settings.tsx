@@ -33,13 +33,9 @@ const SettingsScreen = () => {
 		setSettingsValue('oled_mode', isEnabled);
 	};
 
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
-
 	const currenciesList = useGetCurrenciesList();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
-
-	const explainCurrency = useSettingsValue<boolean>('explain_currency');
 
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -64,16 +60,8 @@ const SettingsScreen = () => {
 		}
 	}, [t]);
 
-	const changeExplainCurrency = (isEnabled: boolean) => {
-		setSettingsValue('explain_currency', isEnabled);
-	};
-
 	const changeColorScheme = (isDarkMode: boolean) => {
 		setSettingsValue('theme', isDarkMode ? 'dark' : 'light');
-	};
-
-	const changeCurrencyFractions = (isVisible: boolean) => {
-		setSettingsValue('currency_fractions', isVisible);
 	};
 
 	const changePrimaryCurrency = ({ nativeEvent }: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => {
@@ -119,24 +107,6 @@ const SettingsScreen = () => {
 						trigger: t(`currencies.${recalcCurrencyCode}`),
 						actions: currenciesList,
 						onPress: changeRecalcCurrency
-					}
-				},
-				{
-					id: 'currency-fractions',
-					title: t('settings.currencies.fractions'),
-					accessory: {
-						type: 'switch',
-						value: showFractions,
-						onPress: changeCurrencyFractions
-					}
-				},
-				{
-					id: 'currency-explain',
-					title: t('settings.currencies.explain'),
-					accessory: {
-						type: 'switch',
-						value: explainCurrency,
-						onPress: changeExplainCurrency
 					}
 				},
 				{

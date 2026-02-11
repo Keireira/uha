@@ -47,20 +47,20 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 	const router = useRouter();
 	const { t } = useTranslation();
 
+	const counters = useCounters();
 	const { txViewMode } = useSearchParams();
 	const { view_mode, lenses } = useAppModel();
-	const counters = useCounters();
 
-	const clearSheet = () => {
+	const clear = () => {
 		lenses.filters.clear();
 	};
 
-	const confirmSheet = () => {
-		router.back();
-
+	const confirm = () => {
 		if (txViewMode === 'list') {
 			view_mode.list.scrollToTop();
 		}
+
+		router.back();
 	};
 
 	return (
@@ -68,7 +68,7 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 			<HeaderRow>
 				<View>
 					{counters.total > 0 && (
-						<TextButton onPress={clearSheet} role="destructive" title={t('transactions.filters.clear')} />
+						<TextButton onPress={clear} role="destructive" title={t('transactions.filters.clear')} />
 					)}
 				</View>
 
@@ -86,7 +86,7 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 
 				<CircleButton
 					size={42}
-					onPress={confirmSheet}
+					onPress={confirm}
 					systemImage="checkmark"
 					glassTint={theme.accent.orange}
 					symbolColor={theme.static.white}

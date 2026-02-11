@@ -31,7 +31,6 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled, on
 	const { t } = useTranslation();
 	const { txViewMode } = useSearchParams();
 	const animations = useSummaryAnimations();
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const {
 		data: [currency]
@@ -47,8 +46,8 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled, on
 							style: 'currency',
 							currency: currency.id,
 							currencyDisplay: 'symbol',
-							minimumFractionDigits: total > 1000 || !showFractions ? 0 : currency.fraction_digits,
-							maximumFractionDigits: total > 1000 || !showFractions ? 0 : currency.fraction_digits
+							minimumFractionDigits: total > 1000 ? 0 : currency.fraction_digits,
+							maximumFractionDigits: total > 1000 ? 0 : currency.fraction_digits
 						})
 					: '—'}
 			</Text>

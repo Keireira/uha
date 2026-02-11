@@ -18,11 +18,7 @@ type CurrencyT = {
 	fraction_digits: number;
 };
 
-const useCategoryDetails = (
-	categories: CategoryT[],
-	currency: CurrencyT | undefined,
-	showFractions: boolean
-): EnrichedCategoryT[] => {
+const useCategoryDetails = (categories: CategoryT[], currency: CurrencyT | undefined): EnrichedCategoryT[] => {
 	return useMemo(() => {
 		if (!categories.length || !currency) {
 			return [];
@@ -30,11 +26,7 @@ const useCategoryDetails = (
 
 		const categoryIds = categories.map((c) => c.id);
 
-		const dbCategories = db
-			.select()
-			.from(categoriesTable)
-			.where(inArray(categoriesTable.id, categoryIds))
-			.all();
+		const dbCategories = db.select().from(categoriesTable).where(inArray(categoriesTable.id, categoryIds)).all();
 
 		const categoryMap = new Map(dbCategories.map((c) => [c.id, c]));
 
@@ -45,8 +37,8 @@ const useCategoryDetails = (
 				style: 'currency',
 				currency: currency.id,
 				currencyDisplay: 'symbol',
-				minimumFractionDigits: cat.amount > 1000 || !showFractions ? 0 : currency.fraction_digits,
-				maximumFractionDigits: cat.amount > 1000 || !showFractions ? 0 : currency.fraction_digits
+				minimumFractionDigits: cat.amount > 1000 ? 0 : currency.fraction_digits,
+				maximumFractionDigits: cat.amount > 1000 ? 0 : currency.fraction_digits
 			});
 
 			return {
@@ -56,7 +48,7 @@ const useCategoryDetails = (
 				formattedAmount
 			};
 		});
-	}, [categories, currency, showFractions]);
+	}, [categories, currency]);
 };
 
 export default useCategoryDetails;

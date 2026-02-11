@@ -10,7 +10,7 @@ import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
 import { Header } from './components';
 import Root, {
-	Container,
+	Content,
 	ItemsSection,
 	ItemPressable,
 	CheckCircle,
@@ -54,9 +54,17 @@ const FilterSheet = () => {
 		(tab: FilterTabT, entry: { id: string; title: string; subtitle?: string }) => {
 			if (tab === 'currency') {
 				const localizedName = t(`currencies.${entry.id}`, { defaultValue: '' });
-				return { title: localizedName || entry.id, subtitle: entry.id };
+
+				return {
+					title: localizedName || entry.id,
+					subtitle: entry.id
+				};
 			}
-			return { title: entry.title, subtitle: entry.subtitle };
+
+			return {
+				title: entry.title,
+				subtitle: entry.subtitle
+			};
 		},
 		[t]
 	);
@@ -103,23 +111,28 @@ const FilterSheet = () => {
 
 	const ineligibleStartIndex = useMemo(() => {
 		const idx = sortedEntries.findIndex((e) => !e.isEligible && !e.isSelected);
+
 		return idx === -1 ? -1 : idx;
 	}, [sortedEntries]);
 
 	const handleItemPress = useCallback(
 		(id: string, currentlySelected: boolean) => {
-			if (currentlySelected) lenses.filters.remove({ type: activeTab, value: id });
-			else lenses.filters.add({ type: activeTab, value: id });
+			if (currentlySelected) {
+				lenses.filters.remove({ type: activeTab, value: id });
+			} else {
+				lenses.filters.add({ type: activeTab, value: id });
+			}
+
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		},
 		[activeTab, lenses.filters]
 	);
 
 	return (
-		<Container>
+		<Root>
 			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-			<Root>
+			<Content>
 				<ItemsSection>
 					{sortedEntries.length === 0 ? (
 						<EmptyState>
@@ -142,7 +155,8 @@ const FilterSheet = () => {
 
 										<ItemTextGroup>
 											<ItemTitle $hasSubtitle={Boolean(entry.subtitle)}>{entry.title}</ItemTitle>
-											{entry.subtitle ? <ItemSubtitle>{entry.subtitle}</ItemSubtitle> : null}
+
+											{entry.subtitle && <ItemSubtitle>{entry.subtitle}</ItemSubtitle>}
 										</ItemTextGroup>
 									</ItemPressable>
 								</DimWrapper>
@@ -152,8 +166,8 @@ const FilterSheet = () => {
 						))
 					)}
 				</ItemsSection>
-			</Root>
-		</Container>
+			</Content>
+		</Root>
 	);
 };
 
