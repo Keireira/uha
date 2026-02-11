@@ -183,7 +183,7 @@ export default styled.ScrollView.attrs({
 	showsVerticalScrollIndicator: false,
 	keyboardShouldPersistTaps: 'handled',
 	contentContainerStyle: {
-		paddingTop: 120,
+		paddingTop: 136,
 		paddingRight: 24,
 		paddingBottom: 24,
 		paddingLeft: 24

@@ -1,14 +1,13 @@
 import React from 'react';
 
+import { Text } from '../../typography';
+import { Host, Button } from '@expo/ui/swift-ui';
 import { useTheme } from 'styled-components/native';
 import { glassEffect } from '@expo/ui/swift-ui/modifiers';
 
-import { Text } from '../../typography';
-import { Host, Button } from '@expo/ui/swift-ui';
-
 import type { Props } from './text-button.d';
 
-const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, title, color, ...restProps }: Props) => {
+const TextButtonIOS = ({ size = 42, modifiers = [], glassTint, title, color, ...restProps }: Props) => {
 	const theme = useTheme();
 
 	return (
@@ -22,7 +21,7 @@ const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, title, color, .
 						glass: {
 							interactive: true,
 							variant: 'regular',
-							tint: glassTint || `${theme.background.default}80`
+							tint: glassTint || theme.background.default
 						}
 					}),
 					...modifiers
@@ -43,4 +42,4 @@ const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, title, color, .
 	);
 };
 
-export default CircleButtonIOS;
+export default TextButtonIOS;
