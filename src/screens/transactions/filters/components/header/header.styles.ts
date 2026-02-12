@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 import { BlurView } from 'expo-blur';
-import { GlassView } from 'expo-glass-effect';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 
@@ -19,13 +18,6 @@ export const TabsBarRow = styled.ScrollView.attrs({
 		paddingHorizontal: 18
 	}
 })``;
-
-export const Counter = styled(GlassView)`
-	align-items: center;
-	border-radius: 12px;
-	padding: 2px 8px;
-	background-color: ${({ theme }) => theme.accent.orange};
-`;
 
 export const Title = styled.View`
 	position: absolute;

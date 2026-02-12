@@ -1,27 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import * as Haptics from 'expo-haptics';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
-import { SymbolView } from 'expo-symbols';
 
 import { useAppModel } from '@models';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
-import { Header, NoFilters } from './components';
-import Root, {
-	Content,
-	ItemsSection,
-	ItemPressable,
-	CheckCircle,
-	ImpliedDot,
-	ItemTextGroup,
-	ItemTitle,
-	ItemSubtitle,
-	DimWrapper,
-	ItemSeparator,
-	EligibilityDivider
-} from './filters.styles';
+import Root, { Content } from './filters.styles';
+import { Header, NoFilters, FilterEntry } from './components';
 
 import type { FilterTabT, FilterEntryT } from './filters.d';
 
@@ -29,14 +14,13 @@ const FilterSheet = () => {
 	useAutoTimeMode();
 
 	const { t } = useTranslation();
-	const theme = useTheme();
 
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const entries = useFilterValues();
 	const eligibleIds = useEligibleIds(lensesStore.filters);
 
-	const [activeTab, setActiveTab] = useState<FilterTabT>('category');
+	const [activeTab, setActiveTab] = useState<FilterTabT>('service');
 
 	const entriesMap = useMemo(
 		() => ({
@@ -113,55 +97,27 @@ const FilterSheet = () => {
 		return idx === -1 ? -1 : idx;
 	}, [sortedEntries]);
 
-	const handleItemPress = useCallback(
-		(id: string, currentlySelected: boolean) => {
-			if (currentlySelected) {
-				lenses.filters.remove({ type: activeTab, value: id });
-			} else {
-				lenses.filters.add({ type: activeTab, value: id });
-			}
-
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		},
-		[activeTab, lenses.filters]
-	);
-
 	return (
 		<Root>
 			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
 			<Content>
-				<ItemsSection>
-					{sortedEntries.length === 0 ? (
-						<NoFilters />
-					) : (
-						sortedEntries.map((entry, index) => (
-							<React.Fragment key={entry.id}>
-								{index === ineligibleStartIndex && index > 0 && <EligibilityDivider />}
+				{sortedEntries.map((entry, index) => (
+					<FilterEntry
+						key={entry.id}
+						id={entry.id}
+						activeTab={activeTab}
+						isImplied={entry.isImplied}
+						isEligible={entry.isEligible}
+						isSelected={entry.isSelected}
+						title={entry.title}
+						subtitle={entry.subtitle}
+						showDivider={index === ineligibleStartIndex && index > 0}
+						withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
+					/>
+				))}
 
-								<DimWrapper $dimmed={!entry.isEligible && !entry.isSelected}>
-									<ItemPressable onPress={() => handleItemPress(entry.id, entry.isSelected)}>
-										<CheckCircle $selected={entry.isSelected} $implied={entry.isImplied}>
-											{entry.isSelected ? (
-												<SymbolView name="checkmark" size={13} weight="bold" tintColor={theme.text.inverse} />
-											) : entry.isImplied ? (
-												<ImpliedDot />
-											) : null}
-										</CheckCircle>
-
-										<ItemTextGroup>
-											<ItemTitle $hasSubtitle={Boolean(entry.subtitle)}>{entry.title}</ItemTitle>
-
-											{entry.subtitle && <ItemSubtitle>{entry.subtitle}</ItemSubtitle>}
-										</ItemTextGroup>
-									</ItemPressable>
-								</DimWrapper>
-
-								{index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1 && <ItemSeparator />}
-							</React.Fragment>
-						))
-					)}
-				</ItemsSection>
+				{!sortedEntries.length && <NoFilters />}
 			</Content>
 		</Root>
 	);

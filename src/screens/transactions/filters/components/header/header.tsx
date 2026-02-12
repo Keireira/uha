@@ -10,12 +10,12 @@ import { useSearchParams } from '@hooks';
 import Tab from './tab';
 import { View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextButton, CircleButton, InlineTitleIOS, SmallText } from '@ui';
-import Root, { HeaderRow, Title, Counter, TabsBarRow, Masked } from './header.styles';
+import { TextButton, CircleButton, InlineTitleIOS } from '@ui';
+import Root, { HeaderRow, Title, TabsBarRow, Masked } from './header.styles';
 
 import type { Props, FilterTabT } from './header.d';
 
-const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
+const TABS: FilterTabT[] = ['service', 'category', 'tender', 'currency'];
 
 const useCounters = (): Record<FilterTabT | 'total', number> => {
 	const { lenses } = useAppModel();
@@ -74,14 +74,6 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 
 				<Title>
 					<InlineTitleIOS>{t('transactions.filters.title')}</InlineTitleIOS>
-
-					{counters.total > 0 && (
-						<Counter tintColor={theme.accent.orange}>
-							<SmallText $bold $color={theme.text.inverse}>
-								{counters.total}
-							</SmallText>
-						</Counter>
-					)}
 				</Title>
 
 				<CircleButton
