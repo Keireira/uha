@@ -8,7 +8,7 @@ import { SymbolView } from 'expo-symbols';
 import { useAppModel } from '@models';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
-import { Header } from './components';
+import { Header, NoFilters } from './components';
 import Root, {
 	Content,
 	ItemsSection,
@@ -20,9 +20,7 @@ import Root, {
 	ItemSubtitle,
 	DimWrapper,
 	ItemSeparator,
-	EligibilityDivider,
-	EmptyState,
-	EmptyText
+	EligibilityDivider
 } from './filters.styles';
 
 import type { FilterTabT, FilterEntryT } from './filters.d';
@@ -135,9 +133,7 @@ const FilterSheet = () => {
 			<Content>
 				<ItemsSection>
 					{sortedEntries.length === 0 ? (
-						<EmptyState>
-							<EmptyText>{t('transactions.filters.empty')}</EmptyText>
-						</EmptyState>
+						<NoFilters />
 					) : (
 						sortedEntries.map((entry, index) => (
 							<React.Fragment key={entry.id}>

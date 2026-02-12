@@ -64,17 +64,6 @@ export const EligibilityDivider = styled.View`
 	margin-horizontal: 24px;
 `;
 
-export const EmptyText = styled(Text)`
-	font-size: 15px;
-	color: ${({ theme }) => theme.text.tertiary};
-`;
-
-export const EmptyState = styled.View`
-	align-items: center;
-	justify-content: center;
-	padding: 48px 0;
-`;
-
 export const Content = styled.ScrollView.attrs({
 	automaticallyAdjustKeyboardInsets: true,
 	showsVerticalScrollIndicator: false,
