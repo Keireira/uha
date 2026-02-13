@@ -6,8 +6,8 @@ import Root, { WeekdayCell, WeekdayText } from './weekdays.styles';
 const Weekdays = () => {
 	const weekdays = useMemo(() => {
 		const now = new Date();
-		const start = startOfWeek(now);
-		const end = endOfWeek(now);
+		const start = startOfWeek(now, { weekStartsOn: 1 });
+		const end = endOfWeek(now, { weekStartsOn: 1 });
 
 		const days = eachDayOfInterval({ start, end });
 

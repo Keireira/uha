@@ -39,7 +39,7 @@ const FilterEntry = ({
 
 	return (
 		<>
-			{showDivider && <Divider $isDimmed={false} />}
+			{showDivider && <Divider $isDimmed={isDisabled} />}
 
 			<Root $isDimmed={isDisabled} disabled={isDisabled} onPress={handleItemPress}>
 				<CheckCircle $isSelected={isSelected} $isImplied={isImplied}>
