@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
+import NavBarFix from '@modules/nav-bar-fix';
 
 import { useAppModel } from '@models';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
@@ -12,6 +13,9 @@ import type { FilterTabT, FilterEntryT } from './filters.d';
 
 const FilterSheet = () => {
 	useAutoTimeMode();
+	useEffect(() => {
+		NavBarFix.removeBarButtonBackground();
+	}, []);
 
 	const { t } = useTranslation();
 
