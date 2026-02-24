@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import { useComment } from './hooks';
-import { useSettingsValue } from '@hooks';
 
 import { Divider } from '@ui';
 import {
@@ -69,7 +68,6 @@ const TenderMeta = ({ tenderTitle, tenderEmoji, tenderComment }: Props) => {
 
 const IndexMeta = ({ categoryTitle, currencyCode }: Props) => {
 	const { t } = useTranslation();
-	const explainCurrency = useSettingsValue<boolean>('explain_currency');
 
 	return (
 		<Row>
@@ -79,13 +77,11 @@ const IndexMeta = ({ categoryTitle, currencyCode }: Props) => {
 				<MetaValue>{categoryTitle}</MetaValue>
 			</MetaItem>
 
-			{explainCurrency && (
-				<MetaItem>
-					<Label>{t('transactions.details.currency')}</Label>
+			<MetaItem>
+				<Label>{t('transactions.details.currency')}</Label>
 
-					<MetaValue>{t(`currencies.${currencyCode}`)}</MetaValue>
-				</MetaItem>
-			)}
+				<MetaValue>{t(`currencies.${currencyCode}`)}</MetaValue>
+			</MetaItem>
 		</Row>
 	);
 };

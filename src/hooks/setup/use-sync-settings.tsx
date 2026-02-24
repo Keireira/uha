@@ -7,7 +7,6 @@ import SettingsBridgeModule from '@modules/settings-bridge';
 const useSyncSettings = () => {
 	const colorScheme = useColorScheme();
 	const theme = useSettingsValue<'auto' | 'dark' | 'light'>('theme');
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrency = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrency = useSettingsValue<string>('default_currency_code');
 
@@ -46,12 +45,6 @@ const useSyncSettings = () => {
 		};
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, []);
-
-	useEffect(() => {
-		if (typeof showFractions !== 'boolean') {
-			setSettingsValue('currency_fractions', true);
-		}
-	}, [showFractions]);
 
 	useEffect(() => {
 		if (!defaultCurrency || !recalcCurrency) {

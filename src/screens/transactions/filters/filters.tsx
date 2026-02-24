@@ -1,44 +1,51 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import * as Haptics from 'expo-haptics';
-import { useUnit } from 'effector-react';
+import React, { useState, useMemo, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
-import { SymbolView } from 'expo-symbols';
+import { useUnit } from 'effector-react';
+import NavBarFix from '@modules/nav-bar-fix';
+import { useNavigation } from 'expo-router';
 
 import { useAppModel } from '@models';
+import { TABS } from './components/header';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
-import { Header } from './components';
-import Root, {
-	Container,
-	ItemsSection,
-	ItemPressable,
-	CheckCircle,
-	ImpliedDot,
-	ItemTextGroup,
-	ItemTitle,
-	ItemSubtitle,
-	DimWrapper,
-	ItemSeparator,
-	EligibilityDivider,
-	EmptyState,
-	EmptyText
-} from './filters.styles';
+import { Header, NoFilters, FilterEntry } from './components';
+import Root, { Content, Entries, SectionHeader } from './filters.styles';
 
-import type { FilterTabT, FilterEntryT } from './filters.d';
+import type { FilterTabT, FilterEntryT, SearchSectionT } from './filters.d';
 
 const FilterSheet = () => {
 	useAutoTimeMode();
 
 	const { t } = useTranslation();
-	const theme = useTheme();
+	const navigation = useNavigation();
+
+	const [searchQuery, setSearchQuery] = useState('');
+	const isSearching = searchQuery.trim().length > 0;
 
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const entries = useFilterValues();
 	const eligibleIds = useEligibleIds(lensesStore.filters);
 
-	const [activeTab, setActiveTab] = useState<FilterTabT>('category');
+	const [activeTab, setActiveTab] = useState<FilterTabT>('service');
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerSearchBarOptions: {
+				onChangeText: (e: { nativeEvent: { text: string } }) => {
+					setSearchQuery(e.nativeEvent.text);
+				}
+			}
+		});
+	}, [navigation]);
+
+	/* @TODO:
+	 * Remove this once 'hidesSharedBackground' from 'react-native-screens' will work
+	 * and we will have proper support of 'headerRightItems' in 'Stack.Screen'
+	 **/
+	useEffect(() => {
+		NavBarFix.removeBarButtonBackground();
+	}, [navigation, eligibleIds]);
 
 	const entriesMap = useMemo(
 		() => ({
@@ -54,13 +61,22 @@ const FilterSheet = () => {
 		(tab: FilterTabT, entry: { id: string; title: string; subtitle?: string }) => {
 			if (tab === 'currency') {
 				const localizedName = t(`currencies.${entry.id}`, { defaultValue: '' });
-				return { title: localizedName || entry.id, subtitle: entry.id };
+
+				return {
+					title: localizedName || entry.id,
+					subtitle: entry.id
+				};
 			}
-			return { title: entry.title, subtitle: entry.subtitle };
+
+			return {
+				title: entry.title,
+				subtitle: entry.subtitle
+			};
 		},
 		[t]
 	);
 
+	/* Default mode (wo search) */
 	const sortedEntries: FilterEntryT[] = useMemo(() => {
 		const currentEntries = entriesMap[activeTab];
 		const activeIds = new Set(lensesStore.filters.filter((f) => f.type === activeTab).map((f) => f.value));
@@ -101,59 +117,104 @@ const FilterSheet = () => {
 		return [...selected, ...unselectedEligible, ...unselectedIneligible];
 	}, [entriesMap, activeTab, lensesStore.filters, eligibleIds, resolveTitle]);
 
+	/* Search mode */
+	const searchResults: SearchSectionT[] = useMemo(() => {
+		const q = searchQuery.trim().toLowerCase();
+		if (!q) return [];
+
+		const sections: SearchSectionT[] = [];
+
+		for (const tab of TABS) {
+			const currentEntries = entriesMap[tab];
+			const activeIds = new Set(lensesStore.filters.filter((f) => f.type === tab).map((f) => f.value));
+
+			const matched: FilterEntryT[] = [];
+
+			for (const entry of currentEntries) {
+				const { title, subtitle } = resolveTitle(tab, entry);
+
+				if (!title.toLowerCase().includes(q) && !subtitle?.toLowerCase().includes(q)) {
+					continue;
+				}
+
+				matched.push({
+					id: entry.id,
+					title,
+					subtitle,
+					isSelected: activeIds.has(entry.id),
+					isEligible: true,
+					isImplied: false
+				});
+			}
+
+			if (matched.length > 0) {
+				sections.push({
+					tab,
+					label: t(`transactions.filters.tabs.${tab}`),
+					entries: matched
+				});
+			}
+		}
+
+		return sections;
+	}, [searchQuery, entriesMap, lensesStore.filters, resolveTitle, t]);
+
 	const ineligibleStartIndex = useMemo(() => {
 		const idx = sortedEntries.findIndex((e) => !e.isEligible && !e.isSelected);
+
 		return idx === -1 ? -1 : idx;
 	}, [sortedEntries]);
 
-	const handleItemPress = useCallback(
-		(id: string, currentlySelected: boolean) => {
-			if (currentlySelected) lenses.filters.remove({ type: activeTab, value: id });
-			else lenses.filters.add({ type: activeTab, value: id });
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		},
-		[activeTab, lenses.filters]
-	);
-
 	return (
-		<Container>
+		<Root>
 			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-			<Root>
-				<ItemsSection>
-					{sortedEntries.length === 0 ? (
-						<EmptyState>
-							<EmptyText>{t('transactions.filters.empty')}</EmptyText>
-						</EmptyState>
-					) : (
-						sortedEntries.map((entry, index) => (
-							<React.Fragment key={entry.id}>
-								{index === ineligibleStartIndex && index > 0 && <EligibilityDivider />}
+			<Content>
+				<Entries $isSearching={isSearching}>
+					{isSearching &&
+						searchResults.length > 0 &&
+						searchResults.map((section) => (
+							<React.Fragment key={section.tab}>
+								<SectionHeader>{section.label}</SectionHeader>
 
-								<DimWrapper $dimmed={!entry.isEligible && !entry.isSelected}>
-									<ItemPressable onPress={() => handleItemPress(entry.id, entry.isSelected)}>
-										<CheckCircle $selected={entry.isSelected} $implied={entry.isImplied}>
-											{entry.isSelected ? (
-												<SymbolView name="checkmark" size={13} weight="bold" tintColor={theme.text.inverse} />
-											) : entry.isImplied ? (
-												<ImpliedDot />
-											) : null}
-										</CheckCircle>
-
-										<ItemTextGroup>
-											<ItemTitle $hasSubtitle={Boolean(entry.subtitle)}>{entry.title}</ItemTitle>
-											{entry.subtitle ? <ItemSubtitle>{entry.subtitle}</ItemSubtitle> : null}
-										</ItemTextGroup>
-									</ItemPressable>
-								</DimWrapper>
-
-								{index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1 && <ItemSeparator />}
+								{section.entries.map((entry, index) => (
+									<FilterEntry
+										key={entry.id}
+										id={entry.id}
+										activeTab={section.tab}
+										isImplied={entry.isImplied}
+										isEligible={entry.isEligible}
+										isSelected={entry.isSelected}
+										title={entry.title}
+										subtitle={entry.subtitle}
+										showDivider={false}
+										withSeparator={index < section.entries.length - 1}
+									/>
+								))}
 							</React.Fragment>
-						))
-					)}
-				</ItemsSection>
-			</Root>
-		</Container>
+						))}
+
+					{!isSearching &&
+						sortedEntries.length > 0 &&
+						sortedEntries.map((entry, index) => (
+							<FilterEntry
+								key={entry.id}
+								id={entry.id}
+								activeTab={activeTab}
+								isImplied={entry.isImplied}
+								isEligible={entry.isEligible}
+								isSelected={entry.isSelected}
+								title={entry.title}
+								subtitle={entry.subtitle}
+								showDivider={index === ineligibleStartIndex && index > 0}
+								withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
+							/>
+						))}
+
+					{((isSearching && !searchResults.length) || !sortedEntries.length) && <NoFilters />}
+				</Entries>
+			</Content>
+		</Root>
 	);
 };
 

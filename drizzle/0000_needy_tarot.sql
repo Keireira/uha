@@ -103,7 +103,6 @@ CREATE TABLE `user` (
 	`oled_mode` integer DEFAULT false NOT NULL,
 	`max_horizon` integer DEFAULT 3 NOT NULL,
 	`with_color_grading` integer DEFAULT true NOT NULL,
-	`explain_currency` integer DEFAULT true NOT NULL,
 	`recalc_currency` text NOT NULL,
 	`default_currency` text NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,

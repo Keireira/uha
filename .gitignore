@@ -45,3 +45,4 @@ android
 
 # modules
 !modules/settings-bridge/ios
+!modules/nav-bar-fix/ios

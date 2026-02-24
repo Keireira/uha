@@ -14,3 +14,9 @@ export type ActiveEntryT = {
 	title: string;
 	subtitle?: string;
 };
+
+export type SearchSectionT = {
+	tab: FilterTabT;
+	label: string;
+	entries: FilterEntryT[];
+};

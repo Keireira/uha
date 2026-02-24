@@ -10,12 +10,12 @@ import { useSearchParams } from '@hooks';
 import Tab from './tab';
 import { View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextButton, CircleButton, InlineTitleIOS, SmallText } from '@ui';
-import Root, { HeaderRow, Title, Counter, TabsBarRow, Masked } from './header.styles';
+import { TextButton, CircleButton } from '@ui';
+import Root, { TabsBarRow, Masked } from './header.styles';
 
 import type { Props, FilterTabT } from './header.d';
 
-const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
+export const TABS: FilterTabT[] = ['service', 'category', 'tender', 'currency'];
 
 const useCounters = (): Record<FilterTabT | 'total', number> => {
 	const { lenses } = useAppModel();
@@ -42,57 +42,57 @@ const useCounters = (): Record<FilterTabT | 'total', number> => {
 	};
 };
 
-const Header = ({ activeTab, setActiveTab }: Props) => {
+export const HeaderRight = () => {
 	const theme = useTheme();
 	const router = useRouter();
-	const { t } = useTranslation();
-
+	const { view_mode } = useAppModel();
 	const { txViewMode } = useSearchParams();
-	const { view_mode, lenses } = useAppModel();
-	const counters = useCounters();
 
-	const clearSheet = () => {
-		lenses.filters.clear();
-	};
-
-	const confirmSheet = () => {
-		router.back();
-
+	const confirm = () => {
 		if (txViewMode === 'list') {
 			view_mode.list.scrollToTop();
 		}
+
+		router.back();
 	};
 
 	return (
+		<CircleButton
+			size={42}
+			onPress={confirm}
+			systemImage="checkmark"
+			glassTint={theme.accent.orange}
+			symbolColor={theme.static.white}
+		/>
+	);
+};
+
+export const HeaderLeft = () => {
+	const counters = useCounters();
+	const { t } = useTranslation();
+	const { lenses } = useAppModel();
+
+	const clear = () => {
+		lenses.filters.clear();
+	};
+
+	if (!counters.total) return null;
+
+	return <TextButton onPress={clear} role="destructive" title={t('transactions.filters.clear')} />;
+};
+
+export const HeaderBackground = () => {
+	return <View />;
+};
+
+const Header = ({ activeTab, setActiveTab }: Props) => {
+	const theme = useTheme();
+	const { t } = useTranslation();
+
+	const counters = useCounters();
+
+	return (
 		<Root intensity={25} tint={theme.tint}>
-			<HeaderRow>
-				<View>
-					{counters.total > 0 && (
-						<TextButton onPress={clearSheet} role="destructive" title={t('transactions.filters.clear')} />
-					)}
-				</View>
-
-				<Title>
-					<InlineTitleIOS>{t('transactions.filters.title')}</InlineTitleIOS>
-
-					{counters.total > 0 && (
-						<Counter tintColor={theme.accent.orange}>
-							<SmallText $bold $color={theme.text.inverse}>
-								{counters.total}
-							</SmallText>
-						</Counter>
-					)}
-				</Title>
-
-				<CircleButton
-					size={42}
-					onPress={confirmSheet}
-					systemImage="checkmark"
-					glassTint={theme.accent.orange}
-					symbolColor={theme.static.white}
-				/>
-			</HeaderRow>
-
 			<Masked
 				maskElement={
 					<LinearGradient

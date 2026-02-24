@@ -54,7 +54,6 @@ const AnalyticsSheet = () => {
 
 	const tabs = useMemo(() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')), [clavis]);
 
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const {
@@ -76,7 +75,7 @@ const AnalyticsSheet = () => {
 
 	const activeSummary = activeClavis === 'day' ? day : activeClavis === 'year' ? year : month;
 	const titleDate = format(activeSummary.rawDate, DATE_FORMATS[activeClavis] ?? 'MMMM yyyy');
-	const enrichedCategories = useCategoryDetails(activeSummary.categories, currency, showFractions);
+	const enrichedCategories = useCategoryDetails(activeSummary.categories, currency);
 
 	const formattedTotal =
 		activeSummary.total > 0 && currency
@@ -84,8 +83,8 @@ const AnalyticsSheet = () => {
 					style: 'currency',
 					currency: currency.id,
 					currencyDisplay: 'symbol',
-					minimumFractionDigits: activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits,
-					maximumFractionDigits: activeSummary.total > 1000 || !showFractions ? 0 : currency.fraction_digits
+					minimumFractionDigits: activeSummary.total > 1000 ? 0 : currency.fraction_digits,
+					maximumFractionDigits: activeSummary.total > 1000 ? 0 : currency.fraction_digits
 				})
 			: '—';
 

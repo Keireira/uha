@@ -6,7 +6,6 @@ export const AccentBlock = styled.View<{ $color: SegmentT['color']; $flex: Segme
 	flex: ${({ $flex }) => $flex ?? 1};
 	border-radius: 3px;
 	background-color: ${({ $color, theme }) => $color || theme.accent.orange};
-	opacity: 0.85;
 `;
 
 export default styled.View`

@@ -25,7 +25,6 @@ const TransactionCard = ({
 }: TransactionProps) => {
 	const router = useRouter();
 	const { r, formatCurrency, hasAnyRate } = useRates(new Date(date), isPhantom, currency_code);
-	const showFractions = useSettingsValue<boolean>('currency_fractions');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const withConversion = currency_code !== recalcCurrencyCode && hasAnyRate;
@@ -73,7 +72,7 @@ const TransactionCard = ({
 
 				{withConversion && (
 					<BottomText numberOfLines={1} ellipsizeMode="tail" $align="right">
-						{showFractions ? convertedPrice : Math.round(Number.parseInt(convertedPrice as string, 10))}
+						{convertedPrice}
 					</BottomText>
 				)}
 			</PriceSection>
