@@ -44,15 +44,14 @@ const Layout = () => {
 					presentation: 'formSheet',
 					headerSearchBarOptions: {
 						placeholder: 'Search',
+						placement: 'integrated',
 						barTintColor: theme.background.secondary,
 						tintColor: theme.text.primary,
-						hideNavigationBar: true,
+						hideNavigationBar: false,
+						hideWhenScrolling: false,
 						autoFocus: false,
 						autoCapitalize: 'none',
 						disableBackButtonOverride: true
-						// onChangeText: (e: { nativeEvent: { text: string } }) => {
-						// 	setSearchQuery(e.nativeEvent.text);
-						// }
 					},
 					sheetAllowedDetents: [1.0],
 					sheetLargestUndimmedDetentIndex: 'none',

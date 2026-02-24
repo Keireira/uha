@@ -1,23 +1,26 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { useUnit } from 'effector-react';
+import React, { useState, useMemo, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUnit } from 'effector-react';
 import NavBarFix from '@modules/nav-bar-fix';
+import { useNavigation } from 'expo-router';
 
 import { useAppModel } from '@models';
+import { TABS } from './components/header';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
-import Root, { Content } from './filters.styles';
 import { Header, NoFilters, FilterEntry } from './components';
+import Root, { Content, Entries, SectionHeader } from './filters.styles';
 
-import type { FilterTabT, FilterEntryT } from './filters.d';
+import type { FilterTabT, FilterEntryT, SearchSectionT } from './filters.d';
 
 const FilterSheet = () => {
 	useAutoTimeMode();
-	useEffect(() => {
-		NavBarFix.removeBarButtonBackground();
-	}, []);
 
 	const { t } = useTranslation();
+	const navigation = useNavigation();
+
+	const [searchQuery, setSearchQuery] = useState('');
+	const isSearching = searchQuery.trim().length > 0;
 
 	const { lenses } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
@@ -25,6 +28,24 @@ const FilterSheet = () => {
 	const eligibleIds = useEligibleIds(lensesStore.filters);
 
 	const [activeTab, setActiveTab] = useState<FilterTabT>('service');
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerSearchBarOptions: {
+				onChangeText: (e: { nativeEvent: { text: string } }) => {
+					setSearchQuery(e.nativeEvent.text);
+				}
+			}
+		});
+	}, [navigation]);
+
+	/* @TODO:
+	 * Remove this once 'hidesSharedBackground' from 'react-native-screens' will work
+	 * and we will have proper support of 'headerRightItems' in 'Stack.Screen'
+	 **/
+	useEffect(() => {
+		NavBarFix.removeBarButtonBackground();
+	}, [navigation, eligibleIds]);
 
 	const entriesMap = useMemo(
 		() => ({
@@ -55,6 +76,7 @@ const FilterSheet = () => {
 		[t]
 	);
 
+	/* Default mode (wo search) */
 	const sortedEntries: FilterEntryT[] = useMemo(() => {
 		const currentEntries = entriesMap[activeTab];
 		const activeIds = new Set(lensesStore.filters.filter((f) => f.type === activeTab).map((f) => f.value));
@@ -95,6 +117,48 @@ const FilterSheet = () => {
 		return [...selected, ...unselectedEligible, ...unselectedIneligible];
 	}, [entriesMap, activeTab, lensesStore.filters, eligibleIds, resolveTitle]);
 
+	/* Search mode */
+	const searchResults: SearchSectionT[] = useMemo(() => {
+		const q = searchQuery.trim().toLowerCase();
+		if (!q) return [];
+
+		const sections: SearchSectionT[] = [];
+
+		for (const tab of TABS) {
+			const currentEntries = entriesMap[tab];
+			const activeIds = new Set(lensesStore.filters.filter((f) => f.type === tab).map((f) => f.value));
+
+			const matched: FilterEntryT[] = [];
+
+			for (const entry of currentEntries) {
+				const { title, subtitle } = resolveTitle(tab, entry);
+
+				if (!title.toLowerCase().includes(q) && !subtitle?.toLowerCase().includes(q)) {
+					continue;
+				}
+
+				matched.push({
+					id: entry.id,
+					title,
+					subtitle,
+					isSelected: activeIds.has(entry.id),
+					isEligible: true,
+					isImplied: false
+				});
+			}
+
+			if (matched.length > 0) {
+				sections.push({
+					tab,
+					label: t(`transactions.filters.tabs.${tab}`),
+					entries: matched
+				});
+			}
+		}
+
+		return sections;
+	}, [searchQuery, entriesMap, lensesStore.filters, resolveTitle, t]);
+
 	const ineligibleStartIndex = useMemo(() => {
 		const idx = sortedEntries.findIndex((e) => !e.isEligible && !e.isSelected);
 
@@ -106,22 +170,53 @@ const FilterSheet = () => {
 			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
 			<Content>
-				{sortedEntries.map((entry, index) => (
-					<FilterEntry
-						key={entry.id}
-						id={entry.id}
-						activeTab={activeTab}
-						isImplied={entry.isImplied}
-						isEligible={entry.isEligible}
-						isSelected={entry.isSelected}
-						title={entry.title}
-						subtitle={entry.subtitle}
-						showDivider={index === ineligibleStartIndex && index > 0}
-						withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
-					/>
-				))}
+				<Entries>
+					{isSearching ? (
+						searchResults.length > 0 ? (
+							searchResults.map((section) => (
+								<React.Fragment key={section.tab}>
+									<SectionHeader>{section.label}</SectionHeader>
 
-				{!sortedEntries.length && <NoFilters />}
+									{section.entries.map((entry, index) => (
+										<FilterEntry
+											key={entry.id}
+											id={entry.id}
+											activeTab={section.tab}
+											isImplied={entry.isImplied}
+											isEligible={entry.isEligible}
+											isSelected={entry.isSelected}
+											title={entry.title}
+											subtitle={entry.subtitle}
+											showDivider={false}
+											withSeparator={index < section.entries.length - 1}
+										/>
+									))}
+								</React.Fragment>
+							))
+						) : (
+							<NoFilters />
+						)
+					) : (
+						<>
+							{sortedEntries.map((entry, index) => (
+								<FilterEntry
+									key={entry.id}
+									id={entry.id}
+									activeTab={activeTab}
+									isImplied={entry.isImplied}
+									isEligible={entry.isEligible}
+									isSelected={entry.isSelected}
+									title={entry.title}
+									subtitle={entry.subtitle}
+									showDivider={index === ineligibleStartIndex && index > 0}
+									withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
+								/>
+							))}
+
+							{!sortedEntries.length && <NoFilters />}
+						</>
+					)}
+				</Entries>
 			</Content>
 		</Root>
 	);
