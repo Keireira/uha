@@ -7,9 +7,8 @@ export const Content = styled.ScrollView.attrs({
 	keyboardShouldPersistTaps: 'handled',
 	contentInsetAdjustmentBehavior: 'automatic',
 	contentContainerStyle: {
-		paddingTop: 64,
 		paddingRight: 24,
-		paddingBottom: 24,
+		paddingBottom: 96,
 		paddingLeft: 24
 	}
 })`
@@ -21,7 +20,9 @@ export const SectionHeader = styled(H6)`
 	color: ${({ theme }) => theme.accent.orange};
 `;
 
-export const Entries = styled.View``;
+export const Entries = styled.View<{ $isSearching: boolean }>`
+	margin-top: ${({ $isSearching }) => ($isSearching ? 118 : 64)}px;
+`;
 
 export default styled.View.attrs({ collapsable: false })`
 	flex: 1;

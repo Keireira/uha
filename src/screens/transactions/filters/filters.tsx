@@ -170,52 +170,48 @@ const FilterSheet = () => {
 			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
 			<Content>
-				<Entries>
-					{isSearching ? (
-						searchResults.length > 0 ? (
-							searchResults.map((section) => (
-								<React.Fragment key={section.tab}>
-									<SectionHeader>{section.label}</SectionHeader>
+				<Entries $isSearching={isSearching}>
+					{isSearching &&
+						searchResults.length > 0 &&
+						searchResults.map((section) => (
+							<React.Fragment key={section.tab}>
+								<SectionHeader>{section.label}</SectionHeader>
 
-									{section.entries.map((entry, index) => (
-										<FilterEntry
-											key={entry.id}
-											id={entry.id}
-											activeTab={section.tab}
-											isImplied={entry.isImplied}
-											isEligible={entry.isEligible}
-											isSelected={entry.isSelected}
-											title={entry.title}
-											subtitle={entry.subtitle}
-											showDivider={false}
-											withSeparator={index < section.entries.length - 1}
-										/>
-									))}
-								</React.Fragment>
-							))
-						) : (
-							<NoFilters />
-						)
-					) : (
-						<>
-							{sortedEntries.map((entry, index) => (
-								<FilterEntry
-									key={entry.id}
-									id={entry.id}
-									activeTab={activeTab}
-									isImplied={entry.isImplied}
-									isEligible={entry.isEligible}
-									isSelected={entry.isSelected}
-									title={entry.title}
-									subtitle={entry.subtitle}
-									showDivider={index === ineligibleStartIndex && index > 0}
-									withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
-								/>
-							))}
+								{section.entries.map((entry, index) => (
+									<FilterEntry
+										key={entry.id}
+										id={entry.id}
+										activeTab={section.tab}
+										isImplied={entry.isImplied}
+										isEligible={entry.isEligible}
+										isSelected={entry.isSelected}
+										title={entry.title}
+										subtitle={entry.subtitle}
+										showDivider={false}
+										withSeparator={index < section.entries.length - 1}
+									/>
+								))}
+							</React.Fragment>
+						))}
 
-							{!sortedEntries.length && <NoFilters />}
-						</>
-					)}
+					{!isSearching &&
+						sortedEntries.length > 0 &&
+						sortedEntries.map((entry, index) => (
+							<FilterEntry
+								key={entry.id}
+								id={entry.id}
+								activeTab={activeTab}
+								isImplied={entry.isImplied}
+								isEligible={entry.isEligible}
+								isSelected={entry.isSelected}
+								title={entry.title}
+								subtitle={entry.subtitle}
+								showDivider={index === ineligibleStartIndex && index > 0}
+								withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
+							/>
+						))}
+
+					{((isSearching && !searchResults.length) || !sortedEntries.length) && <NoFilters />}
 				</Entries>
 			</Content>
 		</Root>
