@@ -15,7 +15,7 @@ import Root, { TabsBarRow, Masked } from './header.styles';
 
 import type { Props, FilterTabT } from './header.d';
 
-export const TABS: FilterTabT[] = ['service', 'category', 'tender', 'currency'];
+export const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
 
 const useCounters = (): Record<FilterTabT | 'total', number> => {
 	const { lenses } = useAppModel();

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useState, useMemo, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
 import NavBarFix from '@modules/nav-bar-fix';
@@ -11,6 +11,7 @@ import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 import { Header, NoFilters, FilterEntry } from './components';
 import Root, { Content, Entries, SectionHeader } from './filters.styles';
 
+import type { ScrollView } from 'react-native';
 import type { FilterTabT, FilterEntryT, SearchSectionT } from './filters.d';
 
 const FilterSheet = () => {
@@ -27,7 +28,8 @@ const FilterSheet = () => {
 	const entries = useFilterValues();
 	const eligibleIds = useEligibleIds(lensesStore.filters);
 
-	const [activeTab, setActiveTab] = useState<FilterTabT>('service');
+	const contentRef = useRef<ScrollView>(null);
+	const [activeTab, setActiveTab] = useState<FilterTabT>(TABS[0]);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -156,8 +158,12 @@ const FilterSheet = () => {
 			}
 		}
 
-		return sections;
-	}, [searchQuery, entriesMap, lensesStore.filters, resolveTitle, t]);
+		return sections.sort((a, b) => {
+			if (a.tab === activeTab) return -1;
+			if (b.tab === activeTab) return 1;
+			return 0;
+		});
+	}, [searchQuery, entriesMap, lensesStore.filters, resolveTitle, t, activeTab]);
 
 	const ineligibleStartIndex = useMemo(() => {
 		const idx = sortedEntries.findIndex((e) => !e.isEligible && !e.isSelected);
@@ -165,11 +171,24 @@ const FilterSheet = () => {
 		return idx === -1 ? -1 : idx;
 	}, [sortedEntries]);
 
+	const setActiveTabProxy = (tab: FilterTabT) => {
+		const isSameTab = tab === activeTab;
+
+		if (!isSameTab) {
+			setActiveTab(tab);
+		}
+
+		contentRef.current?.scrollTo({
+			y: 0,
+			animated: isSameTab
+		});
+	};
+
 	return (
 		<Root>
-			<Header activeTab={activeTab} setActiveTab={setActiveTab} />
+			<Header activeTab={activeTab} setActiveTab={setActiveTabProxy} />
 
-			<Content>
+			<Content ref={contentRef}>
 				<Entries $isSearching={isSearching}>
 					{isSearching &&
 						searchResults.length > 0 &&
