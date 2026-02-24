@@ -12,8 +12,9 @@ export const Content = styled.ScrollView.attrs({
 	}
 })`
 	flex: 1;
+	margin-top: -136px;
 `;
 
-export default styled.View`
+export default styled.View.attrs({ collapsable: false })`
 	flex: 1;
 `;

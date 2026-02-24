@@ -2,6 +2,8 @@ import React from 'react';
 import { Stack } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 
+import { HeaderLeft, HeaderRight, HeaderBackground } from '@screens/transactions/filters/components/header/header';
+
 const Layout = () => {
 	const theme = useTheme();
 
@@ -28,8 +30,30 @@ const Layout = () => {
 			<Stack.Screen
 				name="filters"
 				options={{
+					headerShown: true,
+					title: 'Filters',
+					headerTransparent: true,
+					headerBlurEffect: 'none',
+					headerTintColor: theme.text.primary,
+					headerShadowVisible: false,
+					headerLeft: () => <HeaderLeft />,
+					headerBackground: () => <HeaderBackground />,
+					headerRight: () => <HeaderRight />,
+
 					gestureEnabled: true,
 					presentation: 'formSheet',
+					headerSearchBarOptions: {
+						placeholder: 'Search',
+						barTintColor: theme.background.secondary,
+						tintColor: theme.text.primary,
+						hideNavigationBar: true,
+						autoFocus: false,
+						autoCapitalize: 'none',
+						disableBackButtonOverride: true
+						// onChangeText: (e: { nativeEvent: { text: string } }) => {
+						// 	setSearchQuery(e.nativeEvent.text);
+						// }
+					},
 					sheetAllowedDetents: [1.0],
 					sheetLargestUndimmedDetentIndex: 'none',
 					sheetGrabberVisible: true,
