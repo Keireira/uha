@@ -48,7 +48,7 @@ public class SettingsBridgeModule: Module {
 			"timestamp": Date().timeIntervalSince1970,
 			"source": source,
 			"oldValue": lastThemeValue ?? "nil",
-			"newValue": newValue == "system" ? nil : (newValue ?? "nil")
+			"newValue": (newValue == "system" ? nil : (newValue ?? "nil")) as Any
 		]
 	}
 
