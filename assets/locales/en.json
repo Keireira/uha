@@ -5,7 +5,141 @@
   "languages": {
     "en": "English",
     "ru": "Russian",
-    "kk": "Kazakh"
+    "kk": "Kazakh",
+    "es": "Spanish",
+    "pt-BR": "Portuguese (Brazil)",
+    "de": "German",
+    "ja": "Japanese",
+    "fr": "French",
+    "ko": "Korean",
+    "it": "Italian",
+    "pl": "Polish",
+    "uk": "Ukrainian",
+    "zh-Hans": "Chinese (Simplified)",
+    "zh-Hant": "Chinese (Traditional)",
+    "nl": "Dutch",
+    "th": "Thai",
+    "vi": "Vietnamese",
+    "sv": "Swedish",
+    "cs": "Czech",
+    "ro": "Romanian",
+    "hi": "Hindi",
+    "fi": "Finnish",
+    "nb": "Norwegian",
+    "is": "Icelandic",
+    "da": "Danish",
+    "hu": "Hungarian",
+    "sk": "Slovak",
+    "bg": "Bulgarian",
+    "sr": "Serbian",
+    "el": "Greek",
+    "fil": "Filipino",
+    "ka": "Georgian"
+  },
+  "library": {
+    "search": "Search everywhere",
+    "search_categories": "Search in categories",
+    "search_services": "Search in services",
+    "search_payments": "Search in payments"
+  },
+  "settings": {
+    "system": {
+      "header": "System",
+      "oled_mode": "OLED Mode",
+      "notifications": {
+        "header": "Notifications",
+        "results": {
+          "denied": "Not requested",
+          "blocked": "Disabled",
+          "granted": "Enabled",
+          "limited": "Enabled"
+        }
+      },
+      "face_id": "Require Face ID",
+      "language": "Language",
+      "dark_mode": "Dark Mode"
+    },
+    "currencies": {
+      "header": "Currencies",
+      "default": "Default Currency",
+      "recalc": "Recalc Currency",
+      "fractions": "Show Fractions",
+      "explain": "Currency Tag",
+      "africa": "Africa",
+      "europe": "Europe",
+      "north_america": "North America",
+      "central_america": "Central America",
+      "south_america": "South America",
+      "caribbean": "Caribbean",
+      "central_asia": "Central Asia",
+      "south_asia": "South Asia",
+      "east_asia": "East Asia",
+      "southeast_asia": "Southeast Asia",
+      "oceania": "Oceania",
+      "other": "Other",
+      "cryptocurrency": "Cryptocurrencies",
+      "refresh_rates": "Exchange Rates",
+      "refresh_action": "Update"
+    },
+    "about": {
+      "header": "About",
+      "version": "Version",
+      "sources": "Sources",
+      "github": "GitHub",
+      "beta": "Join Beta",
+      "testflight": "TestFlight"
+    },
+    "donations": {
+      "header": "Support me",
+      "description": "This application is free and open sourced, and always will be.\nI have to pay for it's maintenance though, so I'll appreciate any form of support.",
+      "donate": "Donate",
+      "patreon": "Patreon",
+      "github": "GitHub",
+      "boosty": "Boosty"
+    }
+  },
+  "dates": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday"
+  },
+  "transactions": {
+    "details": {
+      "category": "Category",
+      "currency": "Currency",
+      "payment": "Payment method",
+      "notes": "Notes",
+      "notes_placeholder": "Tap to add a comment"
+    },
+    "filters": {
+      "title": "Filters",
+      "clear": "Clear",
+      "search": "Search",
+      "empty": "No filters available",
+      "tabs": {
+        "category": "Category",
+        "service": "Service",
+        "tender": "Tender",
+        "currency": "Currency"
+      }
+    },
+    "time_mode": {
+      "future": "Upcoming",
+      "all": "All time"
+    },
+    "view_mode": {
+      "list": "List",
+      "calendar": "Calendar",
+      "subscriptions": "Subscriptions"
+    }
+  },
+  "rates": {
+    "error_title": "Rates update failed",
+    "error_description": "Currency conversions may be inaccurate",
+    "success_title": "Rates updated"
+  },
+  "calendar": {
+    "total": "Total"
   },
   "currencies": {
     "AOA": "Angolan Kwanza",
@@ -133,134 +267,5 @@
     "MYR": "Malaysian Ringgit",
     "EGP": "Egyptian Pound",
     "MVR": "Maldivian Rufiyaa"
-  },
-  "intervals": {
-    "day": "Day",
-    "week": "Week",
-    "month": "Month",
-    "year": "Year"
-  },
-  "crossroad": {
-    "subscription": "Subscription",
-    "category": "Category",
-    "service": "Service",
-    "payment": "Tender"
-  },
-  "library": {
-    "search": "Search everywhere",
-    "search_categories": "Search in categories",
-    "search_services": "Search in services",
-    "search_payments": "Search in payments"
-  },
-  "settings": {
-    "system": {
-      "header": "System",
-      "oled_mode": "OLED Mode",
-      "notifications": {
-        "header": "Notifications",
-        "results": {
-          "denied": "Not requested",
-          "blocked": "Disabled",
-          "granted": "Enabled",
-          "limited": "Enabled"
-        }
-      },
-      "face_id": "Require Face ID",
-      "language": "Language",
-      "dark_mode": "Dark Mode"
-    },
-    "currencies": {
-      "header": "Currencies",
-      "default": "Default Currency",
-      "recalc": "Recalc Currency",
-      "fractions": "Show Fractions",
-      "explain": "Currency Tag",
-
-      "africa": "Africa",
-      "europe": "Europe",
-      "north_america": "North America",
-      "central_america": "Central America",
-      "south_america": "South America",
-      "caribbean": "Caribbean",
-      "central_asia": "Central Asia",
-      "south_asia": "South Asia",
-      "east_asia": "East Asia",
-      "southeast_asia": "Southeast Asia",
-      "oceania": "Oceania",
-      "other": "Other",
-      "cryptocurrency": "Cryptocurrencies",
-      "refresh_rates": "Exchange Rates",
-      "refresh_action": "Update"
-    },
-    "about": {
-      "header": "About",
-      "version": "Version",
-      "sources": "Sources",
-      "github": "GitHub",
-      "beta": "Join Beta",
-      "testflight": "TestFlight"
-    },
-    "donations": {
-      "header": "Support me",
-      "description": "This application is free and open sourced, and always will be.\nI have to pay for it's maintenance though, so I'll appreciate any form of support.",
-      "donate": "Donate",
-      "patreon": "Patreon",
-      "github": "GitHub",
-      "boosty": "Boosty"
-    }
-  },
-  "dates": {
-    "month": "Month",
-    "year": "Year",
-    "day": "Day",
-    "today": "Today",
-    "tomorrow": "Tomorrow",
-    "yesterday": "Yesterday"
-  },
-  "transactions": {
-    "details": {
-      "not_found": "Transaction not found",
-      "category": "Category",
-      "currency": "Currency",
-      "payment": "Payment method",
-      "notes": "Notes",
-      "notes_placeholder": "Tap to add a comment"
-    },
-    "filters": {
-      "title": "Filters",
-      "category": "By Category",
-      "service": "By Service",
-      "tender": "By Tender",
-      "currency": "By Base Currency",
-      "done": "Done",
-      "clear": "Clear",
-      "search": "Search",
-      "empty": "No filters available",
-      "active": "Active",
-      "refine_by": "Refine by",
-      "tabs": {
-        "category": "Category",
-        "service": "Service",
-        "tender": "Tender",
-        "currency": "Currency"
-      }
-    },
-    "time_mode": {
-      "future": "Upcoming",
-      "all": "All time"
-    },
-    "view_mode": {
-      "list": "List",
-      "calendar": "Calendar",
-      "subscriptions": "Subscriptions"
-    }
-  },
-  "rates": {
-    "error_title": "Rates update failed",
-    "error_description": "Currency conversions may be inaccurate",
-    "success_title": "Rates updated"
-  },
-  "calendar": {
-    "total": "Total"
   }
 }
