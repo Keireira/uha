@@ -176,7 +176,7 @@ const FilterSheet = () => {
 						paddingTop: 136,
 						paddingRight: 24,
 						paddingLeft: 24,
-						paddingBottom: insets.bottom + 108
+						paddingBottom: insets.bottom + 64
 					}}
 				>
 					<Entries>

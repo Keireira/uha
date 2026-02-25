@@ -2,15 +2,7 @@
 
 <https://trello.com/b/pEHXDigd/uha>
 
-<https://frankfurter.dev/>
-<https://currencyapi.net/documentation>
-Create service with base currency, and recalc derivatives
-
 ## TODO
-
-- [ ] Add missed currency SF symbols as custom SF symbols (see figma plugin + <https://developer.apple.com/documentation/uikit/creating-custom-symbol-images-for-your-app>)
-- [ ] When text overflows trigger in list, show ... sign instead just cutting the text
-- [ ] Implement custom lists (child\husband\friend??)
 
 ## WTF
 

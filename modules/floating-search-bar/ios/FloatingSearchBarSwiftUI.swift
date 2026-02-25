@@ -18,8 +18,9 @@ struct FloatingSearchBarContent: View {
 			if isFocused { closeButton }
 		}
 		.tint(state.tintColor)
-		.padding(.horizontal, 16)
-		.animation(.easeInOut(duration: 0.25), value: isFocused)
+		.padding(.horizontal, 24)
+		.padding(.bottom, isFocused ? 12 : 0)
+		.animation(.easeInOut(duration: 0.125), value: isFocused)
 		.onChange(of: state.text) { newValue in
 			state.onTextChange?(newValue)
 		}
@@ -58,10 +59,10 @@ struct FloatingSearchBarContent: View {
 			state.text = ""
 		} label: {
 			Image(systemName: "xmark")
-				.font(.system(size: 14, weight: .semibold))
+				.font(.system(size: 18, weight: .semibold))
 				.frame(width: 44, height: 44)
 		}
 		.glass(in: Circle())
-		.transition(.scale.combined(with: .opacity))
+		.transition(.scale.combined(with: .opacity).animation(.easeInOut(duration: 0.125).delay(0.0625)))
 	}
 }
