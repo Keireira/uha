@@ -1,7 +1,6 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useState, useMemo, useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import NavBarFix from '@modules/nav-bar-fix';
 import { useNavigation } from 'expo-router';
 
 import { useAppModel } from '@models';
@@ -40,14 +39,6 @@ const FilterSheet = () => {
 			}
 		});
 	}, [navigation]);
-
-	/* @TODO:
-	 * Remove this once 'hidesSharedBackground' from 'react-native-screens' will work
-	 * and we will have proper support of 'headerRightItems' in 'Stack.Screen'
-	 **/
-	useEffect(() => {
-		NavBarFix.removeBarButtonBackground();
-	}, [navigation, eligibleIds]);
 
 	const entriesMap = useMemo(
 		() => ({
@@ -189,7 +180,7 @@ const FilterSheet = () => {
 			<Header activeTab={activeTab} setActiveTab={setActiveTabProxy} />
 
 			<Content ref={contentRef}>
-				<Entries $isSearching={isSearching}>
+				<Entries>
 					{isSearching &&
 						searchResults.length > 0 &&
 						searchResults.map((section) => (

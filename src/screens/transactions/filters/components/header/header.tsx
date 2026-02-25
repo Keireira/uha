@@ -10,8 +10,8 @@ import { useSearchParams } from '@hooks';
 import Tab from './tab';
 import { View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextButton, CircleButton } from '@ui';
-import Root, { TabsBarRow, Masked } from './header.styles';
+import { TextButton, CircleButton, InlineTitleIOS } from '@ui';
+import Root, { HeaderRow, Title, TabsBarRow, Masked } from './header.styles';
 
 import type { Props, FilterTabT } from './header.d';
 
@@ -42,11 +42,18 @@ const useCounters = (): Record<FilterTabT | 'total', number> => {
 	};
 };
 
-export const HeaderRight = () => {
+const Header = ({ activeTab, setActiveTab }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
-	const { view_mode } = useAppModel();
+	const { t } = useTranslation();
+
+	const counters = useCounters();
 	const { txViewMode } = useSearchParams();
+	const { view_mode, lenses } = useAppModel();
+
+	const clear = () => {
+		lenses.filters.clear();
+	};
 
 	const confirm = () => {
 		if (txViewMode === 'list') {
@@ -57,42 +64,27 @@ export const HeaderRight = () => {
 	};
 
 	return (
-		<CircleButton
-			size={42}
-			onPress={confirm}
-			systemImage="checkmark"
-			glassTint={theme.accent.orange}
-			symbolColor={theme.static.white}
-		/>
-	);
-};
-
-export const HeaderLeft = () => {
-	const counters = useCounters();
-	const { t } = useTranslation();
-	const { lenses } = useAppModel();
-
-	const clear = () => {
-		lenses.filters.clear();
-	};
-
-	if (!counters.total) return null;
-
-	return <TextButton onPress={clear} role="destructive" title={t('transactions.filters.clear')} />;
-};
-
-export const HeaderBackground = () => {
-	return <View />;
-};
-
-const Header = ({ activeTab, setActiveTab }: Props) => {
-	const theme = useTheme();
-	const { t } = useTranslation();
-
-	const counters = useCounters();
-
-	return (
 		<Root intensity={25} tint={theme.tint}>
+			<HeaderRow>
+				<View>
+					{counters.total > 0 && (
+						<TextButton onPress={clear} role="destructive" title={t('transactions.filters.clear')} />
+					)}
+				</View>
+
+				<Title>
+					<InlineTitleIOS>{t('transactions.filters.title')}</InlineTitleIOS>
+				</Title>
+
+				<CircleButton
+					size={42}
+					onPress={confirm}
+					systemImage="checkmark"
+					glassTint={theme.accent.orange}
+					symbolColor={theme.static.white}
+				/>
+			</HeaderRow>
+
 			<Masked
 				maskElement={
 					<LinearGradient
