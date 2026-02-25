@@ -15,6 +15,25 @@
     "it": "Włoski",
     "pl": "Polski",
     "uk": "Ukraiński",
+    "zh-Hans": "Chiński (uproszczony)",
+    "zh-Hant": "Chiński (tradycyjny)",
+    "nl": "Niderlandzki",
+    "th": "Tajski",
+    "vi": "Wietnamski",
+    "sv": "Szwedzki",
+    "cs": "Czeski",
+    "ro": "Rumuński",
+    "hi": "Hindi",
+    "fi": "Fiński",
+    "nb": "Norweski",
+    "is": "Islandzki",
+    "da": "Duński",
+    "hu": "Węgierski",
+    "sk": "Słowacki",
+    "bg": "Bułgarski",
+    "sr": "Serbski",
+    "el": "Grecki",
+    "fil": "Filipiński",
     "ka": "Gruziński"
   },
   "library": {
@@ -30,7 +49,7 @@
       "notifications": {
         "header": "Powiadomienia",
         "results": {
-          "denied": "Nie zapytano",
+          "denied": "Nie pobrano",
           "blocked": "Wyłączone",
           "granted": "Włączone",
           "limited": "Włączone"
@@ -46,7 +65,6 @@
       "recalc": "Waluta przeliczeniowa",
       "fractions": "Pokaż grosze",
       "explain": "Znacznik waluty",
-
       "africa": "Afryka",
       "europe": "Europa",
       "north_america": "Ameryka Północna",
