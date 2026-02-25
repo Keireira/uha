@@ -14,7 +14,8 @@
     "ko": "Koreański",
     "it": "Włoski",
     "pl": "Polski",
-    "uk": "Ukraiński"
+    "uk": "Ukraiński",
+    "ka": "Gruziński"
   },
   "library": {
     "search": "Szukaj wszędzie",
@@ -29,7 +30,7 @@
       "notifications": {
         "header": "Powiadomienia",
         "results": {
-          "denied": "Nie pobrano",
+          "denied": "Nie zapytano",
           "blocked": "Wyłączone",
           "granted": "Włączone",
           "limited": "Włączone"

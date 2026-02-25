@@ -39,7 +39,8 @@
       "ko": "./assets/locales/ko.json",
       "it": "./assets/locales/it.json",
       "pl": "./assets/locales/pl.json",
-      "uk": "./assets/locales/uk.json"
+      "uk": "./assets/locales/uk.json",
+      "ka": "./assets/locales/ka.json"
     },
     "plugins": [
       "expo-font",

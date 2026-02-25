@@ -15,7 +15,8 @@ import korean from '@locales/ko.json';
 import italian from '@locales/it.json';
 import polish from '@locales/pl.json';
 import ukrainian from '@locales/uk.json';
-import { enUS, ru, kk, es, ptBR, de, ja, fr, ko, it, pl, uk } from 'date-fns/locale';
+import georgian from '@locales/ka.json';
+import { enUS, ru, kk, es, ptBR, de, ja, fr, ko, it, pl, uk, ka } from 'date-fns/locale';
 
 const resources = {
 	en: { translation: english },
@@ -29,7 +30,8 @@ const resources = {
 	ko: { translation: korean },
 	it: { translation: italian },
 	pl: { translation: polish },
-	uk: { translation: ukrainian }
+	uk: { translation: ukrainian },
+	ka: { translation: georgian }
 };
 
 const dateFnsLocales = {
@@ -44,7 +46,8 @@ const dateFnsLocales = {
 	ko: ko,
 	it: it,
 	pl: pl,
-	uk: uk
+	uk: uk,
+	ka: ka
 };
 
 const initI18n = () => {
@@ -54,7 +57,7 @@ const initI18n = () => {
 		resources,
 		lng: langCode,
 		fallbackLng: 'en',
-		supportedLngs: ['en', 'ru', 'kk', 'es', 'pt-BR', 'de', 'ja', 'fr', 'ko', 'it', 'pl', 'uk'],
+		supportedLngs: ['en', 'ru', 'kk', 'es', 'pt-BR', 'de', 'ja', 'fr', 'ko', 'it', 'pl', 'uk', 'ka'],
 		interpolation: {
 			escapeValue: false
 		}

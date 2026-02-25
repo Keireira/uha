@@ -41,6 +41,9 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 				},
 				uk: {
 					Theme: 'Тема'
+				},
+				ka: {
+					Theme: 'თემა'
 				}
 			},
 			page: {
@@ -124,6 +127,12 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 					UseDeviceAppearance: 'Використовувати тему пристрою',
 					Light: 'Світла',
 					Dark: 'Темна'
+				},
+				ka: {
+					Theme: 'თემა',
+					UseDeviceAppearance: 'მოწყობილობის თემის გამოყენება',
+					Light: 'ღია',
+					Dark: 'მუქი'
 				}
 			},
 			page: {
