@@ -5,7 +5,141 @@
   "languages": {
     "en": "Ағылшын тілі",
     "ru": "Орыс тілі",
-    "kk": "Қазақ тілі"
+    "kk": "Қазақ тілі",
+    "es": "Испан тілі",
+    "pt-BR": "Португал тілі (Бразилия)",
+    "de": "Неміс тілі",
+    "ja": "Жапон тілі",
+    "fr": "Француз тілі",
+    "ko": "Корей тілі",
+    "it": "Итальян тілі",
+    "pl": "Поляк тілі",
+    "uk": "Украин тілі",
+    "zh-Hans": "Қытай тілі (жеңілдетілген)",
+    "zh-Hant": "Қытай тілі (дәстүрлі)",
+    "nl": "Нидерланд тілі",
+    "th": "Тай тілі",
+    "vi": "Вьетнам тілі",
+    "sv": "Швед тілі",
+    "cs": "Чех тілі",
+    "ro": "Румын тілі",
+    "hi": "Хинди",
+    "fi": "Фин тілі",
+    "nb": "Норвег тілі",
+    "is": "Исланд тілі",
+    "da": "Дат тілі",
+    "hu": "Венгер тілі",
+    "sk": "Словак тілі",
+    "bg": "Болгар тілі",
+    "sr": "Серб тілі",
+    "el": "Грек тілі",
+    "fil": "Филиппин тілі",
+    "ka": "Грузин тілі"
+  },
+  "library": {
+    "search": "Бар жерден ізде",
+    "search_categories": "Санаттардан ізде",
+    "search_services": "Қызметтерден ізде",
+    "search_payments": "Төлемдерден ізде"
+  },
+  "settings": {
+    "system": {
+      "header": "Жүйе",
+      "oled_mode": "OLED режимі",
+      "notifications": {
+        "header": "Хабарламалар",
+        "results": {
+          "denied": "Сұралмаған",
+          "blocked": "Өшірілген",
+          "granted": "Қосылған",
+          "limited": "Қосылған"
+        }
+      },
+      "face_id": "Face ID талап ету",
+      "language": "Тіл",
+      "dark_mode": "Қараңғы режим"
+    },
+    "currencies": {
+      "header": "Валюталар",
+      "default": "Негізгі валюта",
+      "recalc": "Қайта есептеу валютасы",
+      "fractions": "Бөлшектерді көрсету",
+      "explain": "Валюта белгісі",
+      "africa": "Африка",
+      "europe": "Еуропа",
+      "north_america": "Солтүстік Америка",
+      "central_america": "Орталық Америка",
+      "south_america": "Оңтүстік Америка",
+      "caribbean": "Кариб",
+      "central_asia": "Орта Азия",
+      "south_asia": "Оңтүстік Азия",
+      "east_asia": "Шығыс Азия",
+      "southeast_asia": "Оңтүстік-Шығыс Азия",
+      "oceania": "Океания",
+      "other": "Өзгелер",
+      "cryptocurrency": "Криптовалюталар",
+      "refresh_rates": "Валюта бағамдары",
+      "refresh_action": "Жаңарту"
+    },
+    "about": {
+      "header": "Қолданба туралы",
+      "version": "Нұсқа",
+      "sources": "Бастапқы код",
+      "github": "GitHub",
+      "beta": "Бета нұсқаға қосылу",
+      "testflight": "TestFlight"
+    },
+    "donations": {
+      "header": "Қолдау көрсету",
+      "description": "Бұл қолданба тегін әрі ашық, және әрдайым солай болады.\nАлайда оны ұстап тұру шығынды талап етеді, сондықтан кез келген көмегіңізге ризамын.",
+      "donate": "Қолдау",
+      "patreon": "Patreon",
+      "github": "GitHub",
+      "boosty": "Boosty"
+    }
+  },
+  "dates": {
+    "today": "Бүгін",
+    "tomorrow": "Ертең",
+    "yesterday": "Кеше"
+  },
+  "transactions": {
+    "details": {
+      "category": "Санат",
+      "currency": "Валюта",
+      "payment": "Төлем",
+      "notes": "Жазбалар",
+      "notes_placeholder": "Жазба қосу үшін басыңыз"
+    },
+    "filters": {
+      "title": "Сүзгілер",
+      "clear": "Тазалау",
+      "search": "Іздеу",
+      "empty": "Сүзгілер жоқ",
+      "tabs": {
+        "category": "Санат",
+        "service": "Қызмет",
+        "tender": "Төлем",
+        "currency": "Валюта"
+      }
+    },
+    "time_mode": {
+      "future": "Алдағы",
+      "all": "Барлық уақыт"
+    },
+    "view_mode": {
+      "list": "Тізім",
+      "calendar": "Күнтізбе",
+      "subscriptions": "Жазылымдар"
+    }
+  },
+  "rates": {
+    "error_title": "Бағамдарды жаңарту сәтсіз",
+    "error_description": "Валюта айырбасы дәл болмауы мүмкін",
+    "success_title": "Бағамдар жаңартылды"
+  },
+  "calendar": {
+    "total": "Барлығы"
   },
   "currencies": {
     "AOA": "Ангола кванзасы",
@@ -133,134 +267,5 @@
     "MYR": "Малайзия ринггиті",
     "EGP": "Мысыр фунты",
     "MVR": "Мальдив руфиясы"
-  },
-  "intervals": {
-    "day": "Күн",
-    "week": "Апта",
-    "month": "Ай",
-    "year": "Жыл"
-  },
-  "crossroad": {
-    "subscription": "Жазылым",
-    "category": "Санат",
-    "service": "Қызмет",
-    "payment": "Төлем"
-  },
-  "library": {
-    "search": "Бар жерден ізде",
-    "search_categories": "Санаттардан ізде",
-    "search_services": "Қызметтерден ізде",
-    "search_payments": "Төлемдерден ізде"
-  },
-  "settings": {
-    "system": {
-      "header": "Жүйе",
-      "oled_mode": "OLED күйі",
-      "notifications": {
-        "header": "Хабарламалар",
-        "results": {
-          "denied": "Сұралмаған",
-          "blocked": "Бұғатталған",
-          "granted": "Қосылған",
-          "limited": "Қосылған"
-        }
-      },
-      "face_id": "Face ID талап ету",
-      "language": "Тіл",
-      "dark_mode": "Түнгі түр"
-    },
-    "currencies": {
-      "header": "Валюталар",
-      "default": "Негізгі валюта",
-      "recalc": "Қайта есептеу валютасы",
-      "fractions": "Бөлшектерді көрсету",
-      "explain": "Валюта белгісі",
-
-      "africa": "Африка",
-      "europe": "Еуропа",
-      "north_america": "Солтүстік Америка",
-      "central_america": "Орталық Америка",
-      "south_america": "Оңтүстік Америка",
-      "caribbean": "Кариб",
-      "central_asia": "Орта Азия",
-      "south_asia": "Оңтүстік Азия",
-      "east_asia": "Шығыс Азия",
-      "southeast_asia": "Оңтүстік-Шығыс Азия",
-      "oceania": "Океания",
-      "other": "Өзгелер",
-      "cryptocurrency": "Криптовалюталар",
-      "refresh_rates": "Валюта бағамдары",
-      "refresh_action": "Жаңарту"
-    },
-    "about": {
-      "header": "Қолданба туралы",
-      "version": "Нұсқа",
-      "sources": "Бастапқы код",
-      "github": "GitHub",
-      "beta": "Бета нұсқаға қосылу",
-      "testflight": "TestFlight"
-    },
-    "donations": {
-      "header": "Қолдау көрсету",
-      "description": "Бұл қолданба тегін әрі ашық, және әрдайым солай болады.\nАлайда оны ұстап тұру шығынды талап етеді, сондықтан кез келген көмегіңізге ризамын.",
-      "donate": "Қолдау",
-      "patreon": "Patreon",
-      "github": "GitHub",
-      "boosty": "Boosty"
-    }
-  },
-  "dates": {
-    "month": "Ай",
-    "year": "Жыл",
-    "day": "Күн",
-    "today": "Бүгін",
-    "tomorrow": "Ертең",
-    "yesterday": "Кеше"
-  },
-  "transactions": {
-    "details": {
-      "not_found": "Аударым табылмады",
-      "category": "Санат",
-      "currency": "Валюта",
-      "payment": "Төлем",
-      "notes": "Жазбалар",
-      "notes_placeholder": "Жазба қосу үшін басыңыз"
-    },
-    "filters": {
-      "title": "Сүзгілер",
-      "category": "Санат бойынша",
-      "service": "Қызмет бойынша",
-      "tender": "Төлем тәсілі бойынша",
-      "currency": "Негізгі валюта бойынша",
-      "done": "Дайын",
-      "clear": "Тазалау",
-      "search": "Іздеу",
-      "empty": "Фильтрлер жоқ",
-      "active": "Белсенді",
-      "refine_by": "Бойынша",
-      "tabs": {
-        "category": "Санат",
-        "service": "Қызмет",
-        "tender": "Төлем",
-        "currency": "Валюта"
-      }
-    },
-    "time_mode": {
-      "future": "Алдағы",
-      "all": "Барлық уақыт"
-    },
-    "view_mode": {
-      "list": "Тізім",
-      "calendar": "Күнтізбе",
-      "subscriptions": "Жазылымдар"
-    }
-  },
-  "rates": {
-    "error_title": "Бағамдарды жаңарту сәтсіз",
-    "error_description": "Валюта айырбастау дәл болмауы мүмкін",
-    "success_title": "Бағамдар жаңартылды"
-  },
-  "calendar": {
-    "total": "Барлығы"
   }
 }
