@@ -13,11 +13,13 @@ public extension Color {
 				g = Double((int >> 8) & 0xFF) / 255.0
 				b = Double(int & 0xFF) / 255.0
 				a = 1.0
+
 			case 8:
 				r = Double((int >> 24) & 0xFF) / 255.0
 				g = Double((int >> 16) & 0xFF) / 255.0
 				b = Double((int >> 8) & 0xFF) / 255.0
 				a = Double(int & 0xFF) / 255.0
+
 			default:
 				r = 0; g = 0; b = 0; a = 1
 		}
