@@ -5,13 +5,7 @@ export const Content = styled.ScrollView.attrs({
 	automaticallyAdjustKeyboardInsets: true,
 	showsVerticalScrollIndicator: false,
 	keyboardShouldPersistTaps: 'handled',
-	contentInsetAdjustmentBehavior: 'automatic',
-	contentContainerStyle: {
-		paddingTop: 136,
-		paddingRight: 24,
-		paddingBottom: 96,
-		paddingLeft: 24
-	}
+	contentInsetAdjustmentBehavior: 'automatic'
 })`
 	flex: 1;
 `;

@@ -1,13 +1,13 @@
-import React, { useRef, useState, useMemo, useCallback, useLayoutEffect } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import { useNavigation } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppModel } from '@models';
 import { TABS } from './components/header';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
-import { Header, NoFilters, FilterEntry } from './components';
+import { Header, NoFilters, FilterEntry, SearchBar } from './components';
 import Root, { Content, Entries, SectionHeader } from './filters.styles';
 
 import type { ScrollView } from 'react-native';
@@ -17,7 +17,7 @@ const FilterSheet = () => {
 	useAutoTimeMode();
 
 	const { t } = useTranslation();
-	const navigation = useNavigation();
+	const insets = useSafeAreaInsets();
 
 	const [searchQuery, setSearchQuery] = useState('');
 	const isSearching = searchQuery.trim().length > 0;
@@ -29,16 +29,6 @@ const FilterSheet = () => {
 
 	const contentRef = useRef<ScrollView>(null);
 	const [activeTab, setActiveTab] = useState<FilterTabT>(TABS[0]);
-
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			headerSearchBarOptions: {
-				onChangeText: (e: { nativeEvent: { text: string } }) => {
-					setSearchQuery(e.nativeEvent.text);
-				}
-			}
-		});
-	}, [navigation]);
 
 	const entriesMap = useMemo(
 		() => ({
@@ -176,55 +166,67 @@ const FilterSheet = () => {
 	};
 
 	return (
-		<Root>
-			<Header activeTab={activeTab} setActiveTab={setActiveTabProxy} />
+		<>
+			<Root>
+				<Header activeTab={activeTab} setActiveTab={setActiveTabProxy} />
 
-			<Content ref={contentRef}>
-				<Entries>
-					{isSearching &&
-						searchResults.length > 0 &&
-						searchResults.map((section) => (
-							<React.Fragment key={section.tab}>
-								<SectionHeader>{section.label}</SectionHeader>
+				<Content
+					ref={contentRef}
+					contentContainerStyle={{
+						paddingTop: 136,
+						paddingRight: 24,
+						paddingLeft: 24,
+						paddingBottom: insets.bottom + 108
+					}}
+				>
+					<Entries>
+						{isSearching &&
+							searchResults.length > 0 &&
+							searchResults.map((section) => (
+								<React.Fragment key={section.tab}>
+									<SectionHeader>{section.label}</SectionHeader>
 
-								{section.entries.map((entry, index) => (
-									<FilterEntry
-										key={entry.id}
-										id={entry.id}
-										activeTab={section.tab}
-										isImplied={entry.isImplied}
-										isEligible={entry.isEligible}
-										isSelected={entry.isSelected}
-										title={entry.title}
-										subtitle={entry.subtitle}
-										showDivider={false}
-										withSeparator={index < section.entries.length - 1}
-									/>
-								))}
-							</React.Fragment>
-						))}
+									{section.entries.map((entry, index) => (
+										<FilterEntry
+											key={entry.id}
+											id={entry.id}
+											activeTab={section.tab}
+											isImplied={entry.isImplied}
+											isEligible={entry.isEligible}
+											isSelected={entry.isSelected}
+											title={entry.title}
+											subtitle={entry.subtitle}
+											showDivider={false}
+											withSeparator={index < section.entries.length - 1}
+										/>
+									))}
+								</React.Fragment>
+							))}
 
-					{!isSearching &&
-						sortedEntries.length > 0 &&
-						sortedEntries.map((entry, index) => (
-							<FilterEntry
-								key={entry.id}
-								id={entry.id}
-								activeTab={activeTab}
-								isImplied={entry.isImplied}
-								isEligible={entry.isEligible}
-								isSelected={entry.isSelected}
-								title={entry.title}
-								subtitle={entry.subtitle}
-								showDivider={index === ineligibleStartIndex && index > 0}
-								withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
-							/>
-						))}
+						{!isSearching &&
+							sortedEntries.length > 0 &&
+							sortedEntries.map((entry, index) => (
+								<FilterEntry
+									key={entry.id}
+									id={entry.id}
+									activeTab={activeTab}
+									isImplied={entry.isImplied}
+									isEligible={entry.isEligible}
+									isSelected={entry.isSelected}
+									title={entry.title}
+									subtitle={entry.subtitle}
+									showDivider={index === ineligibleStartIndex && index > 0}
+									withSeparator={index < sortedEntries.length - 1 && index !== ineligibleStartIndex - 1}
+								/>
+							))}
 
-					{((isSearching && !searchResults.length) || !sortedEntries.length) && <NoFilters />}
-				</Entries>
-			</Content>
-		</Root>
+						{((isSearching && !searchResults.length) || !sortedEntries.length) && <NoFilters />}
+					</Entries>
+				</Content>
+			</Root>
+
+			<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+		</>
 	);
 };
 
