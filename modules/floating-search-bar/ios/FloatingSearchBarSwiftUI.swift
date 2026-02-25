@@ -18,7 +18,7 @@ struct FloatingSearchBarContent: View {
 			if isFocused { closeButton }
 		}
 		.tint(state.tintColor)
-		.padding(.horizontal, 24)
+		.padding(.horizontal, 16)
 		.padding(.bottom, isFocused ? 12 : 0)
 		.animation(.easeInOut(duration: 0.125), value: isFocused)
 		.onChange(of: state.text) { newValue in

@@ -13,7 +13,7 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 					Theme: 'Тема'
 				},
 				kk: {
-					Theme: 'Тақырып'
+					Theme: 'Сыртқы түр'
 				}
 			},
 			page: {
@@ -39,7 +39,7 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 					Dark: 'Тёмная'
 				},
 				kk: {
-					Theme: 'Тақырып',
+					Theme: 'Сыртқы түр',
 					UseDeviceAppearance: 'Құрылғы көрінісін қолдану',
 					Light: 'Жарық',
 					Dark: 'Қараңғы'

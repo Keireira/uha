@@ -7,6 +7,112 @@
     "ru": "Русский",
     "kk": "Казахский"
   },
+  "library": {
+    "search": "Глобальный поиск",
+    "search_categories": "Поиск по категориям",
+    "search_services": "Поиск по сервисам",
+    "search_payments": "Поиск по платежам"
+  },
+  "settings": {
+    "system": {
+      "header": "Система",
+      "oled_mode": "OLED режим",
+      "notifications": {
+        "header": "Уведомления",
+        "results": {
+          "denied": "Не запрошены",
+          "blocked": "Заблокированы",
+          "granted": "Всё хорошо",
+          "limited": "Всё хорошо"
+        }
+      },
+      "face_id": "Требовать Face ID",
+      "language": "Язык",
+      "dark_mode": "Тёмный режим"
+    },
+    "currencies": {
+      "header": "Валюты",
+      "default": "Основная валюта",
+      "recalc": "Валюта для пересчёта",
+      "fractions": "Показывать дроби",
+      "explain": "Тег валюты",
+
+      "africa": "Африка",
+      "europe": "Европа",
+      "north_america": "Америка",
+      "central_america": "Центральная Америка",
+      "south_america": "Южная Америка",
+      "caribbean": "Карибы",
+      "central_asia": "Центральная Азия",
+      "south_asia": "Южная Азия",
+      "east_asia": "Восточная Азия",
+      "southeast_asia": "Юго-Восточная Азия",
+      "oceania": "Океания",
+      "other": "Иные",
+      "cryptocurrency": "Криптовалюты",
+      "refresh_rates": "Курсы валют",
+      "refresh_action": "Обновить"
+    },
+    "about": {
+      "header": "О приложении",
+      "version": "Версия",
+      "sources": "Исходники",
+      "github": "GitHub",
+      "beta": "Бета-версия",
+      "testflight": "TestFlight"
+    },
+    "donations": {
+      "header": "Поддержать",
+      "description": "Это приложение бесплатно и открыто, но оно требует поддержки (в т.ч. денежной), так что буду благодарна за любой донат.",
+      "donate": "Поддержать",
+      "patreon": "Patreon",
+      "github": "GitHub",
+      "boosty": "Boosty"
+    }
+  },
+  "dates": {
+    "today": "Сегодня",
+    "tomorrow": "Завтра",
+    "yesterday": "Вчера"
+  },
+  "transactions": {
+    "details": {
+      "category": "Категория",
+      "currency": "Валюта",
+      "payment": "Метод оплаты",
+      "notes": "Заметки",
+      "notes_placeholder": "Нажмите, чтобы добавить заметку"
+    },
+    "filters": {
+      "title": "Фильтры",
+      "clear": "Сбросить",
+      "search": "Поиск",
+      "empty": "Нет доступных фильтров",
+      "tabs": {
+        "category": "Категория",
+        "service": "Сервис",
+        "tender": "Оплата",
+        "currency": "Валюта"
+      }
+    },
+    "time_mode": {
+      "future": "Предстоящие",
+      "all": "За всё время"
+    },
+    "view_mode": {
+      "list": "Список",
+      "calendar": "Календарь",
+      "subscriptions": "Подписки"
+    }
+  },
+  "rates": {
+    "error_title": "Ошибка обновления курсов",
+    "error_description": "Конвертации могут быть неточными",
+    "success_title": "Курсы обновлены"
+  },
+  "calendar": {
+    "total": "Всего"
+  },
   "currencies": {
     "AOA": "Ангольская кванза",
     "BWP": "Ботсванская пула",
@@ -133,134 +239,5 @@
     "MYR": "Малайзийский ринггит",
     "EGP": "Египетский фунт",
     "MVR": "Мальдивская руфия"
-  },
-  "intervals": {
-    "day": "День",
-    "week": "Неделя",
-    "month": "Месяц",
-    "year": "Год"
-  },
-  "crossroad": {
-    "subscription": "Подписка",
-    "category": "Категория",
-    "service": "Сервис",
-    "payment": "Платёж"
-  },
-  "library": {
-    "search": "Глобальный поиск",
-    "search_categories": "Поиск по категориям",
-    "search_services": "Поиск по сервисам",
-    "search_payments": "Поиск по платежам"
-  },
-  "settings": {
-    "system": {
-      "header": "Система",
-      "oled_mode": "OLED режим",
-      "notifications": {
-        "header": "Уведомления",
-        "results": {
-          "denied": "Не запрошены",
-          "blocked": "Заблокированы",
-          "granted": "Всё хорошо",
-          "limited": "Всё хорошо"
-        }
-      },
-      "face_id": "Требовать Face ID",
-      "language": "Язык",
-      "dark_mode": "Тёмный режим"
-    },
-    "currencies": {
-      "header": "Валюты",
-      "default": "Основная валюта",
-      "recalc": "Валюта для пересчёта",
-      "fractions": "Показывать дроби",
-      "explain": "Тег валюты",
-
-      "africa": "Африка",
-      "europe": "Европа",
-      "north_america": "Америка",
-      "central_america": "Центральная Америка",
-      "south_america": "Южная Америка",
-      "caribbean": "Карибы",
-      "central_asia": "Центральная Азия",
-      "south_asia": "Южная Азия",
-      "east_asia": "Восточная Азия",
-      "southeast_asia": "Юго-Восточная Азия",
-      "oceania": "Океания",
-      "other": "Иные",
-      "cryptocurrency": "Криптовалюты",
-      "refresh_rates": "Курсы валют",
-      "refresh_action": "Обновить"
-    },
-    "about": {
-      "header": "О приложении",
-      "version": "Версия",
-      "sources": "Исходники",
-      "github": "GitHub",
-      "beta": "Бета-версия",
-      "testflight": "TestFlight"
-    },
-    "donations": {
-      "header": "Поддержать",
-      "description": "Это приложение бесплатно и открыто, но оно требует поддержки (в т.ч. денежной), так что буду благодарна за любой донат.",
-      "donate": "Поддержать",
-      "patreon": "Patreon",
-      "github": "GitHub",
-      "boosty": "Boosty"
-    }
-  },
-  "dates": {
-    "month": "Месяц",
-    "year": "Год",
-    "day": "День",
-    "today": "Сегодня",
-    "tomorrow": "Завтра",
-    "yesterday": "Вчера"
-  },
-  "transactions": {
-    "details": {
-      "not_found": "Транзакция не найдена",
-      "category": "Категория",
-      "currency": "Валюта",
-      "payment": "Метод оплаты",
-      "notes": "Заметки",
-      "notes_placeholder": "Нажмите, чтобы добавить заметку"
-    },
-    "filters": {
-      "title": "Фильтры",
-      "category": "По категории",
-      "service": "По сервису",
-      "tender": "По способу оплаты",
-      "currency": "По базовой валюту",
-      "done": "Готово",
-      "clear": "Сбросить",
-      "search": "Поиск",
-      "empty": "Нет доступных фильтров",
-      "active": "Активные",
-      "refine_by": "Уточнить по",
-      "tabs": {
-        "category": "Категория",
-        "service": "Сервис",
-        "tender": "Оплата",
-        "currency": "Валюта"
-      }
-    },
-    "time_mode": {
-      "future": "Предстоящие",
-      "all": "За всё время"
-    },
-    "view_mode": {
-      "list": "Список",
-      "calendar": "Календарь",
-      "subscriptions": "Подписки"
-    }
-  },
-  "rates": {
-    "error_title": "Ошибка обновления курсов",
-    "error_description": "Конвертации могут быть неточными",
-    "success_title": "Курсы обновлены"
-  },
-  "calendar": {
-    "total": "Всего"
   }
 }
