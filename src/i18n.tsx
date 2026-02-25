@@ -6,18 +6,45 @@ import * as Localization from 'expo-localization';
 import english from '@locales/en.json';
 import russian from '@locales/ru.json';
 import kazakh from '@locales/kk.json';
-import { enUS, ru, kk } from 'date-fns/locale';
+import spanish from '@locales/es.json';
+import portuguese from '@locales/pt-BR.json';
+import german from '@locales/de.json';
+import japanese from '@locales/ja.json';
+import french from '@locales/fr.json';
+import korean from '@locales/ko.json';
+import italian from '@locales/it.json';
+import polish from '@locales/pl.json';
+import ukrainian from '@locales/uk.json';
+import { enUS, ru, kk, es, ptBR, de, ja, fr, ko, it, pl, uk } from 'date-fns/locale';
 
 const resources = {
 	en: { translation: english },
 	ru: { translation: russian },
-	kk: { translation: kazakh }
+	kk: { translation: kazakh },
+	es: { translation: spanish },
+	'pt-BR': { translation: portuguese },
+	de: { translation: german },
+	ja: { translation: japanese },
+	fr: { translation: french },
+	ko: { translation: korean },
+	it: { translation: italian },
+	pl: { translation: polish },
+	uk: { translation: ukrainian }
 };
 
 const dateFnsLocales = {
 	en: enUS,
 	ru: ru,
-	kk: kk
+	kk: kk,
+	es: es,
+	'pt-BR': ptBR,
+	de: de,
+	ja: ja,
+	fr: fr,
+	ko: ko,
+	it: it,
+	pl: pl,
+	uk: uk
 };
 
 const initI18n = () => {
@@ -27,7 +54,7 @@ const initI18n = () => {
 		resources,
 		lng: langCode,
 		fallbackLng: 'en',
-		supportedLngs: ['en', 'ru', 'kk'],
+		supportedLngs: ['en', 'ru', 'kk', 'es', 'pt-BR', 'de', 'ja', 'fr', 'ko', 'it', 'pl', 'uk'],
 		interpolation: {
 			escapeValue: false
 		}

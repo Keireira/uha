@@ -14,6 +14,33 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 				},
 				kk: {
 					Theme: 'Сыртқы түр'
+				},
+				es: {
+					Theme: 'Tema'
+				},
+				'pt-BR': {
+					Theme: 'Tema'
+				},
+				de: {
+					Theme: 'Design'
+				},
+				ja: {
+					Theme: 'テーマ'
+				},
+				fr: {
+					Theme: 'Thème'
+				},
+				ko: {
+					Theme: '테마'
+				},
+				it: {
+					Theme: 'Tema'
+				},
+				pl: {
+					Theme: 'Motyw'
+				},
+				uk: {
+					Theme: 'Тема'
 				}
 			},
 			page: {
@@ -43,6 +70,60 @@ const appConfig = ({ config }: ConfigContext): ExpoConfig => {
 					UseDeviceAppearance: 'Құрылғы көрінісін қолдану',
 					Light: 'Жарық',
 					Dark: 'Қараңғы'
+				},
+				es: {
+					Theme: 'Tema',
+					UseDeviceAppearance: 'Usar apariencia del dispositivo',
+					Light: 'Claro',
+					Dark: 'Oscuro'
+				},
+				'pt-BR': {
+					Theme: 'Tema',
+					UseDeviceAppearance: 'Usar aparência do dispositivo',
+					Light: 'Claro',
+					Dark: 'Escuro'
+				},
+				de: {
+					Theme: 'Design',
+					UseDeviceAppearance: 'Gerätedarstellung verwenden',
+					Light: 'Hell',
+					Dark: 'Dunkel'
+				},
+				ja: {
+					Theme: 'テーマ',
+					UseDeviceAppearance: 'デバイスの外観を使用',
+					Light: 'ライト',
+					Dark: 'ダーク'
+				},
+				fr: {
+					Theme: 'Thème',
+					UseDeviceAppearance: "Suivre l'apparence de l'appareil",
+					Light: 'Clair',
+					Dark: 'Sombre'
+				},
+				ko: {
+					Theme: '테마',
+					UseDeviceAppearance: '기기 설정 따르기',
+					Light: '라이트',
+					Dark: '다크'
+				},
+				it: {
+					Theme: 'Tema',
+					UseDeviceAppearance: 'Usa aspetto del dispositivo',
+					Light: 'Chiaro',
+					Dark: 'Scuro'
+				},
+				pl: {
+					Theme: 'Motyw',
+					UseDeviceAppearance: 'Użyj wyglądu urządzenia',
+					Light: 'Jasny',
+					Dark: 'Ciemny'
+				},
+				uk: {
+					Theme: 'Тема',
+					UseDeviceAppearance: 'Використовувати тему пристрою',
+					Light: 'Світла',
+					Dark: 'Темна'
 				}
 			},
 			page: {

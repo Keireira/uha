@@ -30,7 +30,16 @@
     "locales": {
       "en": "./assets/locales/en.json",
       "ru": "./assets/locales/ru.json",
-      "kk": "./assets/locales/kk.json"
+      "kk": "./assets/locales/kk.json",
+      "es": "./assets/locales/es.json",
+      "pt-BR": "./assets/locales/pt-BR.json",
+      "de": "./assets/locales/de.json",
+      "ja": "./assets/locales/ja.json",
+      "fr": "./assets/locales/fr.json",
+      "ko": "./assets/locales/ko.json",
+      "it": "./assets/locales/it.json",
+      "pl": "./assets/locales/pl.json",
+      "uk": "./assets/locales/uk.json"
     },
     "plugins": [
       "expo-font",

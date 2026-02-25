@@ -5,7 +5,16 @@
   "languages": {
     "en": "English",
     "ru": "Russian",
-    "kk": "Kazakh"
+    "kk": "Kazakh",
+    "es": "Spanish",
+    "pt-BR": "Portuguese (Brazil)",
+    "de": "German",
+    "ja": "Japanese",
+    "fr": "French",
+    "ko": "Korean",
+    "it": "Italian",
+    "pl": "Polish",
+    "uk": "Ukrainian"
   },
   "library": {
     "search": "Search everywhere",
