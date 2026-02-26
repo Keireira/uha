@@ -96,6 +96,21 @@
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "preferences": {
+      "header": "Настройки",
+      "first_day": "Первый день недели",
+      "max_horizon": "Максимальный горизонт",
+      "color_grading": "Цветовая градация",
+      "days": {
+        "mo": "Понедельник",
+        "su": "Воскресенье"
+      },
+      "years_unit": "г.",
+      "day_hint_us": "Как в США",
+      "day_hint_iso": "Международный",
+      "grading_on": "По категориям",
+      "grading_off": "Первая транзакция"
     }
   },
   "dates": {

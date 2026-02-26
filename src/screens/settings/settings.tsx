@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Linking, Pressable, Switch } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, withDelay } from 'react-native-reanimated';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -46,14 +46,16 @@ import {
 	Card,
 	CardRow,
 	CardRowTitle,
-	CardRowTrailing,
-	CardRowValue,
-	Separator,
 	AccentPiano,
 	AccentKeyWrap,
 	AccentKeyBg,
 	AccentKey,
 	AccentKeyInner,
+	DayHint,
+	StepperWrap,
+	StepperButton,
+	ColorGradingPreview,
+	ColorDot,
 	SupportRow,
 	SupportPill,
 	SupportPillInner,
@@ -69,6 +71,7 @@ import {
 	ConstellationLine,
 	ConstellationStar,
 	ConstellationGlow,
+	ConstellationRay,
 	ConstellationDot,
 	SectionDivider
 } from './settings.styles';
@@ -104,13 +107,16 @@ const LOGO_PAGES: LogoPageT[] = [
 ];
 
 /* Lupus constellation — based on reference chart */
+/* Magnitudes: α 2.3  β 2.7  γ 2.8  δ 3.2  ε 3.4 */
 const STAR_POSITIONS = [
-	{ x: 140, y: 95 }, // center hub
-	{ x: 110, y: 35 }, // upper left
-	{ x: 190, y: 30 }, // upper right
-	{ x: 60, y: 155 }, // lower left
-	{ x: 175, y: 160 } // lower right
+	{ x: 140, y: 100 }, // α Lup — center hub
+	{ x: 90, y: 20 },   // β Lup — upper left
+	{ x: 210, y: 15 },  // γ Lup — upper right
+	{ x: 30, y: 175 },  // δ Lup — lower left
+	{ x: 205, y: 185 }  // ε Lup — lower right
 ];
+/* Dot size inversely proportional to magnitude (brighter → bigger) */
+const STAR_DOT_SIZES = [14, 11, 10, 8, 7];
 const STAR_LINES: [number, number][] = [
 	[0, 1],
 	[0, 2],
@@ -120,14 +126,8 @@ const STAR_LINES: [number, number][] = [
 ];
 const STAR_ACTIVE_SIZE = 64;
 const HIT_SLOP = { top: 18, bottom: 18, left: 18, right: 18 };
-
-const randomDotSizes = () => {
-	const sizes: number[] = [9];
-	for (let i = 1; i < 5; i++) {
-		sizes.push(sizes[i - 1] + 2 + Math.round(Math.random()));
-	}
-	return sizes;
-};
+/* 6 rays at irregular angles for a natural diffraction-spike look */
+const RAY_ANGLES = [0, 35, 72, 108, 145, 170];
 
 type StarProps = {
 	page: LogoPageT;
@@ -141,22 +141,40 @@ const AnimatedStar = ({ page, dotSize, position, isActive, onPress }: StarProps)
 	const rotateY = useSharedValue(isActive ? 0 : 90);
 	const scale = useSharedValue(isActive ? 1 : 0);
 	const opacity = useSharedValue(isActive ? 1 : 0);
+	const glowOpacity = useSharedValue(isActive ? 1 : 0.45);
+	const glowScale = useSharedValue(1);
 
 	useEffect(() => {
 		if (isActive) {
 			rotateY.value = withTiming(0, { duration: 200 });
 			scale.value = withTiming(1, { duration: 200 });
 			opacity.value = withTiming(1, { duration: 100 });
+			glowOpacity.value = withDelay(80, withTiming(1, { duration: 300 }));
 		} else {
 			rotateY.value = withTiming(90, { duration: 150 });
 			scale.value = withTiming(0, { duration: 150 });
 			opacity.value = withTiming(0, { duration: 80 });
+			glowOpacity.value = withTiming(0.45, { duration: 300 });
 		}
+
+		glowScale.value = withRepeat(
+			withSequence(
+				withTiming(1.15, { duration: 1800 }),
+				withTiming(0.9, { duration: 1800 })
+			),
+			-1,
+			true
+		);
 	}, [isActive]);
 
 	const animatedStyle = useAnimatedStyle(() => ({
 		transform: [{ perspective: 600 }, { rotateY: `${rotateY.value}deg` }, { scale: scale.value }],
 		opacity: opacity.value
+	}));
+
+	const glowStyle = useAnimatedStyle(() => ({
+		opacity: glowOpacity.value,
+		transform: [{ scale: glowScale.value }]
 	}));
 
 	const size = STAR_ACTIVE_SIZE;
@@ -175,12 +193,39 @@ const AnimatedStar = ({ page, dotSize, position, isActive, onPress }: StarProps)
 					<SquircleMask link={page.source} size={size} />
 				</Pressable>
 			</ConstellationStar>
-			{isActive && (
-				<ConstellationGlow
-					$color={page.tint}
-					style={{ left: position.x - 40, top: position.y - 40, width: 80, height: 80 }}
-				/>
-			)}
+			{(() => {
+				const r = isActive ? 40 : dotSize * 1.2;
+				return (
+					<ConstellationGlow
+						style={[
+							{
+								left: position.x - r,
+								top: position.y - r,
+								width: r * 2,
+								height: r * 2
+							},
+							glowStyle
+						]}
+					>
+						{RAY_ANGLES.map((angle, i) => {
+							const len = r * (1.4 + (i % 3) * 0.25);
+							const thickness = isActive ? 1.5 : 1;
+							return (
+								<ConstellationRay
+									key={angle}
+									$color={page.tint}
+									style={{
+										width: len * 2,
+										height: thickness,
+										borderRadius: thickness,
+										transform: [{ rotate: `${angle}deg` }]
+									}}
+								/>
+							);
+						})}
+					</ConstellationGlow>
+				);
+			})()}
 		</>
 	);
 };
@@ -197,6 +242,9 @@ const SettingsScreen = () => {
 	const isFaceIdEnabled = useSettingsValue<boolean>('face_id');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
+	const maxHorizon = useSettingsValue<number>('max_horizon') || 3;
+	const withColorGrading = useSettingsValue<boolean>('with_color_grading') ?? true;
+	const [firstDay, setFirstDay] = useState(1); // 0=Sun … 6=Sat, default Mon
 
 	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
 
@@ -218,7 +266,7 @@ const SettingsScreen = () => {
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	// Icon picker state
-	const dotSizes = useMemo(() => randomDotSizes(), []);
+	const dotSizes = STAR_DOT_SIZES;
 	const [appIcon, setAppIconLocal] = useState<string>(() => getAppIcon());
 
 	useEffect(() => {
@@ -396,35 +444,65 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
 
-				<Card>
-					<CardRow>
-						<CardRowTitle>{t('settings.preferences.first_day')}</CardRowTitle>
-						<CardRowTrailing>
-							<CardRowValue>Monday</CardRowValue>
-							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
-						</CardRowTrailing>
-					</CardRow>
+				<CurrencyRow>
+					<CurrencyTile>
+						<CurrencyTileInner onPress={() => { setFirstDay(firstDay === 1 ? 0 : 1); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
+							<CurrencyTileLabel>{t('settings.preferences.first_day')}</CurrencyTileLabel>
+							<CurrencyTileCode>{t(`settings.preferences.days.${firstDay === 1 ? 'mo' : 'su'}`)}</CurrencyTileCode>
+							<DayHint>{firstDay === 0 ? t('settings.preferences.day_hint_us') : t('settings.preferences.day_hint_iso')}</DayHint>
+						</CurrencyTileInner>
+					</CurrencyTile>
 
-					<Separator />
+					<CurrencyTile>
+						<CurrencyTileInner>
+							<CurrencyTileLabel>{t('settings.preferences.max_horizon')}</CurrencyTileLabel>
+							<CurrencyTileCode>{maxHorizon}</CurrencyTileCode>
+							<StepperWrap>
+								<StepperButton
+									$disabled={maxHorizon <= 2}
+									onPress={() => {
+										if (maxHorizon > 2) {
+											setSettingsValue('max_horizon', maxHorizon - 1);
+											Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+										}
+									}}
+								>
+									<SymbolView name="minus" size={13} weight="bold" tintColor={theme.text.secondary} />
+								</StepperButton>
+								<StepperButton
+									$disabled={maxHorizon >= 10}
+									onPress={() => {
+										if (maxHorizon < 10) {
+											setSettingsValue('max_horizon', maxHorizon + 1);
+											Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+										}
+									}}
+								>
+									<SymbolView name="plus" size={13} weight="bold" tintColor={theme.text.secondary} />
+								</StepperButton>
+							</StepperWrap>
+						</CurrencyTileInner>
+					</CurrencyTile>
+				</CurrencyRow>
 
-					<CardRow>
-						<CardRowTitle>{t('settings.preferences.max_horizon')}</CardRowTitle>
-						<CardRowTrailing>
-							<CardRowValue>1 year</CardRowValue>
-							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
-						</CardRowTrailing>
-					</CardRow>
-
-					<Separator />
-
-					<CardRow>
-						<CardRowTitle>{t('settings.preferences.color_grading')}</CardRowTitle>
-						<CardRowTrailing>
-							<CardRowValue>Default</CardRowValue>
-							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
-						</CardRowTrailing>
-					</CardRow>
-				</Card>
+				<CurrencyTile style={{ marginTop: 10 }}>
+					<CurrencyTileInner onPress={() => { setSettingsValue('with_color_grading', !withColorGrading); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
+						<CurrencyTileLabel>{t('settings.preferences.color_grading')}</CurrencyTileLabel>
+						<ColorGradingPreview>
+							{withColorGrading ? (
+								<>
+									<ColorDot $color="#FF3B30" $size={18} />
+									<ColorDot $color="#FF9500" $size={14} />
+									<ColorDot $color="#34C759" $size={11} />
+									<ColorDot $color="#007AFF" $size={9} />
+								</>
+							) : (
+								<ColorDot $color={theme.text.tertiary} $size={18} />
+							)}
+						</ColorGradingPreview>
+						<CurrencyTileName>{withColorGrading ? t('settings.preferences.grading_on') : t('settings.preferences.grading_off')}</CurrencyTileName>
+					</CurrencyTileInner>
+				</CurrencyTile>
 			</SectionWrap>
 
 			{/* System */}

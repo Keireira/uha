@@ -70,7 +70,16 @@
       "header": "Preferences",
       "first_day": "First Day of Week",
       "max_horizon": "Max Horizon",
-      "color_grading": "Color Grading"
+      "color_grading": "Color Grading",
+      "days": {
+        "mo": "Monday",
+        "su": "Sunday"
+      },
+      "years_unit": "yr",
+      "day_hint_us": "US style",
+      "day_hint_iso": "International",
+      "grading_on": "By categories",
+      "grading_off": "First transaction"
     },
     "general": {
       "header": "System"

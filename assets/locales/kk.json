@@ -96,6 +96,21 @@
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "preferences": {
+      "header": "Параметрлер",
+      "first_day": "Аптаның бірінші күні",
+      "max_horizon": "Максималды көкжиек",
+      "color_grading": "Түс градациясы",
+      "days": {
+        "mo": "Дүйсенбі",
+        "su": "Жексенбі"
+      },
+      "years_unit": "ж.",
+      "day_hint_us": "АҚШ стилі",
+      "day_hint_iso": "Халықаралық",
+      "grading_on": "Санаттар бойынша",
+      "grading_off": "Бірінші транзакция"
     }
   },
   "dates": {

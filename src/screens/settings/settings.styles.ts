@@ -334,7 +334,7 @@ export const FooterVersion = styled(BaseText)`
 export const ConstellationWrap = styled.View`
 	align-self: center;
 	width: 280px;
-	height: 200px;
+	height: 220px;
 `;
 
 export const ConstellationLine = styled.View`
@@ -351,13 +351,72 @@ export const ConstellationStar = styled(Animated.View)`
 
 export const ConstellationDot = styled.View<{ $color: string }>`
 	background-color: ${({ $color }) => `${$color}90`};
+	shadow-color: ${({ $color }) => $color};
+	shadow-offset: 0px 0px;
+	shadow-opacity: 0.8;
+	shadow-radius: 6px;
 `;
 
-export const ConstellationGlow = styled.View<{ $color: string }>`
+export const ConstellationGlow = styled(Animated.View)`
 	position: absolute;
-	border-radius: 999px;
-	background-color: ${({ $color }) => `${$color}12`};
+	align-items: center;
+	justify-content: center;
 	z-index: 3;
+`;
+
+export const ConstellationRay = styled.View<{ $color: string }>`
+	position: absolute;
+	background-color: ${({ $color }) => `${$color}18`};
+	border-radius: 999px;
+`;
+
+/* Preferences — first day hint */
+export const DayHint = styled(BaseText)`
+	font-size: 11px;
+	font-weight: 500;
+	color: ${({ theme }) => `${theme.text.tertiary}90`};
+	margin-top: 2px;
+`;
+
+/* Preferences — stepper */
+export const StepperWrap = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+`;
+
+export const StepperButton = styled.Pressable<{ $disabled: boolean }>`
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	align-items: center;
+	justify-content: center;
+	background-color: ${({ theme }) => `${theme.text.tertiary}12`};
+	opacity: ${({ $disabled }) => ($disabled ? 0.35 : 1)};
+`;
+
+export const StepperValue = styled(BaseText)`
+	font-size: 17px;
+	font-weight: 700;
+	color: ${({ theme }) => theme.text.primary};
+	min-width: 20px;
+	text-align: center;
+`;
+
+/* Preferences — color grading preview */
+export const ColorGradingPreview = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 4px;
+	margin-top: 4px;
+`;
+
+export const ColorDot = styled.View<{ $color: string; $size: number }>`
+	width: ${({ $size }) => $size}px;
+	height: ${({ $size }) => $size}px;
+	border-radius: ${({ $size }) => $size / 2}px;
+	background-color: ${({ $color }) => $color};
 `;
 
 /* Section divider */
