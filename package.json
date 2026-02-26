@@ -15,7 +15,7 @@
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "ios": "expo run:ios --device",
     "lint": "expo lint",
     "postinstall": "patch-package"
   },

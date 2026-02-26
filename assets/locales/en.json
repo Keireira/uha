@@ -59,6 +59,23 @@
       "language": "Language",
       "dark_mode": "Dark Mode"
     },
+    "appearance": {
+      "header": "Appearance",
+      "accent_color": "Accent Color",
+      "light": "Light",
+      "dark": "Dark",
+      "oled": "OLED"
+    },
+    "preferences": {
+      "header": "Preferences",
+      "first_day": "First Day of Week",
+      "max_horizon": "Max Horizon",
+      "color_grading": "Color Grading"
+    },
+    "general": {
+      "header": "General"
+    },
+    "logo_hint": "Swipe to change \u00b7 Tap to apply",
     "currencies": {
       "header": "Currencies",
       "default": "Default Currency",
@@ -79,7 +96,10 @@
       "other": "Other",
       "cryptocurrency": "Cryptocurrencies",
       "refresh_rates": "Exchange Rates",
-      "refresh_action": "Update"
+      "refresh_action": "Update",
+      "select_title": "Select Currency",
+      "search": "Search currencies",
+      "popular": "Popular"
     },
     "about": {
       "header": "About",

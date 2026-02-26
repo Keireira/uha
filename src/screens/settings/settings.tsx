@@ -1,42 +1,100 @@
 import React, { useState, useCallback } from 'react';
+import { Linking, Switch } from 'react-native';
 
-import { path } from 'ramda';
 import i18n from '@src/i18n';
-import { getCurrencyPath } from './utils';
 import { openSettings } from 'expo-linking';
 import { useTranslation } from 'react-i18next';
-import { useGetCurrenciesList, useNotifications } from './hooks';
-import { useScrollDirection, setSettingsValue, useSettingsValue } from '@hooks';
+import { useRouter } from 'expo-router';
+import { useTheme } from 'styled-components/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNotifications } from './hooks';
+import { setSettingsValue, useSettingsValue } from '@hooks';
 import { backfillRates } from '@hooks/setup';
 import Toast from 'react-native-toast-message';
 
-import { Wrapper, List } from '@ui';
+import { SymbolView } from 'expo-symbols';
 import { AppLogoPicker } from '@elements';
-import { ScrollView } from 'react-native';
 import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
-import type { NativeSyntheticEvent } from 'react-native';
-import type { Props as ListProps } from '@ui/list/list.d';
-import type { ContextMenuOnPressNativeEvent } from 'react-native-context-menu-view';
+import {
+	Container,
+	LogoHint,
+	SectionWrap,
+	SectionLabel,
+	SectionFooterText,
+	CurrencyRow,
+	CurrencyTile,
+	CurrencyTileInner,
+	CurrencyTileLabel,
+	CurrencyTileCode,
+	CurrencyTileName,
+	RefreshButton,
+	RefreshInner,
+	RefreshText,
+	TileGrid,
+	ThemePickerRow,
+	ThemePickerTile,
+	ThemePickerTileInner,
+	ThemePickerLabel,
+	NavTile,
+	NavTileInner,
+	NavTileTitle,
+	NavTileValue,
+	Card,
+	CardRow,
+	CardRowTitle,
+	CardRowTrailing,
+	CardRowValue,
+	Separator,
+	AccentPiano,
+	AccentKeyWrap,
+	AccentKeyBg,
+	AccentKey,
+	AccentKeyInner,
+	SupportRow,
+	SupportPill,
+	SupportPillInner,
+	SupportPillTitle,
+	SupportPillSub,
+	FooterWrap,
+	FooterLinks,
+	FooterPill,
+	FooterPillInner,
+	FooterPillText,
+	FooterVersion
+} from './settings.styles';
 
 const SettingsScreen = () => {
 	const { t } = useTranslation();
-	const handleScroll = useScrollDirection();
+	const theme = useTheme();
+	const router = useRouter();
+	const insets = useSafeAreaInsets();
 
 	const notificationStatus = useNotifications();
-
-	const theme = useSettingsValue<'dark' | 'light'>('theme');
-
+	const currentTheme = useSettingsValue<'dark' | 'light'>('theme');
 	const isOledEnabled = useSettingsValue<boolean>('oled_mode');
-	const changeOledMode = (isEnabled: boolean) => {
-		setSettingsValue('oled_mode', isEnabled);
-	};
-
-	const currenciesList = useGetCurrenciesList();
+	const isFaceIdEnabled = useSettingsValue<boolean>('face_id');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 
+	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
+
+	const handleThemeSelect = (mode: 'light' | 'dark' | 'oled') => {
+		if (mode === 'light') {
+			setSettingsValue('theme', 'light');
+			setSettingsValue('oled_mode', false);
+		} else if (mode === 'dark') {
+			setSettingsValue('theme', 'dark');
+			setSettingsValue('oled_mode', false);
+		} else {
+			setSettingsValue('theme', 'dark');
+			setSettingsValue('oled_mode', true);
+		}
+	};
+
+	const accentKeys = Object.keys(theme.accent) as string[];
+	const [selectedAccent, setSelectedAccent] = useState('orange');
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	const handleRefreshRates = useCallback(async () => {
@@ -60,20 +118,8 @@ const SettingsScreen = () => {
 		}
 	}, [t]);
 
-	const changeColorScheme = (isDarkMode: boolean) => {
-		setSettingsValue('theme', isDarkMode ? 'dark' : 'light');
-	};
-
-	const changePrimaryCurrency = ({ nativeEvent }: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => {
-		const nextCurrencyCode = path(getCurrencyPath(nativeEvent.indexPath), currenciesList);
-
-		setSettingsValue('default_currency_code', nextCurrencyCode);
-	};
-
-	const changeRecalcCurrency = ({ nativeEvent }: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>) => {
-		const nextCurrencyCode = path(getCurrencyPath(nativeEvent.indexPath), currenciesList);
-
-		setSettingsValue('recalc_currency_code', nextCurrencyCode);
+	const openCurrencyPicker = (target: string) => {
+		router.push({ pathname: '/(crossroad)/select-currency', params: { target } });
 	};
 
 	const handleNotifications = () => {
@@ -84,159 +130,199 @@ const SettingsScreen = () => {
 		}
 	};
 
-	const sections: ListProps['sections'] = [
-		{
-			id: 'currency-section',
-			title: t('settings.currencies.header'),
-			innerArray: [
-				{
-					id: 'currency-main',
-					title: t('settings.currencies.default'),
-					accessory: {
-						type: 'context-menu',
-						trigger: t(`currencies.${defaultCurrencyCode}`),
-						actions: currenciesList,
-						onPress: changePrimaryCurrency
-					}
-				},
-				{
-					id: 'currency-recalc',
-					title: t('settings.currencies.recalc'),
-					accessory: {
-						type: 'context-menu',
-						trigger: t(`currencies.${recalcCurrencyCode}`),
-						actions: currenciesList,
-						onPress: changeRecalcCurrency
-					}
-				},
-				{
-					id: 'currency-refresh-rates',
-					title: t('settings.currencies.refresh_rates'),
-					accessory: {
-						type: 'plain-action',
-						trigger: isRefreshing ? '...' : t('settings.currencies.refresh_action'),
-						onPress: handleRefreshRates
-					}
-				}
-			]
-		},
-		{
-			id: 'system-section',
-			title: t('settings.system.header'),
-			innerArray: [
-				{
-					id: 'system-notifications',
-					title: t('settings.system.notifications.header'),
-					accessory: {
-						type: 'plain-action',
-						trigger: notificationStatus.label,
-						onPress: handleNotifications
-					}
-				},
-				{
-					id: 'system-language',
-					title: t('settings.system.language'),
-					accessory: {
-						type: 'plain-action',
-						trigger: t(`languages.${i18n.language}`),
-						onPress: openSettings
-					}
-				},
-				{
-					id: 'system-dark-mode',
-					title: t('settings.system.dark_mode'),
-					accessory: {
-						type: 'switch',
-						value: theme === 'dark',
-						onPress: changeColorScheme
-					}
-				},
-				{
-					id: 'system-oled-mode',
-					title: t('settings.system.oled_mode'),
-					accessory: {
-						type: 'switch',
-						disabled: theme !== 'dark',
-						value: isOledEnabled,
-						onPress: changeOledMode
-					}
-				}
-			]
-		},
-		{
-			id: 'about-section',
-			title: t('settings.about.header'),
-			innerArray: [
-				{
-					id: 'about-version',
-					title: t('settings.about.version'),
-					accessory: {
-						type: 'text',
-						text: `${nativeApplicationVersion} (${nativeBuildVersion})`
-					}
-				},
-				{
-					id: 'about-github',
-					title: t('settings.about.sources'),
-					accessory: {
-						type: 'text',
-						text: t('settings.about.github'),
-						link: 'https://github.com/Keireira/uha'
-					}
-				},
-				{
-					id: 'about-testflight',
-					title: t('settings.about.beta'),
-					accessory: {
-						type: 'text',
-						text: t('settings.about.testflight'),
-						link: 'https://testflight.apple.com/join/uVYrDkbA'
-					}
-				}
-			]
-		},
-		{
-			id: 'support-section',
-			title: t('settings.donations.header'),
-			bottomText: t('settings.donations.description'),
-			innerArray: [
-				{
-					id: 'support-github',
-					title: t('settings.about.github'),
-					accessory: {
-						type: 'text',
-						text: 'keireira',
-						link: 'https://github.com/sponsors/Keireira'
-					}
-				},
-				{
-					id: 'support-boosty',
-					title: t('settings.donations.boosty'),
-					accessory: {
-						type: 'text',
-						text: 'keireira',
-						link: 'https://boosty.to/keireira/donate'
-					}
-				},
-				{
-					id: 'support-patreon',
-					title: t('settings.donations.patreon'),
-					accessory: {
-						type: 'text',
-						text: 'keireira_fog',
-						link: 'https://patreon.com/keireira_fog'
-					}
-				}
-			]
-		}
-	];
-
 	return (
-		<Wrapper as={ScrollView} onScroll={handleScroll}>
+		<Container contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}>
 			<AppLogoPicker />
+			<LogoHint>{t('settings.logo_hint')}</LogoHint>
 
-			<List sections={sections} />
-		</Wrapper>
+			{/* Currencies */}
+			<SectionWrap>
+				<CurrencyRow>
+					<CurrencyTile>
+						<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
+							<CurrencyTileLabel>{t('settings.currencies.default')}</CurrencyTileLabel>
+							<CurrencyTileCode>{defaultCurrencyCode}</CurrencyTileCode>
+							<CurrencyTileName numberOfLines={1}>{t(`currencies.${defaultCurrencyCode}`)}</CurrencyTileName>
+						</CurrencyTileInner>
+					</CurrencyTile>
+
+					<CurrencyTile>
+						<CurrencyTileInner onPress={() => openCurrencyPicker('recalc_currency_code')}>
+							<CurrencyTileLabel>{t('settings.currencies.recalc')}</CurrencyTileLabel>
+							<CurrencyTileCode>{recalcCurrencyCode}</CurrencyTileCode>
+							<CurrencyTileName numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</CurrencyTileName>
+						</CurrencyTileInner>
+					</CurrencyTile>
+				</CurrencyRow>
+
+				<RefreshButton>
+					<RefreshInner onPress={handleRefreshRates} disabled={isRefreshing}>
+						<SymbolView name="arrow.clockwise" size={15} weight="semibold" tintColor={theme.accent.orange} />
+						<RefreshText>{isRefreshing ? '...' : t('settings.currencies.refresh_rates')}</RefreshText>
+					</RefreshInner>
+				</RefreshButton>
+			</SectionWrap>
+
+			{/* Appearance */}
+			<SectionWrap style={{ marginTop: 36 - 28 }}>
+				<ThemePickerRow>
+					<ThemePickerTile $bg="#F2F2F7" $active={activeMode === 'light'} $accent={theme.accent.orange} colorScheme="light">
+						<ThemePickerTileInner onPress={() => handleThemeSelect('light')}>
+							<SymbolView name="sun.max.fill" size={28} tintColor="#1C1C1E" />
+							<ThemePickerLabel $color="#1C1C1E">{t('settings.appearance.light')}</ThemePickerLabel>
+						</ThemePickerTileInner>
+					</ThemePickerTile>
+
+					<ThemePickerTile $bg="#1C1C1E" $active={activeMode === 'dark'} $accent={theme.accent.orange} colorScheme="dark">
+						<ThemePickerTileInner onPress={() => handleThemeSelect('dark')}>
+							<SymbolView name="moon.fill" size={28} tintColor="#FFFFFF" />
+							<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.dark')}</ThemePickerLabel>
+						</ThemePickerTileInner>
+					</ThemePickerTile>
+
+					<ThemePickerTile $bg="#000000" $active={activeMode === 'oled'} $accent={theme.accent.orange} colorScheme="dark">
+						<ThemePickerTileInner onPress={() => handleThemeSelect('oled')}>
+							<SymbolView name="moon.stars.fill" size={28} tintColor="#FFFFFF" />
+							<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.oled')}</ThemePickerLabel>
+						</ThemePickerTileInner>
+					</ThemePickerTile>
+				</ThemePickerRow>
+
+				<AccentPiano>
+					{accentKeys.map((key) => {
+						const color = theme.accent[key as keyof typeof theme.accent];
+						return (
+							<AccentKeyWrap key={key} $active={selectedAccent === key} $color={color}>
+								<AccentKeyBg />
+								<AccentKey $color={color} colorScheme={theme.tint}>
+									<AccentKeyInner onPress={() => setSelectedAccent(key)} />
+								</AccentKey>
+							</AccentKeyWrap>
+						);
+					})}
+				</AccentPiano>
+			</SectionWrap>
+
+			{/* Preferences */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
+
+				<Card>
+					<CardRow>
+						<CardRowTitle>{t('settings.preferences.first_day')}</CardRowTitle>
+						<CardRowTrailing>
+							<CardRowValue>Monday</CardRowValue>
+							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
+						</CardRowTrailing>
+					</CardRow>
+
+					<Separator />
+
+					<CardRow>
+						<CardRowTitle>{t('settings.preferences.max_horizon')}</CardRowTitle>
+						<CardRowTrailing>
+							<CardRowValue>1 year</CardRowValue>
+							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
+						</CardRowTrailing>
+					</CardRow>
+
+					<Separator />
+
+					<CardRow>
+						<CardRowTitle>{t('settings.preferences.color_grading')}</CardRowTitle>
+						<CardRowTrailing>
+							<CardRowValue>Default</CardRowValue>
+							<SymbolView name="chevron.right" size={12} weight="semibold" tintColor={theme.text.tertiary} />
+						</CardRowTrailing>
+					</CardRow>
+				</Card>
+			</SectionWrap>
+
+			{/* General */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.general.header')}</SectionLabel>
+
+				<TileGrid>
+					<NavTile>
+						<NavTileInner onPress={handleNotifications}>
+							<NavTileTitle>{t('settings.system.notifications.header')}</NavTileTitle>
+							<NavTileValue>{notificationStatus.label}</NavTileValue>
+						</NavTileInner>
+					</NavTile>
+
+					<NavTile>
+						<NavTileInner onPress={openSettings}>
+							<NavTileTitle>{t('settings.system.language')}</NavTileTitle>
+							<NavTileValue>{t(`languages.${i18n.language}`)}</NavTileValue>
+						</NavTileInner>
+					</NavTile>
+				</TileGrid>
+
+				<Card style={{ marginTop: 10 }}>
+					<CardRow onPress={() => setSettingsValue('face_id', !isFaceIdEnabled)}>
+						<CardRowTitle>{t('settings.system.face_id')}</CardRowTitle>
+						<Switch
+							value={isFaceIdEnabled}
+							onValueChange={(v) => setSettingsValue('face_id', v)}
+							trackColor={{ true: theme.accent.orange }}
+						/>
+					</CardRow>
+				</Card>
+			</SectionWrap>
+
+			{/* Support */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.donations.header')}</SectionLabel>
+
+				<SupportRow>
+					<SupportPill>
+						<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
+							<SupportPillTitle>{t('settings.about.github')}</SupportPillTitle>
+							<SupportPillSub>keireira</SupportPillSub>
+						</SupportPillInner>
+					</SupportPill>
+
+					<SupportPill>
+						<SupportPillInner onPress={() => Linking.openURL('https://boosty.to/keireira/donate')}>
+							<SupportPillTitle>{t('settings.donations.boosty')}</SupportPillTitle>
+							<SupportPillSub>keireira</SupportPillSub>
+						</SupportPillInner>
+					</SupportPill>
+
+					<SupportPill>
+						<SupportPillInner onPress={() => Linking.openURL('https://patreon.com/keireira_fog')}>
+							<SupportPillTitle>{t('settings.donations.patreon')}</SupportPillTitle>
+							<SupportPillSub>keireira_fog</SupportPillSub>
+						</SupportPillInner>
+					</SupportPill>
+				</SupportRow>
+
+				<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
+			</SectionWrap>
+
+			{/* Footer — about */}
+			<FooterWrap>
+				<FooterLinks>
+					<FooterPill>
+						<FooterPillInner onPress={() => Linking.openURL('https://github.com/Keireira/uha')}>
+							<FooterPillText>{t('settings.about.sources')}</FooterPillText>
+							<SymbolView name="arrow.up.right" size={10} weight="semibold" tintColor={theme.text.tertiary} />
+						</FooterPillInner>
+					</FooterPill>
+
+					<FooterPill>
+						<FooterPillInner onPress={() => Linking.openURL('https://testflight.apple.com/join/uVYrDkbA')}>
+							<FooterPillText>{t('settings.about.beta')}</FooterPillText>
+							<SymbolView name="arrow.up.right" size={10} weight="semibold" tintColor={theme.text.tertiary} />
+						</FooterPillInner>
+					</FooterPill>
+				</FooterLinks>
+
+				<FooterVersion>
+					{t('settings.about.version')} {nativeApplicationVersion} ({nativeBuildVersion})
+				</FooterVersion>
+			</FooterWrap>
+		</Container>
 	);
 };
 
