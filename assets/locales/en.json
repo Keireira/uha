@@ -73,7 +73,14 @@
       "color_grading": "Color Grading"
     },
     "general": {
-      "header": "General"
+      "header": "System"
+    },
+    "icons": {
+      "classic": "Classic",
+      "nonbinary": "Non-binary",
+      "trans": "Trans",
+      "lesbian": "Lesbian",
+      "pan": "Pan"
     },
     "logo_hint": "Swipe to change \u00b7 Tap to apply",
     "currencies": {

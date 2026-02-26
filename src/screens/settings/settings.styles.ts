@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import Animated from 'react-native-reanimated';
 import { GlassView } from 'expo-glass-effect';
 import { BaseText } from '@ui';
 
@@ -22,7 +23,7 @@ export const LogoHint = styled(BaseText)`
 
 /* Shared */
 export const SectionWrap = styled.View`
-	margin-bottom: 28px;
+	margin-bottom: 32px;
 	padding-horizontal: 16px;
 `;
 
@@ -109,31 +110,6 @@ export const TileGrid = styled.View`
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 10px;
-`;
-
-export const ToggleTile = styled(GlassView)`
-	flex-basis: 48%;
-	flex-grow: 1;
-	border-radius: 16px;
-	overflow: hidden;
-`;
-
-export const ToggleTileInner = styled.View`
-	padding: 16px;
-`;
-
-export const ToggleTileHeader = styled.View`
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-`;
-
-export const ToggleTileTitle = styled(BaseText)`
-	font-size: 15px;
-	font-weight: 600;
-	color: ${({ theme }) => theme.text.primary};
-	flex-shrink: 1;
-	margin-right: 8px;
 `;
 
 export const NavTile = styled(GlassView)`
@@ -352,4 +328,42 @@ export const FooterVersion = styled(BaseText)`
 	font-weight: 400;
 	color: ${({ theme }) => theme.text.tertiary};
 	margin-left: 4px;
+`;
+
+/* Constellation */
+export const ConstellationWrap = styled.View`
+	align-self: center;
+	width: 280px;
+	height: 200px;
+`;
+
+export const ConstellationLine = styled.View`
+	position: absolute;
+	height: 1px;
+	background-color: ${({ theme }) => `${theme.text.tertiary}15`};
+	z-index: 1;
+`;
+
+export const ConstellationStar = styled(Animated.View)`
+	position: absolute;
+	z-index: 5;
+`;
+
+export const ConstellationDot = styled.View<{ $color: string }>`
+	background-color: ${({ $color }) => `${$color}90`};
+`;
+
+export const ConstellationGlow = styled.View<{ $color: string }>`
+	position: absolute;
+	border-radius: 999px;
+	background-color: ${({ $color }) => `${$color}12`};
+	z-index: 3;
+`;
+
+/* Section divider */
+export const SectionDivider = styled.View`
+	height: 0.5px;
+	margin-horizontal: 40px;
+	margin-vertical: 8px;
+	background-color: ${({ theme }) => `${theme.border.default}25`};
 `;
