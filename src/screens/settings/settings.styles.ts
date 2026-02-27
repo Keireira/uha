@@ -11,6 +11,16 @@ export const Container = styled.ScrollView.attrs({
 	background-color: ${({ theme }) => theme.background.default};
 `;
 
+/* Screen title */
+export const ScreenTitle = styled(BaseText)`
+	font-size: 32px;
+	font-weight: 800;
+	color: ${({ theme }) => theme.text.primary};
+	letter-spacing: -0.5px;
+	padding-horizontal: 16px;
+	margin-bottom: 8px;
+`;
+
 /* Hero hint */
 export const LogoHint = styled(BaseText)`
 	font-size: 12px;
@@ -23,17 +33,24 @@ export const LogoHint = styled(BaseText)`
 
 /* Shared */
 export const SectionWrap = styled.View`
-	margin-bottom: 32px;
+	margin-bottom: 20px;
 	padding-horizontal: 16px;
 `;
 
 export const SectionLabel = styled(BaseText)`
-	font-size: 14px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.text.secondary};
-	letter-spacing: 0.3px;
-	margin-left: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	color: ${({ theme }) => theme.text.tertiary};
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
 	margin-bottom: 10px;
+	margin-left: 4px;
+`;
+
+export const SectionCard = styled(GlassView)`
+	border-radius: 20px;
+	overflow: hidden;
+	padding: 12px;
 `;
 
 export const SectionFooterText = styled(BaseText)`
@@ -204,59 +221,26 @@ export const ThemePickerLabel = styled(BaseText)<{ $color: string }>`
 	color: ${({ $color }) => $color};
 `;
 
-/* Accent color piano */
-export const AccentLabel = styled(BaseText)`
-	font-size: 14px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.text.secondary};
-	letter-spacing: 0.3px;
-	margin-left: 4px;
+/* Accent spectrum — expanding bars */
+export const AccentSpectrum = styled.View`
 	margin-top: 14px;
-	margin-bottom: 10px;
-`;
-
-export const AccentPiano = styled.View`
 	flex-direction: row;
+	height: 40px;
 	gap: 4px;
-	margin-top: 14px;
 `;
 
-export const AccentKeyWrap = styled.View<{ $active: boolean; $color: string }>`
-	flex: 1;
-	height: ${({ $active }) => ($active ? '52px' : '44px')};
-	align-self: flex-end;
-	position: relative;
-	shadow-color: ${({ $active, $color }) => ($active ? $color : 'transparent')};
-	shadow-offset: 0px 4px;
-	shadow-opacity: 0.5;
-	shadow-radius: 8px;
-	elevation: ${({ $active }) => ($active ? 8 : 0)};
-`;
-
-export const AccentKeyBg = styled.View`
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	border-radius: 6px 6px 12px 12px;
-	background-color: white;
-`;
-
-export const AccentKey = styled(GlassView)<{ $color: string }>`
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	border-radius: 6px 6px 12px 12px;
-	overflow: hidden;
+export const AccentBarItem = styled(Animated.View)<{ $color: string; $active: boolean }>`
+	height: 100%;
+	border-radius: 10px;
 	background-color: ${({ $color }) => $color};
-	z-index: 1;
-`;
-
-export const AccentKeyInner = styled.Pressable`
-	flex: 1;
+	overflow: hidden;
+	border-width: 2.5px;
+	border-color: ${({ $active }) => ($active ? 'rgba(255,255,255,0.45)' : 'transparent')};
+	shadow-color: ${({ $color }) => $color};
+	shadow-offset: 0px 2px;
+	shadow-opacity: ${({ $active }) => ($active ? 0.5 : 0)};
+	shadow-radius: 6px;
+	elevation: ${({ $active }) => ($active ? 6 : 0)};
 `;
 
 /* Support — accented glass pills */
@@ -333,8 +317,9 @@ export const FooterVersion = styled(BaseText)`
 /* Constellation */
 export const ConstellationWrap = styled.View`
 	align-self: center;
+	justify-content: center;
 	width: 280px;
-	height: 220px;
+	height: 280px;
 `;
 
 export const ConstellationLine = styled.View`
@@ -425,4 +410,68 @@ export const SectionDivider = styled.View`
 	margin-horizontal: 40px;
 	margin-vertical: 8px;
 	background-color: ${({ theme }) => `${theme.border.default}25`};
+`;
+
+/* Upgrade banner */
+export const UpgradeBanner = styled(GlassView)`
+	border-radius: 20px;
+	overflow: hidden;
+	background-color: ${({ theme }) => `${theme.accent.orange}10`};
+	border-width: 1px;
+	border-color: ${({ theme }) => `${theme.accent.orange}30`};
+`;
+
+export const UpgradeBannerInner = styled.Pressable`
+	flex-direction: row;
+	align-items: center;
+	padding: 16px;
+	gap: 12px;
+`;
+
+export const UpgradeBannerText = styled.View`
+	flex: 1;
+	gap: 2px;
+`;
+
+export const UpgradeBannerTitle = styled(BaseText)`
+	font-size: 16px;
+	font-weight: 700;
+	color: ${({ theme }) => theme.accent.orange};
+`;
+
+export const UpgradeBannerSub = styled(BaseText)`
+	font-size: 13px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
+/* Unlimited badge */
+export const UnlimitedBadge = styled(GlassView)`
+	border-radius: 20px;
+	overflow: hidden;
+	background-color: ${({ theme }) => `${theme.accent.orange}10`};
+`;
+
+export const UnlimitedBadgeInner = styled.View`
+	flex-direction: row;
+	align-items: center;
+	padding: 16px;
+	gap: 12px;
+`;
+
+export const UnlimitedBadgeText = styled.View`
+	flex: 1;
+	gap: 2px;
+`;
+
+export const UnlimitedBadgeTitle = styled(BaseText)`
+	font-size: 16px;
+	font-weight: 700;
+	color: ${({ theme }) => theme.accent.orange};
+`;
+
+export const UnlimitedBadgeSub = styled(BaseText)`
+	font-size: 13px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.text.secondary};
 `;

@@ -1,6 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Linking, Pressable, Switch } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, withSequence, withDelay } from 'react-native-reanimated';
+import {
+	useSharedValue,
+	useAnimatedStyle,
+	withTiming,
+	withRepeat,
+	withSequence,
+	withDelay
+} from 'react-native-reanimated';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -8,10 +15,13 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNotifications } from './hooks';
-import { setSettingsValue, useSettingsValue } from '@hooks';
+import { useNotifications, useAICompat } from './hooks';
+import { setSettingsValue, useSettingsValue, useScrollDirection, useEntitlement, useFeatureGate } from '@hooks';
 import { backfillRates } from '@hooks/setup';
 import Toast from 'react-native-toast-message';
+import { shareBackup, restoreFromBackup } from '@lib/backup';
+import { exportSubscriptionsCSV } from '@lib/backup/csv-export';
+import useTipJar from '@hooks/use-tip-jar';
 import * as Haptics from 'expo-haptics';
 
 import { SymbolView } from 'expo-symbols';
@@ -22,8 +32,10 @@ import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
 import {
 	Container,
+	ScreenTitle,
 	SectionWrap,
 	SectionLabel,
+	SectionCard,
 	SectionFooterText,
 	CurrencyRow,
 	CurrencyTile,
@@ -46,11 +58,8 @@ import {
 	Card,
 	CardRow,
 	CardRowTitle,
-	AccentPiano,
-	AccentKeyWrap,
-	AccentKeyBg,
-	AccentKey,
-	AccentKeyInner,
+	AccentSpectrum,
+	AccentBarItem,
 	DayHint,
 	StepperWrap,
 	StepperButton,
@@ -61,6 +70,17 @@ import {
 	SupportPillInner,
 	SupportPillTitle,
 	SupportPillSub,
+	UpgradeBanner,
+	UpgradeBannerInner,
+	UpgradeBannerText,
+	UpgradeBannerTitle,
+	UpgradeBannerSub,
+	UnlimitedBadge,
+	UnlimitedBadgeInner,
+	UnlimitedBadgeText,
+	UnlimitedBadgeTitle,
+	UnlimitedBadgeSub,
+	Separator,
 	FooterWrap,
 	FooterLinks,
 	FooterPill,
@@ -72,8 +92,7 @@ import {
 	ConstellationStar,
 	ConstellationGlow,
 	ConstellationRay,
-	ConstellationDot,
-	SectionDivider
+	ConstellationDot
 } from './settings.styles';
 
 type LogoPageT = {
@@ -106,16 +125,17 @@ const LOGO_PAGES: LogoPageT[] = [
 	{ key: 'pan', source: require('@assets/images/pan-icon.png'), labelKey: 'settings.icons.pan', tint: '#FF218C' }
 ];
 
+const STAR_OFFSET = 20;
 /* Lupus constellation — based on reference chart */
 /* Magnitudes: α 2.3  β 2.7  γ 2.8  δ 3.2  ε 3.4 */
 const STAR_POSITIONS = [
-	{ x: 140, y: 100 }, // α Lup — center hub
-	{ x: 90, y: 20 },   // β Lup — upper left
-	{ x: 210, y: 15 },  // γ Lup — upper right
-	{ x: 30, y: 175 },  // δ Lup — lower left
-	{ x: 205, y: 185 }  // ε Lup — lower right
+	{ x: 140, y: 170 - STAR_OFFSET }, // α Lup — center hub
+	{ x: 90, y: 90 - STAR_OFFSET }, // β Lup — upper left
+	{ x: 210, y: 85 - STAR_OFFSET }, // γ Lup — upper right
+	{ x: 30, y: 245 - STAR_OFFSET }, // δ Lup — lower left
+	{ x: 205, y: 255 - STAR_OFFSET } // ε Lup — lower right
 ];
-/* Dot size inversely proportional to magnitude (brighter → bigger) */
+/* Dot size inversely proportional to magnitude (brighter -> bigger) */
 const STAR_DOT_SIZES = [14, 11, 10, 8, 7];
 const STAR_LINES: [number, number][] = [
 	[0, 1],
@@ -126,6 +146,20 @@ const STAR_LINES: [number, number][] = [
 ];
 const STAR_ACTIVE_SIZE = 64;
 const HIT_SLOP = { top: 18, bottom: 18, left: 18, right: 18 };
+/* Accent colour keys */
+const ACCENT_KEYS = [
+	'red',
+	'orange',
+	'yellow',
+	'green',
+	'mint',
+	'teal',
+	'cyan',
+	'blue',
+	'indigo',
+	'purple',
+	'pink'
+] as const;
 /* 6 rays at irregular angles for a natural diffraction-spike look */
 const RAY_ANGLES = [0, 35, 72, 108, 145, 170];
 
@@ -158,10 +192,7 @@ const AnimatedStar = ({ page, dotSize, position, isActive, onPress }: StarProps)
 		}
 
 		glowScale.value = withRepeat(
-			withSequence(
-				withTiming(1.15, { duration: 1800 }),
-				withTiming(0.9, { duration: 1800 })
-			),
+			withSequence(withTiming(1.15, { duration: 1800 }), withTiming(0.9, { duration: 1800 })),
 			-1,
 			true
 		);
@@ -230,11 +261,39 @@ const AnimatedStar = ({ page, dotSize, position, isActive, onPress }: StarProps)
 	);
 };
 
+type AccentBarProps = {
+	color: string;
+	isActive: boolean;
+	onPress: () => void;
+};
+
+const AnimatedAccentBar = ({ color, isActive, onPress }: AccentBarProps) => {
+	const flex = useSharedValue(isActive ? 4 : 1.4);
+
+	useEffect(() => {
+		flex.value = withTiming(isActive ? 4 : 1.4, { duration: 180 });
+	}, [isActive]);
+
+	const animStyle = useAnimatedStyle(() => ({
+		flex: flex.value
+	}));
+
+	return (
+		<AccentBarItem $color={color} $active={isActive} style={animStyle}>
+			<Pressable onPress={onPress} style={{ flex: 1 }} />
+		</AccentBarItem>
+	);
+};
+
 const SettingsScreen = () => {
 	const { t } = useTranslation();
 	const theme = useTheme();
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
+	const handleScroll = useScrollDirection();
+
+	const { isUnlimited, tier } = useEntitlement();
+	const gate = useFeatureGate();
 
 	const notificationStatus = useNotifications();
 	const currentTheme = useSettingsValue<'dark' | 'light'>('theme');
@@ -244,6 +303,9 @@ const SettingsScreen = () => {
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 	const maxHorizon = useSettingsValue<number>('max_horizon') || 3;
 	const withColorGrading = useSettingsValue<boolean>('with_color_grading') ?? true;
+	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
+	const { isSupported: isAISupported } = useAICompat();
+	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
 	const [firstDay, setFirstDay] = useState(1); // 0=Sun … 6=Sat, default Mon
 
 	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
@@ -261,7 +323,6 @@ const SettingsScreen = () => {
 		}
 	};
 
-	const accentKeys = Object.keys(theme.accent) as string[];
 	const [selectedAccent, setSelectedAccent] = useState('orange');
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -315,7 +376,10 @@ const SettingsScreen = () => {
 	};
 
 	return (
-		<Container contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}>
+		<Container
+			contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}
+			onScroll={handleScroll}
+		>
 			{/* Constellation */}
 			<ConstellationWrap style={{ marginTop: 16 }}>
 				{STAR_LINES.map(([a, b]) => {
@@ -353,194 +417,344 @@ const SettingsScreen = () => {
 			</ConstellationWrap>
 
 			{/* Appearance */}
-			<SectionWrap marginTop={42}>
-				<ThemePickerRow>
-					<ThemePickerTile
-						$bg="#F2F2F7"
-						$active={activeMode === 'light'}
-						$accent={theme.accent.orange}
-						colorScheme="light"
-					>
-						<ThemePickerTileInner onPress={() => handleThemeSelect('light')}>
-							<SymbolView name="sun.max.fill" size={28} tintColor="#1C1C1E" />
-							<ThemePickerLabel $color="#1C1C1E">{t('settings.appearance.light')}</ThemePickerLabel>
-						</ThemePickerTileInner>
-					</ThemePickerTile>
+			<SectionWrap style={{ marginTop: 42 }}>
+				<SectionLabel>{t('settings.appearance.header')}</SectionLabel>
+				<SectionCard>
+					<ThemePickerRow>
+						<ThemePickerTile
+							$bg="#F2F2F7"
+							$active={activeMode === 'light'}
+							$accent={theme.accent.orange}
+							colorScheme="light"
+						>
+							<ThemePickerTileInner onPress={() => handleThemeSelect('light')}>
+								<SymbolView name="sun.max.fill" size={28} tintColor="#1C1C1E" />
+								<ThemePickerLabel $color="#1C1C1E">{t('settings.appearance.light')}</ThemePickerLabel>
+							</ThemePickerTileInner>
+						</ThemePickerTile>
 
-					<ThemePickerTile
-						$bg="#1C1C1E"
-						$active={activeMode === 'dark'}
-						$accent={theme.accent.orange}
-						colorScheme="dark"
-					>
-						<ThemePickerTileInner onPress={() => handleThemeSelect('dark')}>
-							<SymbolView name="moon.fill" size={28} tintColor="#FFFFFF" />
-							<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.dark')}</ThemePickerLabel>
-						</ThemePickerTileInner>
-					</ThemePickerTile>
+						<ThemePickerTile
+							$bg="#1C1C1E"
+							$active={activeMode === 'dark'}
+							$accent={theme.accent.orange}
+							colorScheme="dark"
+						>
+							<ThemePickerTileInner onPress={() => handleThemeSelect('dark')}>
+								<SymbolView name="moon.fill" size={28} tintColor="#FFFFFF" />
+								<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.dark')}</ThemePickerLabel>
+							</ThemePickerTileInner>
+						</ThemePickerTile>
 
-					<ThemePickerTile
-						$bg="#000000"
-						$active={activeMode === 'oled'}
-						$accent={theme.accent.orange}
-						colorScheme="dark"
-					>
-						<ThemePickerTileInner onPress={() => handleThemeSelect('oled')}>
-							<SymbolView name="moon.stars.fill" size={28} tintColor="#FFFFFF" />
-							<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.oled')}</ThemePickerLabel>
-						</ThemePickerTileInner>
-					</ThemePickerTile>
-				</ThemePickerRow>
+						<ThemePickerTile
+							$bg="#000000"
+							$active={activeMode === 'oled'}
+							$accent={theme.accent.orange}
+							colorScheme="dark"
+						>
+							<ThemePickerTileInner onPress={() => handleThemeSelect('oled')}>
+								<SymbolView name="moon.stars.fill" size={28} tintColor="#FFFFFF" />
+								<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.oled')}</ThemePickerLabel>
+							</ThemePickerTileInner>
+						</ThemePickerTile>
+					</ThemePickerRow>
 
-				<AccentPiano>
-					{accentKeys.map((key) => {
-						const color = theme.accent[key as keyof typeof theme.accent];
-						return (
-							<AccentKeyWrap key={key} $active={selectedAccent === key} $color={color}>
-								<AccentKeyBg />
-								<AccentKey $color={color} colorScheme={theme.tint}>
-									<AccentKeyInner onPress={() => setSelectedAccent(key)} />
-								</AccentKey>
-							</AccentKeyWrap>
-						);
-					})}
-				</AccentPiano>
+					<AccentSpectrum>
+						{ACCENT_KEYS.map((key) => (
+							<AnimatedAccentBar
+								key={key}
+								color={theme.accent[key]}
+								isActive={selectedAccent === key}
+								onPress={() => {
+									setSelectedAccent(key);
+									Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+								}}
+							/>
+						))}
+					</AccentSpectrum>
+				</SectionCard>
 			</SectionWrap>
 
 			{/* Currencies */}
-			<SectionWrap style={{ marginBottom: 0 }}>
-				<SectionLabel style={{ marginBottom: 6 }}>{t('settings.currencies.header')}</SectionLabel>
-			</SectionWrap>
-			<SectionDivider style={{ marginBottom: 16 }} />
-
 			<SectionWrap>
-				<CurrencyRow>
-					<CurrencyTile>
-						<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
-							<CurrencyTileLabel>{t('settings.currencies.default')}</CurrencyTileLabel>
-							<CurrencyTileCode>{defaultCurrencyCode}</CurrencyTileCode>
-							<CurrencyTileName numberOfLines={1}>{t(`currencies.${defaultCurrencyCode}`)}</CurrencyTileName>
-						</CurrencyTileInner>
-					</CurrencyTile>
+				<SectionLabel>{t('settings.currencies.header')}</SectionLabel>
+				<SectionCard>
+					<CurrencyRow>
+						<CurrencyTile>
+							<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
+								<CurrencyTileLabel>{t('settings.currencies.default')}</CurrencyTileLabel>
+								<CurrencyTileCode>{defaultCurrencyCode}</CurrencyTileCode>
+								<CurrencyTileName numberOfLines={1}>{t(`currencies.${defaultCurrencyCode}`)}</CurrencyTileName>
+							</CurrencyTileInner>
+						</CurrencyTile>
 
-					<CurrencyTile>
-						<CurrencyTileInner onPress={() => openCurrencyPicker('recalc_currency_code')}>
-							<CurrencyTileLabel>{t('settings.currencies.recalc')}</CurrencyTileLabel>
-							<CurrencyTileCode>{recalcCurrencyCode}</CurrencyTileCode>
-							<CurrencyTileName numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</CurrencyTileName>
-						</CurrencyTileInner>
-					</CurrencyTile>
-				</CurrencyRow>
+						<CurrencyTile>
+							<CurrencyTileInner onPress={() => openCurrencyPicker('recalc_currency_code')}>
+								<CurrencyTileLabel>{t('settings.currencies.recalc')}</CurrencyTileLabel>
+								<CurrencyTileCode>{recalcCurrencyCode}</CurrencyTileCode>
+								<CurrencyTileName numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</CurrencyTileName>
+							</CurrencyTileInner>
+						</CurrencyTile>
+					</CurrencyRow>
 
-				<RefreshButton>
-					<RefreshInner onPress={handleRefreshRates} disabled={isRefreshing}>
-						<SymbolView name="arrow.clockwise" size={15} weight="semibold" tintColor={theme.accent.orange} />
-						<RefreshText>{isRefreshing ? '...' : t('settings.currencies.refresh_rates')}</RefreshText>
-					</RefreshInner>
-				</RefreshButton>
+					<RefreshButton>
+						<RefreshInner onPress={handleRefreshRates} disabled={isRefreshing}>
+							<SymbolView name="arrow.clockwise" size={15} weight="semibold" tintColor={theme.accent.orange} />
+							<RefreshText>{isRefreshing ? '...' : t('settings.currencies.refresh_rates')}</RefreshText>
+						</RefreshInner>
+					</RefreshButton>
+				</SectionCard>
 			</SectionWrap>
 
 			{/* Preferences */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
+				<SectionCard>
+					<CurrencyRow>
+						<CurrencyTile>
+							<CurrencyTileInner
+								onPress={() => {
+									gate(() => {
+										setFirstDay(firstDay === 1 ? 0 : 1);
+										Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+									});
+								}}
+							>
+								<CurrencyTileLabel>{t('settings.preferences.first_day')}</CurrencyTileLabel>
+								<CurrencyTileCode>{t(`settings.preferences.days.${firstDay === 1 ? 'mo' : 'su'}`)}</CurrencyTileCode>
+								<DayHint>
+									{firstDay === 0 ? t('settings.preferences.day_hint_us') : t('settings.preferences.day_hint_iso')}
+								</DayHint>
+							</CurrencyTileInner>
+						</CurrencyTile>
 
-				<CurrencyRow>
-					<CurrencyTile>
-						<CurrencyTileInner onPress={() => { setFirstDay(firstDay === 1 ? 0 : 1); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
-							<CurrencyTileLabel>{t('settings.preferences.first_day')}</CurrencyTileLabel>
-							<CurrencyTileCode>{t(`settings.preferences.days.${firstDay === 1 ? 'mo' : 'su'}`)}</CurrencyTileCode>
-							<DayHint>{firstDay === 0 ? t('settings.preferences.day_hint_us') : t('settings.preferences.day_hint_iso')}</DayHint>
+						<CurrencyTile>
+							<CurrencyTileInner>
+								<CurrencyTileLabel>{t('settings.preferences.max_horizon')}</CurrencyTileLabel>
+								<CurrencyTileCode>
+									{maxHorizon} {t('settings.preferences.years_unit')}
+								</CurrencyTileCode>
+								<StepperWrap>
+									<StepperButton
+										$disabled={maxHorizon <= 2}
+										onPress={() => {
+											if (maxHorizon > 2) {
+												setSettingsValue('max_horizon', maxHorizon - 1);
+												Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+											}
+										}}
+									>
+										<SymbolView name="minus" size={13} weight="bold" tintColor={theme.text.secondary} />
+									</StepperButton>
+									<StepperButton
+										$disabled={!isUnlimited && maxHorizon >= tier.maxHorizon}
+										onPress={() => {
+											if (!isUnlimited && maxHorizon >= tier.maxHorizon) {
+												gate(() => {});
+												return;
+											}
+											if (maxHorizon < 10) {
+												setSettingsValue('max_horizon', maxHorizon + 1);
+												Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+											}
+										}}
+									>
+										<SymbolView name="plus" size={13} weight="bold" tintColor={theme.text.secondary} />
+									</StepperButton>
+								</StepperWrap>
+							</CurrencyTileInner>
+						</CurrencyTile>
+					</CurrencyRow>
+
+					<CurrencyTile style={{ marginTop: 10 }}>
+						<CurrencyTileInner
+							onPress={() => {
+								setSettingsValue('with_color_grading', !withColorGrading);
+								Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+							}}
+						>
+							<CurrencyTileLabel>{t('settings.preferences.color_grading')}</CurrencyTileLabel>
+							<ColorGradingPreview>
+								{withColorGrading ? (
+									<>
+										<ColorDot $color="#FF3B30" $size={18} />
+										<ColorDot $color="#FF9500" $size={14} />
+										<ColorDot $color="#34C759" $size={11} />
+										<ColorDot $color="#007AFF" $size={9} />
+									</>
+								) : (
+									<ColorDot $color={theme.text.tertiary} $size={18} />
+								)}
+							</ColorGradingPreview>
+							<CurrencyTileName>
+								{withColorGrading ? t('settings.preferences.grading_on') : t('settings.preferences.grading_off')}
+							</CurrencyTileName>
 						</CurrencyTileInner>
 					</CurrencyTile>
+				</SectionCard>
+			</SectionWrap>
 
-					<CurrencyTile>
-						<CurrencyTileInner>
-							<CurrencyTileLabel>{t('settings.preferences.max_horizon')}</CurrencyTileLabel>
-							<CurrencyTileCode>{maxHorizon}</CurrencyTileCode>
-							<StepperWrap>
-								<StepperButton
-									$disabled={maxHorizon <= 2}
-									onPress={() => {
-										if (maxHorizon > 2) {
-											setSettingsValue('max_horizon', maxHorizon - 1);
-											Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-										}
-									}}
-								>
-									<SymbolView name="minus" size={13} weight="bold" tintColor={theme.text.secondary} />
-								</StepperButton>
-								<StepperButton
-									$disabled={maxHorizon >= 10}
-									onPress={() => {
-										if (maxHorizon < 10) {
-											setSettingsValue('max_horizon', maxHorizon + 1);
-											Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-										}
-									}}
-								>
-									<SymbolView name="plus" size={13} weight="bold" tintColor={theme.text.secondary} />
-								</StepperButton>
-							</StepperWrap>
-						</CurrencyTileInner>
-					</CurrencyTile>
-				</CurrencyRow>
+			{/* AI Features */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.ai.header')}</SectionLabel>
+				<SectionCard>
+					<TileGrid>
+						<NavTile>
+							<NavTileInner>
+								<NavTileTitle>{t('settings.ai.status')}</NavTileTitle>
+								<NavTileValue>{isAISupported ? t('settings.ai.supported') : t('settings.ai.not_supported')}</NavTileValue>
+							</NavTileInner>
+						</NavTile>
+					</TileGrid>
 
-				<CurrencyTile style={{ marginTop: 10 }}>
-					<CurrencyTileInner onPress={() => { setSettingsValue('with_color_grading', !withColorGrading); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
-						<CurrencyTileLabel>{t('settings.preferences.color_grading')}</CurrencyTileLabel>
-						<ColorGradingPreview>
-							{withColorGrading ? (
-								<>
-									<ColorDot $color="#FF3B30" $size={18} />
-									<ColorDot $color="#FF9500" $size={14} />
-									<ColorDot $color="#34C759" $size={11} />
-									<ColorDot $color="#007AFF" $size={9} />
-								</>
-							) : (
-								<ColorDot $color={theme.text.tertiary} $size={18} />
-							)}
-						</ColorGradingPreview>
-						<CurrencyTileName>{withColorGrading ? t('settings.preferences.grading_on') : t('settings.preferences.grading_off')}</CurrencyTileName>
-					</CurrencyTileInner>
-				</CurrencyTile>
+					{isAISupported && (
+						<Card style={{ marginTop: 10 }}>
+							<CardRow onPress={() => setSettingsValue('ai_enabled', !aiEnabled)}>
+								<CardRowTitle>{t('settings.ai.toggle')}</CardRowTitle>
+								<Switch
+									value={aiEnabled}
+									onValueChange={(v) => setSettingsValue('ai_enabled', v)}
+									trackColor={{ true: theme.accent.orange }}
+								/>
+							</CardRow>
+						</Card>
+					)}
+				</SectionCard>
+				<SectionFooterText>{t('settings.ai.footer')}</SectionFooterText>
+			</SectionWrap>
+
+			{/* Unlimited / Upgrade */}
+			<SectionWrap>
+				{isUnlimited ? (
+					<UnlimitedBadge>
+						<UnlimitedBadgeInner>
+							<SymbolView name="crown.fill" size={24} tintColor={theme.accent.orange} />
+							<UnlimitedBadgeText>
+								<UnlimitedBadgeTitle>{t('settings.unlimited.badge')}</UnlimitedBadgeTitle>
+								<UnlimitedBadgeSub>{t('settings.unlimited.active')}</UnlimitedBadgeSub>
+							</UnlimitedBadgeText>
+						</UnlimitedBadgeInner>
+					</UnlimitedBadge>
+				) : (
+					<UpgradeBanner>
+						<UpgradeBannerInner onPress={() => router.push('/(crossroad)/paywall')}>
+							<SymbolView name="crown.fill" size={24} tintColor={theme.accent.orange} />
+							<UpgradeBannerText>
+								<UpgradeBannerTitle>{t('settings.unlimited.badge')}</UpgradeBannerTitle>
+								<UpgradeBannerSub>{t('limits.upgrade')}</UpgradeBannerSub>
+							</UpgradeBannerText>
+							<SymbolView name="chevron.right" size={14} weight="semibold" tintColor={theme.text.tertiary} />
+						</UpgradeBannerInner>
+					</UpgradeBanner>
+				)}
 			</SectionWrap>
 
 			{/* System */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.general.header')}</SectionLabel>
+				<SectionCard>
+					<TileGrid>
+						<NavTile>
+							<NavTileInner onPress={handleNotifications}>
+								<NavTileTitle>{t('settings.system.notifications.header')}</NavTileTitle>
+								<NavTileValue>{notificationStatus.label}</NavTileValue>
+							</NavTileInner>
+						</NavTile>
 
-				<TileGrid>
-					<NavTile>
-						<NavTileInner onPress={handleNotifications}>
-							<NavTileTitle>{t('settings.system.notifications.header')}</NavTileTitle>
-							<NavTileValue>{notificationStatus.label}</NavTileValue>
-						</NavTileInner>
-					</NavTile>
+						<NavTile>
+							<NavTileInner onPress={openSettings}>
+								<NavTileTitle>{t('settings.system.language')}</NavTileTitle>
+								<NavTileValue>{t(`languages.${i18n.language}`)}</NavTileValue>
+							</NavTileInner>
+						</NavTile>
+					</TileGrid>
 
-					<NavTile>
-						<NavTileInner onPress={openSettings}>
-							<NavTileTitle>{t('settings.system.language')}</NavTileTitle>
-							<NavTileValue>{t(`languages.${i18n.language}`)}</NavTileValue>
-						</NavTileInner>
-					</NavTile>
-				</TileGrid>
+					<Card style={{ marginTop: 10 }}>
+						<CardRow onPress={() => setSettingsValue('face_id', !isFaceIdEnabled)}>
+							<CardRowTitle>{t('settings.system.face_id')}</CardRowTitle>
+							<Switch
+								value={isFaceIdEnabled}
+								onValueChange={(v) => setSettingsValue('face_id', v)}
+								trackColor={{ true: theme.accent.orange }}
+							/>
+						</CardRow>
+					</Card>
+				</SectionCard>
+			</SectionWrap>
 
-				<Card style={{ marginTop: 10 }}>
-					<CardRow onPress={() => setSettingsValue('face_id', !isFaceIdEnabled)}>
-						<CardRowTitle>{t('settings.system.face_id')}</CardRowTitle>
-						<Switch
-							value={isFaceIdEnabled}
-							onValueChange={(v) => setSettingsValue('face_id', v)}
-							trackColor={{ true: theme.accent.orange }}
-						/>
-					</CardRow>
-				</Card>
+			{/* Data */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.data.header')}</SectionLabel>
+				<SectionCard>
+					<TileGrid>
+						<NavTile>
+							<NavTileInner
+								onPress={async () => {
+									try {
+										await shareBackup();
+										Toast.show({ type: 'success', text1: t('settings.data.backup_success') });
+									} catch {
+										Toast.show({ type: 'error', text1: 'Backup failed' });
+									}
+								}}
+							>
+								<NavTileTitle>{t('settings.data.backup')}</NavTileTitle>
+								<NavTileValue>SQLite</NavTileValue>
+							</NavTileInner>
+						</NavTile>
+
+						<NavTile>
+							<NavTileInner
+								onPress={async () => {
+									try {
+										const ok = await restoreFromBackup();
+										if (ok) {
+											Toast.show({ type: 'success', text1: t('settings.data.restore_success') });
+										}
+									} catch {
+										Toast.show({ type: 'error', text1: t('settings.data.restore_error') });
+									}
+								}}
+							>
+								<NavTileTitle>{t('settings.data.restore')}</NavTileTitle>
+								<NavTileValue>.db</NavTileValue>
+							</NavTileInner>
+						</NavTile>
+					</TileGrid>
+
+					<Card style={{ marginTop: 10 }}>
+						<CardRow
+							onPress={async () => {
+								try {
+									await exportSubscriptionsCSV();
+									Toast.show({ type: 'success', text1: t('settings.data.export_success') });
+								} catch {
+									Toast.show({ type: 'error', text1: 'Export failed' });
+								}
+							}}
+						>
+							<CardRowTitle>{t('settings.data.export_csv')}</CardRowTitle>
+							<SymbolView name="arrow.up.doc" size={18} tintColor={theme.text.tertiary} />
+						</CardRow>
+						<Separator />
+						<CardRow
+							onPress={async () => {
+								try {
+									await shareBackup();
+									Toast.show({ type: 'success', text1: t('settings.data.export_success') });
+								} catch {
+									Toast.show({ type: 'error', text1: 'Export failed' });
+								}
+							}}
+						>
+							<CardRowTitle>{t('settings.data.export_sql')}</CardRowTitle>
+							<SymbolView name="arrow.up.doc" size={18} tintColor={theme.text.tertiary} />
+						</CardRow>
+					</Card>
+				</SectionCard>
 			</SectionWrap>
 
 			{/* Support */}
-			<SectionWrap>
-				<SectionLabel>{t('settings.donations.header')}</SectionLabel>
-
+			<SectionWrap style={{ marginTop: 12 }}>
 				<SupportRow>
 					<SupportPill>
 						<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
@@ -566,6 +780,33 @@ const SettingsScreen = () => {
 
 				<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
 			</SectionWrap>
+
+			{/* Tip Jar — premium only */}
+			{isUnlimited && tipProducts.length > 0 && (
+				<SectionWrap>
+					<SectionLabel>{t('settings.tip_jar.header')}</SectionLabel>
+					<SupportRow>
+						{tipProducts.map((product) => {
+							const label =
+								product.identifier === 'uha_tip_small'
+									? t('settings.tip_jar.small')
+									: product.identifier === 'uha_tip_medium'
+										? t('settings.tip_jar.medium')
+										: t('settings.tip_jar.large');
+
+							return (
+								<SupportPill key={product.identifier}>
+									<SupportPillInner onPress={() => purchaseTip(product)} disabled={tipPurchasing !== null}>
+										<SupportPillTitle>{product.priceString}</SupportPillTitle>
+										<SupportPillSub>{label}</SupportPillSub>
+									</SupportPillInner>
+								</SupportPill>
+							);
+						})}
+					</SupportRow>
+					<SectionFooterText>{t('settings.tip_jar.description')}</SectionFooterText>
+				</SectionWrap>
+			)}
 
 			{/* Footer — about */}
 			<FooterWrap>

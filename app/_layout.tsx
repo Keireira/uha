@@ -17,7 +17,7 @@ import {
 	useBackfillRates,
 	useFillUpMissedTxs,
 	useInitSettings,
-	useSyncSettings
+	useSyncSettings,
 } from '@hooks/setup';
 
 import '@src/i18n';

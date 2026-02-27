@@ -46,3 +46,4 @@ android
 # modules
 !modules/settings-bridge/ios
 !modules/floating-search-bar/ios
+!modules/ai-compat/ios
