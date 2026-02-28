@@ -1,25 +1,23 @@
 import React from 'react';
 
-import { LegendList } from '@legendapp/list';
+import { FlashList } from '@shopify/flash-list';
 import ListSectionComponent from './list-section';
 
 import type { Props } from './list.d';
 import type { Props as ListSectionProps } from './list-section';
-import type { LegendListRenderItemProps } from '@legendapp/list';
+import type { ListRenderItemInfo } from '@shopify/flash-list';
 
-const renderItem = ({ item }: LegendListRenderItemProps<ListSectionProps>) => {
+const renderItem = ({ item }: ListRenderItemInfo<ListSectionProps>) => {
 	return <ListSectionComponent key={item.id} {...item} />;
 };
 
-// @TODO: Replace & remove LegendList
 const List = ({ sections, style }: Props) => {
 	return (
-		<LegendList
+		<FlashList
 			scrollEnabled={false}
 			data={sections}
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id || item.title || 'section'}
-			recycleItems
 			style={style}
 		/>
 	);

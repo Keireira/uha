@@ -12,5 +12,8 @@ export const userTable = sqliteTable('user', {
 		.notNull(), // e.g. 'USD' | 'RUB' | ...
 	default_currency: text()
 		.references(() => currenciesTable.id)
-		.notNull() // e.g. 'USD' | 'RUB' | ...
+		.notNull(), // e.g. 'USD' | 'RUB' | ...
+	is_unlimited: int({ mode: 'boolean' }).default(false).notNull(),
+	unlimited_type: text().$type<'monthly' | 'annual' | 'lifetime'>(),
+	unlimited_expires_at: text()
 });

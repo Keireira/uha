@@ -58,9 +58,12 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 	}
 
 	const splitted = splitEvery(10, newDates);
-	const promises = splitted.map((dates) => withRetry(() => getHistoryRates(dates)));
+	const responses = [];
 
-	const responses = await Promise.all(promises);
+	for (const dates of splitted) {
+		responses.push(await withRetry(() => getHistoryRates(dates)));
+	}
+
 	const valueToInsert = [];
 
 	for (const response of responses) {

@@ -1,2 +1,2 @@
 export { default as useNotifications } from './use-notifications';
-export { default as useGetCurrenciesList } from './use-get-currencies-list';
+export { default as useAICompat } from './use-ai-compat';
