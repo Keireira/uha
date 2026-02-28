@@ -53,11 +53,18 @@
 			"backup": "Varmuuskopio",
 			"restore": "Palauta",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Varmuuskopio luotu",
 			"restore_success": "Tiedot palautettu onnistuneesti",
 			"restore_error": "Varmuuskopion palautus epäonnistui",
-			"export_success": "Vienti valmis"
+			"export_success": "Vienti valmis",
+			"import_csv": "Import CSV",
+			"import_success": "Tiedot palautettu onnistuneesti",
+			"import_error": "Varmuuskopion palautus epäonnistui",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Varmuuskopion palautus epäonnistui",
+			"export_error": "Varmuuskopion palautus epäonnistui",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-ominaisuudet",

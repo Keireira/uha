@@ -53,11 +53,18 @@
 			"backup": "Säkerhetskopia",
 			"restore": "Återställ",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Säkerhetskopia skapad",
 			"restore_success": "Data återställd",
 			"restore_error": "Kunde inte återställa säkerhetskopian",
-			"export_success": "Export klar"
+			"export_success": "Export klar",
+			"import_csv": "Import CSV",
+			"import_success": "Data återställd",
+			"import_error": "Kunde inte återställa säkerhetskopian",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Kunde inte återställa säkerhetskopian",
+			"export_error": "Kunde inte återställa säkerhetskopian",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-funktioner",

@@ -53,11 +53,18 @@
 			"backup": "სარეზერვო ასლი",
 			"restore": "აღდგენა",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "სარეზერვო ასლი შეიქმნა",
 			"restore_success": "მონაცემები წარმატებით აღდგა",
 			"restore_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
-			"export_success": "ექსპორტი მზადაა"
+			"export_success": "ექსპორტი მზადაა",
+			"import_csv": "Import CSV",
+			"import_success": "მონაცემები წარმატებით აღდგა",
+			"import_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+			"export_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI ფუნქციები",

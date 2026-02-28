@@ -107,11 +107,18 @@
 			"backup": "백업",
 			"restore": "복원",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "백업이 생성되었습니다",
 			"restore_success": "데이터가 성공적으로 복원되었습니다",
 			"restore_error": "백업 복원에 실패했습니다",
-			"export_success": "내보내기 준비 완료"
+			"export_success": "내보내기 준비 완료",
+			"import_csv": "Import CSV",
+			"import_success": "데이터가 성공적으로 복원되었습니다",
+			"import_error": "백업 복원에 실패했습니다",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "백업 복원에 실패했습니다",
+			"export_error": "백업 복원에 실패했습니다",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI 기능",

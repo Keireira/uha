@@ -107,11 +107,18 @@
 			"backup": "バックアップ",
 			"restore": "復元",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "バックアップを作成しました",
 			"restore_success": "データの復元に成功しました",
 			"restore_error": "バックアップの復元に失敗しました",
-			"export_success": "エクスポート準備完了"
+			"export_success": "エクスポート準備完了",
+			"import_csv": "Import CSV",
+			"import_success": "データの復元に成功しました",
+			"import_error": "バックアップの復元に失敗しました",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "バックアップの復元に失敗しました",
+			"export_error": "バックアップの復元に失敗しました",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI機能",

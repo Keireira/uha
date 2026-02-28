@@ -90,8 +90,8 @@
 			"testflight": "TestFlight"
 		},
 		"donations": {
-			"header": "Поддержать",
-			"description": "Uha разрабатывается независимо. Любая поддержка помогает приложению работать и развиваться.",
+			"header": "Поддержите меня",
+			"description": "Uha создаётся одним разработчиком. Ваша поддержка помогает приложению жить и становиться лучше.",
 			"donate": "Поддержать",
 			"patreon": "Patreon",
 			"github": "GitHub",
@@ -121,12 +121,19 @@
 			"header": "Данные",
 			"backup": "Резервная копия",
 			"restore": "Восстановить",
-			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
+			"export_csv": "Экспорт CSV",
+			"import_csv": "Импорт CSV",
 			"backup_success": "Резервная копия создана",
+			"backup_error": "Не удалось создать копию",
 			"restore_success": "Данные успешно восстановлены",
 			"restore_error": "Не удалось восстановить данные",
-			"export_success": "Экспорт готов"
+			"export_success": "Экспорт готов",
+			"export_error": "Не удалось экспортировать",
+			"import_success": "Данные успешно импортированы",
+			"import_error": "Не удалось импортировать данные",
+			"icloud_sync": "Синхронизация iCloud",
+			"icloud_coming_soon": "Скоро",
+			"data_footer": "Восстановление резервной копии или импорт CSV перезапишет все существующие данные."
 		},
 		"ai": {
 			"header": "ИИ-функции",

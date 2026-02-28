@@ -107,11 +107,18 @@
 			"backup": "Backup",
 			"restore": "Ripristina",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Backup creato",
 			"restore_success": "Dati ripristinati con successo",
 			"restore_error": "Ripristino del backup fallito",
-			"export_success": "Esportazione pronta"
+			"export_success": "Esportazione pronta",
+			"import_csv": "Import CSV",
+			"import_success": "Dati ripristinati con successo",
+			"import_error": "Ripristino del backup fallito",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Ripristino del backup fallito",
+			"export_error": "Ripristino del backup fallito",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Funzioni AI",

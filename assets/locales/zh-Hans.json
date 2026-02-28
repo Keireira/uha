@@ -107,11 +107,18 @@
 			"backup": "备份",
 			"restore": "恢复",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "备份已创建",
 			"restore_success": "数据恢复成功",
 			"restore_error": "备份恢复失败",
-			"export_success": "导出已就绪"
+			"export_success": "导出已就绪",
+			"import_csv": "Import CSV",
+			"import_success": "数据恢复成功",
+			"import_error": "备份恢复失败",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "备份恢复失败",
+			"export_error": "备份恢复失败",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI 功能",

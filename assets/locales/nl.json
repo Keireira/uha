@@ -107,11 +107,18 @@
 			"backup": "Back-up",
 			"restore": "Herstellen",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Back-up aangemaakt",
 			"restore_success": "Gegevens succesvol hersteld",
 			"restore_error": "Herstellen van back-up mislukt",
-			"export_success": "Export gereed"
+			"export_success": "Export gereed",
+			"import_csv": "Import CSV",
+			"import_success": "Gegevens succesvol hersteld",
+			"import_error": "Herstellen van back-up mislukt",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Herstellen van back-up mislukt",
+			"export_error": "Herstellen van back-up mislukt",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-functies",

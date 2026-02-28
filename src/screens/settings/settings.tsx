@@ -20,7 +20,7 @@ import { setSettingsValue, useSettingsValue, useScrollDirection, useEntitlement,
 import { backfillRates } from '@hooks/setup';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
-import { exportSubscriptionsCSV } from '@lib/backup/csv-export';
+import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
 import useTipJar from '@hooks/use-tip-jar';
 import * as Haptics from 'expo-haptics';
 
@@ -58,6 +58,7 @@ import {
 	Card,
 	CardRow,
 	CardRowTitle,
+	CardRowValue,
 	AccentSpectrum,
 	AccentBarItem,
 	DayHint,
@@ -685,7 +686,14 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.data.header')}</SectionLabel>
 				<SectionCard>
-					<TileGrid>
+					<Card>
+						<CardRow disabled style={{ opacity: 0.45 }}>
+							<CardRowTitle>{t('settings.data.icloud_sync')}</CardRowTitle>
+							<CardRowValue>{t('settings.data.icloud_coming_soon')}</CardRowValue>
+						</CardRow>
+					</Card>
+
+					<TileGrid style={{ marginTop: 10 }}>
 						<NavTile>
 							<NavTileInner
 								onPress={async () => {
@@ -693,12 +701,11 @@ const SettingsScreen = () => {
 										await shareBackup();
 										Toast.show({ type: 'success', text1: t('settings.data.backup_success') });
 									} catch {
-										Toast.show({ type: 'error', text1: 'Backup failed' });
+										Toast.show({ type: 'error', text1: t('settings.data.backup_error') });
 									}
 								}}
 							>
 								<NavTileTitle>{t('settings.data.backup')}</NavTileTitle>
-								<NavTileValue>SQLite</NavTileValue>
 							</NavTileInner>
 						</NavTile>
 
@@ -716,7 +723,6 @@ const SettingsScreen = () => {
 								}}
 							>
 								<NavTileTitle>{t('settings.data.restore')}</NavTileTitle>
-								<NavTileValue>.db</NavTileValue>
 							</NavTileInner>
 						</NavTile>
 					</TileGrid>
@@ -725,36 +731,40 @@ const SettingsScreen = () => {
 						<CardRow
 							onPress={async () => {
 								try {
-									await exportSubscriptionsCSV();
+									await exportAllCSV();
 									Toast.show({ type: 'success', text1: t('settings.data.export_success') });
 								} catch {
-									Toast.show({ type: 'error', text1: 'Export failed' });
+									Toast.show({ type: 'error', text1: t('settings.data.export_error') });
 								}
 							}}
 						>
 							<CardRowTitle>{t('settings.data.export_csv')}</CardRowTitle>
-							<SymbolView name="arrow.up.doc" size={18} tintColor={theme.text.tertiary} />
+							<SymbolView name="square.and.arrow.up" size={18} tintColor={theme.text.tertiary} />
 						</CardRow>
 						<Separator />
 						<CardRow
 							onPress={async () => {
 								try {
-									await shareBackup();
-									Toast.show({ type: 'success', text1: t('settings.data.export_success') });
+									const ok = await importAllCSV();
+									if (ok) {
+										Toast.show({ type: 'success', text1: t('settings.data.import_success') });
+									}
 								} catch {
-									Toast.show({ type: 'error', text1: 'Export failed' });
+									Toast.show({ type: 'error', text1: t('settings.data.import_error') });
 								}
 							}}
 						>
-							<CardRowTitle>{t('settings.data.export_sql')}</CardRowTitle>
-							<SymbolView name="arrow.up.doc" size={18} tintColor={theme.text.tertiary} />
+							<CardRowTitle>{t('settings.data.import_csv')}</CardRowTitle>
+							<SymbolView name="square.and.arrow.down" size={18} tintColor={theme.text.tertiary} />
 						</CardRow>
 					</Card>
+					<SectionFooterText>{t('settings.data.data_footer')}</SectionFooterText>
 				</SectionCard>
 			</SectionWrap>
 
 			{/* Support */}
-			<SectionWrap style={{ marginTop: 12 }}>
+			<SectionWrap>
+				<SectionLabel>{t('settings.donations.header')}</SectionLabel>
 				<SupportRow>
 					<SupportPill>
 						<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
@@ -777,7 +787,6 @@ const SettingsScreen = () => {
 						</SupportPillInner>
 					</SupportPill>
 				</SupportRow>
-
 				<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
 			</SectionWrap>
 

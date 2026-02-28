@@ -107,11 +107,18 @@
 			"backup": "สำรองข้อมูล",
 			"restore": "กู้คืน",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "สร้างข้อมูลสำรองแล้ว",
 			"restore_success": "กู้คืนข้อมูลสำเร็จ",
 			"restore_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
-			"export_success": "ส่งออกพร้อมแล้ว"
+			"export_success": "ส่งออกพร้อมแล้ว",
+			"import_csv": "Import CSV",
+			"import_success": "กู้คืนข้อมูลสำเร็จ",
+			"import_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+			"export_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "ฟีเจอร์ AI",

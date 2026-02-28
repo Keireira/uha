@@ -53,11 +53,18 @@
 			"backup": "Backup",
 			"restore": "I-restore",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Na-create ang backup",
 			"restore_success": "Matagumpay na na-restore ang data",
 			"restore_error": "Hindi na-restore ang backup",
-			"export_success": "Handa na ang export"
+			"export_success": "Handa na ang export",
+			"import_csv": "Import CSV",
+			"import_success": "Matagumpay na na-restore ang data",
+			"import_error": "Hindi na-restore ang backup",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Hindi na-backup ang backup",
+			"export_error": "Hindi na-restore ang backup",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Mga AI Feature",

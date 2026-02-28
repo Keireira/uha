@@ -107,11 +107,18 @@
 			"backup": "Резервна копія",
 			"restore": "Відновити",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Резервну копію створено",
 			"restore_success": "Дані успішно відновлено",
 			"restore_error": "Не вдалося відновити резервну копію",
-			"export_success": "Експорт готовий"
+			"export_success": "Експорт готовий",
+			"import_csv": "Import CSV",
+			"import_success": "Дані успішно відновлено",
+			"import_error": "Не вдалося відновити резервну копію",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Не вдалося відновити резервну копію",
+			"export_error": "Не вдалося відновити резервну копію",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Функції AI",

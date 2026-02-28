@@ -53,11 +53,18 @@
 			"backup": "Sikkerhedskopi",
 			"restore": "Gendan",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Sikkerhedskopi oprettet",
 			"restore_success": "Data gendannet",
 			"restore_error": "Kunne ikke gendanne sikkerhedskopi",
-			"export_success": "Eksport klar"
+			"export_success": "Eksport klar",
+			"import_csv": "Import CSV",
+			"import_success": "Data gendannet",
+			"import_error": "Kunne ikke gendanne sikkerhedskopi",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Kunne ikke gendanne sikkerhedskopi",
+			"export_error": "Kunne ikke gendanne sikkerhedskopi",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-funktioner",

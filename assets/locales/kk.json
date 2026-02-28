@@ -90,8 +90,8 @@
 			"testflight": "TestFlight"
 		},
 		"donations": {
-			"header": "Қолдау көрсету",
-			"description": "Uha дербес әзірленеді. Кез келген қолдау қолданбаның жұмысын жалғастыруға көмектеседі.",
+			"header": "Мені қолдаңыз",
+			"description": "Uha бір әзірлеушімен жасалады. Сіздің қолдауыңыз қолданбаны дамытуға көмектеседі.",
 			"donate": "Қолдау",
 			"patreon": "Patreon",
 			"github": "GitHub",
@@ -121,12 +121,19 @@
 			"header": "Деректер",
 			"backup": "Сақтық көшірме",
 			"restore": "Қалпына келтіру",
-			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
+			"export_csv": "CSV экспорттау",
+			"import_csv": "CSV импорттау",
 			"backup_success": "Сақтық көшірме жасалды",
+			"backup_error": "Сақтық көшірме жасалмады",
 			"restore_success": "Деректер сәтті қалпына келтірілді",
-			"restore_error": "Сақтық көшірмені қалпына келтіру сәтсіз",
-			"export_success": "Экспорт дайын"
+			"restore_error": "Деректерді қалпына келтіру сәтсіз",
+			"export_success": "Экспорт дайын",
+			"export_error": "Экспорттау сәтсіз",
+			"import_success": "Деректер сәтті импортталды",
+			"import_error": "Деректерді импорттау сәтсіз",
+			"icloud_sync": "iCloud синхрондау",
+			"icloud_coming_soon": "Жақында",
+			"data_footer": "Сақтық көшірмені қалпына келтіру немесе CSV импорттау бар деректерді қайта жазады."
 		},
 		"ai": {
 			"header": "ЖИ мүмкіндіктері",

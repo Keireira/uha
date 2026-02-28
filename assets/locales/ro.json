@@ -53,11 +53,18 @@
 			"backup": "Copie de rezervă",
 			"restore": "Restaurare",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Copie de rezervă creată",
 			"restore_success": "Datele au fost restaurate cu succes",
 			"restore_error": "Restaurarea copiei de rezervă a eșuat",
-			"export_success": "Export pregătit"
+			"export_success": "Export pregătit",
+			"import_csv": "Import CSV",
+			"import_success": "Datele au fost restaurate cu succes",
+			"import_error": "Restaurarea copiei de rezervă a eșuat",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Restaurarea copiei de rezervă a eșuat",
+			"export_error": "Restaurarea copiei de rezervă a eșuat",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Funcții AI",
@@ -123,7 +130,7 @@
 		},
 		"donations": {
 			"header": "Susține-mă",
-			"description": "Uha este dezvoltată independent. Orice sprijin ajută la menținerea și creșterea aplicației.",
+			"description": "Uha is built by a solo indie developer. Your support helps keep it alive and improving.",
 			"donate": "Donează",
 			"patreon": "Patreon",
 			"github": "GitHub",

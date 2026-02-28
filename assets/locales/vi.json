@@ -107,11 +107,18 @@
 			"backup": "Sao lưu",
 			"restore": "Khôi phục",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Đã tạo bản sao lưu",
 			"restore_success": "Khôi phục dữ liệu thành công",
 			"restore_error": "Khôi phục bản sao lưu thất bại",
-			"export_success": "Xuất dữ liệu sẵn sàng"
+			"export_success": "Xuất dữ liệu sẵn sàng",
+			"import_csv": "Import CSV",
+			"import_success": "Khôi phục dữ liệu thành công",
+			"import_error": "Khôi phục bản sao lưu thất bại",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Khôi phục bản sao lưu thất bại",
+			"export_error": "Khôi phục bản sao lưu thất bại",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Tính năng AI",

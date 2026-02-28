@@ -53,11 +53,18 @@
 			"backup": "बैकअप",
 			"restore": "पुनर्स्थापित करें",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "बैकअप बनाया गया",
 			"restore_success": "डेटा सफलतापूर्वक पुनर्स्थापित",
 			"restore_error": "बैकअप पुनर्स्थापित करने में विफल",
-			"export_success": "निर्यात तैयार"
+			"export_success": "निर्यात तैयार",
+			"import_csv": "Import CSV",
+			"import_success": "डेटा सफलतापूर्वक पुनर्स्थापित",
+			"import_error": "बैकअप पुनर्स्थापित करने में विफल",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "बैकअप पुनर्स्थापित करने में विफल",
+			"export_error": "बैकअप पुनर्स्थापित करने में विफल",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI सुविधाएँ",

@@ -91,7 +91,7 @@
 		},
 		"donations": {
 			"header": "Apoie-me",
-			"description": "O Uha é desenvolvido de forma independente. Qualquer apoio ajuda a manter o app funcionando e crescendo.",
+			"description": "Uha is built by a solo indie developer. Your support helps keep it alive and improving.",
 			"donate": "Doar",
 			"patreon": "Patreon",
 			"github": "GitHub",
@@ -107,11 +107,18 @@
 			"backup": "Backup",
 			"restore": "Restaurar",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Backup criado",
 			"restore_success": "Dados restaurados com sucesso",
 			"restore_error": "Falha ao restaurar o backup",
-			"export_success": "Exportação pronta"
+			"export_success": "Exportação pronta",
+			"import_csv": "Import CSV",
+			"import_success": "Dados restaurados com sucesso",
+			"import_error": "Falha ao restaurar o backup",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Falha ao restaurar o backup",
+			"export_error": "Falha ao restaurar o backup",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Recursos de IA",

@@ -53,11 +53,18 @@
 			"backup": "Sikkerhetskopi",
 			"restore": "Gjenopprett",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Sikkerhetskopi opprettet",
 			"restore_success": "Data gjenopprettet",
 			"restore_error": "Kunne ikke gjenopprette sikkerhetskopi",
-			"export_success": "Eksport klar"
+			"export_success": "Eksport klar",
+			"import_csv": "Import CSV",
+			"import_success": "Data gjenopprettet",
+			"import_error": "Kunne ikke gjenopprette sikkerhetskopi",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Kunne ikke gjenopprette sikkerhetskopi",
+			"export_error": "Kunne ikke gjenopprette sikkerhetskopi",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-funksjoner",

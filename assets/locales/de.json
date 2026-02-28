@@ -107,11 +107,18 @@
 			"backup": "Sicherung",
 			"restore": "Wiederherstellen",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Sicherung erstellt",
 			"restore_success": "Daten erfolgreich wiederhergestellt",
 			"restore_error": "Sicherung konnte nicht wiederhergestellt werden",
-			"export_success": "Export bereit"
+			"export_success": "Export bereit",
+			"import_csv": "Import CSV",
+			"import_success": "Daten erfolgreich wiederhergestellt",
+			"import_error": "Sicherung konnte nicht wiederhergestellt werden",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Sicherung konnte nicht wiederhergestellt werden",
+			"export_error": "Sicherung konnte nicht wiederhergestellt werden",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "KI-Funktionen",

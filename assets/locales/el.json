@@ -53,11 +53,18 @@
 			"backup": "Αντίγραφο ασφαλείας",
 			"restore": "Επαναφορά",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Το αντίγραφο ασφαλείας δημιουργήθηκε",
 			"restore_success": "Τα δεδομένα επαναφέρθηκαν επιτυχώς",
 			"restore_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
-			"export_success": "Η εξαγωγή είναι έτοιμη"
+			"export_success": "Η εξαγωγή είναι έτοιμη",
+			"import_csv": "Import CSV",
+			"import_success": "Τα δεδομένα επαναφέρθηκαν επιτυχώς",
+			"import_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+			"export_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "Λειτουργίες AI",

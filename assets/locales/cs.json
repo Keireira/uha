@@ -53,11 +53,18 @@
 			"backup": "Záloha",
 			"restore": "Obnovit",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Záloha vytvořena",
 			"restore_success": "Data úspěšně obnovena",
 			"restore_error": "Obnovení zálohy se nezdařilo",
-			"export_success": "Export připraven"
+			"export_success": "Export připraven",
+			"import_csv": "Import CSV",
+			"import_success": "Data úspěšně obnovena",
+			"import_error": "Obnovení zálohy se nezdařilo",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Obnovení zálohy se nezdařilo",
+			"export_error": "Obnovení zálohy se nezdařilo",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI funkce",

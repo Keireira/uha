@@ -53,11 +53,18 @@
 			"backup": "Biztonsági mentés",
 			"restore": "Visszaállítás",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Biztonsági mentés létrehozva",
 			"restore_success": "Adatok sikeresen visszaállítva",
 			"restore_error": "A biztonsági mentés visszaállítása sikertelen",
-			"export_success": "Exportálás kész"
+			"export_success": "Exportálás kész",
+			"import_csv": "Import CSV",
+			"import_success": "Adatok sikeresen visszaállítva",
+			"import_error": "A biztonsági mentés visszaállítása sikertelen",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "A biztonsági mentés visszaállítása sikertelen",
+			"export_error": "A biztonsági mentés visszaállítása sikertelen",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI funkciók",

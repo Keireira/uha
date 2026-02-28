@@ -126,8 +126,8 @@
 			"testflight": "TestFlight"
 		},
 		"donations": {
-			"header": "Support",
-			"description": "Uha is developed independently. Any support helps keep the app running and growing.",
+			"header": "Support Me",
+			"description": "Uha is built by a solo indie developer. Your support helps keep it alive and improving.",
 			"donate": "Donate",
 			"patreon": "Patreon",
 			"github": "GitHub",
@@ -143,11 +143,18 @@
 			"backup": "Backup",
 			"restore": "Restore",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
+			"import_csv": "Import CSV",
 			"backup_success": "Backup created",
+			"backup_error": "Backup failed",
 			"restore_success": "Data restored successfully",
-			"restore_error": "Failed to restore backup",
-			"export_success": "Export ready"
+			"restore_error": "Failed to restore data",
+			"export_success": "Export ready",
+			"export_error": "Export failed",
+			"import_success": "Data imported successfully",
+			"import_error": "Failed to import data",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI Features",

@@ -53,11 +53,18 @@
 			"backup": "Öryggisafrit",
 			"restore": "Endurheimta",
 			"export_csv": "Export CSV",
-			"export_sql": "Export SQL",
 			"backup_success": "Öryggisafrit búið til",
 			"restore_success": "Gögn endurheimt",
 			"restore_error": "Ekki tókst að endurheimta öryggisafrit",
-			"export_success": "Útflutningur tilbúinn"
+			"export_success": "Útflutningur tilbúinn",
+			"import_csv": "Import CSV",
+			"import_success": "Gögn endurheimt",
+			"import_error": "Ekki tókst að endurheimta öryggisafrit",
+			"icloud_sync": "iCloud Sync",
+			"icloud_coming_soon": "Coming soon",
+			"backup_error": "Ekki tókst að endurheimta öryggisafrit",
+			"export_error": "Ekki tókst að endurheimta öryggisafrit",
+			"data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
 		},
 		"ai": {
 			"header": "AI-eiginleikar",
