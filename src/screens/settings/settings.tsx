@@ -1,13 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Linking, Pressable, Switch } from 'react-native';
-import {
-	useSharedValue,
-	useAnimatedStyle,
-	withTiming,
-	withRepeat,
-	withSequence,
-	withDelay
-} from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -25,8 +18,7 @@ import useTipJar from '@hooks/use-tip-jar';
 import * as Haptics from 'expo-haptics';
 
 import { SymbolView } from 'expo-symbols';
-import SquircleMask from '@assets/masks/squircle.svg.tsx';
-import { setAppIcon, getAppIcon } from '@howincodes/expo-dynamic-app-icon';
+
 import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
@@ -86,67 +78,11 @@ import {
 	FooterPill,
 	FooterPillInner,
 	FooterPillText,
-	FooterVersion,
-	ConstellationWrap,
-	ConstellationLine,
-	ConstellationStar,
-	ConstellationGlow,
-	ConstellationRay,
-	ConstellationDot
+	FooterVersion
 } from './settings.styles';
+import { AppLogoPicker } from './components';
 
-type LogoPageT = {
-	key: string;
-	source: number;
-	labelKey: string;
-	tint: string;
-};
-
-const LOGO_PAGES: LogoPageT[] = [
-	{
-		key: 'DEFAULT',
-		source: require('@assets/images/ios-light.png'),
-		labelKey: 'settings.icons.classic',
-		tint: '#FF9500'
-	},
-	{
-		key: 'enby',
-		source: require('@assets/images/enby-icon.png'),
-		labelKey: 'settings.icons.nonbinary',
-		tint: '#FCF434'
-	},
-	{ key: 'trans', source: require('@assets/images/trans-icon.png'), labelKey: 'settings.icons.trans', tint: '#5BCEFA' },
-	{
-		key: 'lesbi',
-		source: require('@assets/images/lesbi-icon.png'),
-		labelKey: 'settings.icons.lesbian',
-		tint: '#D362A4'
-	},
-	{ key: 'pan', source: require('@assets/images/pan-icon.png'), labelKey: 'settings.icons.pan', tint: '#FF218C' }
-];
-
-const STAR_OFFSET = 20;
-/* Lupus constellation — based on reference chart */
-/* Magnitudes: α 2.3  β 2.7  γ 2.8  δ 3.2  ε 3.4 */
-const STAR_POSITIONS = [
-	{ x: 140, y: 170 - STAR_OFFSET }, // α Lup — center hub
-	{ x: 90, y: 90 - STAR_OFFSET }, // β Lup — upper left
-	{ x: 210, y: 85 - STAR_OFFSET }, // γ Lup — upper right
-	{ x: 30, y: 245 - STAR_OFFSET }, // δ Lup — lower left
-	{ x: 205, y: 255 - STAR_OFFSET } // ε Lup — lower right
-];
-/* Dot size inversely proportional to magnitude (brighter -> bigger) */
-const STAR_DOT_SIZES = [14, 11, 10, 8, 7];
-const STAR_LINES: [number, number][] = [
-	[0, 1],
-	[0, 2],
-	[1, 2],
-	[0, 3],
-	[0, 4]
-];
-const STAR_ACTIVE_SIZE = 64;
-const HIT_SLOP = { top: 18, bottom: 18, left: 18, right: 18 };
-/* Accent colour keys */
+/* Accent color keys */
 const ACCENT_KEYS = [
 	'red',
 	'orange',
@@ -160,106 +96,6 @@ const ACCENT_KEYS = [
 	'purple',
 	'pink'
 ] as const;
-/* 6 rays at irregular angles for a natural diffraction-spike look */
-const RAY_ANGLES = [0, 35, 72, 108, 145, 170];
-
-type StarProps = {
-	page: LogoPageT;
-	dotSize: number;
-	position: { x: number; y: number };
-	isActive: boolean;
-	onPress: () => void;
-};
-
-const AnimatedStar = ({ page, dotSize, position, isActive, onPress }: StarProps) => {
-	const rotateY = useSharedValue(isActive ? 0 : 90);
-	const scale = useSharedValue(isActive ? 1 : 0);
-	const opacity = useSharedValue(isActive ? 1 : 0);
-	const glowOpacity = useSharedValue(isActive ? 1 : 0.45);
-	const glowScale = useSharedValue(1);
-
-	useEffect(() => {
-		if (isActive) {
-			rotateY.value = withTiming(0, { duration: 200 });
-			scale.value = withTiming(1, { duration: 200 });
-			opacity.value = withTiming(1, { duration: 100 });
-			glowOpacity.value = withDelay(80, withTiming(1, { duration: 300 }));
-		} else {
-			rotateY.value = withTiming(90, { duration: 150 });
-			scale.value = withTiming(0, { duration: 150 });
-			opacity.value = withTiming(0, { duration: 80 });
-			glowOpacity.value = withTiming(0.45, { duration: 300 });
-		}
-
-		glowScale.value = withRepeat(
-			withSequence(withTiming(1.15, { duration: 1800 }), withTiming(0.9, { duration: 1800 })),
-			-1,
-			true
-		);
-	}, [isActive]);
-
-	const animatedStyle = useAnimatedStyle(() => ({
-		transform: [{ perspective: 600 }, { rotateY: `${rotateY.value}deg` }, { scale: scale.value }],
-		opacity: opacity.value
-	}));
-
-	const glowStyle = useAnimatedStyle(() => ({
-		opacity: glowOpacity.value,
-		transform: [{ scale: glowScale.value }]
-	}));
-
-	const size = STAR_ACTIVE_SIZE;
-
-	return (
-		<>
-			<Pressable
-				hitSlop={HIT_SLOP}
-				style={{ position: 'absolute', left: position.x - dotSize / 2, top: position.y - dotSize / 2, zIndex: 6 }}
-				onPress={onPress}
-			>
-				<ConstellationDot $color={page.tint} style={{ width: dotSize, height: dotSize, borderRadius: dotSize / 2 }} />
-			</Pressable>
-			<ConstellationStar style={[{ left: position.x - size / 2, top: position.y - size / 2 }, animatedStyle]}>
-				<Pressable hitSlop={HIT_SLOP} onPress={onPress}>
-					<SquircleMask link={page.source} size={size} />
-				</Pressable>
-			</ConstellationStar>
-			{(() => {
-				const r = isActive ? 40 : dotSize * 1.2;
-				return (
-					<ConstellationGlow
-						style={[
-							{
-								left: position.x - r,
-								top: position.y - r,
-								width: r * 2,
-								height: r * 2
-							},
-							glowStyle
-						]}
-					>
-						{RAY_ANGLES.map((angle, i) => {
-							const len = r * (1.4 + (i % 3) * 0.25);
-							const thickness = isActive ? 1.5 : 1;
-							return (
-								<ConstellationRay
-									key={angle}
-									$color={page.tint}
-									style={{
-										width: len * 2,
-										height: thickness,
-										borderRadius: thickness,
-										transform: [{ rotate: `${angle}deg` }]
-									}}
-								/>
-							);
-						})}
-					</ConstellationGlow>
-				);
-			})()}
-		</>
-	);
-};
 
 type AccentBarProps = {
 	color: string;
@@ -327,21 +163,6 @@ const SettingsScreen = () => {
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	// Icon picker state
-	const dotSizes = STAR_DOT_SIZES;
-	const [appIcon, setAppIconLocal] = useState<string>(() => getAppIcon());
-
-	useEffect(() => {
-		const activeIcon = getAppIcon();
-		if (activeIcon !== appIcon) {
-			setAppIcon(appIcon === 'DEFAULT' ? null : (appIcon as 'enby' | 'trans' | 'lesbi' | 'pan'));
-		}
-	}, [appIcon]);
-
-	const handleIconSelect = useCallback((key: string) => {
-		setAppIconLocal(key);
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-	}, []);
-
 	const handleRefreshRates = useCallback(async () => {
 		setIsRefreshing(true);
 
@@ -380,41 +201,7 @@ const SettingsScreen = () => {
 			contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}
 			onScroll={handleScroll}
 		>
-			{/* Constellation */}
-			<ConstellationWrap style={{ marginTop: 16 }}>
-				{STAR_LINES.map(([a, b]) => {
-					const ax = STAR_POSITIONS[a].x;
-					const ay = STAR_POSITIONS[a].y;
-					const bx = STAR_POSITIONS[b].x;
-					const by = STAR_POSITIONS[b].y;
-					const dx = bx - ax;
-					const dy = by - ay;
-					const len = Math.sqrt(dx * dx + dy * dy);
-					const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-					return (
-						<ConstellationLine
-							key={`${a}-${b}`}
-							style={{
-								left: ax,
-								top: ay,
-								width: len,
-								transformOrigin: '0 0',
-								transform: [{ rotate: `${angle}deg` }]
-							}}
-						/>
-					);
-				})}
-				{LOGO_PAGES.map((page, index) => (
-					<AnimatedStar
-						key={page.key}
-						page={page}
-						dotSize={dotSizes[index]}
-						position={STAR_POSITIONS[index]}
-						isActive={page.key === appIcon}
-						onPress={() => handleIconSelect(page.key)}
-					/>
-				))}
-			</ConstellationWrap>
+			<AppLogoPicker />
 
 			{/* Appearance */}
 			<SectionWrap style={{ marginTop: 42 }}>

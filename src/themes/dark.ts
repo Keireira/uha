@@ -1,7 +1,8 @@
 import type { ThemeConfigT } from './themes.d';
 
 const darkThemeConfig: ThemeConfigT = {
-	tint: 'dark', // +
+	tint: 'dark',
+	is_oled: false,
 
 	static: {
 		white: '#fafafa' // +

@@ -2,6 +2,7 @@ import type { ThemeConfigT } from './themes.d';
 
 const oledThemeConfig: ThemeConfigT = {
 	tint: 'dark',
+	is_oled: true,
 
 	static: {
 		white: '#fafafa'

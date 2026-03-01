@@ -2,6 +2,7 @@ import type { ThemeConfigT } from './themes.d';
 
 const lightThemeConfig: ThemeConfigT = {
 	tint: 'light',
+	is_oled: false,
 
 	static: {
 		white: '#fafafa'

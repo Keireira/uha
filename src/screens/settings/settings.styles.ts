@@ -304,47 +304,6 @@ export const FooterVersion = styled(BaseText)`
 	margin-left: 4px;
 `;
 
-/* Constellation */
-export const ConstellationWrap = styled.View`
-	align-self: center;
-	justify-content: center;
-	width: 280px;
-	height: 280px;
-`;
-
-export const ConstellationLine = styled.View`
-	position: absolute;
-	height: 1px;
-	background-color: ${({ theme }) => `${theme.text.tertiary}15`};
-	z-index: 1;
-`;
-
-export const ConstellationStar = styled(Animated.View)`
-	position: absolute;
-	z-index: 5;
-`;
-
-export const ConstellationDot = styled.View<{ $color: string }>`
-	background-color: ${({ $color }) => `${$color}90`};
-	shadow-color: ${({ $color }) => $color};
-	shadow-offset: 0px 0px;
-	shadow-opacity: 0.8;
-	shadow-radius: 6px;
-`;
-
-export const ConstellationGlow = styled(Animated.View)`
-	position: absolute;
-	align-items: center;
-	justify-content: center;
-	z-index: 3;
-`;
-
-export const ConstellationRay = styled.View<{ $color: string }>`
-	position: absolute;
-	background-color: ${({ $color }) => `${$color}18`};
-	border-radius: 999px;
-`;
-
 /* Preferences — first day hint */
 export const DayHint = styled(BaseText)`
 	font-size: 11px;

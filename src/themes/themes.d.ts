@@ -4,6 +4,7 @@ export type ThemeT = 'dark' | 'light' | 'oled';
 
 export type ThemeConfigT = {
 	tint: 'dark' | 'light';
+	is_oled: boolean;
 
 	static: {
 		white: string;
