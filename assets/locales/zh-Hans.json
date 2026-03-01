@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "货币",
-			"default": "默认货币",
-			"recalc": "换算货币",
+			"default_currency_code": "默认货币",
+			"recalc_currency_code": "换算货币",
 			"fractions": "显示小数",
 			"explain": "货币标签",
 			"africa": "非洲",
@@ -79,7 +79,7 @@
 			"other": "其他",
 			"cryptocurrency": "加密货币",
 			"refresh_rates": "汇率",
-			"refresh_action": "更新"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "关于",

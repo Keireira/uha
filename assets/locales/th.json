@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "สกุลเงิน",
-			"default": "สกุลเงินหลัก",
-			"recalc": "สกุลเงินแปลง",
+			"default_currency_code": "สกุลเงินหลัก",
+			"recalc_currency_code": "สกุลเงินแปลง",
 			"fractions": "แสดงทศนิยม",
 			"explain": "ป้ายสกุลเงิน",
 			"africa": "แอฟริกา",
@@ -79,7 +79,7 @@
 			"other": "อื่น ๆ",
 			"cryptocurrency": "คริปโตเคอร์เรนซี",
 			"refresh_rates": "อัตราแลกเปลี่ยน",
-			"refresh_action": "อัปเดต"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "เกี่ยวกับ",

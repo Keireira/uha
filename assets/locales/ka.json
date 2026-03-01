@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "ვალუტები",
-			"default": "ძირითადი ვალუტა",
-			"recalc": "გადაანგარიშების ვალუტა",
+			"default_currency_code": "ძირითადი ვალუტა",
+			"recalc_currency_code": "გადაანგარიშების ვალუტა",
 			"fractions": "წილადების ჩვენება",
 			"explain": "ვალუტის ტეგი",
 			"africa": "აფრიკა",
@@ -118,7 +118,7 @@
 			"other": "სხვა",
 			"cryptocurrency": "კრიპტოვალუტები",
 			"refresh_rates": "გაცვლითი კურსები",
-			"refresh_action": "განახლება"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "აპლიკაციის შესახებ",

@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "貨幣",
-			"default": "預設貨幣",
-			"recalc": "換算貨幣",
+			"default_currency_code": "預設貨幣",
+			"recalc_currency_code": "換算貨幣",
 			"fractions": "顯示小數",
 			"explain": "貨幣標籤",
 			"africa": "非洲",
@@ -79,7 +79,7 @@
 			"other": "其他",
 			"cryptocurrency": "加密貨幣",
 			"refresh_rates": "匯率",
-			"refresh_action": "更新"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "關於",

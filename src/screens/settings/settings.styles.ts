@@ -11,16 +11,6 @@ export const Container = styled.ScrollView.attrs({
 	background-color: ${({ theme }) => theme.background.default};
 `;
 
-/* Screen title */
-export const ScreenTitle = styled(BaseText)`
-	font-size: 32px;
-	font-weight: 800;
-	color: ${({ theme }) => theme.text.primary};
-	letter-spacing: -0.5px;
-	padding-horizontal: 16px;
-	margin-bottom: 8px;
-`;
-
 /* Hero hint */
 export const LogoHint = styled(BaseText)`
 	font-size: 12px;

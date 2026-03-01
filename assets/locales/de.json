@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Währungen",
-			"default": "Hauptwährung",
-			"recalc": "Umrechnungswährung",
+			"default_currency_code": "Hauptwährung",
+			"recalc_currency_code": "Umrechnungswährung",
 			"fractions": "Nachkommastellen",
 			"explain": "Währungskürzel",
 			"africa": "Afrika",
@@ -79,7 +79,7 @@
 			"other": "Sonstige",
 			"cryptocurrency": "Kryptowährungen",
 			"refresh_rates": "Wechselkurse",
-			"refresh_action": "Aktualisieren"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Über die App",

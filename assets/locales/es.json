@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Divisas",
-			"default": "Divisa principal",
-			"recalc": "Divisa de conversión",
+			"default_currency_code": "Divisa principal",
+			"recalc_currency_code": "Divisa de conversión",
 			"fractions": "Mostrar decimales",
 			"explain": "Etiqueta de divisa",
 			"africa": "África",
@@ -79,7 +79,7 @@
 			"other": "Otros",
 			"cryptocurrency": "Criptomonedas",
 			"refresh_rates": "Tipos de cambio",
-			"refresh_action": "Actualizar"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Acerca de",

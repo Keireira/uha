@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Valute",
-			"default": "Valuta principală",
-			"recalc": "Valuta de conversie",
+			"default_currency_code": "Valuta principală",
+			"recalc_currency_code": "Valuta de conversie",
 			"fractions": "Afișează zecimale",
 			"explain": "Etichetă valută",
 			"africa": "Africa",
@@ -118,7 +118,7 @@
 			"other": "Altele",
 			"cryptocurrency": "Criptomonede",
 			"refresh_rates": "Cursuri valutare",
-			"refresh_action": "Actualizează"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Despre",

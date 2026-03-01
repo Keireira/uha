@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Meny",
-			"default": "Hlavná mena",
-			"recalc": "Prepočítavacia mena",
+			"default_currency_code": "Hlavná mena",
+			"recalc_currency_code": "Prepočítavacia mena",
 			"fractions": "Zobraziť desatinné miesta",
 			"explain": "Značka meny",
 			"africa": "Afrika",
@@ -118,7 +118,7 @@
 			"other": "Ostatné",
 			"cryptocurrency": "Kryptomeny",
 			"refresh_rates": "Výmenné kurzy",
-			"refresh_action": "Aktualizovať"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "O aplikácii",

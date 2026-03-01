@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Valuta's",
-			"default": "Standaardvaluta",
-			"recalc": "Omrekeningsvaluta",
+			"default_currency_code": "Standaardvaluta",
+			"recalc_currency_code": "Omrekeningsvaluta",
 			"fractions": "Decimalen tonen",
 			"explain": "Valutalabel",
 			"africa": "Afrika",
@@ -79,7 +79,7 @@
 			"other": "Overig",
 			"cryptocurrency": "Cryptovaluta",
 			"refresh_rates": "Wisselkoersen",
-			"refresh_action": "Bijwerken"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Over",

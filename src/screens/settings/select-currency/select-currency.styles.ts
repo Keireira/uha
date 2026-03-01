@@ -1,34 +1,12 @@
 import styled from 'styled-components/native';
-import { BaseText, Text, SmallText } from '@ui';
-
-export const Container = styled.View`
-	flex: 1;
-	background-color: ${({ theme }) => theme.background.default};
-`;
-
-export const Header = styled.View`
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	padding: 16px 24px 12px;
-`;
-
-export const Title = styled(BaseText)`
-	font-size: 22px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.text.primary};
-`;
-
-export const SearchContainer = styled.View`
-	padding: 0 24px 12px;
-`;
+import { Text, SmallText } from '@ui';
 
 export const SectionHeaderText = styled(SmallText)`
 	font-weight: 600;
 	color: ${({ theme }) => theme.text.secondary};
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	padding: 16px 24px 6px;
+	padding: 16px 6px 6px;
 `;
 
 export const CurrencyRow = styled.Pressable`
@@ -43,8 +21,10 @@ export const CurrencyInfo = styled.View`
 	gap: 2px;
 `;
 
-export const CurrencyName = styled(Text)`
+export const CurrencyName = styled(Text)<{ $isSelected: boolean }>`
 	font-size: 16px;
+	font-weight: ${({ $isSelected }) => ($isSelected ? 600 : 400)};
+	color: ${({ $isSelected, theme }) => ($isSelected ? theme.accent.orange : theme.text.primary)};
 `;
 
 export const CurrencyCode = styled(SmallText)`
@@ -53,6 +33,20 @@ export const CurrencyCode = styled(SmallText)`
 
 export const Separator = styled.View`
 	height: 0.5px;
-	margin-left: 38px;
+	margin-left: 24px;
 	background-color: ${({ theme }) => `${theme.border.default}50`};
+`;
+
+export const VerticalSpacer = styled.View<{ $height: number }>`
+	height: ${({ $height }) => $height}px;
+`;
+
+export const Content = styled.View`
+	flex: 1;
+	flex-direction: column;
+	padding-horizontal: 24px;
+`;
+
+export default styled.View.attrs({ collapsable: false })`
+	flex: 1;
 `;

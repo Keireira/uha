@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Валюталар",
-			"default": "Негізгі валюта",
-			"recalc": "Қайта есептеу валютасы",
+			"default_currency_code": "Негізгі валюта",
+			"recalc_currency_code": "Қайта есептеу валютасы",
 			"fractions": "Бөлшектерді көрсету",
 			"explain": "Валюта белгісі",
 			"africa": "Африка",
@@ -79,7 +79,7 @@
 			"other": "Өзгелер",
 			"cryptocurrency": "Криптовалюталар",
 			"refresh_rates": "Валюта бағамдары",
-			"refresh_action": "Жаңарту"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Қолданба туралы",

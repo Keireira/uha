@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "통화",
-			"default": "기본 통화",
-			"recalc": "환산 통화",
+			"default_currency_code": "기본 통화",
+			"recalc_currency_code": "환산 통화",
 			"fractions": "소수점 표시",
 			"explain": "통화 태그",
 			"africa": "아프리카",
@@ -79,7 +79,7 @@
 			"other": "기타",
 			"cryptocurrency": "암호화폐",
 			"refresh_rates": "환율",
-			"refresh_action": "업데이트"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "앱 정보",

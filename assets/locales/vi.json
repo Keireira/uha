@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Tiền tệ",
-			"default": "Tiền tệ mặc định",
-			"recalc": "Tiền tệ quy đổi",
+			"default_currency_code": "Tiền tệ mặc định",
+			"recalc_currency_code": "Tiền tệ quy đổi",
 			"fractions": "Hiển thị phần thập phân",
 			"explain": "Nhãn tiền tệ",
 			"africa": "Châu Phi",
@@ -79,7 +79,7 @@
 			"other": "Khác",
 			"cryptocurrency": "Tiền mã hóa",
 			"refresh_rates": "Tỷ giá",
-			"refresh_action": "Cập nhật"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Giới thiệu",

@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Mga Pera",
-			"default": "Default na pera",
-			"recalc": "Pera para sa conversion",
+			"default_currency_code": "Default na pera",
+			"recalc_currency_code": "Pera para sa conversion",
 			"fractions": "Ipakita ang decimal",
 			"explain": "Label ng pera",
 			"africa": "Aprika",
@@ -118,7 +118,7 @@
 			"other": "Iba pa",
 			"cryptocurrency": "Cryptocurrency",
 			"refresh_rates": "Mga palitan",
-			"refresh_action": "I-update"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Tungkol sa",

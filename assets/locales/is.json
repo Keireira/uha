@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Gjaldmiðlar",
-			"default": "Sjálfgefinn gjaldmiðill",
-			"recalc": "Umreikningsgjaldmiðill",
+			"default_currency_code": "Sjálfgefinn gjaldmiðill",
+			"recalc_currency_code": "Umreikningsgjaldmiðill",
 			"fractions": "Sýna aukastafi",
 			"explain": "Gjaldmiðilsmerki",
 			"africa": "Afríka",
@@ -118,7 +118,7 @@
 			"other": "Annað",
 			"cryptocurrency": "Dulritunargjaldmiðlar",
 			"refresh_rates": "Gengi",
-			"refresh_action": "Uppfæra"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Um",

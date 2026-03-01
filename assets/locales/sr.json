@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Валуте",
-			"default": "Подразумевана валута",
-			"recalc": "Валута за конверзију",
+			"default_currency_code": "Подразумевана валута",
+			"recalc_currency_code": "Валута за конверзију",
 			"fractions": "Прикажи децимале",
 			"explain": "Ознака валуте",
 			"africa": "Африка",
@@ -118,7 +118,7 @@
 			"other": "Остало",
 			"cryptocurrency": "Криптовалуте",
 			"refresh_rates": "Курсеви",
-			"refresh_action": "Ажурирај"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "О апликацији",

@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Valuutat",
-			"default": "Oletusvaluutta",
-			"recalc": "Muunnosvaluutta",
+			"default_currency_code": "Oletusvaluutta",
+			"recalc_currency_code": "Muunnosvaluutta",
 			"fractions": "Näytä desimaalit",
 			"explain": "Valuuttamerkintä",
 			"africa": "Afrikka",
@@ -118,7 +118,7 @@
 			"other": "Muu",
 			"cryptocurrency": "Kryptovaluutat",
 			"refresh_rates": "Valuuttakurssit",
-			"refresh_action": "Päivitä"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Tietoja",

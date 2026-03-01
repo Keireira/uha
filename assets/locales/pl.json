@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Waluty",
-			"default": "Waluta główna",
-			"recalc": "Waluta przeliczeniowa",
+			"default_currency_code": "Waluta główna",
+			"recalc_currency_code": "Waluta przeliczeniowa",
 			"fractions": "Pokaż grosze",
 			"explain": "Znacznik waluty",
 			"africa": "Afryka",
@@ -79,7 +79,7 @@
 			"other": "Inne",
 			"cryptocurrency": "Kryptowaluty",
 			"refresh_rates": "Kursy walut",
-			"refresh_action": "Aktualizuj"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "O aplikacji",

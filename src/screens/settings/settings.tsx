@@ -32,7 +32,6 @@ import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 
 import {
 	Container,
-	ScreenTitle,
 	SectionWrap,
 	SectionLabel,
 	SectionCard,
@@ -365,7 +364,7 @@ const SettingsScreen = () => {
 	}, [t]);
 
 	const openCurrencyPicker = (target: string) => {
-		router.push({ pathname: '/(crossroad)/select-currency', params: { target } });
+		router.push({ pathname: '/(tabs)/settings/select-currency', params: { target } });
 	};
 
 	const handleNotifications = () => {
@@ -482,7 +481,7 @@ const SettingsScreen = () => {
 					<CurrencyRow>
 						<CurrencyTile>
 							<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
-								<CurrencyTileLabel>{t('settings.currencies.default')}</CurrencyTileLabel>
+								<CurrencyTileLabel>{t('settings.currencies.default_currency_code')}</CurrencyTileLabel>
 								<CurrencyTileCode>{defaultCurrencyCode}</CurrencyTileCode>
 								<CurrencyTileName numberOfLines={1}>{t(`currencies.${defaultCurrencyCode}`)}</CurrencyTileName>
 							</CurrencyTileInner>
@@ -490,7 +489,7 @@ const SettingsScreen = () => {
 
 						<CurrencyTile>
 							<CurrencyTileInner onPress={() => openCurrencyPicker('recalc_currency_code')}>
-								<CurrencyTileLabel>{t('settings.currencies.recalc')}</CurrencyTileLabel>
+								<CurrencyTileLabel>{t('settings.currencies.recalc_currency_code')}</CurrencyTileLabel>
 								<CurrencyTileCode>{recalcCurrencyCode}</CurrencyTileCode>
 								<CurrencyTileName numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</CurrencyTileName>
 							</CurrencyTileInner>
@@ -602,7 +601,9 @@ const SettingsScreen = () => {
 						<NavTile>
 							<NavTileInner>
 								<NavTileTitle>{t('settings.ai.status')}</NavTileTitle>
-								<NavTileValue>{isAISupported ? t('settings.ai.supported') : t('settings.ai.not_supported')}</NavTileValue>
+								<NavTileValue>
+									{isAISupported ? t('settings.ai.supported') : t('settings.ai.not_supported')}
+								</NavTileValue>
 							</NavTileInner>
 						</NavTile>
 					</TileGrid>

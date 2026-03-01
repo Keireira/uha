@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "मुद्राएँ",
-			"default": "डिफ़ॉल्ट मुद्रा",
-			"recalc": "रूपांतरण मुद्रा",
+			"default_currency_code": "डिफ़ॉल्ट मुद्रा",
+			"recalc_currency_code": "रूपांतरण मुद्रा",
 			"fractions": "दशमलव दिखाएँ",
 			"explain": "मुद्रा लेबल",
 			"africa": "अफ़्रीका",
@@ -118,7 +118,7 @@
 			"other": "अन्य",
 			"cryptocurrency": "क्रिप्टोकरेंसी",
 			"refresh_rates": "विनिमय दरें",
-			"refresh_action": "अपडेट"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "जानकारी",

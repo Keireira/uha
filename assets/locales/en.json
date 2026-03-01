@@ -94,8 +94,8 @@
 		"logo_hint": "Swipe to change · Tap to apply",
 		"currencies": {
 			"header": "Currencies",
-			"default": "Default Currency",
-			"recalc": "Recalc Currency",
+			"default_currency_code": "Default Currency",
+			"recalc_currency_code": "Recalc Currency",
 			"fractions": "Show Fractions",
 			"explain": "Currency Tag",
 			"africa": "Africa",
@@ -112,10 +112,9 @@
 			"other": "Other",
 			"cryptocurrency": "Cryptocurrencies",
 			"refresh_rates": "Exchange Rates",
-			"refresh_action": "Update",
 			"select_title": "Select Currency",
 			"search": "Search currencies",
-			"popular": "Popular"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "About",

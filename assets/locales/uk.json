@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Валюти",
-			"default": "Основна валюта",
-			"recalc": "Валюта перерахунку",
+			"default_currency_code": "Основна валюта",
+			"recalc_currency_code": "Валюта перерахунку",
 			"fractions": "Показувати дроби",
 			"explain": "Мітка валюти",
 			"africa": "Африка",
@@ -79,7 +79,7 @@
 			"other": "Інші",
 			"cryptocurrency": "Криптовалюти",
 			"refresh_rates": "Курси валют",
-			"refresh_action": "Оновити"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Про застосунок",

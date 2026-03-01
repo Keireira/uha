@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Valute",
-			"default": "Valuta principale",
-			"recalc": "Valuta di conversione",
+			"default_currency_code": "Valuta principale",
+			"recalc_currency_code": "Valuta di conversione",
 			"fractions": "Mostra decimali",
 			"explain": "Etichetta valuta",
 			"africa": "Africa",
@@ -79,7 +79,7 @@
 			"other": "Altro",
 			"cryptocurrency": "Criptovalute",
 			"refresh_rates": "Tassi di cambio",
-			"refresh_action": "Aggiorna"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Info",

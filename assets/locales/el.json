@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Νομίσματα",
-			"default": "Προεπιλεγμένο νόμισμα",
-			"recalc": "Νόμισμα μετατροπής",
+			"default_currency_code": "Προεπιλεγμένο νόμισμα",
+			"recalc_currency_code": "Νόμισμα μετατροπής",
 			"fractions": "Εμφάνιση δεκαδικών",
 			"explain": "Ετικέτα νομίσματος",
 			"africa": "Αφρική",
@@ -118,7 +118,7 @@
 			"other": "Άλλα",
 			"cryptocurrency": "Κρυπτονομίσματα",
 			"refresh_rates": "Συναλλαγματικές ισοτιμίες",
-			"refresh_action": "Ενημέρωση"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Σχετικά",

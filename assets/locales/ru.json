@@ -61,8 +61,8 @@
 		},
 		"currencies": {
 			"header": "Валюты",
-			"default": "Основная валюта",
-			"recalc": "Валюта для пересчёта",
+			"default_currency_code": "Основная валюта",
+			"recalc_currency_code": "Валюта для пересчёта",
 			"fractions": "Показывать дроби",
 			"explain": "Тег валюты",
 			"africa": "Африка",
@@ -79,7 +79,7 @@
 			"other": "Иные",
 			"cryptocurrency": "Криптовалюты",
 			"refresh_rates": "Курсы валют",
-			"refresh_action": "Обновить"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "О приложении",

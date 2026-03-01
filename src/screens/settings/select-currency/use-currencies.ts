@@ -11,6 +11,7 @@ export type CurrencyItem = {
 	id: string;
 	name: string;
 	code: string;
+	key: string;
 };
 
 export type CurrencySection = {
@@ -44,18 +45,19 @@ const useCurrencies = (searchQuery: string): CurrencySection[] => {
 	const sections = useMemo(() => {
 		const query = searchQuery.trim().toLowerCase();
 
-		// Build popular section
-		const popularCodes = [...DEFAULT_CURRENCIES];
+		// Build primary section
+		const primaryCodes = [...DEFAULT_CURRENCIES];
 		const localeCurrency = locales[0]?.currencyCode;
 
-		if (localeCurrency && !popularCodes.includes(localeCurrency)) {
-			popularCodes.push(localeCurrency);
+		if (localeCurrency && !primaryCodes.includes(localeCurrency)) {
+			primaryCodes.push(localeCurrency);
 		}
 
-		const popularItems: CurrencyItem[] = popularCodes.map((code) => ({
+		const primaryItems: CurrencyItem[] = primaryCodes.map((code) => ({
 			id: code,
 			name: t(`currencies.${code}`),
-			code
+			code,
+			key: `primary-${code}`
 		}));
 
 		// Build region sections
@@ -65,7 +67,8 @@ const useCurrencies = (searchQuery: string): CurrencySection[] => {
 			const item: CurrencyItem = {
 				id: currency.id,
 				name: t(`currencies.${currency.id}`),
-				code: currency.id
+				code: currency.id,
+				key: `${currency.region}-${currency.id}`
 			};
 
 			regionMap[currency.region] ??= [];
@@ -80,17 +83,17 @@ const useCurrencies = (searchQuery: string): CurrencySection[] => {
 		// Build ordered sections
 		const result: CurrencySection[] = [];
 
-		// Popular section first
-		const filteredPopular = query
-			? popularItems.filter(
+		// Primary section first
+		const filteredPrimary = query
+			? primaryItems.filter(
 					(item) => item.name.toLowerCase().includes(query) || item.code.toLowerCase().includes(query)
 				)
-			: popularItems;
+			: primaryItems;
 
-		if (filteredPopular.length > 0) {
+		if (filteredPrimary.length > 0) {
 			result.push({
-				title: t('settings.currencies.popular'),
-				data: filteredPopular
+				title: t('settings.currencies.primary'),
+				data: filteredPrimary
 			});
 		}
 

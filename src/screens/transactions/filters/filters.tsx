@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useUnit } from 'effector-react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppModel } from '@models';
 import { TABS } from './components/header';

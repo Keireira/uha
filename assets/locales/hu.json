@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Pénznemek",
-			"default": "Alapértelmezett pénznem",
-			"recalc": "Átszámítási pénznem",
+			"default_currency_code": "Alapértelmezett pénznem",
+			"recalc_currency_code": "Átszámítási pénznem",
 			"fractions": "Tizedesjegyek mutatása",
 			"explain": "Pénznem címke",
 			"africa": "Afrika",
@@ -118,7 +118,7 @@
 			"other": "Egyéb",
 			"cryptocurrency": "Kriptovaluták",
 			"refresh_rates": "Árfolyamok",
-			"refresh_action": "Frissítés"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Az alkalmazásról",

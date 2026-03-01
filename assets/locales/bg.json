@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Валути",
-			"default": "Основна валута",
-			"recalc": "Валута за преизчисление",
+			"default_currency_code": "Основна валута",
+			"recalc_currency_code": "Валута за преизчисление",
 			"fractions": "Показвай десетични",
 			"explain": "Етикет на валута",
 			"africa": "Африка",
@@ -118,7 +118,7 @@
 			"other": "Други",
 			"cryptocurrency": "Криптовалути",
 			"refresh_rates": "Обменни курсове",
-			"refresh_action": "Обнови"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "За приложението",

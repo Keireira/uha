@@ -100,8 +100,8 @@
 		},
 		"currencies": {
 			"header": "Valutor",
-			"default": "Standardvaluta",
-			"recalc": "Omräkningsvaluta",
+			"default_currency_code": "Standardvaluta",
+			"recalc_currency_code": "Omräkningsvaluta",
 			"fractions": "Visa decimaler",
 			"explain": "Valutaetikett",
 			"africa": "Afrika",
@@ -118,7 +118,7 @@
 			"other": "Övrigt",
 			"cryptocurrency": "Kryptovalutor",
 			"refresh_rates": "Växelkurser",
-			"refresh_action": "Uppdatera"
+			"primary": "Primary"
 		},
 		"about": {
 			"header": "Om",
