@@ -1,96 +1,32 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Haptics from 'expo-haptics';
+
+import { useCurrencies } from './hooks';
+import { isHeaderSection } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
-import { setSettingsValue, useSettingsValue } from '@hooks';
-import useCurrencies from './use-currencies';
-
-import Root, {
-	Content,
-	VerticalSpacer,
-	SectionHeaderText,
-	CurrencyRow,
-	CurrencyInfo,
-	CurrencyName,
-	CurrencyCode,
-	Separator
-} from './select-currency.styles';
 import { View, useWindowDimensions } from 'react-native';
-import { Header, SearchBar } from './components';
+import { Header, SearchBar, CurrencyRow } from './components';
+import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-currency.styles';
 
-import type { CurrencyItem } from './use-currencies';
+import type { RowItem } from './select-currency.d';
+import type { ListRenderItemInfo } from '@shopify/flash-list';
 
-type FlatItem = { type: 'sectionHeader'; title: string } | { type: 'row'; item: CurrencyItem; isLast: boolean };
+const renderRowItem = ({ item }: ListRenderItemInfo<RowItem>) => {
+	if (isHeaderSection(item)) {
+		return <SectionHeaderText>{item.title}</SectionHeaderText>;
+	}
+
+	const { key, ...rest } = item.item;
+
+	return <CurrencyRow {...rest} isLast={item.isLast} />;
+};
 
 const SelectCurrencyScreen = () => {
-	const router = useRouter();
 	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
-	const { target } = useLocalSearchParams<{ target: string }>();
-
-	const currentValue = useSettingsValue<string>(target || 'default_currency_code');
-	const [searchQuery, setSearchQuery] = useState('');
-
-	const sections = useCurrencies(searchQuery);
-
-	const flatData = useMemo(() => {
-		const items: FlatItem[] = [];
-		const stickyIndices: number[] = [];
-
-		for (const section of sections) {
-			stickyIndices.push(items.length);
-			items.push({ type: 'sectionHeader', title: section.title });
-
-			for (let i = 0; i < section.data.length; i++) {
-				items.push({
-					type: 'row',
-					item: section.data[i],
-					isLast: i === section.data.length - 1
-				});
-			}
-		}
-
-		return { items, stickyIndices };
-	}, [sections]);
-
-	const handleSelect = useCallback(
-		(code: string) => {
-			if (!target) return;
-
-			setSettingsValue(target, code);
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			router.back();
-		},
-		[target, router]
-	);
-
-	const renderItem = useCallback(
-		({ item }: { item: FlatItem }) => {
-			if (item.type === 'sectionHeader') {
-				return <SectionHeaderText>{item.title}</SectionHeaderText>;
-			}
-
-			const { item: currency, isLast } = item;
-
-			return (
-				<>
-					<CurrencyRow onPress={() => handleSelect(currency.code)}>
-						<CurrencyInfo>
-							<CurrencyName $isSelected={currentValue === currency.code}>{currency.name}</CurrencyName>
-							<CurrencyCode>{currency.code}</CurrencyCode>
-						</CurrencyInfo>
-					</CurrencyRow>
-
-					{!isLast && <Separator />}
-				</>
-			);
-		},
-		[handleSelect, currentValue]
-	);
-
-	const getItemType = useCallback((item: FlatItem) => item.type, []);
+	const { sections, searchQuery, setSearchQuery } = useCurrencies();
 
 	return (
 		<>
@@ -100,13 +36,13 @@ const SelectCurrencyScreen = () => {
 				<Content>
 					<View style={{ height: dimensions.height + 64 }}>
 						<FlashList
-							data={flatData.items}
-							renderItem={renderItem}
 							contentContainerStyle={{ gap: 16 }}
-							keyExtractor={(item) => (item.type === 'sectionHeader' ? `s-${item.title}` : item.item.key)}
-							getItemType={getItemType}
+							data={sections}
+							renderItem={renderRowItem}
 							keyboardShouldPersistTaps="handled"
 							showsVerticalScrollIndicator={false}
+							getItemType={(item) => item.type}
+							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}
 							ListHeaderComponent={<VerticalSpacer $height={insets.top} />}
 							ListFooterComponent={<VerticalSpacer $height={insets.bottom + 64} />}
 						/>

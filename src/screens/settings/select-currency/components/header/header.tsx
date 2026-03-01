@@ -6,9 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { CircleButton, InlineTitleIOS } from '@ui';
 import Root, { HeaderRow, Title } from './header.styles';
 
-type SearchParamsT = {
-	target: 'default_currency_code' | 'recalc_currency_code';
-};
+import type { SearchParamsT } from '../../select-currency.d';
 
 const Header = () => {
 	const theme = useTheme();
