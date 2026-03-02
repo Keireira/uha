@@ -4,12 +4,12 @@ const APP_LOGOS: AppLogoT[] = [
 	{
 		key: 'DEFAULT',
 		source: require('@assets/images/ios-light.png'),
-		tint: '#FFD60A'
+		tint: '#30D158'
 	},
 	{
 		key: 'enby',
 		source: require('@assets/images/enby-icon.png'),
-		tint: '#5E5CE6'
+		tint: '#BF5AF2'
 	},
 	{
 		key: 'trans',
@@ -24,7 +24,7 @@ const APP_LOGOS: AppLogoT[] = [
 	{
 		key: 'pan',
 		source: require('@assets/images/pan-icon.png'),
-		tint: '#63E6E2'
+		tint: '#FFD60A'
 	}
 ];
 

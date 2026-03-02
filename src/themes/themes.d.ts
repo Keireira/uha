@@ -7,7 +7,10 @@ export type ThemeConfigT = {
 	is_oled: boolean;
 
 	static: {
+		pure_white: string;
 		white: string;
+		pure_black: string;
+		black: string;
 	};
 
 	background: {

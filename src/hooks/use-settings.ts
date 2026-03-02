@@ -8,7 +8,7 @@ const normalize = (value: any) => {
 	return [0, 1].includes(value) ? value === 1 : value;
 };
 
-export const setSettingsValue = (key: string, value: any) => {
+export const setSettingsValue = <T = any>(key: string, value: T) => {
 	Settings.set({ [key]: value });
 
 	settingsEmitter.emit(key, value);

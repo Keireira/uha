@@ -183,34 +183,6 @@ export const Separator = styled.View`
 	background-color: ${({ theme }) => `${theme.border.default}30`};
 `;
 
-/* Theme picker */
-export const ThemePickerRow = styled.View`
-	flex-direction: row;
-	gap: 10px;
-`;
-
-export const ThemePickerTile = styled(GlassView)<{ $bg: string; $active: boolean; $accent: string }>`
-	flex: 1;
-	border-radius: 16px;
-	overflow: hidden;
-	background-color: ${({ $bg }) => $bg};
-	border-width: 2.5px;
-	border-color: ${({ $active, $accent }) => ($active ? $accent : 'transparent')};
-`;
-
-export const ThemePickerTileInner = styled.Pressable`
-	align-items: center;
-	justify-content: center;
-	padding: 16px 10px;
-	gap: 10px;
-`;
-
-export const ThemePickerLabel = styled(BaseText)<{ $color: string }>`
-	font-size: 13px;
-	font-weight: 700;
-	color: ${({ $color }) => $color};
-`;
-
 /* Accent spectrum — expanding bars */
 export const AccentSpectrum = styled.View`
 	margin-top: 14px;

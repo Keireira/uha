@@ -4,13 +4,7 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 
 import { useSettingsValue } from './use-settings';
-import {
-	FREE_TIER,
-	UNLIMITED_TIER,
-	FREE_CURRENCY_BASE,
-	type EntitlementT,
-	type UnlimitedType
-} from '@lib/entitlement';
+import { FREE_TIER, UNLIMITED_TIER, FREE_CURRENCY_BASE, type EntitlementT, type UnlimitedType } from '@lib/entitlement';
 
 export const useEntitlement = (): EntitlementT => {
 	const isUnlimited = useSettingsValue<boolean>('is_unlimited') ?? false;
@@ -52,7 +46,7 @@ export const useFreeCurrencies = (): string[] => {
 	return useMemo(() => {
 		const codes = [...FREE_CURRENCY_BASE];
 
-		if (localeCurrency && !codes.includes(localeCurrency as typeof FREE_CURRENCY_BASE[number])) {
+		if (localeCurrency && !codes.includes(localeCurrency as (typeof FREE_CURRENCY_BASE)[number])) {
 			codes.push(localeCurrency);
 		}
 

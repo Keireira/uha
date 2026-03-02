@@ -5,7 +5,10 @@ const oledThemeConfig: ThemeConfigT = {
 	is_oled: true,
 
 	static: {
-		white: '#fafafa'
+		pure_white: '#ffffff',
+		white: '#fafafa',
+		pure_black: '#000000',
+		black: '#1C1C1E'
 	},
 
 	background: {

@@ -38,10 +38,6 @@ import {
 	RefreshInner,
 	RefreshText,
 	TileGrid,
-	ThemePickerRow,
-	ThemePickerTile,
-	ThemePickerTileInner,
-	ThemePickerLabel,
 	NavTile,
 	NavTileInner,
 	NavTileTitle,
@@ -80,7 +76,8 @@ import {
 	FooterPillText,
 	FooterVersion
 } from './settings.styles';
-import { AppLogoPicker } from './components';
+import { AppLogoPicker, ThemePicker } from './components';
+import type { ThemeConfigT } from '@themes';
 
 /* Accent color keys */
 const ACCENT_KEYS = [
@@ -129,37 +126,22 @@ const SettingsScreen = () => {
 	const handleScroll = useScrollDirection();
 
 	const { isUnlimited, tier } = useEntitlement();
-	const gate = useFeatureGate();
+	const featureGate = useFeatureGate();
 
 	const notificationStatus = useNotifications();
-	const currentTheme = useSettingsValue<'dark' | 'light'>('theme');
-	const isOledEnabled = useSettingsValue<boolean>('oled_mode');
+
 	const isFaceIdEnabled = useSettingsValue<boolean>('face_id');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 	const maxHorizon = useSettingsValue<number>('max_horizon') || 3;
 	const withColorGrading = useSettingsValue<boolean>('with_color_grading') ?? true;
+	const selectedAccent = useSettingsValue<keyof ThemeConfigT['accent']>('accent');
+
 	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
 	const { isSupported: isAISupported } = useAICompat();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
 	const [firstDay, setFirstDay] = useState(1); // 0=Sun … 6=Sat, default Mon
 
-	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
-
-	const handleThemeSelect = (mode: 'light' | 'dark' | 'oled') => {
-		if (mode === 'light') {
-			setSettingsValue('theme', 'light');
-			setSettingsValue('oled_mode', false);
-		} else if (mode === 'dark') {
-			setSettingsValue('theme', 'dark');
-			setSettingsValue('oled_mode', false);
-		} else {
-			setSettingsValue('theme', 'dark');
-			setSettingsValue('oled_mode', true);
-		}
-	};
-
-	const [selectedAccent, setSelectedAccent] = useState('orange');
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	// Icon picker state
@@ -206,44 +188,9 @@ const SettingsScreen = () => {
 			{/* Appearance */}
 			<SectionWrap style={{ marginTop: 42 }}>
 				<SectionLabel>{t('settings.appearance.header')}</SectionLabel>
+
 				<SectionCard>
-					<ThemePickerRow>
-						<ThemePickerTile
-							$bg="#F2F2F7"
-							$active={activeMode === 'light'}
-							$accent={theme.accent.orange}
-							colorScheme="light"
-						>
-							<ThemePickerTileInner onPress={() => handleThemeSelect('light')}>
-								<SymbolView name="sun.max.fill" size={28} tintColor="#1C1C1E" />
-								<ThemePickerLabel $color="#1C1C1E">{t('settings.appearance.light')}</ThemePickerLabel>
-							</ThemePickerTileInner>
-						</ThemePickerTile>
-
-						<ThemePickerTile
-							$bg="#1C1C1E"
-							$active={activeMode === 'dark'}
-							$accent={theme.accent.orange}
-							colorScheme="dark"
-						>
-							<ThemePickerTileInner onPress={() => handleThemeSelect('dark')}>
-								<SymbolView name="moon.fill" size={28} tintColor="#FFFFFF" />
-								<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.dark')}</ThemePickerLabel>
-							</ThemePickerTileInner>
-						</ThemePickerTile>
-
-						<ThemePickerTile
-							$bg="#000000"
-							$active={activeMode === 'oled'}
-							$accent={theme.accent.orange}
-							colorScheme="dark"
-						>
-							<ThemePickerTileInner onPress={() => handleThemeSelect('oled')}>
-								<SymbolView name="moon.stars.fill" size={28} tintColor="#FFFFFF" />
-								<ThemePickerLabel $color="#FFFFFF">{t('settings.appearance.oled')}</ThemePickerLabel>
-							</ThemePickerTileInner>
-						</ThemePickerTile>
-					</ThemePickerRow>
+					<ThemePicker />
 
 					<AccentSpectrum>
 						{ACCENT_KEYS.map((key) => (
@@ -252,7 +199,8 @@ const SettingsScreen = () => {
 								color={theme.accent[key]}
 								isActive={selectedAccent === key}
 								onPress={() => {
-									setSelectedAccent(key);
+									setSettingsValue<keyof ThemeConfigT['accent']>('accent', key);
+
 									Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 								}}
 							/>
@@ -300,7 +248,7 @@ const SettingsScreen = () => {
 						<CurrencyTile>
 							<CurrencyTileInner
 								onPress={() => {
-									gate(() => {
+									featureGate(() => {
 										setFirstDay(firstDay === 1 ? 0 : 1);
 										Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 									});
@@ -336,7 +284,7 @@ const SettingsScreen = () => {
 										$disabled={!isUnlimited && maxHorizon >= tier.maxHorizon}
 										onPress={() => {
 											if (!isUnlimited && maxHorizon >= tier.maxHorizon) {
-												gate(() => {});
+												featureGate(() => {});
 												return;
 											}
 											if (maxHorizon < 10) {
