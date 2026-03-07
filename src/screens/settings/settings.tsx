@@ -8,13 +8,12 @@ import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNotifications, useAICompat } from './hooks';
-import { setSettingsValue, useSettingsValue, useScrollDirection, useEntitlement, useFeatureGate } from '@hooks';
+import { setSettingsValue, useSettingsValue, useScrollDirection, useEntitlement } from '@hooks';
 import { backfillRates } from '@hooks/setup';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
 import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
 import useTipJar from '@hooks/use-tip-jar';
-import * as Haptics from 'expo-haptics';
 
 import { SymbolView } from 'expo-symbols';
 
@@ -27,7 +26,7 @@ import {
 	SectionLabel,
 	SectionCard,
 	SectionFooterText,
-	CurrencyRow,
+	Row,
 	CurrencyTile,
 	CurrencyTileInner,
 	CurrencyTileLabel,
@@ -45,8 +44,6 @@ import {
 	CardRow,
 	CardRowTitle,
 	CardRowValue,
-	StepperWrap,
-	StepperButton,
 	SupportRow,
 	SupportPill,
 	SupportPillInner,
@@ -70,7 +67,13 @@ import {
 	FooterPillText,
 	FooterVersion
 } from './settings.styles';
-import { AppLogoPickerSetting, ThemePickerSetting, AccentSpectrumSetting, FirstDaySetting } from './components';
+import {
+	AppLogoPickerSetting,
+	ThemePickerSetting,
+	AccentSpectrumSetting,
+	FirstDaySetting,
+	MaxHorizonSetting
+} from './components';
 
 import type { AccentT } from '@themes';
 
@@ -81,15 +84,13 @@ const SettingsScreen = () => {
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 
-	const { isUnlimited, tier } = useEntitlement();
-	const featureGate = useFeatureGate();
+	const { isUnlimited } = useEntitlement();
 
 	const notificationStatus = useNotifications();
 
 	const selectedAccent = useSettingsValue<AccentT>('accent');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
-	const maxHorizon = useSettingsValue<number>('max_horizon') || 3;
 
 	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
 	const { isSupported: isAISupported } = useAICompat();
@@ -97,7 +98,6 @@ const SettingsScreen = () => {
 
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
-	// Icon picker state
 	const handleRefreshRates = useCallback(async () => {
 		setIsRefreshing(true);
 
@@ -153,7 +153,7 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.currencies.header')}</SectionLabel>
 				<SectionCard>
-					<CurrencyRow>
+					<Row>
 						<CurrencyTile>
 							<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
 								<CurrencyTileLabel>{t('settings.currencies.default_currency_code')}</CurrencyTileLabel>
@@ -169,7 +169,7 @@ const SettingsScreen = () => {
 								<CurrencyTileName numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</CurrencyTileName>
 							</CurrencyTileInner>
 						</CurrencyTile>
-					</CurrencyRow>
+					</Row>
 
 					<RefreshButton>
 						<RefreshInner onPress={handleRefreshRates} disabled={isRefreshing}>
@@ -193,48 +193,11 @@ const SettingsScreen = () => {
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
 
 				<SectionCard>
-					<CurrencyRow>
-						<CurrencyTile>
-							<FirstDaySetting />
-						</CurrencyTile>
+					<Row>
+						<FirstDaySetting />
 
-						<CurrencyTile>
-							<CurrencyTileInner>
-								<CurrencyTileLabel>{t('settings.preferences.max_horizon')}</CurrencyTileLabel>
-								<CurrencyTileCode>
-									{maxHorizon} {t('settings.preferences.years_unit')}
-								</CurrencyTileCode>
-								<StepperWrap>
-									<StepperButton
-										$disabled={maxHorizon <= 2}
-										onPress={() => {
-											if (maxHorizon > 2) {
-												setSettingsValue('max_horizon', maxHorizon - 1);
-												Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-											}
-										}}
-									>
-										<SymbolView name="minus" size={13} weight="bold" tintColor={theme.text.secondary} />
-									</StepperButton>
-									<StepperButton
-										$disabled={!isUnlimited && maxHorizon >= tier.maxHorizon}
-										onPress={() => {
-											if (!isUnlimited && maxHorizon >= tier.maxHorizon) {
-												featureGate(() => {});
-												return;
-											}
-											if (maxHorizon < 10) {
-												setSettingsValue('max_horizon', maxHorizon + 1);
-												Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-											}
-										}}
-									>
-										<SymbolView name="plus" size={13} weight="bold" tintColor={theme.text.secondary} />
-									</StepperButton>
-								</StepperWrap>
-							</CurrencyTileInner>
-						</CurrencyTile>
-					</CurrencyRow>
+						<MaxHorizonSetting />
+					</Row>
 				</SectionCard>
 			</SectionWrap>
 

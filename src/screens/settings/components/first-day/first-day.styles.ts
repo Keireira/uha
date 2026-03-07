@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { GlassView } from 'expo-glass-effect';
 import { SmallText, H1 } from '@ui';
 
 export const Label = styled(SmallText)`
@@ -19,8 +20,10 @@ export const DayHint = styled(SmallText)`
 	margin-top: 2px;
 `;
 
-export default styled.Pressable`
+export default styled(GlassView)`
 	flex: 1;
+	border-radius: 16px;
+	overflow: hidden;
 	padding: 16px;
 	gap: 4px;
 `;

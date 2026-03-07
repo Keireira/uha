@@ -53,7 +53,7 @@ export const SectionFooterText = styled(BaseText)`
 `;
 
 /* Currency tiles */
-export const CurrencyRow = styled.View`
+export const Row = styled.View`
 	flex-direction: row;
 	gap: 10px;
 `;
@@ -245,32 +245,6 @@ export const FooterVersion = styled(BaseText)`
 	font-weight: 400;
 	color: ${({ theme }) => theme.text.tertiary};
 	margin-left: 4px;
-`;
-
-/* Preferences — stepper */
-export const StepperWrap = styled.View`
-	flex-direction: row;
-	align-items: center;
-	gap: 6px;
-	margin-top: 6px;
-`;
-
-export const StepperButton = styled.Pressable<{ $disabled: boolean }>`
-	width: 28px;
-	height: 28px;
-	border-radius: 8px;
-	align-items: center;
-	justify-content: center;
-	background-color: ${({ theme }) => `${theme.text.tertiary}12`};
-	opacity: ${({ $disabled }) => ($disabled ? 0.35 : 1)};
-`;
-
-export const StepperValue = styled(BaseText)`
-	font-size: 17px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.text.primary};
-	min-width: 20px;
-	text-align: center;
 `;
 
 /* Section divider */
