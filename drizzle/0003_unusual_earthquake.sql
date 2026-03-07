@@ -1,1 +1,0 @@
-ALTER TABLE `user` ADD `accent` text DEFAULT 'orange' NOT NULL;

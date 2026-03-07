@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
-import Animated from 'react-native-reanimated';
 import { GlassView } from 'expo-glass-effect';
-import { BaseText } from '@ui';
+import { BaseText, H1, H5 } from '@ui';
 
 export const Container = styled.ScrollView.attrs({
 	showsVerticalScrollIndicator: false,
@@ -77,11 +76,9 @@ export const CurrencyTileLabel = styled(BaseText)`
 	letter-spacing: 0.2px;
 `;
 
-export const CurrencyTileCode = styled(BaseText)`
-	font-size: 28px;
-	font-weight: 800;
+export const CurrencyTileCode = styled(H1)`
 	letter-spacing: -0.5px;
-	color: ${({ theme }) => theme.text.primary};
+	font-weight: 800;
 	margin-top: 2px;
 `;
 
@@ -106,11 +103,7 @@ export const RefreshInner = styled.Pressable`
 	gap: 8px;
 `;
 
-export const RefreshText = styled(BaseText)`
-	font-size: 15px;
-	font-weight: 600;
-	color: ${({ theme }) => theme.accent.orange};
-`;
+export const RefreshText = styled(H5)``;
 
 /* Tile grid (for toggle pairs, nav pairs) */
 export const TileGrid = styled.View`
@@ -183,28 +176,6 @@ export const Separator = styled.View`
 	background-color: ${({ theme }) => `${theme.border.default}30`};
 `;
 
-/* Accent spectrum — expanding bars */
-export const AccentSpectrum = styled.View`
-	margin-top: 14px;
-	flex-direction: row;
-	height: 40px;
-	gap: 4px;
-`;
-
-export const AccentBarItem = styled(Animated.View)<{ $color: string; $active: boolean }>`
-	height: 100%;
-	border-radius: 10px;
-	background-color: ${({ $color }) => $color};
-	overflow: hidden;
-	border-width: 2.5px;
-	border-color: ${({ $active }) => ($active ? 'rgba(255,255,255,0.45)' : 'transparent')};
-	shadow-color: ${({ $color }) => $color};
-	shadow-offset: 0px 2px;
-	shadow-opacity: ${({ $active }) => ($active ? 0.5 : 0)};
-	shadow-radius: 6px;
-	elevation: ${({ $active }) => ($active ? 6 : 0)};
-`;
-
 /* Support — accented glass pills */
 export const SupportRow = styled.View`
 	flex-direction: row;
@@ -215,7 +186,7 @@ export const SupportRow = styled.View`
 export const SupportPill = styled(GlassView)`
 	border-radius: 14px;
 	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accent.orange}12`};
+	background-color: ${({ theme }) => `${theme.accents.orange}12`};
 `;
 
 export const SupportPillInner = styled.Pressable`
@@ -228,7 +199,7 @@ export const SupportPillInner = styled.Pressable`
 export const SupportPillTitle = styled(BaseText)`
 	font-size: 14px;
 	font-weight: 700;
-	color: ${({ theme }) => theme.accent.orange};
+	color: ${({ theme }) => theme.accents.orange};
 `;
 
 export const SupportPillSub = styled(BaseText)`
@@ -310,21 +281,6 @@ export const StepperValue = styled(BaseText)`
 	text-align: center;
 `;
 
-/* Preferences — color grading preview */
-export const ColorGradingPreview = styled.View`
-	flex-direction: row;
-	align-items: center;
-	gap: 4px;
-	margin-top: 4px;
-`;
-
-export const ColorDot = styled.View<{ $color: string; $size: number }>`
-	width: ${({ $size }) => $size}px;
-	height: ${({ $size }) => $size}px;
-	border-radius: ${({ $size }) => $size / 2}px;
-	background-color: ${({ $color }) => $color};
-`;
-
 /* Section divider */
 export const SectionDivider = styled.View`
 	height: 0.5px;
@@ -337,9 +293,9 @@ export const SectionDivider = styled.View`
 export const UpgradeBanner = styled(GlassView)`
 	border-radius: 20px;
 	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accent.orange}10`};
+	background-color: ${({ theme }) => `${theme.accents.orange}10`};
 	border-width: 1px;
-	border-color: ${({ theme }) => `${theme.accent.orange}30`};
+	border-color: ${({ theme }) => `${theme.accents.orange}30`};
 `;
 
 export const UpgradeBannerInner = styled.Pressable`
@@ -357,7 +313,7 @@ export const UpgradeBannerText = styled.View`
 export const UpgradeBannerTitle = styled(BaseText)`
 	font-size: 16px;
 	font-weight: 700;
-	color: ${({ theme }) => theme.accent.orange};
+	color: ${({ theme }) => theme.accents.orange};
 `;
 
 export const UpgradeBannerSub = styled(BaseText)`
@@ -370,7 +326,7 @@ export const UpgradeBannerSub = styled(BaseText)`
 export const UnlimitedBadge = styled(GlassView)`
 	border-radius: 20px;
 	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accent.orange}10`};
+	background-color: ${({ theme }) => `${theme.accents.orange}10`};
 `;
 
 export const UnlimitedBadgeInner = styled.View`
@@ -388,7 +344,7 @@ export const UnlimitedBadgeText = styled.View`
 export const UnlimitedBadgeTitle = styled(BaseText)`
 	font-size: 16px;
 	font-weight: 700;
-	color: ${({ theme }) => theme.accent.orange};
+	color: ${({ theme }) => theme.accents.orange};
 `;
 
 export const UnlimitedBadgeSub = styled(BaseText)`

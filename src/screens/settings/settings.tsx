@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Linking, Pressable, Switch } from 'react-native';
-import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import React, { useState, useCallback } from 'react';
+import { Linking, Switch } from 'react-native';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -46,13 +45,9 @@ import {
 	CardRow,
 	CardRowTitle,
 	CardRowValue,
-	AccentSpectrum,
-	AccentBarItem,
 	DayHint,
 	StepperWrap,
 	StepperButton,
-	ColorGradingPreview,
-	ColorDot,
 	SupportRow,
 	SupportPill,
 	SupportPillInner,
@@ -76,47 +71,9 @@ import {
 	FooterPillText,
 	FooterVersion
 } from './settings.styles';
-import { AppLogoPicker, ThemePicker } from './components';
-import type { ThemeConfigT } from '@themes';
+import { AppLogoPicker, ThemePicker, AccentSpectrum } from './components';
 
-/* Accent color keys */
-const ACCENT_KEYS = [
-	'red',
-	'orange',
-	'yellow',
-	'green',
-	'mint',
-	'teal',
-	'cyan',
-	'blue',
-	'indigo',
-	'purple',
-	'pink'
-] as const;
-
-type AccentBarProps = {
-	color: string;
-	isActive: boolean;
-	onPress: () => void;
-};
-
-const AnimatedAccentBar = ({ color, isActive, onPress }: AccentBarProps) => {
-	const flex = useSharedValue(isActive ? 4 : 1.4);
-
-	useEffect(() => {
-		flex.value = withTiming(isActive ? 4 : 1.4, { duration: 180 });
-	}, [isActive]);
-
-	const animStyle = useAnimatedStyle(() => ({
-		flex: flex.value
-	}));
-
-	return (
-		<AccentBarItem $color={color} $active={isActive} style={animStyle}>
-			<Pressable onPress={onPress} style={{ flex: 1 }} />
-		</AccentBarItem>
-	);
-};
+import type { AccentT } from '@themes';
 
 const SettingsScreen = () => {
 	const { t } = useTranslation();
@@ -130,12 +87,10 @@ const SettingsScreen = () => {
 
 	const notificationStatus = useNotifications();
 
-	const isFaceIdEnabled = useSettingsValue<boolean>('face_id');
+	const selectedAccent = useSettingsValue<AccentT>('accent');
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 	const maxHorizon = useSettingsValue<number>('max_horizon') || 3;
-	const withColorGrading = useSettingsValue<boolean>('with_color_grading') ?? true;
-	const selectedAccent = useSettingsValue<keyof ThemeConfigT['accent']>('accent');
 
 	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
 	const { isSupported: isAISupported } = useAICompat();
@@ -191,21 +146,7 @@ const SettingsScreen = () => {
 
 				<SectionCard>
 					<ThemePicker />
-
-					<AccentSpectrum>
-						{ACCENT_KEYS.map((key) => (
-							<AnimatedAccentBar
-								key={key}
-								color={theme.accent[key]}
-								isActive={selectedAccent === key}
-								onPress={() => {
-									setSettingsValue<keyof ThemeConfigT['accent']>('accent', key);
-
-									Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-								}}
-							/>
-						))}
-					</AccentSpectrum>
+					<AccentSpectrum />
 				</SectionCard>
 			</SectionWrap>
 
@@ -233,8 +174,16 @@ const SettingsScreen = () => {
 
 					<RefreshButton>
 						<RefreshInner onPress={handleRefreshRates} disabled={isRefreshing}>
-							<SymbolView name="arrow.clockwise" size={15} weight="semibold" tintColor={theme.accent.orange} />
-							<RefreshText>{isRefreshing ? '...' : t('settings.currencies.refresh_rates')}</RefreshText>
+							<SymbolView
+								name="arrow.clockwise"
+								size={15}
+								weight="semibold"
+								tintColor={theme.accents[selectedAccent]}
+							/>
+
+							<RefreshText $color={theme.accents[selectedAccent]}>
+								{isRefreshing ? '...' : t('settings.currencies.refresh_rates')}
+							</RefreshText>
 						</RefreshInner>
 					</RefreshButton>
 				</SectionCard>
@@ -248,10 +197,8 @@ const SettingsScreen = () => {
 						<CurrencyTile>
 							<CurrencyTileInner
 								onPress={() => {
-									featureGate(() => {
-										setFirstDay(firstDay === 1 ? 0 : 1);
-										Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-									});
+									setFirstDay(firstDay === 1 ? 0 : 1);
+									Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 								}}
 							>
 								<CurrencyTileLabel>{t('settings.preferences.first_day')}</CurrencyTileLabel>
@@ -299,32 +246,6 @@ const SettingsScreen = () => {
 							</CurrencyTileInner>
 						</CurrencyTile>
 					</CurrencyRow>
-
-					<CurrencyTile style={{ marginTop: 10 }}>
-						<CurrencyTileInner
-							onPress={() => {
-								setSettingsValue('with_color_grading', !withColorGrading);
-								Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-							}}
-						>
-							<CurrencyTileLabel>{t('settings.preferences.color_grading')}</CurrencyTileLabel>
-							<ColorGradingPreview>
-								{withColorGrading ? (
-									<>
-										<ColorDot $color="#FF3B30" $size={18} />
-										<ColorDot $color="#FF9500" $size={14} />
-										<ColorDot $color="#34C759" $size={11} />
-										<ColorDot $color="#007AFF" $size={9} />
-									</>
-								) : (
-									<ColorDot $color={theme.text.tertiary} $size={18} />
-								)}
-							</ColorGradingPreview>
-							<CurrencyTileName>
-								{withColorGrading ? t('settings.preferences.grading_on') : t('settings.preferences.grading_off')}
-							</CurrencyTileName>
-						</CurrencyTileInner>
-					</CurrencyTile>
 				</SectionCard>
 			</SectionWrap>
 
@@ -350,7 +271,7 @@ const SettingsScreen = () => {
 								<Switch
 									value={aiEnabled}
 									onValueChange={(v) => setSettingsValue('ai_enabled', v)}
-									trackColor={{ true: theme.accent.orange }}
+									trackColor={{ true: theme.accents.orange }}
 								/>
 							</CardRow>
 						</Card>
@@ -364,7 +285,7 @@ const SettingsScreen = () => {
 				{isUnlimited ? (
 					<UnlimitedBadge>
 						<UnlimitedBadgeInner>
-							<SymbolView name="crown.fill" size={24} tintColor={theme.accent.orange} />
+							<SymbolView name="crown.fill" size={24} tintColor={theme.accents.orange} />
 							<UnlimitedBadgeText>
 								<UnlimitedBadgeTitle>{t('settings.unlimited.badge')}</UnlimitedBadgeTitle>
 								<UnlimitedBadgeSub>{t('settings.unlimited.active')}</UnlimitedBadgeSub>
@@ -374,7 +295,7 @@ const SettingsScreen = () => {
 				) : (
 					<UpgradeBanner>
 						<UpgradeBannerInner onPress={() => router.push('/(crossroad)/paywall')}>
-							<SymbolView name="crown.fill" size={24} tintColor={theme.accent.orange} />
+							<SymbolView name="crown.fill" size={24} tintColor={theme.accents.orange} />
 							<UpgradeBannerText>
 								<UpgradeBannerTitle>{t('settings.unlimited.badge')}</UpgradeBannerTitle>
 								<UpgradeBannerSub>{t('limits.upgrade')}</UpgradeBannerSub>
@@ -404,17 +325,6 @@ const SettingsScreen = () => {
 							</NavTileInner>
 						</NavTile>
 					</TileGrid>
-
-					<Card style={{ marginTop: 10 }}>
-						<CardRow onPress={() => setSettingsValue('face_id', !isFaceIdEnabled)}>
-							<CardRowTitle>{t('settings.system.face_id')}</CardRowTitle>
-							<Switch
-								value={isFaceIdEnabled}
-								onValueChange={(v) => setSettingsValue('face_id', v)}
-								trackColor={{ true: theme.accent.orange }}
-							/>
-						</CardRow>
-					</Card>
 				</SectionCard>
 			</SectionWrap>
 

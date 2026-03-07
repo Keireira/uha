@@ -80,7 +80,7 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 					size={42}
 					onPress={confirm}
 					systemImage="checkmark"
-					glassTint={theme.accent.orange}
+					glassTint={theme.accents.orange}
 					symbolColor={theme.static.white}
 				/>
 			</HeaderRow>

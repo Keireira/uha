@@ -6,11 +6,13 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 
 import Root, { Title, Code, Separator } from './currency-row.styles';
 
+import type { AccentT } from '@themes';
 import type { Props } from './currency-row.d';
 import type { SearchParamsT } from '../../select-currency.d';
 
 const CurrencyRow = ({ code, name, isLast }: Props) => {
 	const router = useRouter();
+	const settingAccent = useSettingsValue<AccentT>('accent');
 	const { target } = useLocalSearchParams<SearchParamsT>();
 	const currentValue = useSettingsValue<string>(target);
 
@@ -25,7 +27,9 @@ const CurrencyRow = ({ code, name, isLast }: Props) => {
 	return (
 		<>
 			<Root onPress={onSelectHd}>
-				<Title $isSelected={currentValue === code}>{name}</Title>
+				<Title $settingAccent={settingAccent} $isSelected={currentValue === code}>
+					{name}
+				</Title>
 				<Code>{code}</Code>
 			</Root>
 

@@ -3,7 +3,7 @@ import { H6 } from '@ui';
 
 export const SectionHeader = styled(H6)`
 	padding: 16px 0 4px;
-	color: ${({ theme }) => theme.accent.orange};
+	color: ${({ theme }) => theme.accents.orange};
 `;
 
 export const Entries = styled.View``;

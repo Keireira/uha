@@ -68,7 +68,7 @@ export const PriceCard = styled(GlassView)<{ $active: boolean }>`
 	border-radius: 16px;
 	overflow: hidden;
 	border-width: 2px;
-	border-color: ${({ $active, theme }) => ($active ? theme.accent.orange : 'transparent')};
+	border-color: ${({ $active, theme }) => ($active ? theme.accents.orange : 'transparent')};
 `;
 
 export const PriceCardInner = styled.Pressable`
@@ -97,7 +97,7 @@ export const PriceCardPeriod = styled(BaseText)`
 `;
 
 export const BestValueBadge = styled.View`
-	background-color: ${({ theme }) => theme.accent.orange};
+	background-color: ${({ theme }) => theme.accents.orange};
 	border-radius: 6px;
 	padding: 2px 8px;
 	margin-bottom: 4px;
@@ -120,7 +120,7 @@ export const ActionArea = styled.View`
 export const SubscribeButton = styled(GlassView)`
 	border-radius: 16px;
 	overflow: hidden;
-	background-color: ${({ theme }) => theme.accent.orange};
+	background-color: ${({ theme }) => theme.accents.orange};
 `;
 
 export const SubscribeButtonInner = styled.Pressable`

@@ -102,9 +102,10 @@ CREATE TABLE `user` (
 	`theme` text DEFAULT 'auto' NOT NULL,
 	`oled_mode` integer DEFAULT false NOT NULL,
 	`max_horizon` integer DEFAULT 3 NOT NULL,
-	`with_color_grading` integer DEFAULT true NOT NULL,
 	`recalc_currency` text NOT NULL,
 	`default_currency` text NOT NULL,
+	`is_unlimited` integer DEFAULT false NOT NULL,
+	`accent` text DEFAULT 'orange' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`default_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );

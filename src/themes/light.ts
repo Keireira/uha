@@ -35,18 +35,18 @@ const lightThemeConfig: ThemeConfigT = {
 		inverse: '#fafafa'
 	},
 
-	accent: {
-		blue: '#007AFF',
-		green: '#34C759',
-		orange: '#FF9500',
+	accents: {
 		red: '#FF3B30',
-		purple: '#AF52DE',
-		pink: '#FF2D55',
+		orange: '#FF9500',
 		yellow: '#FFCC00',
-		teal: '#5AC8FA',
-		indigo: '#5856D6',
+		green: '#34C759',
 		mint: '#00C7BE',
-		cyan: '#32ADE6'
+		teal: '#5AC8FA',
+		cyan: '#32ADE6',
+		blue: '#007AFF',
+		indigo: '#5856D6',
+		purple: '#AF52DE',
+		pink: '#FF2D55'
 	},
 
 	semantic: {

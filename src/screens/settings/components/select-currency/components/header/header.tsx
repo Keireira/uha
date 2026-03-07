@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSettingsValue } from '@hooks';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -6,6 +7,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { CircleButton, InlineTitleIOS } from '@ui';
 import Root, { HeaderRow, Title } from './header.styles';
 
+import type { AccentT } from '@themes';
 import type { SearchParamsT } from '../../select-currency.d';
 
 const Header = () => {
@@ -13,6 +15,7 @@ const Header = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 	const { target } = useLocalSearchParams<SearchParamsT>();
+	const settingAccent = useSettingsValue<AccentT>('accent');
 
 	const confirm = () => {
 		router.back();
@@ -29,8 +32,8 @@ const Header = () => {
 					size={42}
 					onPress={confirm}
 					systemImage="checkmark"
-					glassTint={theme.accent.orange}
 					symbolColor={theme.static.white}
+					glassTint={theme.accents[settingAccent]}
 				/>
 			</HeaderRow>
 		</Root>

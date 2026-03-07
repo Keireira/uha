@@ -14,27 +14,14 @@ const useInitSettings = () => {
 
 		const execute = async () => {
 			const userData = await db.select().from(userTable).limit(1).get();
-			const {
-				theme,
-				oled_mode,
-				max_horizon,
-				with_color_grading,
-				recalc_currency,
-				default_currency,
-				is_unlimited,
-				unlimited_type,
-				unlimited_expires_at
-			} = userData || {};
+			const { theme, oled_mode, max_horizon, recalc_currency, default_currency, is_unlimited } = userData || {};
 
 			const initTheme = Settings.get('theme');
 			const initOledMode = Settings.get('oled_mode');
 			const initMaxHorizon = Settings.get('max_horizon');
-			const initWithColorGrading = Settings.get('with_color_grading');
 			const initRecalcCurrency = Settings.get('recalc_currency');
 			const initDefaultCurrency = Settings.get('default_currency');
 			const initIsUnlimited = Settings.get('is_unlimited');
-			const initUnlimitedType = Settings.get('unlimited_type');
-			const initUnlimitedExpiresAt = Settings.get('unlimited_expires_at');
 
 			if (initTheme === undefined) {
 				setSettingsValue('theme', theme);
@@ -48,10 +35,6 @@ const useInitSettings = () => {
 				setSettingsValue('max_horizon', max_horizon);
 			}
 
-			if (initWithColorGrading === undefined) {
-				setSettingsValue('with_color_grading', with_color_grading);
-			}
-
 			if (initRecalcCurrency === undefined) {
 				setSettingsValue('recalc_currency', recalc_currency);
 			}
@@ -62,14 +45,6 @@ const useInitSettings = () => {
 
 			if (initIsUnlimited === undefined) {
 				setSettingsValue('is_unlimited', is_unlimited ?? false);
-			}
-
-			if (initUnlimitedType === undefined) {
-				setSettingsValue('unlimited_type', unlimited_type ?? null);
-			}
-
-			if (initUnlimitedExpiresAt === undefined) {
-				setSettingsValue('unlimited_expires_at', unlimited_expires_at ?? null);
 			}
 
 			setIsReady(true);

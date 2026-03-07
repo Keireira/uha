@@ -4,22 +4,15 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 
 import { useSettingsValue } from './use-settings';
-import { FREE_TIER, UNLIMITED_TIER, FREE_CURRENCY_BASE, type EntitlementT, type UnlimitedType } from '@lib/entitlement';
+import { FREE_TIER, UNLIMITED_TIER, FREE_CURRENCY_BASE, type EntitlementT } from '@lib/entitlement';
 
 export const useEntitlement = (): EntitlementT => {
 	const isUnlimited = useSettingsValue<boolean>('is_unlimited') ?? false;
-	const unlimitedType = useSettingsValue<UnlimitedType | null>('unlimited_type') ?? null;
-	const unlimitedExpiresAt = useSettingsValue<string | null>('unlimited_expires_at') ?? null;
 
-	return useMemo(
-		() => ({
-			isUnlimited,
-			unlimitedType,
-			unlimitedExpiresAt,
-			tier: isUnlimited ? UNLIMITED_TIER : FREE_TIER
-		}),
-		[isUnlimited, unlimitedType, unlimitedExpiresAt]
-	);
+	return {
+		isUnlimited,
+		tier: isUnlimited ? UNLIMITED_TIER : FREE_TIER
+	};
 };
 
 export const useFeatureGate = () => {

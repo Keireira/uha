@@ -81,14 +81,14 @@ const PaywallScreen = () => {
 				<FeatureList>
 					{FEATURES.map((key) => (
 						<FeatureRow key={key}>
-							<SymbolView name="checkmark.circle.fill" size={22} tintColor={theme.accent.orange} />
+							<SymbolView name="checkmark.circle.fill" size={22} tintColor={theme.accents.orange} />
 							<FeatureText>{t(key)}</FeatureText>
 						</FeatureRow>
 					))}
 				</FeatureList>
 
 				{isLoading ? (
-					<ActivityIndicator color={theme.accent.orange} style={{ marginVertical: 32 }} />
+					<ActivityIndicator color={theme.accents.orange} style={{ marginVertical: 32 }} />
 				) : (
 					<>
 						<PriceCards>
