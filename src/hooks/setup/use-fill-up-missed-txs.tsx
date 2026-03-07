@@ -6,10 +6,8 @@ import { startOfToday, addYears, endOfYear, isAfter, isBefore } from 'date-fns';
 
 import db from '@db';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import type { TransactionT, SubscriptionT } from '@models';
 import { subscriptionsTable, transactionsTable } from '@db/schema';
-
-type SubscriptionT = typeof subscriptionsTable.$inferSelect;
-type TransactionT = typeof transactionsTable.$inferSelect;
 
 const findMaxNextPaymentDate = (subscriptions: SubscriptionT[]): Date => {
 	const today = startOfToday();

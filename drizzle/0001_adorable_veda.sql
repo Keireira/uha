@@ -1,6 +1,6 @@
 -- Custom SQL migration file, put your code below! --
-INSERT INTO "user" ("id", "theme", "oled_mode", "max_horizon", "recalc_currency", "default_currency", "is_unlimited", "accent") VALUES
-	('00000000-0000-0000-0000-000000000000', 'auto', false, 3, 'USD', 'USD', false, 'orange');
+INSERT INTO "user" ("id", "theme", "oled_mode", "max_horizon", "recalc_currency", "default_currency", "is_unlimited", "accent", "first_day") VALUES
+	('00000000-0000-0000-0000-000000000000', 'auto', false, 3, 'USD', 'USD', false, 'orange', 'monday');
 --> statement-breakpoint
 INSERT INTO "categories" ("id", "color", "emoji", "title") VALUES
   ('44444444-0000-0000-0000-000000000001', '#7B68EE', '🎬', 'Video Streaming'),
@@ -38,7 +38,7 @@ INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title") VA
 	('88888888-0000-0000-0000-000000000012', '🧧', '', '#FFDD2D', false, 'Kaspi'),
 	('88888888-0000-0000-0000-000000000013', '🎟️', '', '#00BFFF', false, 'Alipay'),
 	('88888888-0000-0000-0000-000000000014', '🐲', '', '#07C160', false, 'WeChat Pay'),
-	('88888888-0000-0000-0000-000000000015', '⛓️‍💥', '', '#635BFF', false, 'Stripe'),
+	('88888888-0000-0000-0000-000000000015', '⛓️💥', '', '#635BFF', false, 'Stripe'),
 	('88888888-0000-0000-0000-000000000016', '📨', '', '#3B7BBF', false, 'Direct Debit');
 --> statement-breakpoint
 INSERT INTO "services" ("id", "slug", "title", "color", "aliases", "category_id") VALUES

@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Đã mở khóa tất cả tính năng",
-			"expires": "Hết hạn {{date}}"
+			"active": "Đã mở khóa tất cả tính năng"
 		},
 		"data": {
 			"header": "Dữ liệu",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Hôm nay",
 		"tomorrow": "Ngày mai",
-		"yesterday": "Hôm qua"
+		"yesterday": "Hôm qua",
+		"day": "Ngày",
+		"month": "Tháng",
+		"year": "Năm"
 	},
 	"transactions": {
 		"details": {

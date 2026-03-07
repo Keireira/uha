@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Všetky funkcie odomknuté",
-			"expires": "Platnosť do {{date}}"
+			"active": "Všetky funkcie odomknuté"
 		},
 		"data": {
 			"header": "Dáta",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Dnes",
 		"tomorrow": "Zajtra",
-		"yesterday": "Včera"
+		"yesterday": "Včera",
+		"day": "Deň",
+		"month": "Mesiac",
+		"year": "Rok"
 	},
 	"transactions": {
 		"details": {

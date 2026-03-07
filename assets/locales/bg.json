@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Всички функции са отключени",
-			"expires": "Изтича на {{date}}"
+			"active": "Всички функции са отключени"
 		},
 		"data": {
 			"header": "Данни",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Днес",
 		"tomorrow": "Утре",
-		"yesterday": "Вчера"
+		"yesterday": "Вчера",
+		"day": "Ден",
+		"month": "Месец",
+		"year": "Година"
 	},
 	"transactions": {
 		"details": {

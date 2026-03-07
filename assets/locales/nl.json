@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Alle functies ontgrendeld",
-			"expires": "Verloopt op {{date}}"
+			"active": "Alle functies ontgrendeld"
 		},
 		"data": {
 			"header": "Gegevens",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Vandaag",
 		"tomorrow": "Morgen",
-		"yesterday": "Gisteren"
+		"yesterday": "Gisteren",
+		"day": "Dag",
+		"month": "Maand",
+		"year": "Jaar"
 	},
 	"transactions": {
 		"details": {

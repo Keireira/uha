@@ -7,16 +7,16 @@ import { currencyRatesTable } from '@db/schema';
 
 import { useSettingsValue } from '@hooks/use-settings';
 
+import type { CurrencyRateT } from '@models';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
-import type { CategoryAccumulatorT, TransactionT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
+import type { CategoryAccumulatorT, TxSummaryT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
 type LastKnownRatesT = Map<string, number>;
-type CurrencyRateT = typeof currencyRatesTable.$inferSelect;
 
 const DEFAULT_DENOMINATOR = 1;
 const __STUB_COLOR = '#ffffff';
 const DEFAULT_SUMMARY = { total: 0, categories: [] };
 
-const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) => {
+const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TxSummaryT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
 	acc.total += tx.price / denominator;
 
@@ -35,7 +35,7 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) =>
 	return acc;
 };
 
-const computeSummary = (data: TransactionT[]) => {
+const computeSummary = (data: TxSummaryT[]) => {
 	if (!data.length) {
 		return DEFAULT_SUMMARY;
 	}
@@ -72,7 +72,7 @@ const calcRatesMap = (ratesInRange: Omit<CurrencyRateT, 'id'>[]) => {
 };
 
 const updatePrices = (
-	transactions: TransactionT[],
+	transactions: TxSummaryT[],
 	rates: Map<string, Map<string, number>> | undefined,
 	recalcCurrencyCode: string,
 	lastKnownRates: LastKnownRatesT

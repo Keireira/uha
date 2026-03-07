@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Toate funcțiile deblocate",
-			"expires": "Expiră {{date}}"
+			"active": "Toate funcțiile deblocate"
 		},
 		"data": {
 			"header": "Date",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Astăzi",
 		"tomorrow": "Mâine",
-		"yesterday": "Ieri"
+		"yesterday": "Ieri",
+		"day": "Zi",
+		"month": "Lună",
+		"year": "An"
 	},
 	"transactions": {
 		"details": {

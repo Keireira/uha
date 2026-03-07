@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Lahat ng feature ay naka-unlock",
-			"expires": "Mag-e-expire sa {{date}}"
+			"active": "Lahat ng feature ay naka-unlock"
 		},
 		"data": {
 			"header": "Data",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Ngayon",
 		"tomorrow": "Bukas",
-		"yesterday": "Kahapon"
+		"yesterday": "Kahapon",
+		"day": "Araw",
+		"month": "Buwan",
+		"year": "Taon"
 	},
 	"transactions": {
 		"details": {

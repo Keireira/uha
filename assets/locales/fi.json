@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Kaikki ominaisuudet avattu",
-			"expires": "Vanhenee {{date}}"
+			"active": "Kaikki ominaisuudet avattu"
 		},
 		"data": {
 			"header": "Tiedot",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Tänään",
 		"tomorrow": "Huomenna",
-		"yesterday": "Eilen"
+		"yesterday": "Eilen",
+		"day": "Päivä",
+		"month": "Kuukausi",
+		"year": "Vuosi"
 	},
 	"transactions": {
 		"details": {

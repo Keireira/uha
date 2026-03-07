@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "すべての機能がアンロック済み",
-			"expires": "{{date}}に期限切れ"
+			"active": "すべての機能がアンロック済み"
 		},
 		"data": {
 			"header": "データ",
@@ -166,7 +165,10 @@
 	"dates": {
 		"today": "今日",
 		"tomorrow": "明日",
-		"yesterday": "昨日"
+		"yesterday": "昨日",
+		"day": "日",
+		"month": "月",
+		"year": "年"
 	},
 	"transactions": {
 		"details": {

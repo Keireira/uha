@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "ყველა ფუნქცია განბლოკილია",
-			"expires": "ვადა ეწურება {{date}}"
+			"active": "ყველა ფუნქცია განბლოკილია"
 		},
 		"data": {
 			"header": "მონაცემები",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "დღეს",
 		"tomorrow": "ხვალ",
-		"yesterday": "გუშინ"
+		"yesterday": "გუშინ",
+		"day": "დღე",
+		"month": "თვე",
+		"year": "წელი"
 	},
 	"transactions": {
 		"details": {

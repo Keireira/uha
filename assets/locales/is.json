@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Allir eiginleikar opnaðir",
-			"expires": "Rennur út {{date}}"
+			"active": "Allir eiginleikar opnaðir"
 		},
 		"data": {
 			"header": "Gögn",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Í dag",
 		"tomorrow": "Á morgun",
-		"yesterday": "Í gær"
+		"yesterday": "Í gær",
+		"day": "Dagur",
+		"month": "Mánuður",
+		"year": "Ár"
 	},
 	"transactions": {
 		"details": {

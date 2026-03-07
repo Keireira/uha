@@ -69,10 +69,9 @@
 			"header": "Preferences",
 			"first_day": "First Day of Week",
 			"max_horizon": "Max Horizon",
-			"color_grading": "Color Grading",
 			"days": {
-				"mo": "Monday",
-				"su": "Sunday"
+				"monday": "Monday",
+				"sunday": "Sunday"
 			},
 			"years_unit": "yr",
 			"day_hint_us": "US style",
@@ -125,8 +124,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "All features unlocked",
-			"expires": "Expires {{date}}"
+			"active": "All features unlocked"
 		},
 		"data": {
 			"header": "Data",
@@ -193,7 +191,10 @@
 	"dates": {
 		"today": "Today",
 		"tomorrow": "Tomorrow",
-		"yesterday": "Yesterday"
+		"yesterday": "Yesterday",
+		"day": "Day",
+		"month": "Month",
+		"year": "Year"
 	},
 	"transactions": {
 		"details": {

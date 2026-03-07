@@ -45,7 +45,6 @@ import {
 	CardRow,
 	CardRowTitle,
 	CardRowValue,
-	DayHint,
 	StepperWrap,
 	StepperButton,
 	SupportRow,
@@ -71,7 +70,7 @@ import {
 	FooterPillText,
 	FooterVersion
 } from './settings.styles';
-import { AppLogoPicker, ThemePicker, AccentSpectrum } from './components';
+import { AppLogoPickerSetting, ThemePickerSetting, AccentSpectrumSetting, FirstDaySetting } from './components';
 
 import type { AccentT } from '@themes';
 
@@ -95,7 +94,6 @@ const SettingsScreen = () => {
 	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
 	const { isSupported: isAISupported } = useAICompat();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
-	const [firstDay, setFirstDay] = useState(1); // 0=Sun … 6=Sat, default Mon
 
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -138,15 +136,16 @@ const SettingsScreen = () => {
 			contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}
 			onScroll={handleScroll}
 		>
-			<AppLogoPicker />
+			<AppLogoPickerSetting />
 
 			{/* Appearance */}
 			<SectionWrap style={{ marginTop: 42 }}>
 				<SectionLabel>{t('settings.appearance.header')}</SectionLabel>
 
 				<SectionCard>
-					<ThemePicker />
-					<AccentSpectrum />
+					<ThemePickerSetting />
+
+					<AccentSpectrumSetting />
 				</SectionCard>
 			</SectionWrap>
 
@@ -192,21 +191,11 @@ const SettingsScreen = () => {
 			{/* Preferences */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
+
 				<SectionCard>
 					<CurrencyRow>
 						<CurrencyTile>
-							<CurrencyTileInner
-								onPress={() => {
-									setFirstDay(firstDay === 1 ? 0 : 1);
-									Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-								}}
-							>
-								<CurrencyTileLabel>{t('settings.preferences.first_day')}</CurrencyTileLabel>
-								<CurrencyTileCode>{t(`settings.preferences.days.${firstDay === 1 ? 'mo' : 'su'}`)}</CurrencyTileCode>
-								<DayHint>
-									{firstDay === 0 ? t('settings.preferences.day_hint_us') : t('settings.preferences.day_hint_iso')}
-								</DayHint>
-							</CurrencyTileInner>
+							<FirstDaySetting />
 						</CurrencyTile>
 
 						<CurrencyTile>

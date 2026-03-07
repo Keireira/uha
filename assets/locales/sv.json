@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Alla funktioner upplåsta",
-			"expires": "Går ut {{date}}"
+			"active": "Alla funktioner upplåsta"
 		},
 		"data": {
 			"header": "Data",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Idag",
 		"tomorrow": "Imorgon",
-		"yesterday": "Igår"
+		"yesterday": "Igår",
+		"day": "Dag",
+		"month": "Månad",
+		"year": "År"
 	},
 	"transactions": {
 		"details": {

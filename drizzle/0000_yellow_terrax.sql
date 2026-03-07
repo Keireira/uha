@@ -104,6 +104,7 @@ CREATE TABLE `user` (
 	`max_horizon` integer DEFAULT 3 NOT NULL,
 	`recalc_currency` text NOT NULL,
 	`default_currency` text NOT NULL,
+	`first_day` text DEFAULT 'monday' NOT NULL,
 	`is_unlimited` integer DEFAULT false NOT NULL,
 	`accent` text DEFAULT 'orange' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,

@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Todos os recursos desbloqueados",
-			"expires": "Expira em {{date}}"
+			"active": "Todos os recursos desbloqueados"
 		},
 		"data": {
 			"header": "Dados",
@@ -166,7 +165,10 @@
 	"dates": {
 		"today": "Hoje",
 		"tomorrow": "Amanhã",
-		"yesterday": "Ontem"
+		"yesterday": "Ontem",
+		"day": "Dia",
+		"month": "Mês",
+		"year": "Ano"
 	},
 	"transactions": {
 		"details": {

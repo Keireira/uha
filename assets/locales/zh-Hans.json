@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "所有功能已解锁",
-			"expires": "有效期至 {{date}}"
+			"active": "所有功能已解锁"
 		},
 		"data": {
 			"header": "数据",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "今天",
 		"tomorrow": "明天",
-		"yesterday": "昨天"
+		"yesterday": "昨天",
+		"day": "日",
+		"month": "月",
+		"year": "年"
 	},
 	"transactions": {
 		"details": {

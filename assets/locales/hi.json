@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "सभी सुविधाएँ अनलॉक",
-			"expires": "{{date}} को समाप्त होगा"
+			"active": "सभी सुविधाएँ अनलॉक"
 		},
 		"data": {
 			"header": "डेटा",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "आज",
 		"tomorrow": "कल",
-		"yesterday": "कल"
+		"yesterday": "कल",
+		"day": "दिन",
+		"month": "महीना",
+		"year": "वर्ष"
 	},
 	"transactions": {
 		"details": {

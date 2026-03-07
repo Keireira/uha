@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Wszystkie funkcje odblokowane",
-			"expires": "Wygasa {{date}}"
+			"active": "Wszystkie funkcje odblokowane"
 		},
 		"data": {
 			"header": "Dane",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Dzisiaj",
 		"tomorrow": "Jutro",
-		"yesterday": "Wczoraj"
+		"yesterday": "Wczoraj",
+		"day": "Dzień",
+		"month": "Miesiąc",
+		"year": "Rok"
 	},
 	"transactions": {
 		"details": {

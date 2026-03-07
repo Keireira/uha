@@ -98,8 +98,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "모든 기능이 잠금 해제됨",
-			"expires": "{{date}}에 만료"
+			"active": "모든 기능이 잠금 해제됨"
 		},
 		"data": {
 			"header": "데이터",
@@ -166,7 +165,10 @@
 	"dates": {
 		"today": "오늘",
 		"tomorrow": "내일",
-		"yesterday": "어제"
+		"yesterday": "어제",
+		"day": "일",
+		"month": "월",
+		"year": "년"
 	},
 	"transactions": {
 		"details": {

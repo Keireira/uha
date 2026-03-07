@@ -1,6 +1,6 @@
 {
-  "id": "e058ec58-d8a6-471c-935f-6033bb0bb5e7",
-  "prevId": "4b5958b8-af92-4503-b6e9-7a79caa3df5f",
+  "id": "2b4a2c8c-28f5-4c7d-9f63-2393504db7cf",
+  "prevId": "e1a3c5bf-3306-4e00-9a15-62098be6e2f5",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -753,6 +753,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "first_day": {
+          "name": "first_day",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'monday'"
         },
         "is_unlimited": {
           "name": "is_unlimited",

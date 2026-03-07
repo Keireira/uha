@@ -100,10 +100,9 @@
 			"header": "Параметрлер",
 			"first_day": "Аптаның бірінші күні",
 			"max_horizon": "Максималды көкжиек",
-			"color_grading": "Түс градациясы",
 			"days": {
-				"mo": "Дүйсенбі",
-				"su": "Жексенбі"
+				"monday": "Дүйсенбі",
+				"sunday": "Жексенбі"
 			},
 			"years_unit": "ж.",
 			"day_hint_us": "АҚШ стилі",
@@ -113,8 +112,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Барлық мүмкіндіктер ашылды",
-			"expires": "Мерзімі {{date}} дейін"
+			"active": "Барлық мүмкіндіктер ашылды"
 		},
 		"data": {
 			"header": "Деректер",
@@ -181,7 +179,10 @@
 	"dates": {
 		"today": "Бүгін",
 		"tomorrow": "Ертең",
-		"yesterday": "Кеше"
+		"yesterday": "Кеше",
+		"day": "Күн",
+		"month": "Ай",
+		"year": "Жыл"
 	},
 	"transactions": {
 		"details": {

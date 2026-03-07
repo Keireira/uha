@@ -4,21 +4,21 @@ import db from '@db';
 import { inArray } from 'drizzle-orm';
 import { categoriesTable } from '@db/schema';
 
-import type { CategoryT } from '../summaries/summaries.d';
+import type { TxCategoryT } from '../summaries/summaries.d';
 
-export type EnrichedCategoryT = CategoryT & {
+export type EnrichedCategoryT = TxCategoryT & {
 	title: string;
 	emoji: string;
 	formattedAmount: string;
 };
 
-type CurrencyT = {
+type CatCurrencyT = {
 	id: string;
 	intl_locale: string;
 	fraction_digits: number;
 };
 
-const useCategoryDetails = (categories: CategoryT[], currency: CurrencyT | undefined): EnrichedCategoryT[] => {
+const useCategoryDetails = (categories: TxCategoryT[], currency: CatCurrencyT | undefined): EnrichedCategoryT[] => {
 	return useMemo(() => {
 		if (!categories.length || !currency) {
 			return [];

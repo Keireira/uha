@@ -6,6 +6,8 @@ import { randomInt } from '@lib';
 import db from '@db';
 import { servicesTable, tendersTable, subscriptionsTable } from '@db/schema';
 
+import type { SubscriptionT, TenderT, ServiceT } from '@models';
+
 const BILLING_CYCLES = {
 	days: { min: 1, max: 365 },
 	weeks: { min: 1, max: 52 },
@@ -20,8 +22,6 @@ const createBillingCycleType = () => {
 		randomInt(0, Object.keys(BILLING_CYCLES).length - 1)
 	] as keyof typeof BILLING_CYCLES;
 };
-
-type SubscriptionT = typeof subscriptionsTable.$inferSelect;
 
 const CURRENCIES_POOL = [
 	'USD',
@@ -49,10 +49,7 @@ const CURRENCIES_POOL = [
 	'MOP'
 ];
 
-const buildSubscription = (
-	service: typeof servicesTable.$inferSelect,
-	tenders: (typeof tendersTable.$inferSelect)[]
-): SubscriptionT => {
+const buildSubscription = (service: ServiceT, tenders: TenderT[]): SubscriptionT => {
 	const tender = tenders[randomInt(0, tenders.length - 1)];
 	const billingCycleType = createBillingCycleType();
 	const days = DAYS;

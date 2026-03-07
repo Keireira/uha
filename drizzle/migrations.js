@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_lowly_skullbuster.sql';
-import m0001 from './0001_dear_kulan_gath.sql';
+import m0000 from './0000_yellow_terrax.sql';
+import m0001 from './0001_adorable_veda.sql';
 
   export default {
     journal,

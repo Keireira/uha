@@ -45,8 +45,7 @@
 	"settings": {
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Όλες οι λειτουργίες ξεκλειδωμένες",
-			"expires": "Λήγει {{date}}"
+			"active": "Όλες οι λειτουργίες ξεκλειδωμένες"
 		},
 		"data": {
 			"header": "Δεδομένα",
@@ -165,7 +164,10 @@
 	"dates": {
 		"today": "Σήμερα",
 		"tomorrow": "Αύριο",
-		"yesterday": "Χθες"
+		"yesterday": "Χθες",
+		"day": "Ημέρα",
+		"month": "Μήνας",
+		"year": "Έτος"
 	},
 	"transactions": {
 		"details": {

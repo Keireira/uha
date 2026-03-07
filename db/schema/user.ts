@@ -14,6 +14,7 @@ export const userTable = sqliteTable('user', {
 	default_currency: text()
 		.references(() => currenciesTable.id)
 		.notNull(), // e.g. 'USD' | 'RUB' | ...
+	first_day: text().$type<'monday' | 'sunday'>().default('monday').notNull(),
 	is_unlimited: int({ mode: 'boolean' }).default(false).notNull(),
 	accent: text().$type<AccentT>().default('orange').notNull()
 });

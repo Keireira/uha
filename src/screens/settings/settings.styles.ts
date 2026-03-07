@@ -247,14 +247,6 @@ export const FooterVersion = styled(BaseText)`
 	margin-left: 4px;
 `;
 
-/* Preferences — first day hint */
-export const DayHint = styled(BaseText)`
-	font-size: 11px;
-	font-weight: 500;
-	color: ${({ theme }) => `${theme.text.tertiary}90`};
-	margin-top: 2px;
-`;
-
 /* Preferences — stepper */
 export const StepperWrap = styled.View`
 	flex-direction: row;

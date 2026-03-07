@@ -100,10 +100,9 @@
 			"header": "Настройки",
 			"first_day": "Первый день недели",
 			"max_horizon": "Максимальный горизонт",
-			"color_grading": "Цветовая градация",
 			"days": {
-				"mo": "Понедельник",
-				"su": "Воскресенье"
+				"monday": "Понедельник",
+				"sunday": "Воскресенье"
 			},
 			"years_unit": "г.",
 			"day_hint_us": "Как в США",
@@ -113,8 +112,7 @@
 		},
 		"unlimited": {
 			"badge": "Unlimited",
-			"active": "Все функции разблокированы",
-			"expires": "Истекает {{date}}"
+			"active": "Все функции разблокированы"
 		},
 		"data": {
 			"header": "Данные",
@@ -181,7 +179,10 @@
 	"dates": {
 		"today": "Сегодня",
 		"tomorrow": "Завтра",
-		"yesterday": "Вчера"
+		"yesterday": "Вчера",
+		"day": "День",
+		"month": "Месяц",
+		"year": "Год"
 	},
 	"transactions": {
 		"details": {
