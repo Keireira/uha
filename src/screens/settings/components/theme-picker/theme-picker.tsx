@@ -7,7 +7,7 @@ import { H6 } from '@ui';
 import { SymbolView } from 'expo-symbols';
 import Root, { Tile, InnerTile } from './theme-picker.styles';
 
-import type { AccentT, ThemeConfigT } from '@themes';
+import type { UserT } from '@models';
 import type { ModeT } from './theme-picker.d';
 
 const MODES: ModeT[] = [
@@ -41,9 +41,9 @@ const ThemePicker = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 
-	const selectedAccent = useSettingsValue<AccentT>('accent');
-	const isOledEnabled = useSettingsValue<boolean>('oled_mode');
-	const currentTheme = useSettingsValue<ThemeConfigT['tint']>('theme');
+	const currentTheme = useSettingsValue<UserT['theme']>('theme');
+	const selectedAccent = useSettingsValue<UserT['accent']>('accent');
+	const isOledEnabled = useSettingsValue<UserT['oled_mode']>('oled_mode');
 	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
 
 	const accent = useMemo(() => {
@@ -61,7 +61,14 @@ const ThemePicker = () => {
 				};
 
 				return (
-					<Tile key={mode.mode} $accent={accent} colorScheme={mode.colorScheme} $bg={mode.bg} $isActive={isActive}>
+					<Tile
+						key={mode.mode}
+						colorScheme={mode.colorScheme}
+						isInteractive
+						$accent={accent}
+						$bg={mode.bg}
+						$isActive={isActive}
+					>
 						<InnerTile onPress={selectTheme}>
 							<SymbolView
 								name="sun.max.fill"

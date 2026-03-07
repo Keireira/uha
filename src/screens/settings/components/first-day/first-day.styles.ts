@@ -4,7 +4,7 @@ import { SmallText, H1 } from '@ui';
 
 export const Label = styled(SmallText)`
 	font-weight: 600;
-	color: ${({ theme }) => theme.text.tertiary};
+	color: ${({ theme }) => theme.text.secondary};
 	letter-spacing: 0.2px;
 `;
 
@@ -16,14 +16,18 @@ export const Code = styled(H1)`
 
 export const DayHint = styled(SmallText)`
 	font-weight: 500;
-	color: ${({ theme }) => `${theme.text.tertiary}90`};
+	color: ${({ theme }) => theme.text.tertiary};
 	margin-top: 2px;
 `;
 
-export default styled(GlassView)`
+export const Inner = styled(GlassView)`
 	flex: 1;
-	border-radius: 16px;
-	overflow: hidden;
 	padding: 16px;
 	gap: 4px;
+`;
+
+export default styled.Pressable`
+	flex: 1;
+	overflow: hidden;
+	border-radius: 16px;
 `;

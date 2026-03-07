@@ -27,7 +27,7 @@ export const Code = styled(H1)`
 
 export const Label = styled(SmallText)`
 	font-weight: 600;
-	color: ${({ theme }) => theme.text.tertiary};
+	color: ${({ theme }) => theme.text.secondary};
 	letter-spacing: 0.2px;
 `;
 

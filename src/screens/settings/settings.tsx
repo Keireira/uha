@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Linking, Switch } from 'react-native';
+import { Linking } from 'react-native';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNotifications, useAICompat } from './hooks';
-import { setSettingsValue, useSettingsValue, useScrollDirection, useEntitlement } from '@hooks';
+import { useNotifications } from './hooks';
+import { useSettingsValue, useScrollDirection, useEntitlement } from '@hooks';
 import { backfillRates } from '@hooks/setup';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
@@ -72,7 +72,8 @@ import {
 	ThemePickerSetting,
 	AccentSpectrumSetting,
 	FirstDaySetting,
-	MaxHorizonSetting
+	MaxHorizonSetting,
+	NeuroSetting
 } from './components';
 
 import type { AccentT } from '@themes';
@@ -92,8 +93,6 @@ const SettingsScreen = () => {
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 	const defaultCurrencyCode = useSettingsValue<string>('default_currency_code');
 
-	const aiEnabled = useSettingsValue<boolean>('ai_enabled') ?? true;
-	const { isSupported: isAISupported } = useAICompat();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
 
 	const [isRefreshing, setIsRefreshing] = useState(false);
@@ -154,7 +153,7 @@ const SettingsScreen = () => {
 				<SectionLabel>{t('settings.currencies.header')}</SectionLabel>
 				<SectionCard>
 					<Row>
-						<CurrencyTile>
+						<CurrencyTile isInteractive>
 							<CurrencyTileInner onPress={() => openCurrencyPicker('default_currency_code')}>
 								<CurrencyTileLabel>{t('settings.currencies.default_currency_code')}</CurrencyTileLabel>
 								<CurrencyTileCode>{defaultCurrencyCode}</CurrencyTileCode>
@@ -162,7 +161,7 @@ const SettingsScreen = () => {
 							</CurrencyTileInner>
 						</CurrencyTile>
 
-						<CurrencyTile>
+						<CurrencyTile isInteractive>
 							<CurrencyTileInner onPress={() => openCurrencyPicker('recalc_currency_code')}>
 								<CurrencyTileLabel>{t('settings.currencies.recalc_currency_code')}</CurrencyTileLabel>
 								<CurrencyTileCode>{recalcCurrencyCode}</CurrencyTileCode>
@@ -204,31 +203,11 @@ const SettingsScreen = () => {
 			{/* AI Features */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.ai.header')}</SectionLabel>
-				<SectionCard>
-					<TileGrid>
-						<NavTile>
-							<NavTileInner>
-								<NavTileTitle>{t('settings.ai.status')}</NavTileTitle>
-								<NavTileValue>
-									{isAISupported ? t('settings.ai.supported') : t('settings.ai.not_supported')}
-								</NavTileValue>
-							</NavTileInner>
-						</NavTile>
-					</TileGrid>
 
-					{isAISupported && (
-						<Card style={{ marginTop: 10 }}>
-							<CardRow onPress={() => setSettingsValue('ai_enabled', !aiEnabled)}>
-								<CardRowTitle>{t('settings.ai.toggle')}</CardRowTitle>
-								<Switch
-									value={aiEnabled}
-									onValueChange={(v) => setSettingsValue('ai_enabled', v)}
-									trackColor={{ true: theme.accents.orange }}
-								/>
-							</CardRow>
-						</Card>
-					)}
+				<SectionCard>
+					<NeuroSetting />
 				</SectionCard>
+
 				<SectionFooterText>{t('settings.ai.footer')}</SectionFooterText>
 			</SectionWrap>
 

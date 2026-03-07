@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e1a3c5bf-3306-4e00-9a15-62098be6e2f5",
+  "id": "e9747909-6b6d-4645-be65-bed7485c1fce",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -761,6 +761,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'monday'"
+        },
+        "ai_enabled": {
+          "name": "ai_enabled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         },
         "is_unlimited": {
           "name": "is_unlimited",

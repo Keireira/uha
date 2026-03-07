@@ -4,6 +4,8 @@
 
 ## TODO
 
+- [ ] utilize `max_horizon` settings
+
 ## WTF
 
 ```sh

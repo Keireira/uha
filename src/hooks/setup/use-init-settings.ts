@@ -14,8 +14,17 @@ const useInitSettings = () => {
 
 		const execute = async () => {
 			const userData = await db.select().from(userTable).limit(1).get();
-			const { theme, oled_mode, max_horizon, recalc_currency, default_currency, is_unlimited, accent, first_day } =
-				userData || {};
+			const {
+				theme,
+				oled_mode,
+				max_horizon,
+				recalc_currency,
+				default_currency,
+				is_unlimited,
+				accent,
+				first_day,
+				ai_enabled
+			} = userData || {};
 
 			const initTheme = Settings.get('theme');
 			const initOledMode = Settings.get('oled_mode');
@@ -25,6 +34,7 @@ const useInitSettings = () => {
 			const initIsUnlimited = Settings.get('is_unlimited');
 			const initFirstDay = Settings.get('first_day');
 			const initAccent = Settings.get('accent');
+			const initAiEnabled = Settings.get('ai_enabled');
 
 			if (initTheme === undefined) {
 				setSettingsValue('theme', theme);
@@ -56,6 +66,10 @@ const useInitSettings = () => {
 
 			if (!initAccent) {
 				setSettingsValue('accent', accent);
+			}
+
+			if (initAiEnabled === undefined) {
+				setSettingsValue('ai_enabled', ai_enabled);
 			}
 
 			setIsReady(true);

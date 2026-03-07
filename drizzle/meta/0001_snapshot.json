@@ -1,6 +1,6 @@
 {
-  "id": "2b4a2c8c-28f5-4c7d-9f63-2393504db7cf",
-  "prevId": "e1a3c5bf-3306-4e00-9a15-62098be6e2f5",
+  "id": "5a5d7847-aacc-4e00-97cf-b7c1ca475eae",
+  "prevId": "e9747909-6b6d-4645-be65-bed7485c1fce",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -761,6 +761,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'monday'"
+        },
+        "ai_enabled": {
+          "name": "ai_enabled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         },
         "is_unlimited": {
           "name": "is_unlimited",
