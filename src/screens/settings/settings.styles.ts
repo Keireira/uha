@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
-import { BaseText, H1, H5 } from '@ui';
+import { BaseText } from '@ui';
 
 export const Container = styled.ScrollView.attrs({
 	showsVerticalScrollIndicator: false,
@@ -57,53 +57,6 @@ export const Row = styled.View`
 	flex-direction: row;
 	gap: 10px;
 `;
-
-export const CurrencyTile = styled(GlassView)`
-	flex: 1;
-	border-radius: 16px;
-	overflow: hidden;
-`;
-
-export const CurrencyTileInner = styled.Pressable`
-	padding: 16px;
-	gap: 4px;
-`;
-
-export const CurrencyTileLabel = styled(BaseText)`
-	font-size: 12px;
-	font-weight: 600;
-	color: ${({ theme }) => theme.text.tertiary};
-	letter-spacing: 0.2px;
-`;
-
-export const CurrencyTileCode = styled(H1)`
-	letter-spacing: -0.5px;
-	font-weight: 800;
-	margin-top: 2px;
-`;
-
-export const CurrencyTileName = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.secondary};
-	margin-top: 2px;
-`;
-
-export const RefreshButton = styled(GlassView)`
-	border-radius: 14px;
-	overflow: hidden;
-	margin-top: 10px;
-`;
-
-export const RefreshInner = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding: 13px 20px;
-	gap: 8px;
-`;
-
-export const RefreshText = styled(H5)``;
 
 /* Tile grid (for toggle pairs, nav pairs) */
 export const TileGrid = styled.View`
@@ -253,68 +206,4 @@ export const SectionDivider = styled.View`
 	margin-horizontal: 40px;
 	margin-vertical: 8px;
 	background-color: ${({ theme }) => `${theme.border.default}25`};
-`;
-
-/* Upgrade banner */
-export const UpgradeBanner = styled(GlassView)`
-	border-radius: 20px;
-	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accents.orange}10`};
-	border-width: 1px;
-	border-color: ${({ theme }) => `${theme.accents.orange}30`};
-`;
-
-export const UpgradeBannerInner = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	padding: 16px;
-	gap: 12px;
-`;
-
-export const UpgradeBannerText = styled.View`
-	flex: 1;
-	gap: 2px;
-`;
-
-export const UpgradeBannerTitle = styled(BaseText)`
-	font-size: 16px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.accents.orange};
-`;
-
-export const UpgradeBannerSub = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.secondary};
-`;
-
-/* Unlimited badge */
-export const UnlimitedBadge = styled(GlassView)`
-	border-radius: 20px;
-	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accents.orange}10`};
-`;
-
-export const UnlimitedBadgeInner = styled.View`
-	flex-direction: row;
-	align-items: center;
-	padding: 16px;
-	gap: 12px;
-`;
-
-export const UnlimitedBadgeText = styled.View`
-	flex: 1;
-	gap: 2px;
-`;
-
-export const UnlimitedBadgeTitle = styled(BaseText)`
-	font-size: 16px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.accents.orange};
-`;
-
-export const UnlimitedBadgeSub = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.secondary};
 `;

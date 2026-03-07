@@ -1,3 +1,3 @@
-import PaywallScreen from '@screens/crossroad/paywall';
+import { PaywallScreen } from '@screens/settings/components';
 
 export default PaywallScreen;
