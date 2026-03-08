@@ -53,6 +53,16 @@ export const TabLabel = styled(Text)<{ $active: boolean }>`
 	color: ${({ theme, $active }) => ($active ? theme.text.primary : theme.text.secondary)};
 `;
 
+export const FixedHeader = styled.View`
+	padding-horizontal: 20px;
+	gap: 24px;
+`;
+
+export const Content = styled.View`
+	flex: 1;
+	padding-top: 8px;
+`;
+
 export default styled(ScrollView).attrs({
 	contentContainerStyle: {
 		gap: 24,

@@ -1,15 +1,16 @@
 import styled from 'styled-components/native';
+import { BlurView } from 'expo-blur';
 import { Text } from '@ui';
 
-export const Icon = styled.View<{ $color: string }>`
+export const Icon = styled(BlurView).attrs({ intensity: 40, tint: 'prominent' })`
 	width: 48px;
 	height: 48px;
-	border-radius: 14px;
+	border-radius: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	background-color: ${({ $color }) => `${$color}10`};
+	background-color: ${({ theme }) => `${theme.surface.default}40`};
 `;
 
 export const HeaderTitle = styled(Text)`
@@ -72,5 +73,5 @@ export const SectionLetter = styled(Text)`
 
 export default styled.View`
 	flex: 1;
-	gap: 0;
+	padding-horizontal: 20px;
 `;

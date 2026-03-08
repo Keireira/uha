@@ -6,16 +6,16 @@ import { useTheme } from 'styled-components/native';
 import { H3 } from '../typography';
 import { SymbolView } from 'expo-symbols';
 import SquircleMask from '@assets/masks/squircle.svg.tsx';
-import Root, { Emoji, BlurView } from './logo-view.styles';
+import Root, { Emoji } from './logo-view.styles';
 
 import type { Props } from './logo-view.d';
 
 const renderSwitch = (emoji: Props['emoji'], initials: string, size: Props['size'], color: Props['color']) => {
 	switch (true) {
 		case Boolean(emoji):
-			return <Emoji>{emoji}</Emoji>;
+			return <Emoji $align="center">{emoji}</Emoji>;
 		case Boolean(initials):
-			return <H3>{initials}</H3>;
+			return <H3 $align="center">{initials}</H3>;
 		default:
 			return <SymbolView name="questionmark" size={size ? Math.round(size / 2) : 24} tintColor={color} />;
 	}
@@ -29,11 +29,7 @@ const useLogo = ({ logoId, logoUrl, emoji, name, color, size = 48 }: Props) => {
 			return <SquircleMask size={size} color={color} link={(logoId || logoUrl || '')!} />;
 		}
 
-		return (
-			<BlurView intensity={25} tint="prominent">
-				{renderSwitch(emoji, initials, size, color)}
-			</BlurView>
-		);
+		return renderSwitch(emoji, initials, size, color);
 	}, [emoji, logoId, initials, size, color, logoUrl]);
 
 	return Component;

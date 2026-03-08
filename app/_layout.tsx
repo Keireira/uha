@@ -91,14 +91,14 @@ const LoadFinalStage = () => {
 const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
 	useSyncSettings();
-	const seeded = useSetupMocks(areSettingsReady);
+	const { seeded, recreated } = useSetupMocks();
 
 	const [fontsLoaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
 	const navigation = useRootNavigationState();
-	const areTxsFilled = useFillUpMissedTxs(seeded);
+	const areTxsFilled = useFillUpMissedTxs(seeded, recreated);
 
 	const isAppReadyToGo = useMemo(() => {
 		return seeded && areTxsFilled && fontsLoaded && areSettingsReady && navigation?.key;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { max as maxR, splitEvery } from 'ramda';
 import * as Crypto from 'expo-crypto';
+import { count } from 'drizzle-orm';
 import { advanceDate } from '@hooks/use-transactions/utils';
 import { startOfToday, addYears, endOfYear, isAfter, isBefore } from 'date-fns';
 
@@ -65,7 +66,7 @@ const createTransactions = (subscriptions: SubscriptionT[], maxNextPaymentDate: 
 	return allTransactions satisfies TransactionT[];
 };
 
-const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
+const useFillUpMissedTxs = (areMocksSeeded: boolean, wereMocksRecreated: boolean) => {
 	const [filledUp, setFilledUp] = useState(false);
 	const { data: subscriptions } = useLiveQuery(db.select().from(subscriptionsTable));
 
@@ -73,6 +74,18 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 		if (!areMocksSeeded || filledUp) return;
 
 		const initialize = async () => {
+			if (!wereMocksRecreated) {
+				const [{ total }] = await db.select({ total: count() }).from(transactionsTable);
+
+				if (total > 0) {
+					if (__DEV__) {
+						console.log(`\x1b[34m[FILL UP MISSED TXS]: \x1b[32mReusing ${total} existing transactions\x1b[0m`);
+					}
+					setFilledUp(true);
+					return;
+				}
+			}
+
 			const maxNextPaymentDate = findMaxNextPaymentDate(subscriptions);
 			const generatedTransactions = createTransactions(subscriptions, maxNextPaymentDate);
 
@@ -101,7 +114,7 @@ const useFillUpMissedTxs = (areMocksSeeded: boolean) => {
 		};
 
 		initialize();
-	}, [areMocksSeeded, subscriptions, filledUp]);
+	}, [areMocksSeeded, wereMocksRecreated, subscriptions, filledUp]);
 
 	return filledUp;
 };
