@@ -154,10 +154,11 @@
 		},
 		"tip_jar": {
 			"header": "Tip Jar",
-			"description": "Enjoying Unlimited? Leave a tip to support development.",
-			"small": "Small",
-			"medium": "Medium",
-			"large": "Large",
+			"description": "Enjoying the app? Leave a tip to support independent development",
+			"small_fry": "Small Fry",
+			"good_catch": "Good Catch",
+			"big_fish": "Big Fish",
+      "whale": "Whale",
 			"thanks": "Thank you for your support!"
 		},
 		"title": "Settings"

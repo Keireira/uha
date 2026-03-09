@@ -17,7 +17,8 @@ import {
 	useBackfillRates,
 	useFillUpMissedTxs,
 	useInitSettings,
-	useSyncSettings
+	useSyncSettings,
+	useInitPurchases
 } from '@hooks/setup';
 
 import '@src/i18n';
@@ -44,6 +45,7 @@ const AppToast = () => {
 
 const LoadFinalStage = () => {
 	useBackfillRates();
+	useInitPurchases();
 	const theme = useGetTheme();
 
 	useEffect(() => {

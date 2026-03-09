@@ -1,58 +1,41 @@
 import React from 'react';
-
-import { useRouter } from 'expo-router';
-import { useEntitlement } from '@hooks';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import {
-	UnlimitedBadge,
-	UnlimitedBadgeInner,
-	UnlimitedBadgeText,
-	UnlimitedBadgeTitle,
-	UnlimitedBadgeSub,
-	UpgradeBanner,
-	UpgradeBannerInner,
-	UpgradeBannerText,
-	UpgradeBannerTitle,
-	UpgradeBannerSub
-} from './unlimited.styles';
+// import usePaywall from './use-paywall';
+import { useEntitlement, useSettingsValue, useFeatureGate } from '@hooks';
+
+import { H5, SmallText } from '@ui';
 import { SymbolView } from 'expo-symbols';
+import Root, { Inner, TextView } from './unlimited.styles';
+
+import type { UserT } from '@models';
 
 const Unlimited = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const { t } = useTranslation();
 	const { isUnlimited } = useEntitlement();
-
-	if (isUnlimited) {
-		return (
-			<UnlimitedBadge>
-				<UnlimitedBadgeInner>
-					<SymbolView name="crown.fill" size={24} tintColor={theme.accents.orange} />
-
-					<UnlimitedBadgeText>
-						<UnlimitedBadgeTitle>{t('settings.unlimited.badge')}</UnlimitedBadgeTitle>
-						<UnlimitedBadgeSub>{t('settings.unlimited.active')}</UnlimitedBadgeSub>
-					</UnlimitedBadgeText>
-				</UnlimitedBadgeInner>
-			</UnlimitedBadge>
-		);
-	}
+	const openFeatureGate = useFeatureGate();
+	const accent = useSettingsValue<UserT['accent']>('accent');
 
 	return (
-		<UpgradeBanner>
-			<UpgradeBannerInner onPress={() => router.push('/(crossroad)/paywall')}>
-				<SymbolView name="crown.fill" size={24} tintColor={theme.accents.orange} />
+		<Root $accent={accent} isInteractive={!isUnlimited}>
+			<Inner disabled={isUnlimited} onPress={openFeatureGate}>
+				<SymbolView name="crown.fill" size={24} tintColor={theme.accents[accent]} />
 
-				<UpgradeBannerText>
-					<UpgradeBannerTitle>{t('settings.unlimited.badge')}</UpgradeBannerTitle>
-					<UpgradeBannerSub>{t('limits.upgrade')}</UpgradeBannerSub>
-				</UpgradeBannerText>
+				<TextView>
+					<H5 $color={theme.accents[accent]}>{t('settings.unlimited.badge')}</H5>
 
-				<SymbolView name="chevron.right" size={14} weight="semibold" tintColor={theme.text.tertiary} />
-			</UpgradeBannerInner>
-		</UpgradeBanner>
+					<SmallText $color={theme.text.secondary}>
+						{isUnlimited ? t('settings.unlimited.active') : t('limits.upgrade')}
+					</SmallText>
+				</TextView>
+
+				{!isUnlimited && (
+					<SymbolView name="chevron.right" size={14} weight="semibold" tintColor={theme.text.tertiary} />
+				)}
+			</Inner>
+		</Root>
 	);
 };
 

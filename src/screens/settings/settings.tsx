@@ -64,8 +64,8 @@ const SettingsScreen = () => {
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 
-	const { isUnlimited } = useEntitlement();
 	const notificationStatus = useNotifications();
+	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
 
 	const handleNotifications = () => {
@@ -241,56 +241,52 @@ const SettingsScreen = () => {
 
 			{/* Support */}
 			<SectionWrap>
-				<SectionLabel>{t('settings.donations.header')}</SectionLabel>
-				<SupportRow>
-					<SupportPill>
-						<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
-							<SupportPillTitle>{t('settings.about.github')}</SupportPillTitle>
-							<SupportPillSub>keireira</SupportPillSub>
-						</SupportPillInner>
-					</SupportPill>
+				<SectionLabel>
+					{tipProducts.length > 0 ? t('settings.tip_jar.header') : t('settings.donations.header')}
+				</SectionLabel>
 
-					<SupportPill>
-						<SupportPillInner onPress={() => Linking.openURL('https://boosty.to/keireira/donate')}>
-							<SupportPillTitle>{t('settings.donations.boosty')}</SupportPillTitle>
-							<SupportPillSub>keireira</SupportPillSub>
-						</SupportPillInner>
-					</SupportPill>
-
-					<SupportPill>
-						<SupportPillInner onPress={() => Linking.openURL('https://patreon.com/keireira_fog')}>
-							<SupportPillTitle>{t('settings.donations.patreon')}</SupportPillTitle>
-							<SupportPillSub>keireira_fog</SupportPillSub>
-						</SupportPillInner>
-					</SupportPill>
-				</SupportRow>
-				<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
-			</SectionWrap>
-
-			{/* Tip Jar — premium only */}
-			{tipProducts.length > 0 && (
-				<SectionWrap>
-					<SectionLabel>{t('settings.tip_jar.header')}</SectionLabel>
+				{tipProducts.length > 0 && (
 					<SupportRow>
 						{tipProducts.map((product) => {
-							const label =
-								product.identifier === 'uha_tip_small'
-									? t('settings.tip_jar.small')
-									: product.identifier === 'uha_tip_medium'
-										? t('settings.tip_jar.medium')
-										: t('settings.tip_jar.large');
-
 							return (
 								<SupportPill key={product.identifier}>
 									<SupportPillInner onPress={() => purchaseTip(product)} disabled={tipPurchasing !== null}>
 										<SupportPillTitle>{product.priceString}</SupportPillTitle>
-										<SupportPillSub>{label}</SupportPillSub>
+										<SupportPillSub>{t(`settings.tip_jar.${product.identifier}`) || product.title}</SupportPillSub>
 									</SupportPillInner>
 								</SupportPill>
 							);
 						})}
 					</SupportRow>
-					<SectionFooterText>{t('settings.tip_jar.description')}</SectionFooterText>
+				)}
+			</SectionWrap>
+
+			{tipProducts.length > 0 && (
+				<SectionWrap>
+					<SupportRow>
+						<SupportPill>
+							<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
+								<SupportPillTitle>{t('settings.about.github')}</SupportPillTitle>
+								<SupportPillSub>keireira</SupportPillSub>
+							</SupportPillInner>
+						</SupportPill>
+
+						<SupportPill>
+							<SupportPillInner onPress={() => Linking.openURL('https://boosty.to/keireira/donate')}>
+								<SupportPillTitle>{t('settings.donations.boosty')}</SupportPillTitle>
+								<SupportPillSub>keireira</SupportPillSub>
+							</SupportPillInner>
+						</SupportPill>
+
+						<SupportPill>
+							<SupportPillInner onPress={() => Linking.openURL('https://patreon.com/keireira_fog')}>
+								<SupportPillTitle>{t('settings.donations.patreon')}</SupportPillTitle>
+								<SupportPillSub>keireira_fog</SupportPillSub>
+							</SupportPillInner>
+						</SupportPill>
+					</SupportRow>
+
+					<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
 				</SectionWrap>
 			)}
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
+
 import { setSettingsValue, useSettingsValue } from '@hooks';
 
+import { H5, SmallText } from '@ui';
 import { Platform, Switch } from 'react-native';
 import Root, { Card, CardRow } from './neuro.styles';
-import { H5, SmallText } from '@ui';
 
 import type { UserT } from '@models';
 
@@ -43,7 +43,7 @@ const Neuro = () => {
 			<Root>
 				<H5 $weight={600}>{t('settings.ai.status')}</H5>
 
-				<SmallText $color={theme.text.secondary}>
+				<SmallText $color={isAISupported ? theme.accents.green : theme.text.secondary}>
 					{isAISupported ? t('settings.ai.supported') : t('settings.ai.not_supported')}
 				</SmallText>
 			</Root>

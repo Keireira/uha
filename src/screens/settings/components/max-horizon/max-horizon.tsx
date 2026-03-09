@@ -27,7 +27,7 @@ const MaxHorizon = () => {
 
 	const addYear = () => {
 		if (!isUnlimited && maxHorizon >= tier.maxHorizon) {
-			featureGate(() => {});
+			featureGate();
 			return;
 		}
 
