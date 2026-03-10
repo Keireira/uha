@@ -297,11 +297,6 @@ const localesConfig = {
 };
 
 const appConfig = ({ config }: ConfigContext): ExpoConfig => {
-	config.extra = {
-		...config.extra,
-		revenueCatApiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY
-	};
-
 	const modifiedConfig = withAppleSettings(config as ExpoConfig, {
 		Root: {
 			locales: localesTopLevel,

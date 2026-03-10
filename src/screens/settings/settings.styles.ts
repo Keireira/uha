@@ -36,7 +36,9 @@ export const SectionLabel = styled(BaseText)`
 	margin-left: 4px;
 `;
 
-export const SectionCard = styled(GlassView)`
+export const SectionCard = styled(GlassView).attrs({
+	glassEffectStyle: 'clear'
+})`
 	border-radius: 20px;
 	overflow: hidden;
 	padding: 12px;

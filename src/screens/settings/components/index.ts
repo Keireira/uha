@@ -6,3 +6,4 @@ export { default as NeuroSetting } from './neuro';
 export { default as CurrenciesSetting, CurrencyRefresh, SelectCurrencyScreen } from './currencies';
 export { default as ThemePickerSetting } from './theme-picker';
 export { default as UnlimitedSetting, PaywallScreen } from './unlimited';
+export { default as SystemSetting } from './system';

@@ -8,11 +8,8 @@ import type { CustomerInfo } from 'react-native-purchases';
 
 const useInitPurchases = () => {
 	useEffect(() => {
-		Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.INFO : LOG_LEVEL.ERROR);
-		const iosApiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY ?? '';
-
-		console.info('[PLATFORM]:', Platform.OS);
-		console.info('[iOS Key]:', iosApiKey);
+		Purchases.setLogLevel(LOG_LEVEL.WARN);
+		const iosApiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_IOS_PUB_KEY ?? '';
 
 		if (Platform.OS === 'ios') {
 			Purchases.configure({ apiKey: iosApiKey });

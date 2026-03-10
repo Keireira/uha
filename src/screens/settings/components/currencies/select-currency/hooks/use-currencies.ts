@@ -6,10 +6,9 @@ import db from '@db';
 import { asc } from 'drizzle-orm';
 import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { FREE_CURRENCY_BASE } from '@lib/entitlement';
 
 import type { CurrencyItem, CurrencySection, RowItem } from '../select-currency.d';
-
-const DEFAULT_CURRENCIES = ['USD', 'EUR'];
 
 const REGION_ORDER = [
 	'europe',
@@ -45,9 +44,9 @@ const useCurrencies = (): UseCurrenciesT => {
 	const freeCurrencies = useMemo(() => {
 		const localeCurrency = locales[0]?.currencyCode;
 		const primaryCodes =
-			localeCurrency && !DEFAULT_CURRENCIES.includes(localeCurrency)
-				? [...DEFAULT_CURRENCIES, localeCurrency]
-				: DEFAULT_CURRENCIES;
+			localeCurrency && !FREE_CURRENCY_BASE.includes(localeCurrency)
+				? [...FREE_CURRENCY_BASE, localeCurrency]
+				: FREE_CURRENCY_BASE;
 
 		return primaryCodes;
 	}, [locales]);

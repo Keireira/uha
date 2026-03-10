@@ -3,6 +3,7 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useCurrencies } from './hooks';
+import { useEntitlement } from '@hooks';
 import { isHeaderSection } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
@@ -19,13 +20,16 @@ const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 	}
 
 	const { key, ...rest } = item.item;
+	const { freeCurrencies, isAllowed } = extraData;
+	const isForbidden = isAllowed ? false : !freeCurrencies.includes(rest.code);
 
-	return <CurrencyRow {...rest} isLast={item.isLast} isForbidden={!extraData.includes(rest.code)} />;
+	return <CurrencyRow {...rest} isLast={item.isLast} isForbidden={isForbidden} />;
 };
 
 const SelectCurrencyScreen = () => {
 	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
+	const { tier } = useEntitlement();
 	const { sections, freeCurrencies, searchQuery, setSearchQuery } = useCurrencies();
 
 	return (
@@ -40,7 +44,10 @@ const SelectCurrencyScreen = () => {
 							data={sections}
 							renderItem={renderRowItem}
 							keyboardShouldPersistTaps="handled"
-							extraData={freeCurrencies}
+							extraData={{
+								freeCurrencies,
+								isAllowed: tier.allCurrencies
+							}}
 							showsVerticalScrollIndicator={false}
 							getItemType={(item) => item.type}
 							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}

@@ -10,15 +10,16 @@ const useNotifications = () => {
 	const { t } = useTranslation();
 	const [notificationStatus, setNotificationStatus] = useState<PermissionStatus | null>(null);
 
-	const statusLabels: Record<PermissionStatus, string> = useMemo(() => {
-		return {
+	const statusLabels: Record<PermissionStatus, string> = useMemo(
+		() => ({
 			[RESULTS.UNAVAILABLE]: '',
 			[RESULTS.DENIED]: t('settings.system.notifications.results.denied'),
 			[RESULTS.BLOCKED]: t('settings.system.notifications.results.blocked'),
 			[RESULTS.GRANTED]: t('settings.system.notifications.results.granted'),
 			[RESULTS.LIMITED]: t('settings.system.notifications.results.limited')
-		};
-	}, [t]);
+		}),
+		[t]
+	);
 
 	const check = () => {
 		checkNotifications().then(({ status }) => {

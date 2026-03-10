@@ -2,14 +2,22 @@ export const FREE_TIER = {
 	maxSubscriptions: 5,
 	maxCurrencies: 3,
 	maxHorizon: 3,
-	hasPremiumAI: false // NL input, insights, alerts — Unlimited only
+	hasPremiumAI: false,
+	customCategories: false,
+	iCloudSync: false,
+	csvExport: false,
+	allCurrencies: false
 } as const;
 
 export const UNLIMITED_TIER = {
 	maxSubscriptions: Infinity,
 	maxCurrencies: Infinity,
 	maxHorizon: 10,
-	hasPremiumAI: true
+	hasPremiumAI: true,
+	customCategories: true,
+	iCloudSync: true,
+	csvExport: true,
+	allCurrencies: true
 } as const;
 
 export type EntitlementT = {

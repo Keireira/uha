@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { Linking, Modal } from 'react-native';
 
-import i18n from '@src/i18n';
-import { openSettings } from 'expo-linking';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNotifications } from './hooks';
 import { useScrollDirection } from '@hooks';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
 import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
 import useTipJar from '@hooks/use-tip-jar';
 
-import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 import { LogViewer } from '@lib/logger';
 
@@ -26,7 +22,8 @@ import {
 	MaxHorizonSetting,
 	ThemePickerSetting,
 	AppLogoPickerSetting,
-	AccentSpectrumSetting
+	AccentSpectrumSetting,
+	SystemSetting
 } from './components';
 import { SymbolView } from 'expo-symbols';
 import {
@@ -40,7 +37,6 @@ import {
 	NavTile,
 	NavTileInner,
 	NavTileTitle,
-	NavTileValue,
 	Card,
 	CardRow,
 	CardRowTitle,
@@ -65,17 +61,8 @@ const SettingsScreen = () => {
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 
-	const notificationStatus = useNotifications();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
 	const [logsVisible, setLogsVisible] = useState(false);
-
-	const handleNotifications = () => {
-		if (notificationStatus.status === RESULTS.DENIED) {
-			requestNotifications();
-		} else if (notificationStatus.status === RESULTS.BLOCKED) {
-			openSettings();
-		}
-	};
 
 	return (
 		<Container
@@ -142,21 +129,9 @@ const SettingsScreen = () => {
 				<SectionLabel>{t('settings.general.header')}</SectionLabel>
 
 				<SectionCard>
-					<TileGrid>
-						<NavTile>
-							<NavTileInner onPress={handleNotifications}>
-								<NavTileTitle>{t('settings.system.notifications.header')}</NavTileTitle>
-								<NavTileValue>{notificationStatus.label}</NavTileValue>
-							</NavTileInner>
-						</NavTile>
-
-						<NavTile>
-							<NavTileInner onPress={openSettings}>
-								<NavTileTitle>{t('settings.system.language')}</NavTileTitle>
-								<NavTileValue>{t(`languages.${i18n.language}`)}</NavTileValue>
-							</NavTileInner>
-						</NavTile>
-					</TileGrid>
+					<Row>
+						<SystemSetting />
+					</Row>
 				</SectionCard>
 			</SectionWrap>
 

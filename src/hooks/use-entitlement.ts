@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useCallback } from 'react';
-import { useLocales } from 'expo-localization';
+import { useEffect, useCallback } from 'react';
 import * as Haptics from 'expo-haptics';
 import Purchases from 'react-native-purchases';
 import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
 import { useSettingsValue, setSettingsValue } from './use-settings';
-import { FREE_TIER, UNLIMITED_TIER, FREE_CURRENCY_BASE, type EntitlementT } from '@lib/entitlement';
+import { FREE_TIER, UNLIMITED_TIER, type EntitlementT } from '@lib/entitlement';
 
 export const useEntitlement = (): EntitlementT => {
 	const isUnlimited = useSettingsValue<boolean>('is_unlimited') ?? false;
@@ -70,19 +69,4 @@ export const useFeatureGate = () => {
 	);
 
 	return checkTheGate;
-};
-
-export const useFreeCurrencies = (): string[] => {
-	const locales = useLocales();
-	const localeCurrency = locales[0]?.currencyCode;
-
-	return useMemo(() => {
-		const codes = [...FREE_CURRENCY_BASE];
-
-		if (localeCurrency && !codes.includes(localeCurrency as (typeof FREE_CURRENCY_BASE)[number])) {
-			codes.push(localeCurrency);
-		}
-
-		return codes;
-	}, [localeCurrency]);
 };
