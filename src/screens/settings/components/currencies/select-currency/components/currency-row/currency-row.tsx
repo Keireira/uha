@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Haptics from 'expo-haptics';
 
-import { setSettingsValue, useSettingsValue } from '@hooks';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useSettingsValue, setSettingsValue, useFeatureGate } from '@hooks';
 
 import Root, { Title, Code, Separator } from './currency-row.styles';
 
@@ -10,8 +10,9 @@ import type { AccentT } from '@themes';
 import type { Props } from './currency-row.d';
 import type { SearchParamsT } from '../../select-currency.d';
 
-const CurrencyRow = ({ code, name, isLast }: Props) => {
+const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
 	const router = useRouter();
+	const openFeatureGate = useFeatureGate();
 	const settingAccent = useSettingsValue<AccentT>('accent');
 	const { target } = useLocalSearchParams<SearchParamsT>();
 	const currentValue = useSettingsValue<string>(target);
@@ -19,9 +20,17 @@ const CurrencyRow = ({ code, name, isLast }: Props) => {
 	const onSelectHd = () => {
 		if (!target) return;
 
-		setSettingsValue(target, code);
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		router.back();
+		const action = () => {
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+			setSettingsValue(target, code);
+			router.back();
+		};
+
+		if (isForbidden) {
+			openFeatureGate(action);
+		} else {
+			action();
+		}
 	};
 
 	return (

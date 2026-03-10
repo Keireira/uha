@@ -55,13 +55,19 @@ export const useFeatureGate = () => {
 		}
 	}, []);
 
-	const checkTheGate = useCallback(() => {
-		if (isUnlimited) return;
+	const checkTheGate = useCallback(
+		(action?: () => void) => {
+			if (isUnlimited) {
+				if (typeof action === 'function') action();
 
-		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+				return;
+			}
 
-		presentPaywall();
-	}, [presentPaywall, isUnlimited]);
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+			presentPaywall();
+		},
+		[presentPaywall, isUnlimited]
+	);
 
 	return checkTheGate;
 };

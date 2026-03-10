@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-// import usePaywall from './use-paywall';
 import { useEntitlement, useSettingsValue, useFeatureGate } from '@hooks';
 
 import { H5, SmallText } from '@ui';
@@ -20,7 +19,7 @@ const Unlimited = () => {
 
 	return (
 		<Root $accent={accent} isInteractive={!isUnlimited}>
-			<Inner disabled={isUnlimited} onPress={openFeatureGate}>
+			<Inner disabled={isUnlimited} onPress={() => openFeatureGate()}>
 				<SymbolView name="crown.fill" size={24} tintColor={theme.accents[accent]} />
 
 				<TextView>

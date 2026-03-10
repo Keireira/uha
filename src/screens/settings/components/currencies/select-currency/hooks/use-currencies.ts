@@ -32,6 +32,7 @@ const format = (text: string) => text.toLocaleLowerCase().trim();
 type UseCurrenciesT = {
 	sections: RowItem[];
 	searchQuery: string;
+	freeCurrencies: string[];
 	setSearchQuery: (query: string) => void;
 };
 
@@ -41,16 +42,20 @@ const useCurrencies = (): UseCurrenciesT => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const { data: currencies } = useLiveQuery(db.select().from(currenciesTable).orderBy(asc(currenciesTable.region)), []);
 
-	/* Prebuild sections, so no excessive calculations for filtering */
-	const rawSections = useMemo(() => {
-		/* Primary (pre-defined) */
+	const freeCurrencies = useMemo(() => {
 		const localeCurrency = locales[0]?.currencyCode;
 		const primaryCodes =
 			localeCurrency && !DEFAULT_CURRENCIES.includes(localeCurrency)
 				? [...DEFAULT_CURRENCIES, localeCurrency]
 				: DEFAULT_CURRENCIES;
 
-		const primaryItems: CurrencyItem[] = primaryCodes.map((code) => {
+		return primaryCodes;
+	}, [locales]);
+
+	/* Prebuild sections, so no excessive calculations for filtering */
+	const rawSections = useMemo(() => {
+		/* Primary (pre-defined) */
+		const primaryItems: CurrencyItem[] = freeCurrencies.map((code) => {
 			const name = t(`currencies.${code}`);
 
 			return {
@@ -106,7 +111,7 @@ const useCurrencies = (): UseCurrenciesT => {
 		}
 
 		return sections;
-	}, [currencies, locales, t]);
+	}, [freeCurrencies, currencies, t]);
 
 	/* Filter sections */
 	const filteredSections = useMemo(() => {
@@ -157,7 +162,8 @@ const useCurrencies = (): UseCurrenciesT => {
 	return {
 		sections,
 		searchQuery,
-		setSearchQuery
+		setSearchQuery,
+		freeCurrencies
 	};
 };
 

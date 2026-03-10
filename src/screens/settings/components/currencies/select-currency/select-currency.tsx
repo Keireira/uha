@@ -13,20 +13,20 @@ import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-curre
 import type { RowItem } from './select-currency.d';
 import type { ListRenderItemInfo } from '@shopify/flash-list';
 
-const renderRowItem = ({ item }: ListRenderItemInfo<RowItem>) => {
+const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 	if (isHeaderSection(item)) {
 		return <SectionHeaderText>{item.title}</SectionHeaderText>;
 	}
 
 	const { key, ...rest } = item.item;
 
-	return <CurrencyRow {...rest} isLast={item.isLast} />;
+	return <CurrencyRow {...rest} isLast={item.isLast} isForbidden={!extraData.includes(rest.code)} />;
 };
 
 const SelectCurrencyScreen = () => {
 	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
-	const { sections, searchQuery, setSearchQuery } = useCurrencies();
+	const { sections, freeCurrencies, searchQuery, setSearchQuery } = useCurrencies();
 
 	return (
 		<>
@@ -40,6 +40,7 @@ const SelectCurrencyScreen = () => {
 							data={sections}
 							renderItem={renderRowItem}
 							keyboardShouldPersistTaps="handled"
+							extraData={freeCurrencies}
 							showsVerticalScrollIndicator={false}
 							getItemType={(item) => item.type}
 							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}

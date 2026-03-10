@@ -1,5 +1,5 @@
-import React from 'react';
-import { Linking } from 'react-native';
+import React, { useState } from 'react';
+import { Linking, Modal } from 'react-native';
 
 import i18n from '@src/i18n';
 import { openSettings } from 'expo-linking';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNotifications } from './hooks';
-import { useScrollDirection, useEntitlement } from '@hooks';
+import { useScrollDirection } from '@hooks';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
 import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
@@ -15,6 +15,7 @@ import useTipJar from '@hooks/use-tip-jar';
 
 import { requestNotifications, RESULTS } from 'react-native-permissions';
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
+import { LogViewer } from '@lib/logger';
 
 import {
 	NeuroSetting,
@@ -65,8 +66,8 @@ const SettingsScreen = () => {
 	const handleScroll = useScrollDirection();
 
 	const notificationStatus = useNotifications();
-	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
+	const [logsVisible, setLogsVisible] = useState(false);
 
 	const handleNotifications = () => {
 		if (notificationStatus.status === RESULTS.DENIED) {
@@ -308,10 +309,14 @@ const SettingsScreen = () => {
 					</FooterPill>
 				</FooterLinks>
 
-				<FooterVersion>
+				<FooterVersion onLongPress={() => setLogsVisible(true)}>
 					{t('settings.about.version')} {nativeApplicationVersion} ({nativeBuildVersion})
 				</FooterVersion>
 			</FooterWrap>
+
+			<Modal visible={logsVisible} animationType="slide" presentationStyle="fullScreen">
+				<LogViewer onClose={() => setLogsVisible(false)} />
+			</Modal>
 		</Container>
 	);
 };

@@ -11,6 +11,9 @@ const useInitPurchases = () => {
 		Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.INFO : LOG_LEVEL.ERROR);
 		const iosApiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY ?? '';
 
+		console.info('[PLATFORM]:', Platform.OS);
+		console.info('[iOS Key]:', iosApiKey);
+
 		if (Platform.OS === 'ios') {
 			Purchases.configure({ apiKey: iosApiKey });
 		}
