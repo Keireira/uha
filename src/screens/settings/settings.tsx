@@ -4,11 +4,10 @@ import { Linking, Modal } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useScrollDirection } from '@hooks';
+import { useTipJar, useEntitlement, useScrollDirection } from '@hooks';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
 import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
-import useTipJar from '@hooks/use-tip-jar';
 
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
 import { LogViewer } from '@lib/logger';
@@ -23,7 +22,8 @@ import {
 	ThemePickerSetting,
 	AppLogoPickerSetting,
 	AccentSpectrumSetting,
-	SystemSetting
+	SystemSetting,
+	SupportSetting
 } from './components';
 import { SymbolView } from 'expo-symbols';
 import {
@@ -41,11 +41,6 @@ import {
 	CardRow,
 	CardRowTitle,
 	CardRowValue,
-	SupportRow,
-	SupportPill,
-	SupportPillInner,
-	SupportPillTitle,
-	SupportPillSub,
 	Separator,
 	FooterWrap,
 	FooterLinks,
@@ -61,8 +56,10 @@ const SettingsScreen = () => {
 	const insets = useSafeAreaInsets();
 	const handleScroll = useScrollDirection();
 
-	const { products: tipProducts, purchasing: tipPurchasing, purchaseTip } = useTipJar();
+	const { isUnlimited } = useEntitlement();
+	const { products: tipProducts } = useTipJar();
 	const [logsVisible, setLogsVisible] = useState(false);
+	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
 
 	return (
 		<Container
@@ -75,7 +72,7 @@ const SettingsScreen = () => {
 			<SectionWrap style={{ marginTop: 42 }}>
 				<SectionLabel>{t('settings.appearance.header')}</SectionLabel>
 
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<ThemePickerSetting />
 
 					<AccentSpectrumSetting />
@@ -86,7 +83,7 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.currencies.header')}</SectionLabel>
 
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<Row>
 						<CurrenciesSetting />
 					</Row>
@@ -99,7 +96,7 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
 
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<Row>
 						<FirstDaySetting />
 
@@ -112,7 +109,7 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.ai.header')}</SectionLabel>
 
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<NeuroSetting />
 				</SectionCard>
 
@@ -128,17 +125,17 @@ const SettingsScreen = () => {
 			<SectionWrap>
 				<SectionLabel>{t('settings.general.header')}</SectionLabel>
 
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<Row>
 						<SystemSetting />
 					</Row>
 				</SectionCard>
 			</SectionWrap>
 
-			{/* Data */}
+			{/* Data sync & backups */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.data.header')}</SectionLabel>
-				<SectionCard>
+				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<Card>
 						<CardRow disabled style={{ opacity: 0.45 }}>
 							<CardRowTitle>{t('settings.data.icloud_sync')}</CardRowTitle>
@@ -218,53 +215,13 @@ const SettingsScreen = () => {
 			{/* Support */}
 			<SectionWrap>
 				<SectionLabel>
-					{tipProducts.length > 0 ? t('settings.tip_jar.header') : t('settings.donations.header')}
+					{isUnlimited && tipProducts.length > 0 ? t('settings.tip_jar.header') : t('settings.donations.header')}
 				</SectionLabel>
 
-				{tipProducts.length > 0 && (
-					<SupportRow>
-						{tipProducts.map((product) => {
-							return (
-								<SupportPill key={product.identifier}>
-									<SupportPillInner onPress={() => purchaseTip(product)} disabled={tipPurchasing !== null}>
-										<SupportPillTitle>{product.priceString}</SupportPillTitle>
-										<SupportPillSub>{t(`settings.tip_jar.${product.identifier}`) || product.title}</SupportPillSub>
-									</SupportPillInner>
-								</SupportPill>
-							);
-						})}
-					</SupportRow>
-				)}
+				<SupportSetting />
+
+				<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
 			</SectionWrap>
-
-			{tipProducts.length > 0 && (
-				<SectionWrap>
-					<SupportRow>
-						<SupportPill>
-							<SupportPillInner onPress={() => Linking.openURL('https://github.com/sponsors/Keireira')}>
-								<SupportPillTitle>{t('settings.about.github')}</SupportPillTitle>
-								<SupportPillSub>keireira</SupportPillSub>
-							</SupportPillInner>
-						</SupportPill>
-
-						<SupportPill>
-							<SupportPillInner onPress={() => Linking.openURL('https://boosty.to/keireira/donate')}>
-								<SupportPillTitle>{t('settings.donations.boosty')}</SupportPillTitle>
-								<SupportPillSub>keireira</SupportPillSub>
-							</SupportPillInner>
-						</SupportPill>
-
-						<SupportPill>
-							<SupportPillInner onPress={() => Linking.openURL('https://patreon.com/keireira_fog')}>
-								<SupportPillTitle>{t('settings.donations.patreon')}</SupportPillTitle>
-								<SupportPillSub>keireira_fog</SupportPillSub>
-							</SupportPillInner>
-						</SupportPill>
-					</SupportRow>
-
-					<SectionFooterText>{t('settings.donations.description')}</SectionFooterText>
-				</SectionWrap>
-			)}
 
 			{/* Footer — about */}
 			<FooterWrap>

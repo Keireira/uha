@@ -7,4 +7,5 @@ export { default as useScrollDirection } from './useScrollDirection';
 export { default as useRates } from './use-rates';
 export { default as useTransactions, type PreparedDbTxT } from './use-transactions';
 
+export { default as useTipJar } from './use-tip-jar';
 export { useEntitlement, useFeatureGate } from './use-entitlement';

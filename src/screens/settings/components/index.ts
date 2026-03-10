@@ -7,3 +7,4 @@ export { default as CurrenciesSetting, CurrencyRefresh, SelectCurrencyScreen } f
 export { default as ThemePickerSetting } from './theme-picker';
 export { default as UnlimitedSetting, PaywallScreen } from './unlimited';
 export { default as SystemSetting } from './system';
+export { default as SupportSetting } from './support';

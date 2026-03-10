@@ -36,9 +36,7 @@ export const SectionLabel = styled(BaseText)`
 	margin-left: 4px;
 `;
 
-export const SectionCard = styled(GlassView).attrs({
-	glassEffectStyle: 'clear'
-})`
+export const SectionCard = styled(GlassView)`
 	border-radius: 20px;
 	overflow: hidden;
 	padding: 12px;
@@ -129,38 +127,6 @@ export const Separator = styled.View`
 	margin-left: 16px;
 	margin-right: 16px;
 	background-color: ${({ theme }) => `${theme.border.default}30`};
-`;
-
-/* Support — accented glass pills */
-export const SupportRow = styled.View`
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 8px;
-`;
-
-export const SupportPill = styled(GlassView)`
-	border-radius: 14px;
-	overflow: hidden;
-	background-color: ${({ theme }) => `${theme.accents.orange}12`};
-`;
-
-export const SupportPillInner = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	padding: 12px 16px;
-	gap: 8px;
-`;
-
-export const SupportPillTitle = styled(BaseText)`
-	font-size: 14px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.accents.orange};
-`;
-
-export const SupportPillSub = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.secondary};
 `;
 
 /* Footer */
