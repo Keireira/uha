@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { Linking, Modal } from 'react-native';
-
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,9 +6,6 @@ import { useTipJar, useEntitlement, useScrollDirection } from '@hooks';
 import Toast from 'react-native-toast-message';
 import { shareBackup, restoreFromBackup } from '@lib/backup';
 import { exportAllCSV, importAllCSV } from '@lib/backup/csv-export';
-
-import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application';
-import { LogViewer } from '@lib/logger';
 
 import {
 	NeuroSetting,
@@ -23,7 +18,8 @@ import {
 	AppLogoPickerSetting,
 	AccentSpectrumSetting,
 	SystemSetting,
-	SupportSetting
+	SupportSetting,
+	FooterSection
 } from './components';
 import { SymbolView } from 'expo-symbols';
 import {
@@ -41,13 +37,7 @@ import {
 	CardRow,
 	CardRowTitle,
 	CardRowValue,
-	Separator,
-	FooterWrap,
-	FooterLinks,
-	FooterPill,
-	FooterPillInner,
-	FooterPillText,
-	FooterVersion
+	Separator
 } from './settings.styles';
 
 const SettingsScreen = () => {
@@ -58,7 +48,6 @@ const SettingsScreen = () => {
 
 	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts } = useTipJar();
-	const [logsVisible, setLogsVisible] = useState(false);
 	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
 
 	return (
@@ -191,7 +180,9 @@ const SettingsScreen = () => {
 							<CardRowTitle>{t('settings.data.export_csv')}</CardRowTitle>
 							<SymbolView name="square.and.arrow.up" size={18} tintColor={theme.text.tertiary} />
 						</CardRow>
+
 						<Separator />
+
 						<CardRow
 							onPress={async () => {
 								try {
@@ -208,6 +199,7 @@ const SettingsScreen = () => {
 							<SymbolView name="square.and.arrow.down" size={18} tintColor={theme.text.tertiary} />
 						</CardRow>
 					</Card>
+
 					<SectionFooterText>{t('settings.data.data_footer')}</SectionFooterText>
 				</SectionCard>
 			</SectionWrap>
@@ -224,31 +216,7 @@ const SettingsScreen = () => {
 			</SectionWrap>
 
 			{/* Footer — about */}
-			<FooterWrap>
-				<FooterLinks>
-					<FooterPill>
-						<FooterPillInner onPress={() => Linking.openURL('https://github.com/Keireira/uha')}>
-							<FooterPillText>{t('settings.about.sources')}</FooterPillText>
-							<SymbolView name="arrow.up.right" size={10} weight="semibold" tintColor={theme.text.tertiary} />
-						</FooterPillInner>
-					</FooterPill>
-
-					<FooterPill>
-						<FooterPillInner onPress={() => Linking.openURL('https://testflight.apple.com/join/uVYrDkbA')}>
-							<FooterPillText>{t('settings.about.beta')}</FooterPillText>
-							<SymbolView name="arrow.up.right" size={10} weight="semibold" tintColor={theme.text.tertiary} />
-						</FooterPillInner>
-					</FooterPill>
-				</FooterLinks>
-
-				<FooterVersion onLongPress={() => setLogsVisible(true)}>
-					{t('settings.about.version')} {nativeApplicationVersion} ({nativeBuildVersion})
-				</FooterVersion>
-			</FooterWrap>
-
-			<Modal visible={logsVisible} animationType="slide" presentationStyle="fullScreen">
-				<LogViewer onClose={() => setLogsVisible(false)} />
-			</Modal>
+			<FooterSection />
 		</Container>
 	);
 };

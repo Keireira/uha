@@ -129,45 +129,6 @@ export const Separator = styled.View`
 	background-color: ${({ theme }) => `${theme.border.default}30`};
 `;
 
-/* Footer */
-export const FooterWrap = styled.View`
-	padding-horizontal: 16px;
-	padding-top: 8px;
-	padding-bottom: 16px;
-	gap: 12px;
-`;
-
-export const FooterLinks = styled.View`
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 8px;
-`;
-
-export const FooterPill = styled(GlassView)`
-	border-radius: 12px;
-	overflow: hidden;
-`;
-
-export const FooterPillInner = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	padding: 9px 14px;
-	gap: 5px;
-`;
-
-export const FooterPillText = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 500;
-	color: ${({ theme }) => theme.text.secondary};
-`;
-
-export const FooterVersion = styled(BaseText)`
-	font-size: 12px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.tertiary};
-	margin-left: 4px;
-`;
-
 /* Section divider */
 export const SectionDivider = styled.View`
 	height: 0.5px;
