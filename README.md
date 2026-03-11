@@ -10,7 +10,7 @@
 
 ```sh
 # update expo
-pnpx expo install expo@latest --fix
+pnpm expo install expo@latest --fix
 
 # run dev
 pnpm expo run:ios --device

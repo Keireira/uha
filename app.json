@@ -104,6 +104,8 @@
           ]
         }
       ],
+      "expo-image",
+      "expo-sharing",
       "expo-secure-store",
       "expo-sqlite"
     ],
