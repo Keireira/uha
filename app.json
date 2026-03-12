@@ -8,7 +8,6 @@
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "deploymentTarget": "17.0",
       "appleTeamId": "WU9ZX7QZRL",
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
@@ -99,6 +98,20 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "react-native-icloud-kit/plugin/withICloud",
+        {
+          "containerIdentifier": "iCloud.com.keireira.uha"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.0"
+          }
         }
       ],
       [

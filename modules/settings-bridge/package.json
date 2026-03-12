@@ -1,0 +1,9 @@
+{
+  "name": "settings-bridge",
+  "version": "1.0.0",
+  "description": "Expo module bridging native iOS settings and system events",
+  "main": "index.ts",
+  "private": true,
+  "license": "AGPL-3.0",
+  "platforms": ["ios"]
+}

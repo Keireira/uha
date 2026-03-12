@@ -1,11 +1,20 @@
 import React from 'react';
 import { ActionSheetIOS, ActivityIndicator } from 'react-native';
+import { openSettings } from 'expo-linking';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import * as Haptics from 'expo-haptics';
 import { useSettingsValue, useEntitlement, useFeatureGate } from '@hooks';
 import useLoading from './use-loading';
-import { shareDbBackup, restoreFromDbBackup, shareCsvExport, restoreFromCsvBackup } from '@lib/backup';
+import useICloud from './use-icloud';
+import {
+	shareDbBackup,
+	restoreFromDbBackup,
+	shareCsvExport,
+	restoreFromCsvBackup,
+	backupToCloudKit,
+	restoreFromCloudKit
+} from '@lib/backup';
 
 import { H5 } from '@ui';
 import { SymbolView } from 'expo-symbols';
@@ -25,14 +34,95 @@ import {
 
 import type { UserT } from '@models';
 
+const formatLastBackup = (timestamp: number | null, t: (key: string) => string): string => {
+	if (timestamp == null) return t('settings.data.icloud_no_backup');
+
+	const now = Date.now();
+	const diff = now - timestamp;
+	const minutes = Math.floor(diff / 60_000);
+	const hours = Math.floor(diff / 3_600_000);
+	const days = Math.floor(diff / 86_400_000);
+
+	if (minutes < 1) return t('settings.data.icloud_just_now');
+	if (minutes < 60) return t('settings.data.icloud_minutes_ago').replace('{{count}}', String(minutes));
+	if (hours < 24) return t('settings.data.icloud_hours_ago').replace('{{count}}', String(hours));
+	return t('settings.data.icloud_days_ago').replace('{{count}}', String(days));
+};
+
 const DataSync = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const { tier } = useEntitlement();
 	const openFeatureGate = useFeatureGate();
 	const { withLoading, loadingAction, isLoading } = useLoading();
+	const { status: icloudStatus, lastBackup, refresh: refreshICloud } = useICloud();
 	const accent = useSettingsValue<UserT['accent']>('accent');
 	const accentColor = theme.accents[accent];
+
+	const icloudAvailable = icloudStatus === 'available';
+	const icloudChecking = icloudStatus === 'checking';
+	const icloudBusy = loadingAction === 'icloud_backup' || loadingAction === 'icloud_restore';
+
+	const getICloudStatusText = () => {
+		if (icloudChecking) return t('settings.data.icloud_checking');
+		if (!icloudAvailable) return t('settings.data.icloud_unavailable');
+		if (icloudBusy) {
+			return loadingAction === 'icloud_backup'
+				? t('settings.data.icloud_backing_up')
+				: t('settings.data.icloud_restoring');
+		}
+		return formatLastBackup(lastBackup, t);
+	};
+
+	const handleICloudPress = () => {
+		if (isLoading || icloudChecking) return;
+
+		if (!icloudAvailable) {
+			openSettings();
+			return;
+		}
+
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				options: [t('settings.data.icloud_backup'), t('settings.data.icloud_restore'), t('settings.data.cancel')],
+				destructiveButtonIndex: 1,
+				cancelButtonIndex: 2
+			},
+			(index) => {
+				if (index === 0) createICloudBackup();
+				if (index === 1) restoreICloudBackup();
+			}
+		);
+	};
+
+	const createICloudBackup = withLoading('icloud_backup', async () => {
+		try {
+			await backupToCloudKit();
+
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+			Toast.show({ type: 'success', text1: t('settings.data.icloud_backup_success') });
+			refreshICloud();
+		} catch {
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+			Toast.show({ type: 'error', text1: t('settings.data.icloud_backup_error') });
+		}
+	});
+
+	const restoreICloudBackup = withLoading('icloud_restore', async () => {
+		try {
+			const ok = await restoreFromCloudKit();
+
+			if (ok) {
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+				Toast.show({ type: 'success', text1: t('settings.data.icloud_restore_success') });
+			} else {
+				Toast.show({ type: 'info', text1: t('settings.data.icloud_no_backup') });
+			}
+		} catch {
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+			Toast.show({ type: 'error', text1: t('settings.data.icloud_restore_error') });
+		}
+	});
 
 	const createDbBackup = withLoading('db_backup', async () => {
 		try {
@@ -117,9 +207,13 @@ const DataSync = () => {
 		<>
 			{/* iCloud */}
 			<Card>
-				<CardRow disabled style={{ opacity: 0.45 }}>
+				<CardRow disabled={icloudChecking || isLoading} onPress={handleICloudPress}>
 					<CardRowTitle>{t('settings.data.icloud_sync')}</CardRowTitle>
-					<CardRowValue>{t('settings.data.icloud_coming_soon')}</CardRowValue>
+					{icloudBusy ? (
+						<ActivityIndicator size="small" color={accentColor} />
+					) : (
+						<CardRowValue>{getICloudStatusText()}</CardRowValue>
+					)}
 				</CardRow>
 			</Card>
 
