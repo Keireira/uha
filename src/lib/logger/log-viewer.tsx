@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, Share, StyleSheet, type ListRenderItem } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
 import { SymbolView } from 'expo-symbols';
-import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { format } from 'date-fns';
 import logger, { type LogEntry, type LogLevel } from './logger';
@@ -15,8 +14,6 @@ const LEVEL_COLORS: Record<LogLevel, string> = {
 };
 
 const formatTime = (ts: number) => format(ts, 'dd MMM HH:mm:ss.SSS');
-
-/* ── styled ── */
 
 const Container = styled.View<{ $pt: number }>`
 	flex: 1;

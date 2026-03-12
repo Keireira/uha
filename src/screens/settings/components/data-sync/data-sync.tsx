@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActionSheetIOS, ActivityIndicator } from 'react-native';
 import { openSettings } from 'expo-linking';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import * as Haptics from 'expo-haptics';
@@ -34,19 +35,14 @@ import {
 
 import type { UserT } from '@models';
 
-const formatLastBackup = (timestamp: number | null, t: (key: string) => string): string => {
+const formatLastBackup = (timestamp: string | null, t: (key: string) => string): string => {
 	if (timestamp == null) return t('settings.data.icloud_no_backup');
 
-	const now = Date.now();
-	const diff = now - timestamp;
-	const minutes = Math.floor(diff / 60_000);
-	const hours = Math.floor(diff / 3_600_000);
-	const days = Math.floor(diff / 86_400_000);
-
-	if (minutes < 1) return t('settings.data.icloud_just_now');
-	if (minutes < 60) return t('settings.data.icloud_minutes_ago').replace('{{count}}', String(minutes));
-	if (hours < 24) return t('settings.data.icloud_hours_ago').replace('{{count}}', String(hours));
-	return t('settings.data.icloud_days_ago').replace('{{count}}', String(days));
+	try {
+		return formatDistanceToNow(parseISO(timestamp), { addSuffix: true });
+	} catch {
+		return timestamp;
+	}
 };
 
 const DataSync = () => {
@@ -55,7 +51,7 @@ const DataSync = () => {
 	const { tier } = useEntitlement();
 	const openFeatureGate = useFeatureGate();
 	const { withLoading, loadingAction, isLoading } = useLoading();
-	const { status: icloudStatus, lastBackup, refresh: refreshICloud } = useICloud();
+	const { status: icloudStatus, lastBackupTimestamp, checkICloudMeta } = useICloud();
 	const accent = useSettingsValue<UserT['accent']>('accent');
 	const accentColor = theme.accents[accent];
 
@@ -71,7 +67,7 @@ const DataSync = () => {
 				? t('settings.data.icloud_backing_up')
 				: t('settings.data.icloud_restoring');
 		}
-		return formatLastBackup(lastBackup, t);
+		return formatLastBackup(lastBackupTimestamp, t);
 	};
 
 	const handleICloudPress = () => {
@@ -97,11 +93,13 @@ const DataSync = () => {
 
 	const createICloudBackup = withLoading('icloud_backup', async () => {
 		try {
+			// Yield to let the UI render the loader before heavy sync work
+			await new Promise((r) => setTimeout(r, 0));
 			await backupToCloudKit();
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 			Toast.show({ type: 'success', text1: t('settings.data.icloud_backup_success') });
-			refreshICloud();
+			checkICloudMeta();
 		} catch {
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.icloud_backup_error') });
@@ -118,7 +116,8 @@ const DataSync = () => {
 			} else {
 				Toast.show({ type: 'info', text1: t('settings.data.icloud_no_backup') });
 			}
-		} catch {
+		} catch (err) {
+			console.error('[iCloud] ✗ Restore failed:', err);
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.icloud_restore_error') });
 		}

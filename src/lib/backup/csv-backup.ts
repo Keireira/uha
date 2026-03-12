@@ -5,14 +5,15 @@ import * as Sharing from 'expo-sharing';
 import * as SQLite from 'expo-sqlite';
 import { reloadAppAsync } from 'expo';
 import { format } from 'date-fns';
+import { map, reverse, keys, join, isEmpty } from 'ramda';
 import JSZip from 'jszip';
 
 import { DB_NAME, safeDelete } from './shared';
 
-/** Raw DB row — values can be any SQLite type. */
+/** Raw DB row -- values can be any SQLite type. */
 type DbRow = Record<string, unknown>;
 
-/** Parsed CSV row — values are always strings. */
+/** Parsed CSV row -- values are always strings. */
 type CsvRow = Record<string, string>;
 
 /** Ordered parents-first for FK-safe INSERT; reverse for DELETE. */
@@ -31,10 +32,10 @@ const TABLES = [
 type TableName = (typeof TABLES)[number];
 
 const toCsv = (rows: DbRow[]) => {
-	if (!rows.length) return '';
+	if (isEmpty(rows)) return '';
 
-	const cols = Object.keys(rows[0]);
-	const data = [cols, ...rows.map((r) => cols.map((c) => r[c] ?? ''))];
+	const cols = keys(rows[0]) as string[];
+	const data = [cols, ...map((r) => map((c) => r[c] ?? '', cols), rows)];
 
 	return stringify(data as string[][], { eof: false }) satisfies string;
 };
@@ -45,7 +46,10 @@ const fromCsv = (text: string) => {
 
 	const [headers, ...rows] = data;
 
-	return rows.map((values) => Object.fromEntries(headers.map((h, i) => [h, values[i] ?? '']))) satisfies CsvRow[];
+	return map(
+		(values) => Object.fromEntries(map((i) => [headers[i], values[i] ?? ''], [...headers.keys()])),
+		rows
+	) satisfies CsvRow[];
 };
 
 const base64ToBytes = (b64: string) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)) satisfies Uint8Array;
@@ -82,23 +86,23 @@ const parseBackupZip = async (zip: JSZip) => {
 const replaceAllData = (db: SQLite.SQLiteDatabase, tableData: Map<TableName, CsvRow[]>) => {
 	db.withTransactionSync(() => {
 		/* Reverse here because of foreign keys (we have to remove children first) */
-		for (const table of [...TABLES].reverse()) {
+		for (const table of reverse([...TABLES])) {
 			db.runSync(`DELETE FROM ${table}`);
 		}
 
 		for (const table of TABLES) {
 			const rows = tableData.get(table)!;
-			if (!rows.length) continue;
+			if (isEmpty(rows)) continue;
 
-			const columns = Object.keys(rows[0]);
-			const placeholders = columns.map(() => '?').join(',');
-			const sql = `INSERT INTO ${table} (${columns.join(',')}) VALUES (${placeholders})`;
+			const columns = keys(rows[0]) as string[];
+			const placeholders = join(',', map(() => '?', columns));
+			const sql = `INSERT INTO ${table} (${join(',', columns)}) VALUES (${placeholders})`;
 
 			for (const row of rows) {
-				const values = columns.map((col): string | null => {
+				const values = map((col): string | null => {
 					const v = row[col];
 					return v === '' ? null : v;
-				});
+				}, columns);
 
 				db.runSync(sql, values);
 			}
