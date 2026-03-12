@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@config-plugins/apple-settings": "^6.0.0",
-    "@expo/ui": "55.0.1",
+    "@expo/ui": "55.0.2",
     "@howincodes/expo-dynamic-app-icon": "^2.0.3",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/bottom-tabs": "^7.4.0",
@@ -29,18 +29,20 @@
     "@react-navigation/elements": "^2.9.3",
     "@react-navigation/native": "^7.1.8",
     "@shopify/flash-list": "2.0.2",
+    "@vanillaes/csv": "^4.0.1",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
     "effector": "^23.4.4",
     "effector-react": "^23.3.0",
-    "expo": "~55.0.5",
+    "expo": "~55.0.6",
     "expo-application": "~55.0.8",
     "expo-blur": "~55.0.8",
     "expo-constants": "~55.0.7",
-    "expo-crypto": "^55.0.9",
+    "expo-crypto": "~55.0.9",
     "expo-dev-client": "~55.0.13",
     "expo-document-picker": "~55.0.8",
     "expo-drizzle-studio-plugin": "^0.2.1",
+    "expo-file-system": "~55.0.10",
     "expo-font": "~55.0.4",
     "expo-glass-effect": "~55.0.7",
     "expo-haptics": "~55.0.8",
@@ -48,7 +50,6 @@
     "expo-linear-gradient": "~55.0.8",
     "expo-linking": "~55.0.7",
     "expo-localization": "~55.0.8",
-    "expo-modules-core": "^55.0.14",
     "expo-notifications": "~55.0.11",
     "expo-router": "~55.0.4",
     "expo-secure-store": "^55.0.8",
@@ -59,6 +60,7 @@
     "expo-symbols": "~55.0.5",
     "expo-system-ui": "~55.0.9",
     "i18next": "^25.8.17",
+    "jszip": "^3.10.1",
     "patronum": "^2.3.0",
     "ramda": "^0.32.0",
     "react": "19.2.0",
@@ -97,6 +99,11 @@
     "prettier": "^3.8.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "expo-modules-core": "55.0.15"
+    }
   },
   "private": true
 }

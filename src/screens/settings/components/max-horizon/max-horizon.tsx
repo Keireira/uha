@@ -14,8 +14,8 @@ const MaxHorizon = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 
-	const featureGate = useFeatureGate();
-	const { isUnlimited, tier } = useEntitlement();
+	const { tier } = useEntitlement();
+	const openFeatureGate = useFeatureGate();
 	const maxHorizon = useSettingsValue<UserT['max_horizon']>('max_horizon');
 
 	const decreaseYear = () => {
@@ -26,8 +26,8 @@ const MaxHorizon = () => {
 	};
 
 	const addYear = () => {
-		if (!isUnlimited && maxHorizon >= tier.maxHorizon) {
-			featureGate();
+		if (maxHorizon >= tier.maxHorizon) {
+			openFeatureGate();
 			return;
 		}
 
@@ -49,7 +49,7 @@ const MaxHorizon = () => {
 					<SymbolView name="minus" size={13} weight="bold" tintColor={theme.text.secondary} />
 				</StepperButton>
 
-				<StepperButton $disabled={!isUnlimited && maxHorizon >= tier.maxHorizon} onPress={addYear}>
+				<StepperButton $disabled={maxHorizon >= tier.maxHorizon} onPress={addYear}>
 					<SymbolView name="plus" size={13} weight="bold" tintColor={theme.text.secondary} />
 				</StepperButton>
 			</Stepper>

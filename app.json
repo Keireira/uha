@@ -1,22 +1,20 @@
 {
   "expo": {
     "slug": "uha",
+    "name": "Uha",
     "version": "1.14.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
+      "deploymentTarget": "17.0",
       "appleTeamId": "WU9ZX7QZRL",
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
       "userInterfaceStyle": "automatic",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "uha",
-          "уха"
-        ],
+        "LSApplicationQueriesSchemes": ["uha", "уха"],
         "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
@@ -67,6 +65,13 @@
       "expo-dev-client",
       "expo-localization",
       [
+        "expo-file-system",
+        {
+          "supportsOpeningDocumentsInPlace": true,
+          "enableFileSharing": true
+        }
+      ],
+      [
         "@howincodes/expo-dynamic-app-icon",
         {
           "enby": {
@@ -99,9 +104,7 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": [
-            "Notifications"
-          ]
+          "iosPermissions": ["Notifications"]
         }
       ],
       "expo-image",

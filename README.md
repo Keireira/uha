@@ -12,6 +12,9 @@
 # update expo
 pnpm expo install expo@latest --fix
 
+# fix errors
+pnpx expo-doctor
+
 # run dev
 pnpm expo run:ios --device
 
