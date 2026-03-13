@@ -42,11 +42,11 @@ export const validateSqliteFile = (file: File) => {
  * Checkpoint WAL and copy the database to a temporary backup file.
  * Caller is responsible for cleaning up the returned file.
  */
-export const createBackup = () => {
-	const db = SQLite.openDatabaseSync(DB_NAME);
+export const createBackup = async () => {
+	const db = await SQLite.openDatabaseAsync(DB_NAME);
 
 	try {
-		db.execSync('PRAGMA wal_checkpoint(TRUNCATE);');
+		await db.execAsync('PRAGMA wal_checkpoint(TRUNCATE);');
 	} finally {
 		db.closeSync();
 	}
@@ -62,7 +62,7 @@ export const createBackup = () => {
  * Share a backup file via the system share sheet (Save to Files / iCloud Drive).
  */
 export const shareDbBackup = async () => {
-	const backupFile = createBackup();
+	const backupFile = await createBackup();
 
 	try {
 		await Sharing.shareAsync(backupFile.uri, {

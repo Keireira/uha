@@ -12,6 +12,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
       "userInterfaceStyle": "automatic",
+      "entitlements": {
+        "com.apple.developer.icloud-container-identifiers": ["iCloud.com.keireira.uha"],
+        "com.apple.developer.icloud-services": ["CloudKit"]
+      },
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["uha", "уха"],
         "UIDesignRequiresCompatibility": false,
@@ -98,12 +102,6 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "react-native-icloud-kit/plugin/withICloud",
-        {
-          "containerIdentifier": "iCloud.com.keireira.uha"
         }
       ],
       [

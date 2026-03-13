@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
-import { BaseText } from '@ui';
+import { BaseText, Text } from '@ui';
 
 /* iCloud row */
 
@@ -49,9 +49,9 @@ export const TileInner = styled.Pressable`
 	gap: 12px;
 `;
 
-export const TileTitle = styled(BaseText)`
+export const TileTitle = styled(Text)`
 	font-size: 16px;
-	font-weight: 600;
+	font-weight: 500;
 	color: ${({ theme }) => theme.text.primary};
 `;
 

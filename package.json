@@ -14,7 +14,9 @@
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "exclude": ["react-native-icloud-kit", "@howincodes/expo-dynamic-app-icon"]
+        "exclude": [
+          "@howincodes/expo-dynamic-app-icon"
+        ]
       }
     }
   },
@@ -37,6 +39,7 @@
     "@react-navigation/native": "^7.1.8",
     "@shopify/flash-list": "2.0.2",
     "@vanillaes/csv": "^4.0.1",
+    "babel-plugin-react-compiler": "^1.0.0",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
     "effector": "^23.4.4",
@@ -77,7 +80,6 @@
     "react-native": "0.83.2",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-gifted-charts": "^1.4.76",
-    "react-native-icloud-kit": "^0.1.5",
     "react-native-pager-view": "8.0.0",
     "react-native-permissions": "^5.5.1",
     "react-native-purchases": "^9.11.2",

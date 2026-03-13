@@ -11,7 +11,6 @@ const useTitle = () => {
 	const { txViewMode } = useSearchParams();
 
 	const lenses = useUnit(appModel.lenses.$store);
-	const activeMonth = useUnit(appModel.tx_dates.activeMonth.$value);
 
 	const title = useMemo(() => {
 		if (txViewMode === 'list') {
@@ -19,8 +18,7 @@ const useTitle = () => {
 		} else if (txViewMode === 'subscriptions') {
 			return t('transactions.view_mode.subscriptions');
 		}
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [lenses.time_mode, txViewMode, activeMonth]);
+	}, [t, lenses.time_mode, txViewMode]);
 
 	return title;
 };

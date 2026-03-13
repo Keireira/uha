@@ -95,7 +95,10 @@ const replaceAllData = (db: SQLite.SQLiteDatabase, tableData: Map<TableName, Csv
 			if (isEmpty(rows)) continue;
 
 			const columns = keys(rows[0]) as string[];
-			const placeholders = join(',', map(() => '?', columns));
+			const placeholders = join(
+				',',
+				map(() => '?', columns)
+			);
 			const sql = `INSERT INTO ${table} (${join(',', columns)}) VALUES (${placeholders})`;
 
 			for (const row of rows) {

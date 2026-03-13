@@ -49,19 +49,25 @@ An iCloud Container is a named storage bucket in CloudKit. Each app that uses Cl
 4. Under **iCloud Containers**, check the box next to `iCloud.com.keireira.uha`
 5. Click **Save**
 
-> The Expo plugin (`react-native-icloud-kit/plugin/withICloud`) handles the Xcode entitlements file automatically during prebuild, but the container itself must exist in the Developer Portal.
+The container itself must exist in the Developer Portal.
 
-## 2. Expo Plugin (app.json)
+## 2. Module Configuration
 
-The plugin automatically adds entitlements and the iCloud capability during prebuild:
+Inside `CloudBackupModule` you can change `containerID`. But by default it is set to `iCloud.com.keireira.uha`.
+
+And change `app.json`:
 
 ```json
-[
-	"react-native-icloud-kit/plugin/withICloud",
-	{
-		"containerIdentifier": "iCloud.com.keireira.uha"
+{
+	"expo": {
+		"ios": {
+			"entitlements": {
+				"com.apple.developer.icloud-container-identifiers": ["iCloud.com.keireira.uha"],
+				"com.apple.developer.icloud-services": ["CloudKit"]
+			}
+		}
 	}
-]
+}
 ```
 
 After changing app.json:

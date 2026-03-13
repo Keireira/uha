@@ -1,79 +1,68 @@
-import { useEffect, useState, useCallback } from 'react';
-import { iCloud } from 'react-native-icloud-kit';
-import { RECORD_TYPE, BACKUP_STATUS, ICLOUD_ERROR } from '@lib/backup';
+import { useEffect, useState } from 'react';
+import { BACKUP_STATUS } from '@lib/backup';
+import { isAvailable, getTimestamp } from '@modules/cloud-backup';
 
-import type { ICloudError } from '@lib/backup';
-
-/**
- * Check whether iCloud is available (user signed in).
- */
-const isICloudAvailable = async () => {
-	try {
-		return await iCloud.isAvailable();
-	} catch (err) {
-		console.error('[iCloud] ✗ Failed to check availability:', err);
-
-		return false;
-	}
+type ICloudMeta = {
+	status: BACKUP_STATUS;
+	lastBackupTimestamp: string | null;
 };
 
-/**
- * Get the last CloudKit backup timestamp string, or null if none exists.
- */
-const getLastBackupTimestamp = async (): Promise<string | null> => {
-	try {
-		const records = await iCloud.query(RECORD_TYPE, undefined, 1);
+const INITIAL: ICloudMeta = {
+	status: BACKUP_STATUS.CHECKING,
+	lastBackupTimestamp: null
+};
 
-		if (!records.length) {
-			return null;
-		}
+const fetchICloudMeta = async (): Promise<ICloudMeta> => {
+	const available = await isAvailable();
 
-		const timestamp = records[0].fields.timestamp;
+	if (!available) {
+		console.log('[iCloud] ◆ Account unavailable');
 
-		return typeof timestamp === 'string' ? timestamp : null;
-	} catch (err) {
-		if ((err as ICloudError).code !== ICLOUD_ERROR.RECORD_NOT_FOUND) {
-			console.error('[iCloud] ✗ Failed to fetch backup info:', err);
-		}
-
-		return null;
+		return {
+			status: BACKUP_STATUS.UNAVAILABLE,
+			lastBackupTimestamp: null
+		};
 	}
+
+	let timestamp: string | null = null;
+
+	try {
+		timestamp = await getTimestamp();
+		if (timestamp) {
+			console.log(`[iCloud] ◆ Last backup: ${timestamp}`);
+		}
+	} catch {
+		console.log('[iCloud] ◆ No backup found');
+	}
+
+	return {
+		status: BACKUP_STATUS.AVAILABLE,
+		lastBackupTimestamp: timestamp
+	};
 };
 
 const useICloud = () => {
-	const [status, setStatus] = useState<BACKUP_STATUS>(BACKUP_STATUS.CHECKING);
-	const [lastBackupTimestamp, setLastBackupTimestamp] = useState<string | null>(null);
+	const [meta, setMeta] = useState<ICloudMeta>(INITIAL);
 
-	const checkICloudMeta = useCallback(async () => {
-		setStatus(BACKUP_STATUS.CHECKING);
+	const checkICloudMeta = async () => {
+		setMeta(INITIAL);
 
-		const isAvailable = await isICloudAvailable();
-
-		if (!isAvailable) {
-			console.log('[iCloud] ◆ Account unavailable');
-			setStatus(BACKUP_STATUS.UNAVAILABLE);
-
-			return;
+		try {
+			const result = await fetchICloudMeta();
+			setMeta(result);
+		} catch {
+			setMeta({ status: BACKUP_STATUS.UNAVAILABLE, lastBackupTimestamp: null });
 		}
-
-		setStatus(BACKUP_STATUS.AVAILABLE);
-
-		const timestamp = await getLastBackupTimestamp();
-
-		if (timestamp) {
-			console.log(`[iCloud] ◆ Last backup: ${timestamp}`);
-			setLastBackupTimestamp(timestamp);
-		}
-	}, []);
+	};
 
 	useEffect(() => {
 		checkICloudMeta();
-	}, [checkICloudMeta]);
+	}, []);
 
 	return {
-		status,
 		checkICloudMeta,
-		lastBackupTimestamp
+		iCloudStatus: meta.status,
+		lastBackupTimestamp: meta.lastBackupTimestamp
 	};
 };
 

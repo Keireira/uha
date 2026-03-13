@@ -1,0 +1,11 @@
+{
+  "name": "cloud-backup",
+  "version": "1.0.0",
+  "description": "Expo module for syncing uha data",
+  "main": "index.ts",
+  "private": true,
+  "license": "AGPL-3.0",
+  "platforms": [
+    "ios"
+  ]
+}
