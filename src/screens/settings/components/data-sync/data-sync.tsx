@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActionSheetIOS, ActivityIndicator } from 'react-native';
 import { openSettings } from 'expo-linking';
 import { formatDistanceToNow, parseISO } from 'date-fns';
@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components/native';
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-toast-message';
 import { SymbolView } from 'expo-symbols';
+import { Text } from '@ui';
 
 import { useSettingsValue, useEntitlement, useFeatureGate } from '@hooks';
 import {
@@ -57,8 +58,20 @@ const DataSync = () => {
 	const { t } = useTranslation();
 	const { tier } = useEntitlement();
 	const openFeatureGate = useFeatureGate();
+	const [justBackedUp, setJustBackedUp] = useState(false);
 	const { withLoading, loadingAction, isLoading } = useLoading();
 	const { iCloudStatus, lastBackupTimestamp, checkICloudMeta } = useICloud();
+
+	useEffect(() => {
+		if (!justBackedUp) return;
+
+		const timeout = setTimeout(() => {
+			setJustBackedUp(false);
+		}, 4000);
+
+		return () => clearTimeout(timeout);
+	}, [justBackedUp]);
+
 	const accent = useSettingsValue<UserT['accent']>('accent');
 	const accentColor = theme.accents[accent];
 
@@ -84,7 +97,7 @@ const DataSync = () => {
 		}
 
 		if (!iCloudAvailable) {
-			return openFeatureGate();
+			return openSettings();
 		}
 
 		ActionSheetIOS.showActionSheetWithOptions(
@@ -106,6 +119,7 @@ const DataSync = () => {
 			await backupToCloudKit();
 
 			hapticSuccess();
+			setJustBackedUp(true);
 			toast('success', t('settings.data.icloud_backup_success'));
 			checkICloudMeta();
 		} catch {
@@ -219,11 +233,23 @@ const DataSync = () => {
 		return isLoading && loadingAction !== action ? { opacity: 0.4 } : undefined;
 	};
 
+	const getICloudIcon = () => {
+		if (justBackedUp) {
+			return 'checkmark.icloud';
+		}
+
+		return iCloudAvailable ? 'icloud' : 'icloud.dashed';
+	};
+
 	return (
 		<>
 			<Card>
 				<CardRow disabled={iCloudChecking || isLoading} onPress={handleICloudPress}>
-					<CardRowTitle>{t('settings.data.icloud_sync')}</CardRowTitle>
+					<CardRowTitle>
+						<SymbolView name={getICloudIcon()} size={20} tintColor={accentColor} />
+
+						<Text $weight={500}>{t('settings.data.icloud_sync')}</Text>
+					</CardRowTitle>
 
 					{iCloudBusy ? (
 						<ActivityIndicator size="small" color={accentColor} />

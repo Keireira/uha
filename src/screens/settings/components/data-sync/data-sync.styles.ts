@@ -17,11 +17,10 @@ export const CardRow = styled.Pressable`
 	gap: 12px;
 `;
 
-export const CardRowTitle = styled(BaseText)`
-	font-size: 16px;
-	font-weight: 500;
-	color: ${({ theme }) => theme.text.primary};
+export const CardRowTitle = styled.View`
+	gap: 10px;
 	flex-shrink: 1;
+	flex-direction: row;
 `;
 
 export const CardRowValue = styled(BaseText)`

@@ -1,5 +1,6 @@
 import ExpoModulesCore;
 import CloudKit;
+import Foundation;
 
 public class CloudBackupModule: Module {
 	private let containerID = "iCloud.com.keireira.uha"
@@ -24,6 +25,35 @@ public class CloudBackupModule: Module {
 		}
 	}
 
+	private func compressFile(at sourceURL: String) throws -> String {
+		let originalData = try Data(contentsOf: URL(filePath: sourceURL))
+		let compressed = try (originalData as NSData).compressed(using: .lzma) as Data
+
+		let fileManager = FileManager.default
+		let tmpPath = fileManager.temporaryDirectory.appendingPathComponent("backup.zip")
+		if fileManager.fileExists(atPath: tmpPath.path) {
+			try fileManager.removeItem(at: tmpPath)
+		}
+		try compressed.write(to: tmpPath)
+
+		return tmpPath.path
+	}
+
+	private func decompressFile(at sourceUrl: String) throws -> String {
+		let originalData = try Data(contentsOf: URL(filePath: sourceUrl))
+		let decompressed = try (originalData as NSData).decompressed(using: .lzma) as Data
+
+		let fileManager = FileManager.default
+		let tmpPath = fileManager.temporaryDirectory.appendingPathComponent("backup-restored.db")
+		if fileManager.fileExists(atPath: tmpPath.path) {
+			try fileManager.removeItem(at: tmpPath)
+		}
+		try decompressed.write(to: tmpPath)
+
+		return tmpPath.path
+	}
+
+
 	private func isAvailable() async throws -> Bool {
 		let cloudKitContainer = CKContainer(identifier: self.containerID)
 		let accountStatus = try await cloudKitContainer.accountStatus()
@@ -39,8 +69,8 @@ public class CloudBackupModule: Module {
 			throw NSError(domain: "CloudBackup", code: 0, userInfo: [NSLocalizedDescriptionKey: "File not found"])
 		}
 
-		let pathUrl = URL(filePath: path);
-		let asset = CKAsset(fileURL: pathUrl)
+		let compressedPath = try self.compressFile(at: path)
+		let asset = CKAsset(fileURL: URL(filePath: compressedPath))
 		let record = CKRecord(recordType: "Backup", recordID: CKRecord.ID(recordName: "latest-backup"))
 		record.setValue(asset, forKey: "asset")
 		record.setValue(Date(), forKey: "timestamp")
@@ -77,14 +107,9 @@ public class CloudBackupModule: Module {
 			throw NSError(domain: "CloudBackup", code: 2, userInfo: [NSLocalizedDescriptionKey: "Failed to get backup path"])
 		}
 
-		let fileManager = FileManager.default
-		let tmpPath = fileManager.temporaryDirectory.appendingPathComponent("backup.zip")
-		if fileManager.fileExists(atPath: tmpPath.path) {
-			try fileManager.removeItem(at: tmpPath)
-		}
-		try fileManager.copyItem(at: fileURL, to: tmpPath)
+		let decompressedPath = try self.decompressFile(at: fileURL.path)
 
-		return tmpPath.path
+		return decompressedPath
 	}
 
 	private func getTimestamp() async throws -> String {
