@@ -1,16 +1,17 @@
 import React from 'react';
-import { ActionSheetIOS, ActivityIndicator } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
-import Toast from 'react-native-toast-message';
-import { SymbolView } from 'expo-symbols';
+import { useTranslation } from 'react-i18next';
 
-import ICloudBackup from './icloud-backup';
-
-import { useEntitlement, useFeatureGate, useAccent } from '@hooks';
-import { shareDbBackup, restoreFromDbBackup, shareCsvExport, restoreFromCsvBackup } from '@lib/backup';
+import { useAccent } from '@hooks';
 import useLoading from './use-loading';
-import { TileRow, Tile, TileInner, TileTitle, CsvButton, CsvButtonInner } from './data-sync.styles';
+import { shareDbBackup, restoreFromDbBackup } from '@lib/backup';
+
+import CSVBackup from './csv-backup';
+import { SymbolView } from 'expo-symbols';
+import ICloudBackup from './icloud-backup';
+import Toast from 'react-native-toast-message';
+import { ActivityIndicator } from 'react-native';
+import { TileRow, Tile, TileInner, TileTitle } from './data-sync.styles';
 
 const hapticSuccess = () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 const hapticError = () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -19,11 +20,9 @@ const toast = (type: 'success' | 'error' | 'info', text1: string) => Toast.show(
 
 const DataSync = () => {
 	const { t } = useTranslation();
-	const { tier } = useEntitlement();
-	const openFeatureGate = useFeatureGate();
-	const { withLoading, loadingAction, isLoading } = useLoading();
 
 	const accentColor = useAccent();
+	const { withLoading, loadingAction, isLoading } = useLoading();
 
 	/* DB backup */
 	const createDbBackup = withLoading('db_backup', async () => {
@@ -51,63 +50,6 @@ const DataSync = () => {
 			toast('error', t('settings.data.restore_error'));
 		}
 	});
-
-	/* CSV */
-	const requireCsvAccess = (): boolean => {
-		if (!tier.csvExport) {
-			openFeatureGate();
-
-			return false;
-		}
-
-		return true;
-	};
-
-	const createCsvBackup = withLoading('csv_export', async () => {
-		if (!requireCsvAccess()) return;
-
-		try {
-			await shareCsvExport();
-
-			hapticSuccess();
-			toast('success', t('settings.data.export_success'));
-		} catch {
-			hapticError();
-			toast('error', t('settings.data.export_error'));
-		}
-	});
-
-	const restoreCsvBackup = withLoading('csv_import', async () => {
-		if (!requireCsvAccess()) return;
-
-		try {
-			const ok = await restoreFromCsvBackup();
-
-			if (ok) {
-				hapticSuccess();
-				toast('success', t('settings.data.import_success'));
-			}
-		} catch {
-			hapticError();
-			toast('error', t('settings.data.import_error'));
-		}
-	});
-
-	const openCsvMenu = () => {
-		if (isLoading) return;
-		if (!requireCsvAccess()) return;
-
-		ActionSheetIOS.showActionSheetWithOptions(
-			{
-				options: [t('settings.data.export_csv'), t('settings.data.import_csv'), t('settings.data.cancel')],
-				cancelButtonIndex: 2
-			},
-			(index) => {
-				if (index === 0) createCsvBackup();
-				if (index === 1) restoreCsvBackup();
-			}
-		);
-	};
 
 	const tileStyle = (action: string) => {
 		return isLoading && loadingAction !== action ? { opacity: 0.4 } : undefined;
@@ -143,18 +85,7 @@ const DataSync = () => {
 				</Tile>
 			</TileRow>
 
-			<CsvButton $disabled={isLoading} isInteractive={!isLoading}>
-				<CsvButtonInner disabled={isLoading} onPress={openCsvMenu}>
-					{loadingAction === 'csv_export' || loadingAction === 'csv_import' ? (
-						<ActivityIndicator size="small" color={accentColor} />
-					) : (
-						<>
-							<SymbolView name="tablecells" size={20} tintColor={accentColor} />
-							<TileTitle $color={accentColor}>CSV</TileTitle>
-						</>
-					)}
-				</CsvButtonInner>
-			</CsvButton>
+			<CSVBackup isLoading={isLoading} loadingAction={loadingAction} withLoading={withLoading} />
 		</>
 	);
 };

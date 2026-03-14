@@ -2,8 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useTheme } from 'styled-components/native';
 import { useTranslation } from 'react-i18next';
 import { openSettings } from 'expo-linking';
-
 import * as Haptics from 'expo-haptics';
+
 import { LOADING_ACTIONS } from '../use-loading';
 import { useStatusText, useICloud } from './hooks';
 import { useEntitlement, useFeatureGate, useAccent } from '@hooks';
@@ -49,14 +49,14 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 	}, [justBackedUp]);
 
 	const iCloudSymbol = useMemo(() => {
+		if (isChecking) return 'link.icloud';
 		if (justBackedUp) return 'checkmark.icloud';
 
 		return isAvailable ? 'icloud' : 'icloud.dashed';
-	}, [justBackedUp, isAvailable]);
+	}, [justBackedUp, isChecking, isAvailable]);
 
 	const createICloudBackup = withLoading(LOADING_ACTIONS.ICloudBackup, async () => {
 		try {
-			await new Promise((r) => setTimeout(r, 0));
 			await backupToCloudKit();
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -66,6 +66,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			setJustBackedUp(true);
 		} catch (err) {
 			console.error('[iCloud] ✗ Backup failed:', err);
+
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.icloud_backup_error') });
 		}
@@ -82,6 +83,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			});
 		} catch (err) {
 			console.error('[iCloud] ✗ Restore failed:', err);
+
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.icloud_restore_error') });
 		}
@@ -107,7 +109,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 	};
 
 	return (
-		<Root isInteractive={!isDisabled}>
+		<Root $disabled={isDisabled} isInteractive={!isDisabled}>
 			<Inner disabled={isDisabled} onPress={handleICloudPress}>
 				<Title>
 					<SymbolView name={iCloudSymbol} size={20} tintColor={accentColor} />

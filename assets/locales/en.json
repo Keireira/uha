@@ -133,8 +133,8 @@
       "restore": "Restore",
       "full_snapshot": "Create",
       "from_snapshot": "Select file",
-      "export_csv": "Export CSV",
-      "import_csv": "Import CSV",
+      "export_csv": "Export to CSV",
+      "import_csv": "Restore from CSV",
       "as_spreadsheet": "As spreadsheet",
       "from_spreadsheet": "From spreadsheet",
       "backup_success": "Backup created",
@@ -158,7 +158,7 @@
       "icloud_backup_error": "iCloud backup failed",
       "icloud_restore_success": "Restored from iCloud",
       "icloud_restore_error": "iCloud restore failed",
-      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+      "data_footer": "Restoring any backup will overwrite all existing data."
     },
     "ai": {
       "header": "AI Features",
