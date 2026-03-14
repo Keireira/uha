@@ -1,12 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO, differenceInHours } from 'date-fns';
 
 import useICloud from './use-icloud';
 import { BACKUP_STATUS } from '@lib/backup';
 import { LOADING_ACTIONS } from '../../use-loading';
 
 import type { UseLoadingReturnT } from '../../use-loading';
+
+const ONE_MINUTE = 60_000;
+const ONE_HOUR = 3_600_000;
+
+const getRefreshInterval = (timestamp: string): number | null => {
+	const hours = differenceInHours(new Date(), parseISO(timestamp));
+
+	if (hours >= 24) return null;
+	if (hours >= 1) return ONE_HOUR;
+	return ONE_MINUTE;
+};
 
 const formatDate = (timestamp: string) => {
 	try {
@@ -24,10 +35,13 @@ const useStatusText = (loadingAction: UseLoadingReturnT['loadingAction']) => {
 	useEffect(() => {
 		if (!lastBackupTimestamp) return;
 
-		const interval = setInterval(() => setTick((prev) => prev + 1), 60_000);
+		const interval = getRefreshInterval(lastBackupTimestamp);
+		if (!interval) return;
 
-		return () => clearInterval(interval);
-	}, [lastBackupTimestamp]);
+		const id = setInterval(() => setTick((prev) => prev + 1), interval);
+
+		return () => clearInterval(id);
+	}, [lastBackupTimestamp, tick]);
 
 	/* Force React Compiler to treat tick as a dependency */
 	void tick;

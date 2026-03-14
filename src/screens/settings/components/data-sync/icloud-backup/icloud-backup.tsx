@@ -33,7 +33,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			isChecking: iCloudStatus === BACKUP_STATUS.CHECKING,
 			isAvailable: iCloudStatus === BACKUP_STATUS.AVAILABLE,
 			isDisabled: iCloudStatus === BACKUP_STATUS.CHECKING || isLoading,
-			isLocalLoading: loadingAction === LOADING_ACTIONS.ICloudBackup || loadingAction === LOADING_ACTIONS.ICloudRestore
+			isLocalLoading: [LOADING_ACTIONS.ICloudBackup, LOADING_ACTIONS.ICloudRestore].includes(loadingAction)
 		}),
 		[isLoading, loadingAction, iCloudStatus]
 	);
@@ -109,7 +109,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 	};
 
 	return (
-		<Root $disabled={isDisabled} isInteractive={!isDisabled}>
+		<Root isInteractive={!isDisabled}>
 			<Inner disabled={isDisabled} onPress={handleICloudPress}>
 				<Title>
 					<SymbolView name={iCloudSymbol} size={20} tintColor={accentColor} />

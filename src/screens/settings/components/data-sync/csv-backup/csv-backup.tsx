@@ -37,7 +37,7 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 			Toast.show({ type: 'success', text1: t('settings.data.export_success') });
 		} catch (err) {
-			console.error('[DB] ✗ Backup failed:', err);
+			console.error('[CSV] ✗ Backup failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.export_error') });
@@ -53,7 +53,7 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 				Toast.show({ type: 'success', text1: t('settings.data.import_success') });
 			}
 		} catch (err) {
-			console.error('[DB] ✗ Restore failed:', err);
+			console.error('[CSV] ✗ Restore failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 			Toast.show({ type: 'error', text1: t('settings.data.import_error') });
@@ -79,7 +79,7 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 	};
 
 	return (
-		<Root $disabled={isDisabled} isInteractive={!isDisabled}>
+		<Root isInteractive={!isDisabled}>
 			<Inner disabled={isDisabled} onPress={handleCSVPress}>
 				<Title>
 					<SymbolView name="tablecells" size={20} tintColor={accentColor} />
@@ -90,7 +90,7 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 				{isLocalLoading ? (
 					<ActivityIndicator size="small" color={accentColor} />
 				) : (
-					<SymbolView name="arrow.up.right" size={16} tintColor={theme.text.tertiary} />
+					<SymbolView name="square.and.arrow.up" size={20} tintColor={theme.text.tertiary} />
 				)}
 			</Inner>
 		</Root>

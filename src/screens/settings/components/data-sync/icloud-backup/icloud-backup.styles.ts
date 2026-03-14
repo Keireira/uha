@@ -15,8 +15,7 @@ export const Inner = styled.Pressable`
 	gap: 12px;
 `;
 
-export default styled(GlassView)<{ $disabled: boolean }>`
-	opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+export default styled(GlassView)`
 	border-radius: 16px;
 	overflow: hidden;
 `;
