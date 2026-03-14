@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { setSettingsValue, useSettingsValue } from '@hooks';
+import { setSettingsValue, useSettingsValue, useAccent } from '@hooks';
 
 import { H5, SmallText } from '@ui';
 import { Platform, Switch } from 'react-native';
@@ -34,8 +34,8 @@ const useAICompat = () => {
 const Neuro = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
+	const accentColor = useAccent();
 	const isAISupported = useAICompat();
-	const accent = useSettingsValue<UserT['accent']>('accent');
 	const aiEnabled = useSettingsValue<UserT['ai_enabled']>('ai_enabled');
 
 	return (
@@ -55,7 +55,7 @@ const Neuro = () => {
 
 						<Switch
 							value={aiEnabled}
-							trackColor={{ true: theme.accents[accent] }}
+							trackColor={{ true: accentColor }}
 							onValueChange={(isAiEnabled) => setSettingsValue('ai_enabled', isAiEnabled)}
 						/>
 					</CardRow>

@@ -1,12 +1,31 @@
 import { useCallback, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 
-const useLoading = () => {
-	const [loadingAction, setLoadingAction] = useState<string | null>(null);
-	const isLoading = loadingAction !== null;
+export enum LOADING_ACTIONS {
+	None = 'none',
+
+	ICloudBackup = 'icloud_backup',
+	ICloudRestore = 'icloud_restore',
+
+	DBBackup = 'db_backup',
+	DBRestore = 'db_restore',
+
+	CSVBackup = 'csv_backup',
+	CSVRestore = 'csv_restore'
+}
+
+export type UseLoadingReturnT = {
+	withLoading: (key: LOADING_ACTIONS, fn: () => Promise<void>) => () => Promise<void>;
+	loadingAction: LOADING_ACTIONS;
+	isLoading: boolean;
+};
+
+const useLoading = (): UseLoadingReturnT => {
+	const [loadingAction, setLoadingAction] = useState<LOADING_ACTIONS>(LOADING_ACTIONS.None);
+	const isLoading = loadingAction !== LOADING_ACTIONS.None;
 
 	const withLoading = useCallback(
-		(key: string, fn: () => Promise<void>) => async () => {
+		(key: LOADING_ACTIONS, fn: () => Promise<void>) => async () => {
 			if (isLoading) return;
 
 			setLoadingAction(key);
@@ -15,13 +34,17 @@ const useLoading = () => {
 			try {
 				await fn();
 			} finally {
-				setLoadingAction(null);
+				setLoadingAction(LOADING_ACTIONS.None);
 			}
 		},
 		[isLoading]
 	);
 
-	return { withLoading, loadingAction, isLoading };
+	return {
+		withLoading,
+		loadingAction,
+		isLoading
+	} satisfies UseLoadingReturnT;
 };
 
 export default useLoading;

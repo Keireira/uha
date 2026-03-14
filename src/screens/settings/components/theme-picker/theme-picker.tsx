@@ -46,7 +46,7 @@ const ThemePicker = () => {
 	const isOledEnabled = useSettingsValue<UserT['oled_mode']>('oled_mode');
 	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
 
-	const accent = useMemo(() => {
+	const accentColor = useMemo(() => {
 		return theme.accents[selectedAccent] || theme.accents.orange;
 	}, [theme, selectedAccent]);
 
@@ -65,7 +65,7 @@ const ThemePicker = () => {
 						key={mode.mode}
 						colorScheme={mode.colorScheme}
 						isInteractive
-						$accent={accent}
+						$accent={accentColor}
 						$bg={mode.bg}
 						$isActive={isActive}
 					>

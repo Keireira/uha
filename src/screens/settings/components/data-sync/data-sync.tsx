@@ -1,149 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ActionSheetIOS, ActivityIndicator } from 'react-native';
-import { openSettings } from 'expo-linking';
-import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-toast-message';
 import { SymbolView } from 'expo-symbols';
-import { Text } from '@ui';
 
-import { useSettingsValue, useEntitlement, useFeatureGate } from '@hooks';
-import {
-	shareDbBackup,
-	restoreFromDbBackup,
-	shareCsvExport,
-	restoreFromCsvBackup,
-	backupToCloudKit,
-	restoreFromCloudKit,
-	BACKUP_STATUS
-} from '@lib/backup';
+import ICloudBackup from './icloud-backup';
+
+import { useEntitlement, useFeatureGate, useAccent } from '@hooks';
+import { shareDbBackup, restoreFromDbBackup, shareCsvExport, restoreFromCsvBackup } from '@lib/backup';
 import useLoading from './use-loading';
-import useICloud from './use-icloud';
-import {
-	Card,
-	CardRow,
-	CardRowTitle,
-	CardRowValue,
-	TileRow,
-	Tile,
-	TileInner,
-	TileTitle,
-	CsvButton,
-	CsvButtonInner
-} from './data-sync.styles';
-
-import type { UserT } from '@models';
+import { TileRow, Tile, TileInner, TileTitle, CsvButton, CsvButtonInner } from './data-sync.styles';
 
 const hapticSuccess = () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 const hapticError = () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 
 const toast = (type: 'success' | 'error' | 'info', text1: string) => Toast.show({ type, text1 });
 
-const formatLastBackup = (timestamp: string | null, t: (key: string) => string) => {
-	if (timestamp == null) {
-		return t('settings.data.icloud_no_backup');
-	}
-
-	try {
-		return formatDistanceToNow(parseISO(timestamp), { addSuffix: true });
-	} catch {
-		return timestamp;
-	}
-};
-
 const DataSync = () => {
-	const theme = useTheme();
 	const { t } = useTranslation();
 	const { tier } = useEntitlement();
 	const openFeatureGate = useFeatureGate();
-	const [justBackedUp, setJustBackedUp] = useState(false);
 	const { withLoading, loadingAction, isLoading } = useLoading();
-	const { iCloudStatus, lastBackupTimestamp, checkICloudMeta } = useICloud();
 
-	useEffect(() => {
-		if (!justBackedUp) return;
-
-		const timeout = setTimeout(() => {
-			setJustBackedUp(false);
-		}, 4000);
-
-		return () => clearTimeout(timeout);
-	}, [justBackedUp]);
-
-	const accent = useSettingsValue<UserT['accent']>('accent');
-	const accentColor = theme.accents[accent];
-
-	const iCloudChecking = iCloudStatus === BACKUP_STATUS.CHECKING;
-	const iCloudAvailable = iCloudStatus === BACKUP_STATUS.AVAILABLE;
-	const iCloudBusy = loadingAction === 'icloud_backup' || loadingAction === 'icloud_restore';
-
-	/* iCloud */
-	const getICloudStatusText = () => {
-		if (iCloudChecking) return t('settings.data.icloud_checking');
-		if (!iCloudAvailable) return t('settings.data.icloud_unavailable');
-		if (loadingAction === 'icloud_backup') return t('settings.data.icloud_backing_up');
-		if (loadingAction === 'icloud_restore') return t('settings.data.icloud_restoring');
-
-		return formatLastBackup(lastBackupTimestamp, t);
-	};
-
-	const handleICloudPress = () => {
-		if (isLoading || iCloudChecking) return;
-
-		if (!tier.iCloudSync) {
-			return openFeatureGate();
-		}
-
-		if (!iCloudAvailable) {
-			return openSettings();
-		}
-
-		ActionSheetIOS.showActionSheetWithOptions(
-			{
-				options: [t('settings.data.icloud_backup'), t('settings.data.icloud_restore'), t('settings.data.cancel')],
-				destructiveButtonIndex: 1,
-				cancelButtonIndex: 2
-			},
-			(index) => {
-				if (index === 0) createICloudBackup();
-				if (index === 1) restoreICloudBackup();
-			}
-		);
-	};
-
-	const createICloudBackup = withLoading('icloud_backup', async () => {
-		try {
-			await new Promise((r) => setTimeout(r, 0));
-			await backupToCloudKit();
-
-			hapticSuccess();
-			setJustBackedUp(true);
-			toast('success', t('settings.data.icloud_backup_success'));
-			checkICloudMeta();
-		} catch {
-			hapticError();
-			toast('error', t('settings.data.icloud_backup_error'));
-		}
-	});
-
-	const restoreICloudBackup = withLoading('icloud_restore', async () => {
-		try {
-			const ok = await restoreFromCloudKit();
-
-			if (ok) {
-				hapticSuccess();
-				toast('success', t('settings.data.icloud_restore_success'));
-			} else {
-				toast('info', t('settings.data.icloud_no_backup'));
-			}
-		} catch (err) {
-			console.error('[iCloud] ✗ Restore failed:', err);
-			hapticError();
-			toast('error', t('settings.data.icloud_restore_error'));
-		}
-	});
+	const accentColor = useAccent();
 
 	/* DB backup */
 	const createDbBackup = withLoading('db_backup', async () => {
@@ -233,31 +113,9 @@ const DataSync = () => {
 		return isLoading && loadingAction !== action ? { opacity: 0.4 } : undefined;
 	};
 
-	const getICloudIcon = () => {
-		if (justBackedUp) {
-			return 'checkmark.icloud';
-		}
-
-		return iCloudAvailable ? 'icloud' : 'icloud.dashed';
-	};
-
 	return (
 		<>
-			<Card>
-				<CardRow disabled={iCloudChecking || isLoading} onPress={handleICloudPress}>
-					<CardRowTitle>
-						<SymbolView name={getICloudIcon()} size={20} tintColor={accentColor} />
-
-						<Text $weight={500}>{t('settings.data.icloud_sync')}</Text>
-					</CardRowTitle>
-
-					{iCloudBusy ? (
-						<ActivityIndicator size="small" color={accentColor} />
-					) : (
-						<CardRowValue>{getICloudStatusText()}</CardRowValue>
-					)}
-				</CardRow>
-			</Card>
+			<ICloudBackup isLoading={isLoading} loadingAction={loadingAction} withLoading={withLoading} />
 
 			<TileRow>
 				<Tile isInteractive={!isLoading}>

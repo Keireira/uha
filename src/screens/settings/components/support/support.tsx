@@ -3,12 +3,10 @@ import { Linking } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useSettingsValue, useEntitlement, useTipJar } from '@hooks';
+import { useEntitlement, useTipJar, useAccent } from '@hooks';
 
 import { H6, SmallText } from '@ui';
 import Root, { Pill, Inner } from './support.styles';
-
-import type { UserT } from '@models';
 
 const EXTERNAL_SUPPORT = [
 	{ type: 'github', username: 'keireira', url: 'https://github.com/sponsors/Keireira' },
@@ -19,11 +17,9 @@ const EXTERNAL_SUPPORT = [
 const Support = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
+	const accentColor = useAccent();
 	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts, purchasing: isPurchasing, purchaseTip } = useTipJar();
-
-	const accent = useSettingsValue<UserT['accent']>('accent');
-	const accentColor = theme.accents[accent];
 
 	return (
 		<>

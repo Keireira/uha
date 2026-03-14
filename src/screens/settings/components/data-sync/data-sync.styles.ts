@@ -1,33 +1,6 @@
 import styled from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
-import { BaseText, Text } from '@ui';
-
-/* iCloud row */
-
-export const Card = styled(GlassView)`
-	border-radius: 16px;
-	overflow: hidden;
-`;
-
-export const CardRow = styled.Pressable`
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	padding: 14px 16px;
-	gap: 12px;
-`;
-
-export const CardRowTitle = styled.View`
-	gap: 10px;
-	flex-shrink: 1;
-	flex-direction: row;
-`;
-
-export const CardRowValue = styled(BaseText)`
-	font-size: 15px;
-	font-weight: 400;
-	color: ${({ theme }) => theme.text.tertiary};
-`;
+import { Text } from '@ui';
 
 /* Backup / Restore tiles */
 

@@ -9,3 +9,5 @@ export { default as useTransactions, type PreparedDbTxT } from './use-transactio
 
 export { default as useTipJar } from './use-tip-jar';
 export { useEntitlement, useFeatureGate } from './use-entitlement';
+
+export { default as useAccent } from './use-accent';
