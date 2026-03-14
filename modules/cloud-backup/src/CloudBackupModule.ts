@@ -5,6 +5,8 @@ type CloudBackupModuleT = {
 	fetchBackup: () => Promise<string>;
 	isAvailable: () => Promise<boolean>;
 	getTimestamp: () => Promise<string>;
+	zip: (at: string, to: string) => Promise<void>;
+	unzip: (at: string, to: string) => Promise<void>;
 };
 
 const CloudBackupModule = requireNativeModule<CloudBackupModuleT>('CloudBackup');
@@ -23,4 +25,12 @@ export const isAvailable = (): Promise<boolean> => {
 
 export const getTimestamp = (): Promise<string> => {
 	return CloudBackupModule.getTimestamp();
+};
+
+export const zip = (at: string, to: string): Promise<void> => {
+	return CloudBackupModule.zip(at, to);
+};
+
+export const unzip = (at: string, to: string): Promise<void> => {
+	return CloudBackupModule.unzip(at, to);
 };

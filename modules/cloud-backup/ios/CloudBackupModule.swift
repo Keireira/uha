@@ -1,9 +1,11 @@
-import ExpoModulesCore;
-import CloudKit;
-import Foundation;
+import ExpoModulesCore
+import CloudKit
+import Foundation
+import ZIPFoundation
 
 public class CloudBackupModule: Module {
 	private let containerID = "iCloud.com.keireira.uha"
+	private let recordID = CKRecord.ID(recordName: "latest-backup")
 
 	public func definition() -> ModuleDefinition {
 		Name("CloudBackup")
@@ -23,71 +25,49 @@ public class CloudBackupModule: Module {
 		AsyncFunction("getTimestamp") { () -> String in
 			return try await self.getTimestamp()
 		}
-	}
 
-	private func compressFile(at sourceURL: String) throws -> String {
-		let originalData = try Data(contentsOf: URL(filePath: sourceURL))
-		let compressed = try (originalData as NSData).compressed(using: .lzma) as Data
-
-		let fileManager = FileManager.default
-		let tmpPath = fileManager.temporaryDirectory.appendingPathComponent("backup.zip")
-		if fileManager.fileExists(atPath: tmpPath.path) {
-			try fileManager.removeItem(at: tmpPath)
+		AsyncFunction("zip") { (at: String, to: String) -> Void in
+			try self.zipDirectory(at: at, to: to)
 		}
-		try compressed.write(to: tmpPath)
 
-		return tmpPath.path
-	}
-
-	private func decompressFile(at sourceUrl: String) throws -> String {
-		let originalData = try Data(contentsOf: URL(filePath: sourceUrl))
-		let decompressed = try (originalData as NSData).decompressed(using: .lzma) as Data
-
-		let fileManager = FileManager.default
-		let tmpPath = fileManager.temporaryDirectory.appendingPathComponent("backup-restored.db")
-		if fileManager.fileExists(atPath: tmpPath.path) {
-			try fileManager.removeItem(at: tmpPath)
+		AsyncFunction("unzip") { (at: String, to: String) -> Void in
+			try self.unzipArchive(at: at, to: to)
 		}
-		try decompressed.write(to: tmpPath)
-
-		return tmpPath.path
 	}
-
 
 	private func isAvailable() async throws -> Bool {
-		let cloudKitContainer = CKContainer(identifier: self.containerID)
-		let accountStatus = try await cloudKitContainer.accountStatus()
+		let container = CKContainer(identifier: containerID)
+		let status = try await container.accountStatus()
 
-    return accountStatus == .available
+		return status == .available
 	}
 
 	private func createBackup(path: String) async throws {
-		let fileManager = FileManager.default
-		let isFileExists = fileManager.fileExists(atPath: path)
-
-		if !isFileExists {
-			throw NSError(domain: "CloudBackup", code: 0, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+		guard FileManager.default.fileExists(atPath: path) else {
+			throw makeError(code: 0, message: "File not found")
 		}
 
-		let compressedPath = try self.compressFile(at: path)
-		let asset = CKAsset(fileURL: URL(filePath: compressedPath))
-		let record = CKRecord(recordType: "Backup", recordID: CKRecord.ID(recordName: "latest-backup"))
-		record.setValue(asset, forKey: "asset")
-		record.setValue(Date(), forKey: "timestamp")
+		let compressedPath = try compressFile(at: path)
 
-		let cloudKitContainer = CKContainer(identifier: self.containerID)
-		let database = cloudKitContainer.privateCloudDatabase
+		defer { try? FileManager.default.removeItem(atPath: compressedPath) }
+
+		let record = CKRecord(recordType: "Backup", recordID: recordID)
+		record["asset"] = CKAsset(fileURL: URL(filePath: compressedPath))
+		record["timestamp"] = Date() as CKRecordValue
+
+		let container = CKContainer(identifier: containerID)
+		let database = container.privateCloudDatabase
 
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
 		operation.savePolicy = .allKeys
 
-		try await withCheckedThrowingContinuation { continuation in
+		try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
 			operation.modifyRecordsResultBlock = { result in
 				switch result {
-					case .success:
-						continuation.resume()
-					case .failure(let error):
-						continuation.resume(throwing: error)
+				case .success:
+					continuation.resume()
+				case .failure(let error):
+					continuation.resume(throwing: error)
 				}
 			}
 
@@ -96,47 +76,85 @@ public class CloudBackupModule: Module {
 	}
 
 	private func fetchBackup() async throws -> String {
-		let cloudKitContainer = CKContainer(identifier: self.containerID)
-		let database = cloudKitContainer.privateCloudDatabase
-		let record = try await database.record(for: CKRecord.ID(recordName: "latest-backup"))
-		guard let asset = record.value(forKey: "asset") as? CKAsset else {
-			throw NSError(domain: "CloudBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Backup not found"])
+		let container = CKContainer(identifier: containerID)
+		let database = container.privateCloudDatabase
+		let record = try await database.record(for: recordID)
+
+		guard let asset = record["asset"] as? CKAsset else {
+			throw makeError(code: 1, message: "Backup not found")
 		}
 
 		guard let fileURL = asset.fileURL else {
-			throw NSError(domain: "CloudBackup", code: 2, userInfo: [NSLocalizedDescriptionKey: "Failed to get backup path"])
+			throw makeError(code: 2, message: "Failed to get backup path")
 		}
 
-		let decompressedPath = try self.decompressFile(at: fileURL.path)
+		let decompressedPath = try decompressFile(at: fileURL.path)
 
 		return decompressedPath
 	}
 
 	private func getTimestamp() async throws -> String {
-		let cloudKitContainer = CKContainer(identifier: self.containerID)
-		let database = cloudKitContainer.privateCloudDatabase
-		let recordId = CKRecord.ID(recordName: "latest-backup")
-		let operation = CKFetchRecordsOperation(recordIDs: [recordId])
+		let container = CKContainer(identifier: containerID)
+		let database = container.privateCloudDatabase
+		let operation = CKFetchRecordsOperation(recordIDs: [recordID])
 		operation.desiredKeys = ["timestamp"]
 
 		return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
-			operation.perRecordResultBlock = { recordID, result in
+			operation.perRecordResultBlock = { _, result in
 				switch result {
-					case .success(let record):
-						guard let timestamp = record.value(forKey: "timestamp") as? Date else {
-							let error = NSError(domain: "CloudBackup", code: 3, userInfo: [NSLocalizedDescriptionKey: "Failed to get timestamp"])
+				case .success(let record):
+					guard let timestamp = record["timestamp"] as? Date else {
+						continuation.resume(throwing: self.makeError(code: 3, message: "Failed to get timestamp"))
+						return
+					}
 
-							continuation.resume(throwing: error)
-							return
-						}
-
-						continuation.resume(returning: ISO8601DateFormatter().string(from: timestamp))
-					case .failure(let error):
-						continuation.resume(throwing: error)
+					continuation.resume(returning: ISO8601DateFormatter().string(from: timestamp))
+				case .failure(let error):
+					continuation.resume(throwing: error)
 				}
 			}
 
 			database.add(operation)
 		}
+	}
+
+	private func compressFile(at sourcePath: String) throws -> String {
+		let data = try Data(contentsOf: URL(filePath: sourcePath))
+		let compressed = try (data as NSData).compressed(using: .lzma) as Data
+
+		let tmpPath = FileManager.default.temporaryDirectory.appendingPathComponent("backup-compressed.lzma")
+		try replaceFile(at: tmpPath, with: compressed)
+
+		return tmpPath.path
+	}
+
+	private func decompressFile(at sourcePath: String) throws -> String {
+		let data = try Data(contentsOf: URL(filePath: sourcePath))
+		let decompressed = try (data as NSData).decompressed(using: .lzma) as Data
+
+		let tmpPath = FileManager.default.temporaryDirectory.appendingPathComponent("backup-restored.db")
+		try replaceFile(at: tmpPath, with: decompressed)
+
+		return tmpPath.path
+	}
+
+	private func zipDirectory(at sourcePath: String, to destPath: String) throws {
+		try FileManager.default.zipItem(at: URL(filePath: sourcePath), to: URL(filePath: destPath))
+	}
+
+	private func unzipArchive(at sourcePath: String, to destPath: String) throws {
+		try FileManager.default.unzipItem(at: URL(filePath: sourcePath), to: URL(filePath: destPath))
+	}
+
+	private func replaceFile(at url: URL, with data: Data) throws {
+		let fm = FileManager.default
+		if fm.fileExists(atPath: url.path) {
+			try fm.removeItem(at: url)
+		}
+		try data.write(to: url)
+	}
+
+	private func makeError(code: Int, message: String) -> NSError {
+		NSError(domain: "CloudBackup", code: code, userInfo: [NSLocalizedDescriptionKey: message])
 	}
 }

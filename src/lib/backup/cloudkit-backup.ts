@@ -2,10 +2,8 @@ import { createBackup, fetchBackup } from '@modules/cloud-backup';
 import { File } from 'expo-file-system';
 import { reloadAppAsync } from 'expo';
 
-import { safeDelete } from './shared';
+import { safeDelete, toPath } from './shared';
 import { getDbFile, validateSqliteFile, createBackup as createLocalBackup } from './db-backup';
-
-const toPath = (uri: string) => uri.replace(/^file:\/\//, '');
 
 const replaceDbFile = (validatedTempFile: File) => {
 	const dbFile = getDbFile();
