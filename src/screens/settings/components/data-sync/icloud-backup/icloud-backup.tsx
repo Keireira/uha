@@ -22,7 +22,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 	const { t } = useTranslation();
 	const { tier } = useEntitlement();
 	const openFeatureGate = useFeatureGate();
-	const { iCloudStatus, checkICloudMeta } = useICloud();
+	const { iCloudStatus, markBackedUpNow } = useICloud();
 	const [justBackedUp, setJustBackedUp] = useState(false);
 
 	const accentColor = useAccent();
@@ -62,7 +62,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 			Toast.show({ type: 'success', text1: t('settings.data.icloud_backup_success') });
 
-			checkICloudMeta();
+			markBackedUpNow();
 			setJustBackedUp(true);
 		} catch (err) {
 			console.error('[iCloud] ✗ Backup failed:', err);

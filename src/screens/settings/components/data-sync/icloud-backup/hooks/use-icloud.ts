@@ -60,11 +60,19 @@ const checkICloudMeta = async () => {
 /* auto-fetch on first import */
 checkICloudMeta();
 
+const markBackedUpNow = () => {
+	updated({
+		status: BACKUP_STATUS.AVAILABLE,
+		lastBackupTimestamp: new Date().toISOString()
+	});
+};
+
 const useICloud = () => {
 	const meta = useUnit($iCloudMeta);
 
 	return {
 		checkICloudMeta,
+		markBackedUpNow,
 		iCloudStatus: meta.status,
 		lastBackupTimestamp: meta.lastBackupTimestamp
 	};

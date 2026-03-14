@@ -33,6 +33,10 @@ const useStatusText = (loadingAction: UseLoadingReturnT['loadingAction']) => {
 	const { iCloudStatus, lastBackupTimestamp } = useICloud();
 
 	useEffect(() => {
+		setTick(0);
+	}, [lastBackupTimestamp]);
+
+	useEffect(() => {
 		if (!lastBackupTimestamp) return;
 
 		const interval = getRefreshInterval(lastBackupTimestamp);
