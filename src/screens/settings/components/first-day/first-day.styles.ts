@@ -9,6 +9,7 @@ export const Label = styled(SmallText)`
 `;
 
 export const Code = styled(H1)`
+	text-transform: capitalize;
 	letter-spacing: -0.5px;
 	font-weight: 800;
 	margin-top: 2px;

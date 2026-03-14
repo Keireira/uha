@@ -12,7 +12,7 @@ export const getDbFile = () => {
 };
 
 export const createBackupFile = () => {
-	const timestamp = format(new Date(), 'dd-MMM-yyyy');
+	const timestamp = format(new Date(), 'dd-LLL-yyyy');
 
 	return new File(Paths.cache, `uha-backup-${timestamp}.db`);
 };

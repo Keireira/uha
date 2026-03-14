@@ -11,7 +11,7 @@ import { H3 } from '@ui';
 import { TitleInteractive } from './components';
 import { GlassContainer } from 'expo-glass-effect';
 import { FilterIcon, ListIcon, CalendarIcon } from '@ui/icons';
-import Root, { FilterBtn, GlassItem, ActiveDot } from './tx-header.styles';
+import Root, { Title, FilterBtn, GlassItem, ActiveDot } from './tx-header.styles';
 
 const TxHeader = () => {
 	const theme = useTheme();
@@ -40,7 +40,11 @@ const TxHeader = () => {
 		<Root>
 			<TitleInteractive />
 
-			{txViewMode === 'calendar' && calendarScale === 'month' && <H3>{format(activeMonth, 'MMMM')}</H3>}
+			{txViewMode === 'calendar' && calendarScale === 'month' && (
+				<Title>
+					<H3 $transform="capitalize">{format(activeMonth, 'LLLL')}</H3>
+				</Title>
+			)}
 
 			<GlassContainer>
 				<GlassItem isInteractive>

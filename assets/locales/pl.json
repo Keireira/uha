@@ -167,7 +167,23 @@
     "yesterday": "Wczoraj",
     "day": "Dzień",
     "month": "Miesiąc",
-    "year": "Rok"
+    "year": "Rok",
+    "in_month": "W {{month}}",
+    "in_year": "W {{year}}",
+    "in_months": {
+      "0": "W Styczniu",
+      "1": "W Lutym",
+      "2": "W Marcu",
+      "3": "W Kwietniu",
+      "4": "W Maju",
+      "5": "W Czerwcu",
+      "6": "W Lipcu",
+      "7": "W Sierpniu",
+      "8": "We Wrześniu",
+      "9": "W Październiku",
+      "10": "W Listopadzie",
+      "11": "W Grudniu"
+    }
   },
   "transactions": {
     "details": {

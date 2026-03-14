@@ -13,7 +13,7 @@ const LEVEL_COLORS: Record<LogLevel, string> = {
 	error: '#ff453a'
 };
 
-const formatTime = (ts: number) => format(ts, 'dd MMM HH:mm:ss.SSS');
+const formatTime = (ts: number) => format(ts, 'dd LLL HH:mm:ss.SSS');
 
 const Container = styled.View<{ $pt: number }>`
 	flex: 1;

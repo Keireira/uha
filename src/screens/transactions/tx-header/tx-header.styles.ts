@@ -31,6 +31,12 @@ export const ActiveDot = styled.View`
 	background-color: ${({ theme }) => theme.accents.orange};
 `;
 
+export const Title = styled.View`
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+`;
+
 export default styled.View`
 	display: flex;
 	flex-direction: row;

@@ -6,7 +6,7 @@ import { frame, glassEffect, foregroundStyle, controlSize, labelStyle } from '@e
 
 import type { Props } from './circle-button.d';
 
-const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, symbolColor, ...restProps }: Props) => {
+const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, symbolColor, label = '', ...restProps }: Props) => {
 	const theme = useTheme();
 
 	return (
@@ -34,6 +34,7 @@ const CircleButtonIOS = ({ size = 42, modifiers = [], glassTint, symbolColor, ..
 					}),
 					...modifiers
 				]}
+				label={label}
 				{...restProps}
 			/>
 		</Host>

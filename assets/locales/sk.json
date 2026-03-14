@@ -167,7 +167,23 @@
     "yesterday": "Včera",
     "day": "Deň",
     "month": "Mesiac",
-    "year": "Rok"
+    "year": "Rok",
+    "in_month": "V {{month}}",
+    "in_year": "V {{year}}",
+    "in_months": {
+      "0": "V Januári",
+      "1": "Vo Februári",
+      "2": "V Marci",
+      "3": "V Apríli",
+      "4": "V Máji",
+      "5": "V Júni",
+      "6": "V Júli",
+      "7": "V Auguste",
+      "8": "V Septembri",
+      "9": "V Októbri",
+      "10": "V Novembri",
+      "11": "V Decembri"
+    }
   },
   "transactions": {
     "details": {

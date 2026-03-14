@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { format, lightFormat } from 'date-fns';
 
 import db from '@db';
@@ -155,6 +157,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 };
 
 export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
+	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const ratesInRange = useMemo(() => {
@@ -184,10 +187,12 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [rates, recalcCurrencyCode, transactions.month]);
 
-	const formattedDate = useMemo(
-		() => format(transactions.dates.monthStartRaw, 'MMMM'),
-		[transactions.dates.monthStartRaw]
-	);
+	const formattedDate = useMemo(() => {
+		const monthIndex = transactions.dates.monthStartRaw.getMonth();
+		const key = `dates.in_months.${monthIndex}`;
+
+		return i18n.exists(key) ? t(key) : t('dates.in_month', { month: format(transactions.dates.monthStartRaw, 'LLLL') });
+	}, [transactions.dates.monthStartRaw, t]);
 
 	return {
 		...summary,
@@ -197,6 +202,7 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 };
 
 export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
+	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const ratesInRange = useMemo(() => {
@@ -227,8 +233,8 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 	}, [rates, recalcCurrencyCode, transactions.year]);
 
 	const formattedDate = useMemo(
-		() => format(transactions.dates.yearStartRaw, 'yyyy'),
-		[transactions.dates.yearStartRaw]
+		() => t('dates.in_year', { year: format(transactions.dates.yearStartRaw, 'yyyy') }),
+		[transactions.dates.yearStartRaw, t]
 	);
 
 	return {
