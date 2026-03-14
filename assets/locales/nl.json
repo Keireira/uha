@@ -55,14 +55,13 @@
           "limited": "Ingeschakeld"
         }
       },
-      "face_id": "Face ID vereisen",
       "language": "Taal",
       "dark_mode": "Donkere modus"
     },
     "currencies": {
       "header": "Valuta's",
-      "default": "Standaardvaluta",
-      "recalc": "Omrekeningsvaluta",
+      "default_currency_code": "Standaardvaluta",
+      "recalc_currency_code": "Omrekeningsvaluta",
       "fractions": "Decimalen tonen",
       "explain": "Valutalabel",
       "africa": "Afrika",
@@ -79,7 +78,7 @@
       "other": "Overig",
       "cryptocurrency": "Cryptovaluta",
       "refresh_rates": "Wisselkoersen",
-      "refresh_action": "Bijwerken"
+      "primary": "Primary"
     },
     "about": {
       "header": "Over",
@@ -91,17 +90,84 @@
     },
     "donations": {
       "header": "Steun mij",
-      "description": "Deze app is gratis en open source, en dat zal altijd zo blijven.\nIk moet echter de onderhoudskosten dekken, dus ik waardeer elke vorm van steun.",
+      "description": "Uha wordt onafhankelijk ontwikkeld. Elke vorm van steun helpt de app draaiende te houden en te laten groeien.",
       "donate": "Doneren",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Alle functies ontgrendeld"
+    },
+    "data": {
+      "header": "Gegevens",
+      "backup": "Back-up",
+      "restore": "Herstellen",
+      "export_csv": "Export CSV",
+      "backup_success": "Back-up aangemaakt",
+      "restore_success": "Gegevens succesvol hersteld",
+      "restore_error": "Herstellen van back-up mislukt",
+      "export_success": "Export gereed",
+      "import_csv": "Import CSV",
+      "import_success": "Gegevens succesvol hersteld",
+      "import_error": "Herstellen van back-up mislukt",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Herstellen van back-up mislukt",
+      "export_error": "Herstellen van back-up mislukt",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI-functies",
+      "status": "Apparaatstatus",
+      "supported": "Beschikbaar",
+      "not_supported": "Niet beschikbaar",
+      "footer": "Formuliersuggesties zijn gratis. Andere AI-functies vereisen Unlimited.",
+      "toggle": "AI op het apparaat"
+    },
+    "tip_jar": {
+      "header": "Fooienpot",
+      "description": "Tevreden met Unlimited? Geef een fooi om de ontwikkeling te steunen.",
+      "small": "Klein",
+      "medium": "Gemiddeld",
+      "large": "Groot",
+      "thanks": "Bedankt voor je steun!"
     }
+  },
+  "paywall": {
+    "title": "Ontgrendel Unlimited",
+    "subtitle": "Haal het meeste uit Uha",
+    "features": {
+      "subscriptions": "Onbeperkt abonnementen",
+      "currencies": "Alle valuta's",
+      "horizon": "Tot 10 jaar horizon",
+      "first_day": "Eigen eerste dag van de week",
+      "ai_premium": "AI-inzichten en slimme meldingen"
+    },
+    "monthly": "Maandelijks",
+    "annual": "Jaarlijks",
+    "lifetime": "Levenslang",
+    "best_value": "Beste deal",
+    "subscribe": "Abonneren",
+    "restore": "Aankopen herstellen",
+    "ai_note": "Formuliersuggesties zijn gratis. Andere AI-functies vereisen Unlimited.",
+    "terms": "Gebruiksvoorwaarden",
+    "privacy": "Privacybeleid"
+  },
+  "limits": {
+    "subscription_limit": "Het gratis plan staat maximaal {{count}} abonnementen toe",
+    "currency_restricted": "Deze valuta vereist Unlimited",
+    "horizon_locked": "Horizonten boven {{max}} jaar vereisen Unlimited",
+    "upgrade": "Ontgrendel alle functies"
   },
   "dates": {
     "today": "Vandaag",
     "tomorrow": "Morgen",
-    "yesterday": "Gisteren"
+    "yesterday": "Gisteren",
+    "day": "Dag",
+    "month": "Maand",
+    "year": "Jaar"
   },
   "transactions": {
     "details": {

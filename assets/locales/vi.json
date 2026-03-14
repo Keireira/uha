@@ -55,14 +55,13 @@
           "limited": "Đã bật"
         }
       },
-      "face_id": "Yêu cầu Face ID",
       "language": "Ngôn ngữ",
       "dark_mode": "Chế độ tối"
     },
     "currencies": {
       "header": "Tiền tệ",
-      "default": "Tiền tệ mặc định",
-      "recalc": "Tiền tệ quy đổi",
+      "default_currency_code": "Tiền tệ mặc định",
+      "recalc_currency_code": "Tiền tệ quy đổi",
       "fractions": "Hiển thị phần thập phân",
       "explain": "Nhãn tiền tệ",
       "africa": "Châu Phi",
@@ -79,7 +78,7 @@
       "other": "Khác",
       "cryptocurrency": "Tiền mã hóa",
       "refresh_rates": "Tỷ giá",
-      "refresh_action": "Cập nhật"
+      "primary": "Primary"
     },
     "about": {
       "header": "Giới thiệu",
@@ -91,17 +90,84 @@
     },
     "donations": {
       "header": "Ủng hộ",
-      "description": "Ứng dụng này miễn phí và mã nguồn mở, và sẽ luôn như vậy.\nTuy nhiên, tôi cần chi trả phí bảo trì, nên mọi hình thức ủng hộ đều được trân trọng.",
+      "description": "Uha được phát triển độc lập. Mọi sự ủng hộ đều giúp duy trì và phát triển ứng dụng.",
       "donate": "Quyên góp",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Đã mở khóa tất cả tính năng"
+    },
+    "data": {
+      "header": "Dữ liệu",
+      "backup": "Sao lưu",
+      "restore": "Khôi phục",
+      "export_csv": "Export CSV",
+      "backup_success": "Đã tạo bản sao lưu",
+      "restore_success": "Khôi phục dữ liệu thành công",
+      "restore_error": "Khôi phục bản sao lưu thất bại",
+      "export_success": "Xuất dữ liệu sẵn sàng",
+      "import_csv": "Import CSV",
+      "import_success": "Khôi phục dữ liệu thành công",
+      "import_error": "Khôi phục bản sao lưu thất bại",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Khôi phục bản sao lưu thất bại",
+      "export_error": "Khôi phục bản sao lưu thất bại",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Tính năng AI",
+      "status": "Trạng thái thiết bị",
+      "supported": "Khả dụng",
+      "not_supported": "Không khả dụng",
+      "footer": "Gợi ý biểu mẫu miễn phí. Các tính năng AI khác yêu cầu Unlimited.",
+      "toggle": "AI trên thiết bị"
+    },
+    "tip_jar": {
+      "header": "Hũ boa",
+      "description": "Thích Unlimited? Gửi boa để hỗ trợ phát triển.",
+      "small": "Nhỏ",
+      "medium": "Vừa",
+      "large": "Lớn",
+      "thanks": "Cảm ơn bạn đã ủng hộ!"
     }
+  },
+  "paywall": {
+    "title": "Mở khóa Unlimited",
+    "subtitle": "Tận dụng tối đa Uha",
+    "features": {
+      "subscriptions": "Đăng ký không giới hạn",
+      "currencies": "Tất cả tiền tệ",
+      "horizon": "Tầm nhìn lên đến 10 năm",
+      "first_day": "Tùy chỉnh ngày đầu tuần",
+      "ai_premium": "Phân tích AI và cảnh báo thông minh"
+    },
+    "monthly": "Hàng tháng",
+    "annual": "Hàng năm",
+    "lifetime": "Trọn đời",
+    "best_value": "Giá tốt nhất",
+    "subscribe": "Đăng ký",
+    "restore": "Khôi phục giao dịch",
+    "ai_note": "Gợi ý biểu mẫu miễn phí. Các tính năng AI khác yêu cầu Unlimited.",
+    "terms": "Điều khoản sử dụng",
+    "privacy": "Chính sách bảo mật"
+  },
+  "limits": {
+    "subscription_limit": "Gói miễn phí cho phép tối đa {{count}} đăng ký",
+    "currency_restricted": "Tiền tệ này yêu cầu Unlimited",
+    "horizon_locked": "Tầm nhìn trên {{max}} năm yêu cầu Unlimited",
+    "upgrade": "Mở khóa tất cả tính năng"
   },
   "dates": {
     "today": "Hôm nay",
     "tomorrow": "Ngày mai",
-    "yesterday": "Hôm qua"
+    "yesterday": "Hôm qua",
+    "day": "Ngày",
+    "month": "Tháng",
+    "year": "Năm"
   },
   "transactions": {
     "details": {

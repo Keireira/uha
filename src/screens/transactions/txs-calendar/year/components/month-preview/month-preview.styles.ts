@@ -3,6 +3,7 @@ import { H5 } from '@ui';
 
 export const MonthHeader = styled(H5)`
 	margin-bottom: 4px;
+	text-transform: capitalize;
 `;
 
 export const DaysGrid = styled.View`

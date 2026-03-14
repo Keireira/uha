@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { isSameMonth } from 'date-fns';
 import { useRouter } from 'expo-router';
 
@@ -23,12 +23,9 @@ const Summaries = () => {
 	const year = useYear(summaryTxs, lastKnownRates);
 	const month = useMonth(summaryTxs, lastKnownRates);
 
-	const openAnalytics = useCallback(
-		(clavis: string) => {
-			router.push({ pathname: '/(tabs)/transactions/analytics', params: { clavis } });
-		},
-		[router]
-	);
+	const openAnalytics = (clavis: string) => {
+		router.push({ pathname: '/(tabs)/transactions/analytics', params: { clavis } });
+	};
 
 	return (
 		<Root>

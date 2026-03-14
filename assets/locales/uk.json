@@ -55,14 +55,13 @@
           "limited": "Увімкнені"
         }
       },
-      "face_id": "Вимагати Face ID",
       "language": "Мова",
       "dark_mode": "Темний режим"
     },
     "currencies": {
       "header": "Валюти",
-      "default": "Основна валюта",
-      "recalc": "Валюта перерахунку",
+      "default_currency_code": "Основна валюта",
+      "recalc_currency_code": "Валюта перерахунку",
       "fractions": "Показувати дроби",
       "explain": "Мітка валюти",
       "africa": "Африка",
@@ -79,7 +78,7 @@
       "other": "Інші",
       "cryptocurrency": "Криптовалюти",
       "refresh_rates": "Курси валют",
-      "refresh_action": "Оновити"
+      "primary": "Primary"
     },
     "about": {
       "header": "Про застосунок",
@@ -91,17 +90,100 @@
     },
     "donations": {
       "header": "Підтримати",
-      "description": "Цей застосунок безкоштовний та з відкритим кодом, і завжди таким буде.\nОднак його обслуговування потребує коштів, тож буду вдячна за будь-яку підтримку.",
+      "description": "Uha розробляється незалежно. Будь-яка підтримка допомагає підтримувати застосунок і розвивати його далі.",
       "donate": "Підтримати",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Усі функції розблоковано"
+    },
+    "data": {
+      "header": "Дані",
+      "backup": "Резервна копія",
+      "restore": "Відновити",
+      "export_csv": "Export CSV",
+      "backup_success": "Резервну копію створено",
+      "restore_success": "Дані успішно відновлено",
+      "restore_error": "Не вдалося відновити резервну копію",
+      "export_success": "Експорт готовий",
+      "import_csv": "Import CSV",
+      "import_success": "Дані успішно відновлено",
+      "import_error": "Не вдалося відновити резервну копію",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Не вдалося відновити резервну копію",
+      "export_error": "Не вдалося відновити резервну копію",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Функції AI",
+      "status": "Стан пристрою",
+      "supported": "Доступно",
+      "not_supported": "Недоступно",
+      "footer": "Підказки у формах безкоштовні. Інші ШІ-функції потребують Unlimited.",
+      "toggle": "ШІ на пристрої"
+    },
+    "tip_jar": {
+      "header": "Банка для чайових",
+      "description": "Подобається Unlimited? Залиште чайові на підтримку розробки.",
+      "small": "Маленькі",
+      "medium": "Середні",
+      "large": "Великі",
+      "thanks": "Дякуємо за вашу підтримку!"
     }
+  },
+  "paywall": {
+    "title": "Розблокувати Unlimited",
+    "subtitle": "Отримайте максимум від Uha",
+    "features": {
+      "subscriptions": "Необмежена кількість підписок",
+      "currencies": "Усі валюти",
+      "horizon": "Горизонт до 10 років",
+      "first_day": "Власний перший день тижня",
+      "ai_premium": "ШІ-аналітика та розумні сповіщення"
+    },
+    "monthly": "Щомісяця",
+    "annual": "Щороку",
+    "lifetime": "Назавжди",
+    "best_value": "Найвигідніше",
+    "subscribe": "Підписатися",
+    "restore": "Відновити покупки",
+    "ai_note": "Підказки у формах безкоштовні. Інші ШІ-функції потребують Unlimited.",
+    "terms": "Умови використання",
+    "privacy": "Політика конфіденційності"
+  },
+  "limits": {
+    "subscription_limit": "Безкоштовний план дозволяє до {{count}} підписок",
+    "currency_restricted": "Ця валюта потребує Unlimited",
+    "horizon_locked": "Горизонти понад {{max}} років потребують Unlimited",
+    "upgrade": "Розблокувати всі функції"
   },
   "dates": {
     "today": "Сьогодні",
     "tomorrow": "Завтра",
-    "yesterday": "Вчора"
+    "yesterday": "Вчора",
+    "day": "День",
+    "month": "Місяць",
+    "year": "Рік",
+    "in_month": "В {{month}}",
+    "in_year": "В {{year}}",
+    "in_months": {
+      "0": "В Січні",
+      "1": "В Лютому",
+      "2": "В Березні",
+      "3": "В Квітні",
+      "4": "В Травні",
+      "5": "В Червні",
+      "6": "В Липні",
+      "7": "В Серпні",
+      "8": "В Вересні",
+      "9": "В Жовтні",
+      "10": "В Листопаді",
+      "11": "В Грудні"
+    }
   },
   "transactions": {
     "details": {

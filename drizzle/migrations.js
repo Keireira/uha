@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_needy_tarot.sql';
-import m0001 from './0001_overjoyed_silvermane.sql';
+import m0000 from './0000_brief_cobalt_man.sql';
+import m0001 from './0001_overjoyed_dreaming_celestial.sql';
 
   export default {
     journal,

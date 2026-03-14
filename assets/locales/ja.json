@@ -55,14 +55,13 @@
           "limited": "有効"
         }
       },
-      "face_id": "Face IDを要求",
       "language": "言語",
       "dark_mode": "ダークモード"
     },
     "currencies": {
       "header": "通貨",
-      "default": "メイン通貨",
-      "recalc": "換算通貨",
+      "default_currency_code": "メイン通貨",
+      "recalc_currency_code": "換算通貨",
       "fractions": "小数を表示",
       "explain": "通貨タグ",
       "africa": "アフリカ",
@@ -79,7 +78,7 @@
       "other": "その他",
       "cryptocurrency": "暗号通貨",
       "refresh_rates": "為替レート",
-      "refresh_action": "更新"
+      "primary": "Primary"
     },
     "about": {
       "header": "このアプリについて",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "サポート",
-      "description": "このアプリは無料かつオープンソースであり、今後もそうあり続けます。\nただし維持費がかかるため、どんな形でも支援いただけると嬉しいです。",
+      "description": "Uhaは独立して開発されています。どんなサポートでもアプリの運営と成長に役立ちます。",
       "donate": "寄付する",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "すべての機能がアンロック済み"
+    },
+    "data": {
+      "header": "データ",
+      "backup": "バックアップ",
+      "restore": "復元",
+      "export_csv": "Export CSV",
+      "backup_success": "バックアップを作成しました",
+      "restore_success": "データの復元に成功しました",
+      "restore_error": "バックアップの復元に失敗しました",
+      "export_success": "エクスポート準備完了",
+      "import_csv": "Import CSV",
+      "import_success": "データの復元に成功しました",
+      "import_error": "バックアップの復元に失敗しました",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "バックアップの復元に失敗しました",
+      "export_error": "バックアップの復元に失敗しました",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI機能",
+      "status": "デバイスの状態",
+      "supported": "利用可能",
+      "not_supported": "利用不可",
+      "footer": "フォーム提案は無料です。その他のAI機能にはUnlimitedが必要です。",
+      "toggle": "オンデバイスAI"
+    },
+    "tip_jar": {
+      "header": "チップ",
+      "description": "Unlimitedを気に入りましたか？開発を支援するためにチップを送りましょう。",
+      "small": "少額",
+      "medium": "中額",
+      "large": "高額",
+      "thanks": "ご支援ありがとうございます！"
+    },
+    "title": "設定"
+  },
+  "paywall": {
+    "title": "Unlimitedを解除",
+    "subtitle": "Uhaを最大限に活用しよう",
+    "features": {
+      "subscriptions": "無制限のサブスクリプション",
+      "currencies": "すべての通貨",
+      "horizon": "最大10年のホライズン",
+      "first_day": "週の開始日をカスタマイズ",
+      "ai_premium": "AIインサイトとスマートアラート"
+    },
+    "monthly": "月額",
+    "annual": "年額",
+    "lifetime": "買い切り",
+    "best_value": "お得",
+    "subscribe": "購読する",
+    "restore": "購入を復元",
+    "ai_note": "フォーム提案は無料です。その他のAI機能にはUnlimitedが必要です。",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー"
+  },
+  "limits": {
+    "subscription_limit": "無料プランでは最大{{count}}件のサブスクリプションが可能です",
+    "currency_restricted": "この通貨にはUnlimitedが必要です",
+    "horizon_locked": "{{max}}年を超えるホライズンにはUnlimitedが必要です",
+    "upgrade": "すべての機能を解除"
   },
   "dates": {
     "today": "今日",
     "tomorrow": "明日",
-    "yesterday": "昨日"
+    "yesterday": "昨日",
+    "day": "日",
+    "month": "月",
+    "year": "年"
   },
   "transactions": {
     "details": {

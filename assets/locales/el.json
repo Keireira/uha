@@ -43,6 +43,44 @@
     "search_payments": "Αναζήτηση σε πληρωμές"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Όλες οι λειτουργίες ξεκλειδωμένες"
+    },
+    "data": {
+      "header": "Δεδομένα",
+      "backup": "Αντίγραφο ασφαλείας",
+      "restore": "Επαναφορά",
+      "export_csv": "Export CSV",
+      "backup_success": "Το αντίγραφο ασφαλείας δημιουργήθηκε",
+      "restore_success": "Τα δεδομένα επαναφέρθηκαν επιτυχώς",
+      "restore_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+      "export_success": "Η εξαγωγή είναι έτοιμη",
+      "import_csv": "Import CSV",
+      "import_success": "Τα δεδομένα επαναφέρθηκαν επιτυχώς",
+      "import_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+      "export_error": "Αποτυχία επαναφοράς αντιγράφου ασφαλείας",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Λειτουργίες AI",
+      "status": "Κατάσταση συσκευής",
+      "supported": "Διαθέσιμο",
+      "not_supported": "Μη διαθέσιμο",
+      "footer": "Οι προτάσεις φορμών είναι δωρεάν. Άλλες λειτουργίες AI απαιτούν Unlimited.",
+      "toggle": "AI στη συσκευή"
+    },
+    "tip_jar": {
+      "header": "Κουμπαράς",
+      "description": "Απολαμβάνετε το Unlimited; Αφήστε ένα φιλοδώρημα για να υποστηρίξετε την ανάπτυξη.",
+      "small": "Μικρό",
+      "medium": "Μεσαίο",
+      "large": "Μεγάλο",
+      "thanks": "Ευχαριστούμε για την υποστήριξή σας!"
+    },
     "system": {
       "header": "Σύστημα",
       "oled_mode": "Λειτουργία OLED",
@@ -55,14 +93,13 @@
           "limited": "Ενεργοποιημένες"
         }
       },
-      "face_id": "Απαίτηση Face ID",
       "language": "Γλώσσα",
       "dark_mode": "Σκοτεινή λειτουργία"
     },
     "currencies": {
       "header": "Νομίσματα",
-      "default": "Προεπιλεγμένο νόμισμα",
-      "recalc": "Νόμισμα μετατροπής",
+      "default_currency_code": "Προεπιλεγμένο νόμισμα",
+      "recalc_currency_code": "Νόμισμα μετατροπής",
       "fractions": "Εμφάνιση δεκαδικών",
       "explain": "Ετικέτα νομίσματος",
       "africa": "Αφρική",
@@ -79,7 +116,7 @@
       "other": "Άλλα",
       "cryptocurrency": "Κρυπτονομίσματα",
       "refresh_rates": "Συναλλαγματικές ισοτιμίες",
-      "refresh_action": "Ενημέρωση"
+      "primary": "Primary"
     },
     "about": {
       "header": "Σχετικά",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Υποστήριξη",
-      "description": "Αυτή η εφαρμογή είναι δωρεάν και ανοιχτού κώδικα, και θα είναι πάντα.\nΩστόσο, πρέπει να καλύψω τα έξοδα συντήρησης, γι' αυτό εκτιμώ κάθε μορφή υποστήριξης.",
+      "description": "Το Uha αναπτύσσεται ανεξάρτητα. Κάθε υποστήριξη βοηθά την εφαρμογή να συνεχίσει να λειτουργεί και να εξελίσσεται.",
       "donate": "Δωρεά",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Ξεκλείδωμα Unlimited",
+    "subtitle": "Αξιοποιήστε το Uha στο μέγιστο",
+    "features": {
+      "subscriptions": "Απεριόριστες συνδρομές",
+      "currencies": "Όλα τα νομίσματα",
+      "horizon": "Έως 10 χρόνια ορίζοντα",
+      "first_day": "Προσαρμοσμένη πρώτη μέρα εβδομάδας",
+      "ai_premium": "AI αναλύσεις και έξυπνες ειδοποιήσεις"
+    },
+    "monthly": "Μηνιαία",
+    "annual": "Ετήσια",
+    "lifetime": "Εφ' όρου ζωής",
+    "best_value": "Καλύτερη αξία",
+    "subscribe": "Εγγραφή",
+    "restore": "Επαναφορά αγορών",
+    "ai_note": "Οι προτάσεις φορμών είναι δωρεάν. Άλλες λειτουργίες AI απαιτούν Unlimited.",
+    "terms": "Όροι χρήσης",
+    "privacy": "Πολιτική απορρήτου"
+  },
+  "limits": {
+    "subscription_limit": "Το δωρεάν πλάνο επιτρέπει έως {{count}} συνδρομές",
+    "currency_restricted": "Αυτό το νόμισμα απαιτεί Unlimited",
+    "horizon_locked": "Ορίζοντες πάνω από {{max}} χρόνια απαιτούν Unlimited",
+    "upgrade": "Ξεκλειδώστε όλες τις λειτουργίες"
+  },
   "dates": {
     "today": "Σήμερα",
     "tomorrow": "Αύριο",
-    "yesterday": "Χθες"
+    "yesterday": "Χθες",
+    "day": "Ημέρα",
+    "month": "Μήνας",
+    "year": "Έτος"
   },
   "transactions": {
     "details": {

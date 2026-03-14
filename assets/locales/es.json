@@ -55,14 +55,13 @@
           "limited": "Activadas"
         }
       },
-      "face_id": "Requerir Face ID",
       "language": "Idioma",
       "dark_mode": "Modo oscuro"
     },
     "currencies": {
       "header": "Divisas",
-      "default": "Divisa principal",
-      "recalc": "Divisa de conversión",
+      "default_currency_code": "Divisa principal",
+      "recalc_currency_code": "Divisa de conversión",
       "fractions": "Mostrar decimales",
       "explain": "Etiqueta de divisa",
       "africa": "África",
@@ -79,7 +78,7 @@
       "other": "Otros",
       "cryptocurrency": "Criptomonedas",
       "refresh_rates": "Tipos de cambio",
-      "refresh_action": "Actualizar"
+      "primary": "Primary"
     },
     "about": {
       "header": "Acerca de",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "Apóyame",
-      "description": "Esta aplicación es gratuita y de código abierto, y siempre lo será.\nSin embargo, debo costear su mantenimiento, así que agradeceré cualquier forma de apoyo.",
+      "description": "Uha se desarrolla de forma independiente. Cualquier apoyo ayuda a mantener la app en funcionamiento y crecimiento.",
       "donate": "Donar",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Todas las funciones desbloqueadas"
+    },
+    "data": {
+      "header": "Datos",
+      "backup": "Copia de seguridad",
+      "restore": "Restaurar",
+      "export_csv": "Export CSV",
+      "backup_success": "Copia de seguridad creada",
+      "restore_success": "Datos restaurados correctamente",
+      "restore_error": "Error al restaurar la copia de seguridad",
+      "export_success": "Exportación lista",
+      "import_csv": "Import CSV",
+      "import_success": "Datos restaurados correctamente",
+      "import_error": "Error al restaurar la copia de seguridad",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Error al restaurar la copia de seguridad",
+      "export_error": "Error al restaurar la copia de seguridad",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Funciones de IA",
+      "status": "Estado del dispositivo",
+      "supported": "Disponible",
+      "not_supported": "No disponible",
+      "footer": "Las sugerencias de formularios son gratuitas. Otras funciones de IA requieren Unlimited.",
+      "toggle": "IA en el dispositivo"
+    },
+    "tip_jar": {
+      "header": "Propinas",
+      "description": "Te gusta Unlimited? Deja una propina para apoyar el desarrollo.",
+      "small": "Pequeña",
+      "medium": "Mediana",
+      "large": "Grande",
+      "thanks": "Gracias por tu apoyo!"
+    },
+    "title": "Ajustes"
+  },
+  "paywall": {
+    "title": "Desbloquear Unlimited",
+    "subtitle": "Saca el máximo partido a Uha",
+    "features": {
+      "subscriptions": "Suscripciones ilimitadas",
+      "currencies": "Todas las divisas",
+      "horizon": "Horizonte de hasta 10 años",
+      "first_day": "Primer día de la semana personalizado",
+      "ai_premium": "Análisis IA y alertas inteligentes"
+    },
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "lifetime": "Vitalicio",
+    "best_value": "Mejor oferta",
+    "subscribe": "Suscribirse",
+    "restore": "Restaurar compras",
+    "ai_note": "Las sugerencias de formularios son gratuitas. Otras funciones de IA requieren Unlimited.",
+    "terms": "Condiciones de uso",
+    "privacy": "Política de privacidad"
+  },
+  "limits": {
+    "subscription_limit": "El plan gratuito permite hasta {{count}} suscripciones",
+    "currency_restricted": "Esta divisa requiere Unlimited",
+    "horizon_locked": "Los horizontes superiores a {{max}} años requieren Unlimited",
+    "upgrade": "Desbloquear todas las funciones"
   },
   "dates": {
     "today": "Hoy",
     "tomorrow": "Mañana",
-    "yesterday": "Ayer"
+    "yesterday": "Ayer",
+    "day": "Día",
+    "month": "Mes",
+    "year": "Año"
   },
   "transactions": {
     "details": {

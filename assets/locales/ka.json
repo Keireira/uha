@@ -43,6 +43,44 @@
     "search_payments": "ძიება გადახდებში"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "ყველა ფუნქცია განბლოკილია"
+    },
+    "data": {
+      "header": "მონაცემები",
+      "backup": "სარეზერვო ასლი",
+      "restore": "აღდგენა",
+      "export_csv": "Export CSV",
+      "backup_success": "სარეზერვო ასლი შეიქმნა",
+      "restore_success": "მონაცემები წარმატებით აღდგა",
+      "restore_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+      "export_success": "ექსპორტი მზადაა",
+      "import_csv": "Import CSV",
+      "import_success": "მონაცემები წარმატებით აღდგა",
+      "import_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+      "export_error": "სარეზერვო ასლის აღდგენა ვერ მოხერხდა",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI ფუნქციები",
+      "status": "მოწყობილობის სტატუსი",
+      "supported": "ხელმისაწვდომია",
+      "not_supported": "არ არის ხელმისაწვდომი",
+      "footer": "ფორმის შეთავაზებები უფასოა. სხვა AI ფუნქციები საჭიროებს Unlimited-ს.",
+      "toggle": "AI მოწყობილობაზე"
+    },
+    "tip_jar": {
+      "header": "ჩაის ქილა",
+      "description": "მოგწონთ Unlimited? დატოვეთ ჩაი განვითარების მხარდასაჭერად.",
+      "small": "პატარა",
+      "medium": "საშუალო",
+      "large": "დიდი",
+      "thanks": "გმადლობთ მხარდაჭერისთვის!"
+    },
     "system": {
       "header": "სისტემა",
       "oled_mode": "OLED რეჟიმი",
@@ -55,14 +93,13 @@
           "limited": "ჩართულია"
         }
       },
-      "face_id": "Face ID მოთხოვნა",
       "language": "ენა",
       "dark_mode": "მუქი რეჟიმი"
     },
     "currencies": {
       "header": "ვალუტები",
-      "default": "ძირითადი ვალუტა",
-      "recalc": "გადაანგარიშების ვალუტა",
+      "default_currency_code": "ძირითადი ვალუტა",
+      "recalc_currency_code": "გადაანგარიშების ვალუტა",
       "fractions": "წილადების ჩვენება",
       "explain": "ვალუტის ტეგი",
       "africa": "აფრიკა",
@@ -79,7 +116,7 @@
       "other": "სხვა",
       "cryptocurrency": "კრიპტოვალუტები",
       "refresh_rates": "გაცვლითი კურსები",
-      "refresh_action": "განახლება"
+      "primary": "Primary"
     },
     "about": {
       "header": "აპლიკაციის შესახებ",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "მხარდაჭერა",
-      "description": "ეს აპლიკაცია უფასოა და ღია კოდითაა, და ყოველთვის ასე იქნება.\nთუმცა მის მხარდაჭერას ხარჯები სჭირდება, ამიტომ მადლობელი ვიქნები ნებისმიერი დახმარებისთვის.",
+      "description": "Uha დამოუკიდებლად ვითარდება. ნებისმიერი მხარდაჭერა ეხმარება აპლიკაციის მუშაობას და განვითარებას.",
       "donate": "შეწირვა",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Unlimited-ის განბლოკვა",
+    "subtitle": "მიიღეთ მაქსიმუმი Uha-სგან",
+    "features": {
+      "subscriptions": "შეუზღუდავი გამოწერები",
+      "currencies": "ყველა ვალუტა",
+      "horizon": "10 წლამდე ჰორიზონტი",
+      "first_day": "კვირის პერსონალური პირველი დღე",
+      "ai_premium": "AI ანალიტიკა და ჭკვიანი შეტყობინებები"
+    },
+    "monthly": "ყოველთვიური",
+    "annual": "ყოველწლიური",
+    "lifetime": "სამუდამო",
+    "best_value": "საუკეთესო ფასი",
+    "subscribe": "გამოწერა",
+    "restore": "შეძენების აღდგენა",
+    "ai_note": "ფორმის შეთავაზებები უფასოა. სხვა AI ფუნქციები საჭიროებს Unlimited-ს.",
+    "terms": "გამოყენების პირობები",
+    "privacy": "კონფიდენციალურობის პოლიტიკა"
+  },
+  "limits": {
+    "subscription_limit": "უფასო გეგმა იძლევა მაქსიმუმ {{count}} გამოწერის საშუალებას",
+    "currency_restricted": "ეს ვალუტა მოითხოვს Unlimited-ს",
+    "horizon_locked": "{{max}} წელზე მეტი ჰორიზონტი მოითხოვს Unlimited-ს",
+    "upgrade": "ყველა ფუნქციის განბლოკვა"
+  },
   "dates": {
     "today": "დღეს",
     "tomorrow": "ხვალ",
-    "yesterday": "გუშინ"
+    "yesterday": "გუშინ",
+    "day": "დღე",
+    "month": "თვე",
+    "year": "წელი"
   },
   "transactions": {
     "details": {

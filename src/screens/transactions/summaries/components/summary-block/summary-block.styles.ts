@@ -31,6 +31,8 @@ export default styled(Animated.View)<{ $isDisabled?: boolean }>`
 	padding: 12px;
 	padding-bottom: 28px;
 	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
 	background-color: ${({ theme }) => theme.surface.default};
 	border-radius: 16px;
 	box-shadow: 0 0 2px ${({ theme }) => theme.shadow.default};

@@ -43,6 +43,44 @@
     "search_payments": "Sök i betalningar"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Alla funktioner upplåsta"
+    },
+    "data": {
+      "header": "Data",
+      "backup": "Säkerhetskopia",
+      "restore": "Återställ",
+      "export_csv": "Export CSV",
+      "backup_success": "Säkerhetskopia skapad",
+      "restore_success": "Data återställd",
+      "restore_error": "Kunde inte återställa säkerhetskopian",
+      "export_success": "Export klar",
+      "import_csv": "Import CSV",
+      "import_success": "Data återställd",
+      "import_error": "Kunde inte återställa säkerhetskopian",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Kunde inte återställa säkerhetskopian",
+      "export_error": "Kunde inte återställa säkerhetskopian",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI-funktioner",
+      "status": "Enhetsstatus",
+      "supported": "Tillgänglig",
+      "not_supported": "Inte tillgänglig",
+      "footer": "Formulärförslag är gratis. Andra AI-funktioner kräver Unlimited.",
+      "toggle": "AI på enheten"
+    },
+    "tip_jar": {
+      "header": "Dricksburk",
+      "description": "Gillar du Unlimited? Lämna ett tips för att stödja utvecklingen.",
+      "small": "Liten",
+      "medium": "Medel",
+      "large": "Stor",
+      "thanks": "Tack för ditt stöd!"
+    },
     "system": {
       "header": "System",
       "oled_mode": "OLED-läge",
@@ -55,14 +93,13 @@
           "limited": "Aktiverade"
         }
       },
-      "face_id": "Kräv Face ID",
       "language": "Språk",
       "dark_mode": "Mörkt läge"
     },
     "currencies": {
       "header": "Valutor",
-      "default": "Standardvaluta",
-      "recalc": "Omräkningsvaluta",
+      "default_currency_code": "Standardvaluta",
+      "recalc_currency_code": "Omräkningsvaluta",
       "fractions": "Visa decimaler",
       "explain": "Valutaetikett",
       "africa": "Afrika",
@@ -79,7 +116,7 @@
       "other": "Övrigt",
       "cryptocurrency": "Kryptovalutor",
       "refresh_rates": "Växelkurser",
-      "refresh_action": "Uppdatera"
+      "primary": "Primary"
     },
     "about": {
       "header": "Om",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Stöd mig",
-      "description": "Denna app är gratis och öppen källkod, och kommer alltid att vara det.\nJag behöver dock betala för underhållet, så jag uppskattar all form av stöd.",
+      "description": "Uha utvecklas oberoende. All form av stöd hjälper till att hålla appen igång och växande.",
       "donate": "Donera",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Lås upp Unlimited",
+    "subtitle": "Få ut det mesta av Uha",
+    "features": {
+      "subscriptions": "Obegränsade prenumerationer",
+      "currencies": "Alla valutor",
+      "horizon": "Upp till 10 års horisont",
+      "first_day": "Anpassad första veckodag",
+      "ai_premium": "AI-insikter och smarta aviseringar"
+    },
+    "monthly": "Månadsvis",
+    "annual": "Årsvis",
+    "lifetime": "Livstid",
+    "best_value": "Bästa värde",
+    "subscribe": "Prenumerera",
+    "restore": "Återställ köp",
+    "ai_note": "Formulärförslag är gratis. Andra AI-funktioner kräver Unlimited.",
+    "terms": "Användarvillkor",
+    "privacy": "Integritetspolicy"
+  },
+  "limits": {
+    "subscription_limit": "Gratisplanen tillåter upp till {{count}} prenumerationer",
+    "currency_restricted": "Denna valuta kräver Unlimited",
+    "horizon_locked": "Horisonter över {{max}} år kräver Unlimited",
+    "upgrade": "Lås upp alla funktioner"
+  },
   "dates": {
     "today": "Idag",
     "tomorrow": "Imorgon",
-    "yesterday": "Igår"
+    "yesterday": "Igår",
+    "day": "Dag",
+    "month": "Månad",
+    "year": "År"
   },
   "transactions": {
     "details": {

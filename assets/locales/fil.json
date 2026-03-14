@@ -43,6 +43,44 @@
     "search_payments": "Maghanap sa mga bayad"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Lahat ng feature ay naka-unlock"
+    },
+    "data": {
+      "header": "Data",
+      "backup": "Backup",
+      "restore": "I-restore",
+      "export_csv": "Export CSV",
+      "backup_success": "Na-create ang backup",
+      "restore_success": "Matagumpay na na-restore ang data",
+      "restore_error": "Hindi na-restore ang backup",
+      "export_success": "Handa na ang export",
+      "import_csv": "Import CSV",
+      "import_success": "Matagumpay na na-restore ang data",
+      "import_error": "Hindi na-restore ang backup",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Hindi na-backup ang backup",
+      "export_error": "Hindi na-restore ang backup",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Mga AI Feature",
+      "status": "Status ng Device",
+      "supported": "Available",
+      "not_supported": "Hindi available",
+      "footer": "Libreng ang mga form suggestion. Ang ibang AI feature ay nangangailangan ng Unlimited.",
+      "toggle": "AI sa device"
+    },
+    "tip_jar": {
+      "header": "Tip Jar",
+      "description": "Nae-enjoy mo ang Unlimited? Mag-iwan ng tip para suportahan ang development.",
+      "small": "Maliit",
+      "medium": "Katamtaman",
+      "large": "Malaki",
+      "thanks": "Salamat sa iyong suporta!"
+    },
     "system": {
       "header": "Sistema",
       "oled_mode": "OLED mode",
@@ -55,14 +93,13 @@
           "limited": "Naka-on"
         }
       },
-      "face_id": "Kailanganin ang Face ID",
       "language": "Wika",
       "dark_mode": "Dark mode"
     },
     "currencies": {
       "header": "Mga Pera",
-      "default": "Default na pera",
-      "recalc": "Pera para sa conversion",
+      "default_currency_code": "Default na pera",
+      "recalc_currency_code": "Pera para sa conversion",
       "fractions": "Ipakita ang decimal",
       "explain": "Label ng pera",
       "africa": "Aprika",
@@ -79,7 +116,7 @@
       "other": "Iba pa",
       "cryptocurrency": "Cryptocurrency",
       "refresh_rates": "Mga palitan",
-      "refresh_action": "I-update"
+      "primary": "Primary"
     },
     "about": {
       "header": "Tungkol sa",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Suportahan",
-      "description": "Ang app na ito ay libre at open source, at palaging ganoon.\nGayunpaman, kailangan kong bayaran ang maintenance, kaya pinahahalagahan ko ang anumang uri ng suporta.",
+      "description": "Ang Uha ay independiyenteng binuo. Anumang suporta ay nakakatulong para patuloy na gumana at lumago ang app.",
       "donate": "Mag-donate",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "I-unlock ang Unlimited",
+    "subtitle": "Sulitin ang Uha",
+    "features": {
+      "subscriptions": "Walang limitasyong subscription",
+      "currencies": "Lahat ng pera",
+      "horizon": "Hanggang 10-taong horizon",
+      "first_day": "Custom na unang araw ng linggo",
+      "ai_premium": "AI insights at smart alerts"
+    },
+    "monthly": "Buwanan",
+    "annual": "Taunan",
+    "lifetime": "Panghabambuhay",
+    "best_value": "Pinakamahusay na halaga",
+    "subscribe": "Mag-subscribe",
+    "restore": "I-restore ang mga binili",
+    "ai_note": "Libreng ang mga form suggestion. Ang ibang AI feature ay nangangailangan ng Unlimited.",
+    "terms": "Mga Tuntunin ng Paggamit",
+    "privacy": "Patakaran sa Privacy"
+  },
+  "limits": {
+    "subscription_limit": "Ang libreng plan ay may hanggang {{count}} na subscription",
+    "currency_restricted": "Ang perang ito ay nangangailangan ng Unlimited",
+    "horizon_locked": "Ang mga horizon na higit sa {{max}} taon ay nangangailangan ng Unlimited",
+    "upgrade": "I-unlock ang lahat ng feature"
+  },
   "dates": {
     "today": "Ngayon",
     "tomorrow": "Bukas",
-    "yesterday": "Kahapon"
+    "yesterday": "Kahapon",
+    "day": "Araw",
+    "month": "Buwan",
+    "year": "Taon"
   },
   "transactions": {
     "details": {

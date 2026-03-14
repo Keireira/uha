@@ -113,60 +113,60 @@ const AddServiceScreen = () => {
 			style={{ backgroundColor: color }}
 			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
 		>
-				<Header>
-					<Title $dark={dark}>New Service</Title>
-					<CloseGlass isInteractive>
-						<CloseInner onPress={() => router.back()} hitSlop={10}>
-							<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
-						</CloseInner>
-					</CloseGlass>
-				</Header>
+			<Header>
+				<Title $dark={dark}>New Service</Title>
+				<CloseGlass isInteractive>
+					<CloseInner onPress={() => router.back()} hitSlop={10}>
+						<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
+					</CloseInner>
+				</CloseGlass>
+			</Header>
 
-				<Preview $bg={previewBg}>
-					<PreviewInitial $dark={dark}>{initial}</PreviewInitial>
-				</Preview>
+			<Preview $bg={previewBg}>
+				<PreviewInitial $dark={dark}>{initial}</PreviewInitial>
+			</Preview>
 
-				<NameInput
-					$dark={dark}
-					value={title}
-					onChangeText={setTitle}
-					placeholder="Service name"
-					placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
-					autoFocus
-				/>
+			<NameInput
+				$dark={dark}
+				value={title}
+				onChangeText={setTitle}
+				placeholder="Service name"
+				placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
+				autoFocus
+			/>
 
-				<Main>
-					<Section>
-						<Caption $dark={dark}>Category</Caption>
-						{categories.length > 0 ? (
-							<CategoriesList>
-								{categories.map((cat) => (
-									<CategoryOption
-										key={cat.id}
-										$selected={selectedCategoryId === cat.id}
-										onPress={() => setSelectedCategoryId(cat.id)}
-									>
-										<CategoryEmoji>{cat.emoji}</CategoryEmoji>
-										<CategoryLabel $dark={dark} $selected={selectedCategoryId === cat.id}>
-											{cat.title}
-										</CategoryLabel>
-									</CategoryOption>
-								))}
-							</CategoriesList>
-						) : (
-							<PlaceholderText $dark={dark}>No categories yet. Create one first.</PlaceholderText>
-						)}
-					</Section>
+			<Main>
+				<Section>
+					<Caption $dark={dark}>Category</Caption>
+					{categories.length > 0 ? (
+						<CategoriesList>
+							{categories.map((cat) => (
+								<CategoryOption
+									key={cat.id}
+									$selected={selectedCategoryId === cat.id}
+									onPress={() => setSelectedCategoryId(cat.id)}
+								>
+									<CategoryEmoji>{cat.emoji}</CategoryEmoji>
+									<CategoryLabel $dark={dark} $selected={selectedCategoryId === cat.id}>
+										{cat.title}
+									</CategoryLabel>
+								</CategoryOption>
+							))}
+						</CategoriesList>
+					) : (
+						<PlaceholderText $dark={dark}>No categories yet. Create one first.</PlaceholderText>
+					)}
+				</Section>
 
-					<Section>
-						<Caption $dark={dark}>Support Color</Caption>
-						<ColorPicker value={color} onSelect={setColor} />
-					</Section>
-				</Main>
+				<Section>
+					<Caption $dark={dark}>Support Color</Caption>
+					<ColorPicker value={color} onSelect={setColor} />
+				</Section>
+			</Main>
 
-				<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-					<SaveLabel $dark={dark}>Create</SaveLabel>
-				</SaveButton>
+			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
+				<SaveLabel $dark={dark}>Create</SaveLabel>
+			</SaveButton>
 		</Container>
 	);
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from '../../typography';
 import { Host, Button } from '@expo/ui/swift-ui';
 import { useTheme } from 'styled-components/native';
-import { glassEffect } from '@expo/ui/swift-ui/modifiers';
+import { glassEffect, controlSize } from '@expo/ui/swift-ui/modifiers';
 
 import type { Props } from './text-button.d';
 
@@ -13,9 +13,8 @@ const TextButtonIOS = ({ size = 42, modifiers = [], glassTint, title, color, ...
 	return (
 		<Host matchContents>
 			<Button
-				variant="plain"
-				controlSize="large"
 				modifiers={[
+					controlSize('large'),
 					glassEffect({
 						shape: 'capsule',
 						glass: {

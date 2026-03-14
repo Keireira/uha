@@ -8,20 +8,19 @@ import { useAppModel } from '@models';
 import { useSearchParams } from '@hooks';
 
 import { H3 } from '@ui';
+import { TitleInteractive } from './components';
 import { GlassContainer } from 'expo-glass-effect';
 import { FilterIcon, ListIcon, CalendarIcon } from '@ui/icons';
-import { TitleInteractive } from './components';
-import Root, { FilterBtn, GlassItem, ActiveDot } from './tx-header.styles';
+import Root, { Title, FilterBtn, GlassItem, ActiveDot } from './tx-header.styles';
 
 const TxHeader = () => {
 	const theme = useTheme();
 	const router = useRouter();
-	const { txViewMode } = useSearchParams();
+	const { txViewMode, calendarScale } = useSearchParams();
 
-	const { view_mode, lenses, tx_dates } = useAppModel();
+	const { lenses, tx_dates } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const calendarScale = useUnit(view_mode.calendar.$scale);
 
 	const hasActiveFilters = lensesStore.filters.length > 0;
 
@@ -41,7 +40,11 @@ const TxHeader = () => {
 		<Root>
 			<TitleInteractive />
 
-			{txViewMode === 'calendar' && calendarScale === 'month' && <H3>{format(activeMonth, 'MMMM')}</H3>}
+			{txViewMode === 'calendar' && calendarScale === 'month' && (
+				<Title>
+					<H3 $transform="capitalize">{format(activeMonth, 'LLLL')}</H3>
+				</Title>
+			)}
 
 			<GlassContainer>
 				<GlassItem isInteractive>

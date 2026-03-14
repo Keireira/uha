@@ -55,14 +55,13 @@
           "limited": "Aktiviert"
         }
       },
-      "face_id": "Face ID erforderlich",
       "language": "Sprache",
       "dark_mode": "Dunkelmodus"
     },
     "currencies": {
       "header": "Währungen",
-      "default": "Hauptwährung",
-      "recalc": "Umrechnungswährung",
+      "default_currency_code": "Hauptwährung",
+      "recalc_currency_code": "Umrechnungswährung",
       "fractions": "Nachkommastellen",
       "explain": "Währungskürzel",
       "africa": "Afrika",
@@ -79,7 +78,7 @@
       "other": "Sonstige",
       "cryptocurrency": "Kryptowährungen",
       "refresh_rates": "Wechselkurse",
-      "refresh_action": "Aktualisieren"
+      "primary": "Primary"
     },
     "about": {
       "header": "Über die App",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "Unterstützung",
-      "description": "Diese App ist kostenlos und quelloffen — und wird es immer bleiben.\nAllerdings muss ich für die Wartung aufkommen, daher freue ich mich über jede Form der Unterstützung.",
+      "description": "Uha wird unabhängig entwickelt. Jede Unterstützung hilft, die App am Laufen zu halten und weiterzuentwickeln.",
       "donate": "Spenden",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Alle Funktionen freigeschaltet"
+    },
+    "data": {
+      "header": "Daten",
+      "backup": "Sicherung",
+      "restore": "Wiederherstellen",
+      "export_csv": "Export CSV",
+      "backup_success": "Sicherung erstellt",
+      "restore_success": "Daten erfolgreich wiederhergestellt",
+      "restore_error": "Sicherung konnte nicht wiederhergestellt werden",
+      "export_success": "Export bereit",
+      "import_csv": "Import CSV",
+      "import_success": "Daten erfolgreich wiederhergestellt",
+      "import_error": "Sicherung konnte nicht wiederhergestellt werden",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Sicherung konnte nicht wiederhergestellt werden",
+      "export_error": "Sicherung konnte nicht wiederhergestellt werden",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "KI-Funktionen",
+      "status": "Gerätestatus",
+      "supported": "Verfügbar",
+      "not_supported": "Nicht verfügbar",
+      "footer": "Formularvorschläge sind kostenlos. Andere KI-Funktionen erfordern Unlimited.",
+      "toggle": "KI auf dem Gerät"
+    },
+    "tip_jar": {
+      "header": "Trinkgeld",
+      "description": "Gefällt dir Unlimited? Hinterlasse ein Trinkgeld zur Unterstützung der Entwicklung.",
+      "small": "Klein",
+      "medium": "Mittel",
+      "large": "Groß",
+      "thanks": "Vielen Dank für deine Unterstützung!"
+    },
+    "title": "Einstellungen"
+  },
+  "paywall": {
+    "title": "Unlimited freischalten",
+    "subtitle": "Hole das Beste aus Uha heraus",
+    "features": {
+      "subscriptions": "Unbegrenzte Abonnements",
+      "currencies": "Alle Währungen",
+      "horizon": "Bis zu 10 Jahre Horizont",
+      "first_day": "Eigener erster Wochentag",
+      "ai_premium": "KI-Einblicke und smarte Hinweise"
+    },
+    "monthly": "Monatlich",
+    "annual": "Jährlich",
+    "lifetime": "Lebenslang",
+    "best_value": "Bestes Angebot",
+    "subscribe": "Abonnieren",
+    "restore": "Käufe wiederherstellen",
+    "ai_note": "Formularvorschläge sind kostenlos. Andere KI-Funktionen erfordern Unlimited.",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie"
+  },
+  "limits": {
+    "subscription_limit": "Der kostenlose Plan erlaubt bis zu {{count}} Abonnements",
+    "currency_restricted": "Diese Währung erfordert Unlimited",
+    "horizon_locked": "Horizonte über {{max}} Jahre erfordern Unlimited",
+    "upgrade": "Alle Funktionen freischalten"
   },
   "dates": {
     "today": "Heute",
     "tomorrow": "Morgen",
-    "yesterday": "Gestern"
+    "yesterday": "Gestern",
+    "day": "Tag",
+    "month": "Monat",
+    "year": "Jahr"
   },
   "transactions": {
     "details": {

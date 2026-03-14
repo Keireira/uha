@@ -43,6 +43,44 @@
     "search_payments": "Hae maksuista"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Kaikki ominaisuudet avattu"
+    },
+    "data": {
+      "header": "Tiedot",
+      "backup": "Varmuuskopio",
+      "restore": "Palauta",
+      "export_csv": "Export CSV",
+      "backup_success": "Varmuuskopio luotu",
+      "restore_success": "Tiedot palautettu onnistuneesti",
+      "restore_error": "Varmuuskopion palautus epäonnistui",
+      "export_success": "Vienti valmis",
+      "import_csv": "Import CSV",
+      "import_success": "Tiedot palautettu onnistuneesti",
+      "import_error": "Varmuuskopion palautus epäonnistui",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Varmuuskopion palautus epäonnistui",
+      "export_error": "Varmuuskopion palautus epäonnistui",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI-ominaisuudet",
+      "status": "Laitteen tila",
+      "supported": "Saatavilla",
+      "not_supported": "Ei saatavilla",
+      "footer": "Lomake-ehdotukset ovat ilmaisia. Muut AI-toiminnot vaativat Unlimitedin.",
+      "toggle": "AI laitteella"
+    },
+    "tip_jar": {
+      "header": "Tippipurkki",
+      "description": "Pidätkö Unlimited-versiosta? Jätä tippi tukeaksesi kehitystä.",
+      "small": "Pieni",
+      "medium": "Keskikokoinen",
+      "large": "Suuri",
+      "thanks": "Kiitos tuestasi!"
+    },
     "system": {
       "header": "Järjestelmä",
       "oled_mode": "OLED-tila",
@@ -55,14 +93,13 @@
           "limited": "Käytössä"
         }
       },
-      "face_id": "Vaadi Face ID",
       "language": "Kieli",
       "dark_mode": "Tumma tila"
     },
     "currencies": {
       "header": "Valuutat",
-      "default": "Oletusvaluutta",
-      "recalc": "Muunnosvaluutta",
+      "default_currency_code": "Oletusvaluutta",
+      "recalc_currency_code": "Muunnosvaluutta",
       "fractions": "Näytä desimaalit",
       "explain": "Valuuttamerkintä",
       "africa": "Afrikka",
@@ -79,7 +116,7 @@
       "other": "Muu",
       "cryptocurrency": "Kryptovaluutat",
       "refresh_rates": "Valuuttakurssit",
-      "refresh_action": "Päivitä"
+      "primary": "Primary"
     },
     "about": {
       "header": "Tietoja",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Tue minua",
-      "description": "Tämä sovellus on ilmainen ja avoimen lähdekoodin, ja tulee aina olemaan.\nMinun on kuitenkin maksettava ylläpidosta, joten arvostan kaikkea tukea.",
+      "description": "Uha kehitetään itsenäisesti. Kaikki tuki auttaa pitämään sovelluksen toiminnassa ja kehittymässä.",
       "donate": "Lahjoita",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Avaa Unlimited",
+    "subtitle": "Saa kaikki irti Uhasta",
+    "features": {
+      "subscriptions": "Rajattomat tilaukset",
+      "currencies": "Kaikki valuutat",
+      "horizon": "Jopa 10 vuoden horisontti",
+      "first_day": "Mukautettu viikon ensimmäinen päivä",
+      "ai_premium": "AI-näkemykset ja älykkäät hälytykset"
+    },
+    "monthly": "Kuukausittain",
+    "annual": "Vuosittain",
+    "lifetime": "Elinikäinen",
+    "best_value": "Paras arvo",
+    "subscribe": "Tilaa",
+    "restore": "Palauta ostokset",
+    "ai_note": "Lomake-ehdotukset ovat ilmaisia. Muut AI-toiminnot vaativat Unlimitedin.",
+    "terms": "Käyttöehdot",
+    "privacy": "Tietosuojakäytäntö"
+  },
+  "limits": {
+    "subscription_limit": "Ilmainen suunnitelma sallii enintään {{count}} tilausta",
+    "currency_restricted": "Tämä valuutta vaatii Unlimited-version",
+    "horizon_locked": "Yli {{max}} vuoden horisontit vaativat Unlimited-version",
+    "upgrade": "Avaa kaikki ominaisuudet"
+  },
   "dates": {
     "today": "Tänään",
     "tomorrow": "Huomenna",
-    "yesterday": "Eilen"
+    "yesterday": "Eilen",
+    "day": "Päivä",
+    "month": "Kuukausi",
+    "year": "Vuosi"
   },
   "transactions": {
     "details": {

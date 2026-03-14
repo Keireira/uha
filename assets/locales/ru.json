@@ -55,14 +55,13 @@
           "limited": "Всё хорошо"
         }
       },
-      "face_id": "Требовать Face ID",
       "language": "Язык",
       "dark_mode": "Тёмный режим"
     },
     "currencies": {
       "header": "Валюты",
-      "default": "Основная валюта",
-      "recalc": "Валюта для пересчёта",
+      "default_currency_code": "Основная валюта",
+      "recalc_currency_code": "Валюта для пересчёта",
       "fractions": "Показывать дроби",
       "explain": "Тег валюты",
       "africa": "Африка",
@@ -79,7 +78,7 @@
       "other": "Иные",
       "cryptocurrency": "Криптовалюты",
       "refresh_rates": "Курсы валют",
-      "refresh_action": "Обновить"
+      "primary": "Primary"
     },
     "about": {
       "header": "О приложении",
@@ -90,18 +89,116 @@
       "testflight": "TestFlight"
     },
     "donations": {
-      "header": "Поддержать",
-      "description": "Это приложение бесплатно и открыто, но оно требует поддержки (в т.ч. денежной), так что буду благодарна за любой донат.",
+      "header": "Поддержите меня",
+      "description": "Uha создаётся одним разработчиком. Ваша поддержка помогает приложению жить и становиться лучше.",
       "donate": "Поддержать",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "preferences": {
+      "header": "Настройки",
+      "first_day": "Первый день недели",
+      "max_horizon": "Максимальный горизонт",
+      "years_unit": "г.",
+      "day_hint_us": "Как в США",
+      "day_hint_iso": "Международный",
+      "grading_on": "По категориям",
+      "grading_off": "Первая транзакция"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Все функции разблокированы"
+    },
+    "data": {
+      "header": "Данные",
+      "backup": "Резервная копия",
+      "restore": "Восстановить",
+      "full_snapshot": "Создать",
+      "from_snapshot": "Выбрать файл",
+      "export_csv": "Экспорт CSV",
+      "import_csv": "Импорт CSV",
+      "as_spreadsheet": "Как таблица",
+      "from_spreadsheet": "Из таблицы",
+      "backup_success": "Резервная копия создана",
+      "backup_error": "Не удалось создать копию",
+      "restore_success": "Данные успешно восстановлены",
+      "restore_error": "Не удалось восстановить данные",
+      "export_success": "Экспорт готов",
+      "export_error": "Не удалось экспортировать",
+      "import_success": "Данные успешно импортированы",
+      "import_error": "Не удалось импортировать данные",
+      "icloud_sync": "Синхронизация iCloud",
+      "icloud_coming_soon": "Скоро",
+      "data_footer": "Восстановление резервной копии или импорт CSV перезапишет все существующие данные."
+    },
+    "ai": {
+      "header": "ИИ-функции",
+      "status": "Статус устройства",
+      "supported": "Доступно",
+      "not_supported": "Недоступно",
+      "toggle": "ИИ на устройстве",
+      "footer": "Подсказки в формах бесплатны. Остальные ИИ-функции требуют Unlimited."
+    },
+    "tip_jar": {
+      "header": "Чаевые",
+      "description": "Нравится Unlimited? Оставьте чаевые, чтобы поддержать разработку.",
+      "small": "Маленькие",
+      "medium": "Средние",
+      "large": "Большие",
+      "thanks": "Спасибо за вашу поддержку!"
+    },
+    "title": "Настройки"
+  },
+  "paywall": {
+    "title": "Открыть Unlimited",
+    "subtitle": "Получите максимум от Uha",
+    "features": {
+      "subscriptions": "Безлимитные подписки",
+      "currencies": "Все валюты",
+      "horizon": "Горизонт до 10 лет",
+      "first_day": "Свой первый день недели",
+      "ai_premium": "ИИ-аналитика и умные уведомления"
+    },
+    "monthly": "Ежемесячно",
+    "annual": "Ежегодно",
+    "lifetime": "Навсегда",
+    "best_value": "Лучшее предложение",
+    "subscribe": "Подписаться",
+    "restore": "Восстановить покупки",
+    "ai_note": "Подсказки в формах бесплатны. Остальные ИИ-функции требуют Unlimited.",
+    "terms": "Условия использования",
+    "privacy": "Политика конфиденциальности"
+  },
+  "limits": {
+    "subscription_limit": "Бесплатный план позволяет до {{count}} подписок",
+    "currency_restricted": "Эта валюта доступна в Unlimited",
+    "horizon_locked": "Горизонт свыше {{max}} лет доступен в Unlimited",
+    "upgrade": "Разблокировать все функции"
   },
   "dates": {
     "today": "Сегодня",
     "tomorrow": "Завтра",
-    "yesterday": "Вчера"
+    "yesterday": "Вчера",
+    "day": "День",
+    "month": "Месяц",
+    "year": "Год",
+    "in_month": "В {{month}}",
+    "in_year": "В {{year}}",
+    "in_months": {
+      "0": "В Январе",
+      "1": "В Феврале",
+      "2": "В Марте",
+      "3": "В Апреле",
+      "4": "В Мае",
+      "5": "В Июне",
+      "6": "В Июле",
+      "7": "В Августе",
+      "8": "В Сентябре",
+      "9": "В Октябре",
+      "10": "В Ноябре",
+      "11": "В Декабре"
+    }
   },
   "transactions": {
     "details": {

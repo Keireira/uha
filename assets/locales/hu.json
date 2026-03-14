@@ -43,6 +43,44 @@
     "search_payments": "Keresés fizetésekben"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Minden funkció feloldva"
+    },
+    "data": {
+      "header": "Adatok",
+      "backup": "Biztonsági mentés",
+      "restore": "Visszaállítás",
+      "export_csv": "Export CSV",
+      "backup_success": "Biztonsági mentés létrehozva",
+      "restore_success": "Adatok sikeresen visszaállítva",
+      "restore_error": "A biztonsági mentés visszaállítása sikertelen",
+      "export_success": "Exportálás kész",
+      "import_csv": "Import CSV",
+      "import_success": "Adatok sikeresen visszaállítva",
+      "import_error": "A biztonsági mentés visszaállítása sikertelen",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "A biztonsági mentés visszaállítása sikertelen",
+      "export_error": "A biztonsági mentés visszaállítása sikertelen",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI funkciók",
+      "status": "Eszköz állapota",
+      "supported": "Elérhető",
+      "not_supported": "Nem elérhető",
+      "footer": "Az űrlap-javaslatok ingyenesek. A többi AI funkció Unlimitedet igényel.",
+      "toggle": "AI az eszközön"
+    },
+    "tip_jar": {
+      "header": "Borravalódoboz",
+      "description": "Élvezed az Unlimited-et? Hagyj borravalót a fejlesztés támogatására.",
+      "small": "Kicsi",
+      "medium": "Közepes",
+      "large": "Nagy",
+      "thanks": "Köszönjük a támogatást!"
+    },
     "system": {
       "header": "Rendszer",
       "oled_mode": "OLED mód",
@@ -55,14 +93,13 @@
           "limited": "Bekapcsolva"
         }
       },
-      "face_id": "Face ID megkövetelése",
       "language": "Nyelv",
       "dark_mode": "Sötét mód"
     },
     "currencies": {
       "header": "Pénznemek",
-      "default": "Alapértelmezett pénznem",
-      "recalc": "Átszámítási pénznem",
+      "default_currency_code": "Alapértelmezett pénznem",
+      "recalc_currency_code": "Átszámítási pénznem",
       "fractions": "Tizedesjegyek mutatása",
       "explain": "Pénznem címke",
       "africa": "Afrika",
@@ -79,7 +116,7 @@
       "other": "Egyéb",
       "cryptocurrency": "Kriptovaluták",
       "refresh_rates": "Árfolyamok",
-      "refresh_action": "Frissítés"
+      "primary": "Primary"
     },
     "about": {
       "header": "Az alkalmazásról",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Támogatás",
-      "description": "Ez az alkalmazás ingyenes és nyílt forráskódú, és mindig is az lesz.\nA karbantartásért azonban fizetnem kell, ezért hálás vagyok bármilyen támogatásért.",
+      "description": "Az Uha fejlesztése független. Bármilyen támogatás segít az alkalmazás működtetésében és fejlesztésében.",
       "donate": "Adományozás",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Unlimited feloldása",
+    "subtitle": "Hozd ki a legtöbbet az Uha-ból",
+    "features": {
+      "subscriptions": "Korlátlan előfizetések",
+      "currencies": "Összes pénznem",
+      "horizon": "Akár 10 éves időtáv",
+      "first_day": "Egyéni hét kezdőnapja",
+      "ai_premium": "AI elemzések és okos értesítések"
+    },
+    "monthly": "Havi",
+    "annual": "Éves",
+    "lifetime": "Élethosszig",
+    "best_value": "Legjobb ár",
+    "subscribe": "Feliratkozás",
+    "restore": "Vásárlások visszaállítása",
+    "ai_note": "Az űrlap-javaslatok ingyenesek. A többi AI funkció Unlimitedet igényel.",
+    "terms": "Felhasználási feltételek",
+    "privacy": "Adatvédelmi irányelvek"
+  },
+  "limits": {
+    "subscription_limit": "Az ingyenes csomag legfeljebb {{count}} előfizetést tesz lehetővé",
+    "currency_restricted": "Ez a pénznem Unlimited-et igényel",
+    "horizon_locked": "A {{max}} évnél hosszabb időtáv Unlimited-et igényel",
+    "upgrade": "Összes funkció feloldása"
+  },
   "dates": {
     "today": "Ma",
     "tomorrow": "Holnap",
-    "yesterday": "Tegnap"
+    "yesterday": "Tegnap",
+    "day": "Nap",
+    "month": "Hónap",
+    "year": "Év"
   },
   "transactions": {
     "details": {

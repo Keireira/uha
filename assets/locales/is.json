@@ -43,6 +43,44 @@
     "search_payments": "Leita í greiðslum"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Allir eiginleikar opnaðir"
+    },
+    "data": {
+      "header": "Gögn",
+      "backup": "Öryggisafrit",
+      "restore": "Endurheimta",
+      "export_csv": "Export CSV",
+      "backup_success": "Öryggisafrit búið til",
+      "restore_success": "Gögn endurheimt",
+      "restore_error": "Ekki tókst að endurheimta öryggisafrit",
+      "export_success": "Útflutningur tilbúinn",
+      "import_csv": "Import CSV",
+      "import_success": "Gögn endurheimt",
+      "import_error": "Ekki tókst að endurheimta öryggisafrit",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Ekki tókst að endurheimta öryggisafrit",
+      "export_error": "Ekki tókst að endurheimta öryggisafrit",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI-eiginleikar",
+      "status": "Staða tækis",
+      "supported": "Tiltækt",
+      "not_supported": "Ekki tiltækt",
+      "footer": "Formtillögur eru ókeypis. Aðrar AI-aðgerðir krefjast Unlimited.",
+      "toggle": "AI á tækinu"
+    },
+    "tip_jar": {
+      "header": "Þjórfékrukka",
+      "description": "Líkar þér Unlimited? Skildu eftir þjórfé til að styðja þróunina.",
+      "small": "Lítið",
+      "medium": "Miðlungs",
+      "large": "Stórt",
+      "thanks": "Þakka þér fyrir stuðninginn!"
+    },
     "system": {
       "header": "Kerfi",
       "oled_mode": "OLED-stilling",
@@ -55,14 +93,13 @@
           "limited": "Virkt"
         }
       },
-      "face_id": "Krefjast Face ID",
       "language": "Tungumál",
       "dark_mode": "Dökk stilling"
     },
     "currencies": {
       "header": "Gjaldmiðlar",
-      "default": "Sjálfgefinn gjaldmiðill",
-      "recalc": "Umreikningsgjaldmiðill",
+      "default_currency_code": "Sjálfgefinn gjaldmiðill",
+      "recalc_currency_code": "Umreikningsgjaldmiðill",
       "fractions": "Sýna aukastafi",
       "explain": "Gjaldmiðilsmerki",
       "africa": "Afríka",
@@ -79,7 +116,7 @@
       "other": "Annað",
       "cryptocurrency": "Dulritunargjaldmiðlar",
       "refresh_rates": "Gengi",
-      "refresh_action": "Uppfæra"
+      "primary": "Primary"
     },
     "about": {
       "header": "Um",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Styrkja",
-      "description": "Þetta forrit er ókeypis og opinn hugbúnaður, og verður það ávallt.\nÉg þarf hins vegar að greiða fyrir viðhald, svo ég þakka hvers konar stuðning.",
+      "description": "Uha er þróað sjálfstætt. Allur stuðningur hjálpar til við að halda forritinu gangandi og vaxa.",
       "donate": "Styrkja",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Opna Unlimited",
+    "subtitle": "Fáðu sem mest út úr Uha",
+    "features": {
+      "subscriptions": "Ótakmarkaðar áskriftir",
+      "currencies": "Allir gjaldmiðlar",
+      "horizon": "Allt að 10 ára sjóndeildarhringur",
+      "first_day": "Sérsniðinn fyrsti dagur vikunnar",
+      "ai_premium": "AI innsýn og snjöll tilkynningar"
+    },
+    "monthly": "Mánaðarlega",
+    "annual": "Árlega",
+    "lifetime": "Ævilangt",
+    "best_value": "Besta tilboðið",
+    "subscribe": "Gerast áskrifandi",
+    "restore": "Endurheimta kaup",
+    "ai_note": "Formtillögur eru ókeypis. Aðrar AI-aðgerðir krefjast Unlimited.",
+    "terms": "Notkunarskilmálar",
+    "privacy": "Persónuverndarstefna"
+  },
+  "limits": {
+    "subscription_limit": "Ókeypis áætlun leyfir allt að {{count}} áskriftir",
+    "currency_restricted": "Þessi gjaldmiðill krefst Unlimited",
+    "horizon_locked": "Sjóndeildarhringur yfir {{max}} ár krefst Unlimited",
+    "upgrade": "Opna alla eiginleika"
+  },
   "dates": {
     "today": "Í dag",
     "tomorrow": "Á morgun",
-    "yesterday": "Í gær"
+    "yesterday": "Í gær",
+    "day": "Dagur",
+    "month": "Mánuður",
+    "year": "Ár"
   },
   "transactions": {
     "details": {

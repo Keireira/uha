@@ -1,28 +1,17 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { splitEvery } from 'ramda';
 import * as Crypto from 'expo-crypto';
-import { getHistoryRates } from '@api/sharkie';
-import { lightFormat, startOfTomorrow } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import { lightFormat, startOfTomorrow } from 'date-fns';
+
+import { withRetry } from '@lib';
+import { getHistoryRates } from '@api/sharkie';
 
 import db from '@db';
 import { lt, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { currencyRatesTable, transactionsTable } from '@db/schema';
-
-const withRetry = async <T,>(fn: () => Promise<T>, attempts = 3): Promise<T> => {
-	for (let i = 0; i < attempts; i++) {
-		try {
-			return await fn();
-		} catch (error) {
-			if (i === attempts - 1) throw error;
-			await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, i)));
-		}
-	}
-
-	throw new Error('withRetry: unreachable');
-};
 
 const getMissingDates = () => {
 	const txs = db
@@ -34,15 +23,16 @@ const getMissingDates = () => {
 		.where(lt(transactionsTable.date, startOfTomorrow().toISOString()))
 		.all();
 
+	const dates = new Set<string>();
 	const existingDatesDb = db.select({ date: currencyRatesTable.date }).from(currencyRatesTable).all();
 	const existingDates = new Set(existingDatesDb.map((r) => r.date));
-
-	const dates = new Set<string>();
 
 	for (const tx of txs) {
 		const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
 
-		if (existingDates.has(formattedDate)) continue;
+		if (existingDates.has(formattedDate)) {
+			continue;
+		}
 
 		dates.add(formattedDate);
 	}
@@ -54,14 +44,19 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 	const newDates = getMissingDates();
 
 	if (!newDates.length) {
-		return { success: true, fetchedCount: 0 };
+		return {
+			success: true,
+			fetchedCount: 0
+		};
 	}
 
+	const responses = [];
+	const valuesToInsert = [];
 	const splitted = splitEvery(10, newDates);
-	const promises = splitted.map((dates) => withRetry(() => getHistoryRates(dates)));
 
-	const responses = await Promise.all(promises);
-	const valueToInsert = [];
+	for (const dates of splitted) {
+		responses.push(await withRetry(() => getHistoryRates(dates)));
+	}
 
 	for (const response of responses) {
 		for (const entry of response.data) {
@@ -78,12 +73,11 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 				rate
 			}));
 
-			valueToInsert.push(...values);
+			valuesToInsert.push(...values);
 		}
 	}
 
-	/* because of sqlite limit on the number of parameters in a single query */
-	const batches = splitEvery(150, valueToInsert);
+	const batches = splitEvery(150, valuesToInsert);
 
 	await db.transaction(async (tx) => {
 		for (const batch of batches) {
@@ -98,7 +92,10 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 		}
 	});
 
-	return { success: true, fetchedCount: valueToInsert.length };
+	return {
+		success: true,
+		fetchedCount: valuesToInsert.length
+	};
 };
 
 const useBackfillRates = () => {
@@ -114,26 +111,23 @@ const useBackfillRates = () => {
 			.where(lt(transactionsTable.date, startOfTomorrow().toISOString()))
 	);
 
-	const newDates = useMemo(() => {
-		const dates = new Set<string>();
-		const existingDatesDb = db.select({ date: currencyRatesTable.date }).from(currencyRatesTable).all();
-		const existingDates = new Set(existingDatesDb.map((r) => r.date));
+	const existingDatesDb = db.select({ date: currencyRatesTable.date }).from(currencyRatesTable).all();
+	const existingDates = new Set(existingDatesDb.map((r) => r.date));
 
-		for (const tx of txs) {
-			const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
+	const newDates: string[] = [];
 
-			if (existingDates.has(formattedDate)) continue;
+	for (const tx of txs) {
+		const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
 
-			dates.add(formattedDate);
+		if (existingDates.has(formattedDate)) {
+			continue;
 		}
 
-		return Array.from(dates);
-	}, [txs]);
+		newDates.push(formattedDate);
+	}
 
 	useEffect(() => {
-		if (!newDates.length) {
-			return;
-		}
+		if (!newDates.length) return;
 
 		backfillRates().catch(() => {
 			Toast.show({
@@ -143,7 +137,7 @@ const useBackfillRates = () => {
 			});
 		});
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [newDates]);
+	}, [newDates.length]);
 };
 
 export default useBackfillRates;

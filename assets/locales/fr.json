@@ -55,14 +55,13 @@
           "limited": "Activées"
         }
       },
-      "face_id": "Exiger Face ID",
       "language": "Langue",
       "dark_mode": "Mode sombre"
     },
     "currencies": {
       "header": "Devises",
-      "default": "Devise principale",
-      "recalc": "Devise de conversion",
+      "default_currency_code": "Devise principale",
+      "recalc_currency_code": "Devise de conversion",
       "fractions": "Afficher les décimales",
       "explain": "Libellé de devise",
       "africa": "Afrique",
@@ -79,7 +78,7 @@
       "other": "Autres",
       "cryptocurrency": "Cryptomonnaies",
       "refresh_rates": "Taux de change",
-      "refresh_action": "Mettre à jour"
+      "primary": "Primary"
     },
     "about": {
       "header": "À propos",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "Me soutenir",
-      "description": "Cette application est gratuite et open source, et le restera toujours.\nCependant, je dois en assurer la maintenance, et toute forme de soutien sera la bienvenue.",
+      "description": "Uha est développée de manière indépendante. Tout soutien aide à maintenir et faire grandir l'application.",
       "donate": "Faire un don",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Toutes les fonctionnalités débloquées"
+    },
+    "data": {
+      "header": "Données",
+      "backup": "Sauvegarde",
+      "restore": "Restaurer",
+      "export_csv": "Export CSV",
+      "backup_success": "Sauvegarde créée",
+      "restore_success": "Données restaurées avec succès",
+      "restore_error": "Échec de la restauration",
+      "export_success": "Export prêt",
+      "import_csv": "Import CSV",
+      "import_success": "Données restaurées avec succès",
+      "import_error": "Échec de la restauration",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Échec de la restauration",
+      "export_error": "Échec de la restauration",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Fonctions IA",
+      "status": "État de l'appareil",
+      "supported": "Disponible",
+      "not_supported": "Non disponible",
+      "footer": "Les suggestions de formulaire sont gratuites. Les autres fonctions IA nécessitent Unlimited.",
+      "toggle": "IA sur l'appareil"
+    },
+    "tip_jar": {
+      "header": "Pourboire",
+      "description": "Vous appréciez Unlimited ? Laissez un pourboire pour soutenir le développement.",
+      "small": "Petit",
+      "medium": "Moyen",
+      "large": "Grand",
+      "thanks": "Merci pour votre soutien !"
+    },
+    "title": "Réglages"
+  },
+  "paywall": {
+    "title": "Débloquer Unlimited",
+    "subtitle": "Profitez pleinement de Uha",
+    "features": {
+      "subscriptions": "Abonnements illimités",
+      "currencies": "Toutes les devises",
+      "horizon": "Horizon jusqu'à 10 ans",
+      "first_day": "Premier jour de la semaine personnalisé",
+      "ai_premium": "Analyses IA et alertes intelligentes"
+    },
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "lifetime": "À vie",
+    "best_value": "Meilleure offre",
+    "subscribe": "S'abonner",
+    "restore": "Restaurer les achats",
+    "ai_note": "Les suggestions de formulaire sont gratuites. Les autres fonctions IA nécessitent Unlimited.",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité"
+  },
+  "limits": {
+    "subscription_limit": "Le plan gratuit permet jusqu'à {{count}} abonnements",
+    "currency_restricted": "Cette devise nécessite Unlimited",
+    "horizon_locked": "Les horizons au-delà de {{max}} ans nécessitent Unlimited",
+    "upgrade": "Débloquer toutes les fonctionnalités"
   },
   "dates": {
     "today": "Aujourd'hui",
     "tomorrow": "Demain",
-    "yesterday": "Hier"
+    "yesterday": "Hier",
+    "day": "Jour",
+    "month": "Mois",
+    "year": "Année"
   },
   "transactions": {
     "details": {

@@ -1,10 +1,10 @@
-import type { CategoryT } from '../../summaries.d';
+import type { TxCategoryT } from '../../summaries.d';
 
 export type Props = {
 	clavis: string;
 	total: number;
 	formattedDate: string;
-	categories: CategoryT[];
+	categories: TxCategoryT[];
 	isDisabled?: boolean;
 	onPress?: () => void;
 };

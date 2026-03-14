@@ -13,9 +13,9 @@ import { Text } from '@ui';
 import Root, { DateText, CategoryChip, CategoryChips } from './summary-block.styles';
 
 import type { Props } from './summary-block.d';
-import type { CategoryT } from '../../summaries.d';
+import type { TxCategoryT } from '../../summaries.d';
 
-const renderCategoryChips = (categories: CategoryT[], total: Props['total'], clavis: Props['clavis']) => {
+const renderCategoryChips = (categories: TxCategoryT[], total: Props['total'], clavis: Props['clavis']) => {
 	const categoryChips = categories.map((category) => {
 		const percentage = (category.amount / total) * 100;
 

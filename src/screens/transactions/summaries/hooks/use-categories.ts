@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { format, lightFormat } from 'date-fns';
 
 import db from '@db';
@@ -7,16 +9,16 @@ import { currencyRatesTable } from '@db/schema';
 
 import { useSettingsValue } from '@hooks/use-settings';
 
+import type { CurrencyRateT } from '@models';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
-import type { CategoryAccumulatorT, TransactionT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
+import type { CategoryAccumulatorT, TxSummaryT, SummaryReturnT, SummariesQueryReturnT } from '../summaries.d';
 type LastKnownRatesT = Map<string, number>;
-type CurrencyRateT = typeof currencyRatesTable.$inferSelect;
 
 const DEFAULT_DENOMINATOR = 1;
 const __STUB_COLOR = '#ffffff';
 const DEFAULT_SUMMARY = { total: 0, categories: [] };
 
-const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) => {
+const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TxSummaryT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
 	acc.total += tx.price / denominator;
 
@@ -35,7 +37,7 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TransactionT) =>
 	return acc;
 };
 
-const computeSummary = (data: TransactionT[]) => {
+const computeSummary = (data: TxSummaryT[]) => {
 	if (!data.length) {
 		return DEFAULT_SUMMARY;
 	}
@@ -72,7 +74,7 @@ const calcRatesMap = (ratesInRange: Omit<CurrencyRateT, 'id'>[]) => {
 };
 
 const updatePrices = (
-	transactions: TransactionT[],
+	transactions: TxSummaryT[],
 	rates: Map<string, Map<string, number>> | undefined,
 	recalcCurrencyCode: string,
 	lastKnownRates: LastKnownRatesT
@@ -155,6 +157,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 };
 
 export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
+	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const ratesInRange = useMemo(() => {
@@ -184,10 +187,12 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, [rates, recalcCurrencyCode, transactions.month]);
 
-	const formattedDate = useMemo(
-		() => format(transactions.dates.monthStartRaw, 'MMMM'),
-		[transactions.dates.monthStartRaw]
-	);
+	const formattedDate = useMemo(() => {
+		const monthIndex = transactions.dates.monthStartRaw.getMonth();
+		const key = `dates.in_months.${monthIndex}`;
+
+		return i18n.exists(key) ? t(key) : t('dates.in_month', { month: format(transactions.dates.monthStartRaw, 'LLLL') });
+	}, [transactions.dates.monthStartRaw, t]);
 
 	return {
 		...summary,
@@ -197,6 +202,7 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 };
 
 export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
+	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
 
 	const ratesInRange = useMemo(() => {
@@ -227,8 +233,8 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 	}, [rates, recalcCurrencyCode, transactions.year]);
 
 	const formattedDate = useMemo(
-		() => format(transactions.dates.yearStartRaw, 'yyyy'),
-		[transactions.dates.yearStartRaw]
+		() => t('dates.in_year', { year: format(transactions.dates.yearStartRaw, 'yyyy') }),
+		[transactions.dates.yearStartRaw, t]
 	);
 
 	return {

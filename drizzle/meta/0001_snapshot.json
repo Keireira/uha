@@ -1,6 +1,6 @@
 {
-  "id": "cc8b4b14-4fff-4938-b543-ff829cd4d319",
-  "prevId": "472a91d7-7c39-469f-a650-344b40aa44e5",
+  "id": "29390c79-618d-4beb-aaa0-92120f560641",
+  "prevId": "e053a68f-7e83-419b-ba30-85ed59ffefbf",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -740,14 +740,6 @@
           "autoincrement": false,
           "default": 3
         },
-        "with_color_grading": {
-          "name": "with_color_grading",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": true
-        },
         "recalc_currency": {
           "name": "recalc_currency",
           "type": "text",
@@ -761,6 +753,38 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "first_day": {
+          "name": "first_day",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'monday'"
+        },
+        "ai_enabled": {
+          "name": "ai_enabled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "is_unlimited": {
+          "name": "is_unlimited",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "accent": {
+          "name": "accent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'orange'"
         }
       },
       "indexes": {},

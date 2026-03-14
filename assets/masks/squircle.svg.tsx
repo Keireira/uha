@@ -1,11 +1,13 @@
 import React from 'react';
-import Svg, { Path, G, Image, Defs, ClipPath } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { Image } from 'expo-image';
 
 import type { SvgProps } from 'react-native-svg';
+import type { ImageSource } from 'expo-image';
 
 type Props = SvgProps & {
-	link?: string | number;
+	link?: ImageSource;
 	size: number;
 	color?: string;
 };
@@ -23,32 +25,16 @@ const MASK = `
 `;
 
 const SvgComponent = ({ children, size, link, ...restProps }: Props) => {
-	if (link) {
-		return (
-			<Svg viewBox="0 0 1 1" style={{ width: size, height: size }} {...restProps}>
-				<Defs>
-					<ClipPath id="squircle">
-						<Path d={MASK} />
-					</ClipPath>
-				</Defs>
-
-				<G width="100%" height="100%" clipPath="url(#squircle)">
-					<Image x="0" y="0" width="100%" height="100%" href={link} />
-				</G>
-			</Svg>
-		);
-	}
-
 	return (
 		<MaskedView
 			style={{ width: size, height: size }}
 			maskElement={
 				<Svg viewBox="0 0 1 1" style={{ width: size, height: size }} {...restProps}>
-					<Path d={MASK} />
+					<Path d={MASK} fill="black" />
 				</Svg>
 			}
 		>
-			{children}
+			{link ? <Image source={link} style={{ width: size, height: size }} cachePolicy="disk" /> : children}
 		</MaskedView>
 	);
 };

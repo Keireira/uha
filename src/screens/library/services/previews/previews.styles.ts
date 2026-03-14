@@ -10,21 +10,22 @@ export const SectionHeader = styled.View`
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
-	padding-top: 16px;
-	padding-bottom: 4px;
+	padding-top: 20px;
+	padding-bottom: 6px;
 `;
 
 export const SectionLetter = styled(Text)`
-	font-size: 14px;
-	font-weight: 800;
+	font-size: 13px;
+	font-weight: 700;
 	color: ${({ theme }) => theme.text.tertiary};
-	letter-spacing: 1px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
 `;
 
 export const SectionRule = styled.View`
 	flex: 1;
 	height: 0.5px;
-	background-color: ${({ theme }) => `${theme.border.default}25`};
+	background-color: ${({ theme }) => `${theme.border.default}20`};
 `;
 
 export const EmptyText = styled(Text)`

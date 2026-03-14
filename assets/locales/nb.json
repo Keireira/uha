@@ -43,6 +43,44 @@
     "search_payments": "Søk i betalinger"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Alle funksjoner låst opp"
+    },
+    "data": {
+      "header": "Data",
+      "backup": "Sikkerhetskopi",
+      "restore": "Gjenopprett",
+      "export_csv": "Export CSV",
+      "backup_success": "Sikkerhetskopi opprettet",
+      "restore_success": "Data gjenopprettet",
+      "restore_error": "Kunne ikke gjenopprette sikkerhetskopi",
+      "export_success": "Eksport klar",
+      "import_csv": "Import CSV",
+      "import_success": "Data gjenopprettet",
+      "import_error": "Kunne ikke gjenopprette sikkerhetskopi",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Kunne ikke gjenopprette sikkerhetskopi",
+      "export_error": "Kunne ikke gjenopprette sikkerhetskopi",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI-funksjoner",
+      "status": "Enhetsstatus",
+      "supported": "Tilgjengelig",
+      "not_supported": "Ikke tilgjengelig",
+      "footer": "Skjemaforslag er gratis. Andre AI-funksjoner krever Unlimited.",
+      "toggle": "AI på enheten"
+    },
+    "tip_jar": {
+      "header": "Tipskrukke",
+      "description": "Liker du Unlimited? Legg igjen et tips for å støtte utviklingen.",
+      "small": "Liten",
+      "medium": "Middels",
+      "large": "Stor",
+      "thanks": "Takk for din støtte!"
+    },
     "system": {
       "header": "System",
       "oled_mode": "OLED-modus",
@@ -55,14 +93,13 @@
           "limited": "Aktivert"
         }
       },
-      "face_id": "Krev Face ID",
       "language": "Språk",
       "dark_mode": "Mørk modus"
     },
     "currencies": {
       "header": "Valutaer",
-      "default": "Standardvaluta",
-      "recalc": "Omregningsvaluta",
+      "default_currency_code": "Standardvaluta",
+      "recalc_currency_code": "Omregningsvaluta",
       "fractions": "Vis desimaler",
       "explain": "Valutamerke",
       "africa": "Afrika",
@@ -79,7 +116,7 @@
       "other": "Annet",
       "cryptocurrency": "Kryptovalutaer",
       "refresh_rates": "Valutakurser",
-      "refresh_action": "Oppdater"
+      "primary": "Primary"
     },
     "about": {
       "header": "Om",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Støtt meg",
-      "description": "Denne appen er gratis og åpen kildekode, og vil alltid være det.\nJeg må imidlertid betale for vedlikehold, så jeg setter pris på all form for støtte.",
+      "description": "Uha utvikles uavhengig. All støtte bidrar til å holde appen i gang og voksende.",
       "donate": "Donér",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Lås opp Unlimited",
+    "subtitle": "Få mest mulig ut av Uha",
+    "features": {
+      "subscriptions": "Ubegrensede abonnementer",
+      "currencies": "Alle valutaer",
+      "horizon": "Opptil 10-års horisont",
+      "first_day": "Tilpasset første ukedag",
+      "ai_premium": "AI-innsikt og smarte varsler"
+    },
+    "monthly": "Månedlig",
+    "annual": "Årlig",
+    "lifetime": "Livstid",
+    "best_value": "Beste verdi",
+    "subscribe": "Abonner",
+    "restore": "Gjenopprett kjøp",
+    "ai_note": "Skjemaforslag er gratis. Andre AI-funksjoner krever Unlimited.",
+    "terms": "Bruksvilkår",
+    "privacy": "Personvernregler"
+  },
+  "limits": {
+    "subscription_limit": "Gratisplanen tillater opptil {{count}} abonnementer",
+    "currency_restricted": "Denne valutaen krever Unlimited",
+    "horizon_locked": "Horisonter over {{max}} år krever Unlimited",
+    "upgrade": "Lås opp alle funksjoner"
+  },
   "dates": {
     "today": "I dag",
     "tomorrow": "I morgen",
-    "yesterday": "I går"
+    "yesterday": "I går",
+    "day": "Dag",
+    "month": "Måned",
+    "year": "År"
   },
   "transactions": {
     "details": {

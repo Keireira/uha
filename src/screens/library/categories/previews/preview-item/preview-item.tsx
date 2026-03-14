@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import Root, { IconWrapper, IconText, Title } from './preview-item.styles';
+import { LogoView } from '@ui';
+import Root, { IconWrapper, Title } from './preview-item.styles';
 
 import type { PropsT } from './preview-item.d';
 
-const PreviewItem = ({ title, emoji, color, onPress }: PropsT) => {
+const PreviewItem = ({ id, title, emoji, color, onPress }: PropsT) => {
+	const handlePress = useCallback(() => {
+		onPress?.(id);
+	}, [id, onPress]);
+
 	return (
-		<Root onPress={onPress}>
-			<IconWrapper tintColor={color}>
-				<IconText>{emoji}</IconText>
+		<Root onPress={handlePress}>
+			<IconWrapper>
+				<LogoView name={title} emoji={emoji} color={color} size={44} />
 			</IconWrapper>
 
 			<Title>{title}</Title>

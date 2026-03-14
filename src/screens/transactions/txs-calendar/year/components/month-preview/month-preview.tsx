@@ -10,26 +10,33 @@ import {
 } from 'date-fns';
 import { splitEvery } from 'ramda';
 
+import { useRouter } from 'expo-router';
 import { useAppModel } from '@models';
+import { useSettingsValue } from '@hooks';
 
 import DayPreview from '../day-preview';
 import Root, { MonthHeader, Week, DaysGrid } from './month-preview.styles';
 
+import type { UserT } from '@models';
 import type { QuarterRowDataT } from '../../year.d';
 
 const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
-	const { tx_dates, view_mode } = useAppModel();
+	const router = useRouter();
+	const { tx_dates } = useAppModel();
+
+	const firstDay = useSettingsValue<UserT['first_day']>('first_day');
+	const weekStartsOn = useMemo(() => (firstDay === 'monday' ? 1 : 0), [firstDay]);
 
 	const weeks = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
 			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
-			{ weekStartsOn: 1 }
+			{ weekStartsOn }
 		);
 
 		const allDays = weekStartDates.flatMap((weekStartDate) => {
 			const weekDays = eachDayOfInterval({
 				start: weekStartDate,
-				end: endOfWeek(weekStartDate, { weekStartsOn: 1 })
+				end: endOfWeek(weekStartDate, { weekStartsOn })
 			});
 
 			return weekDays.map((day) => ({
@@ -40,12 +47,12 @@ const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Quarter
 		});
 
 		return splitEvery(7, allDays);
-	}, [monthDate]);
+	}, [monthDate, weekStartsOn]);
 
 	const onPressMonth = useCallback(() => {
 		tx_dates.activeMonth.set(monthDate);
-		view_mode.calendar.setScale('month');
-	}, [monthDate, tx_dates, view_mode]);
+		router.setParams({ calendar_scale: 'month' });
+	}, [monthDate, tx_dates, router]);
 
 	return (
 		<Root $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>

@@ -123,7 +123,12 @@ const AnalyticsSheet = () => {
 					const isActive = activeClavis === tab;
 
 					return (
-						<TabGlass key={tab} $active={isActive} isInteractive tintColor={isActive ? theme.accent.orange : undefined}>
+						<TabGlass
+							key={tab}
+							$active={isActive}
+							isInteractive
+							tintColor={isActive ? theme.accents.orange : undefined}
+						>
 							<TabInner onPress={() => handleTabPress(tab)}>
 								<TabLabel $active={isActive}>{t(`dates.${tab}`)}</TabLabel>
 							</TabInner>

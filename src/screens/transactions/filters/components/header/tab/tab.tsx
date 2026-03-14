@@ -18,7 +18,7 @@ const Tab = ({ tab, label, isActive, counter, setActiveTab }: Props) => {
 					glass: {
 						interactive: true,
 						variant: 'regular',
-						tint: theme.accent.orange
+						tint: theme.accents.orange
 					}
 				})
 			]
@@ -37,7 +37,7 @@ const Tab = ({ tab, label, isActive, counter, setActiveTab }: Props) => {
 					numberOfLines={1}
 					adjustsFontSizeToFit
 					minimumFontScale={0.5}
-					$color={isActive ? theme.static.white : theme.accent.orange}
+					$color={isActive ? theme.static.white : theme.accents.orange}
 				>
 					{label}
 					{counter > 0 ? ` (${counter})` : ''}

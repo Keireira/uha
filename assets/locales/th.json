@@ -55,14 +55,13 @@
           "limited": "เปิดใช้งาน"
         }
       },
-      "face_id": "ต้องใช้ Face ID",
       "language": "ภาษา",
       "dark_mode": "โหมดมืด"
     },
     "currencies": {
       "header": "สกุลเงิน",
-      "default": "สกุลเงินหลัก",
-      "recalc": "สกุลเงินแปลง",
+      "default_currency_code": "สกุลเงินหลัก",
+      "recalc_currency_code": "สกุลเงินแปลง",
       "fractions": "แสดงทศนิยม",
       "explain": "ป้ายสกุลเงิน",
       "africa": "แอฟริกา",
@@ -79,7 +78,7 @@
       "other": "อื่น ๆ",
       "cryptocurrency": "คริปโตเคอร์เรนซี",
       "refresh_rates": "อัตราแลกเปลี่ยน",
-      "refresh_action": "อัปเดต"
+      "primary": "Primary"
     },
     "about": {
       "header": "เกี่ยวกับ",
@@ -91,17 +90,84 @@
     },
     "donations": {
       "header": "สนับสนุน",
-      "description": "แอปนี้ฟรีและเปิดซอร์สโค้ด และจะเป็นเช่นนั้นเสมอ\nอย่างไรก็ตาม ฉันต้องรับผิดชอบค่าบำรุงรักษา จึงขอบคุณสำหรับการสนับสนุนทุกรูปแบบ",
+      "description": "Uha พัฒนาโดยนักพัฒนาอิสระ การสนับสนุนทุกรูปแบบช่วยให้แอปทำงานต่อไปและเติบโตได้",
       "donate": "บริจาค",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "ปลดล็อกฟีเจอร์ทั้งหมดแล้ว"
+    },
+    "data": {
+      "header": "ข้อมูล",
+      "backup": "สำรองข้อมูล",
+      "restore": "กู้คืน",
+      "export_csv": "Export CSV",
+      "backup_success": "สร้างข้อมูลสำรองแล้ว",
+      "restore_success": "กู้คืนข้อมูลสำเร็จ",
+      "restore_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+      "export_success": "ส่งออกพร้อมแล้ว",
+      "import_csv": "Import CSV",
+      "import_success": "กู้คืนข้อมูลสำเร็จ",
+      "import_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+      "export_error": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "ฟีเจอร์ AI",
+      "status": "สถานะอุปกรณ์",
+      "supported": "พร้อมใช้งาน",
+      "not_supported": "ไม่พร้อมใช้งาน",
+      "footer": "คำแนะนำในแบบฟอร์มฟรี ฟีเจอร์ AI อื่นๆ ต้องใช้ Unlimited",
+      "toggle": "AI บนอุปกรณ์"
+    },
+    "tip_jar": {
+      "header": "กล่องทิป",
+      "description": "ชอบ Unlimited ไหม? ทิปเพื่อสนับสนุนการพัฒนา",
+      "small": "เล็ก",
+      "medium": "กลาง",
+      "large": "ใหญ่",
+      "thanks": "ขอบคุณสำหรับการสนับสนุน!"
     }
+  },
+  "paywall": {
+    "title": "ปลดล็อก Unlimited",
+    "subtitle": "ใช้ Uha ได้เต็มประสิทธิภาพ",
+    "features": {
+      "subscriptions": "สมัครสมาชิกไม่จำกัด",
+      "currencies": "สกุลเงินทั้งหมด",
+      "horizon": "แผนล่วงหน้าสูงสุด 10 ปี",
+      "first_day": "กำหนดวันเริ่มต้นสัปดาห์เอง",
+      "ai_premium": "AI วิเคราะห์และการแจ้งเตือนอัจฉริยะ"
+    },
+    "monthly": "รายเดือน",
+    "annual": "รายปี",
+    "lifetime": "ตลอดชีพ",
+    "best_value": "คุ้มค่าที่สุด",
+    "subscribe": "สมัครสมาชิก",
+    "restore": "กู้คืนการซื้อ",
+    "ai_note": "คำแนะนำในแบบฟอร์มฟรี ฟีเจอร์ AI อื่นๆ ต้องใช้ Unlimited",
+    "terms": "ข้อกำหนดการใช้งาน",
+    "privacy": "นโยบายความเป็นส่วนตัว"
+  },
+  "limits": {
+    "subscription_limit": "แผนฟรีอนุญาตสูงสุด {{count}} การสมัครสมาชิก",
+    "currency_restricted": "สกุลเงินนี้ต้องใช้ Unlimited",
+    "horizon_locked": "แผนล่วงหน้าเกิน {{max}} ปี ต้องใช้ Unlimited",
+    "upgrade": "ปลดล็อกฟีเจอร์ทั้งหมด"
   },
   "dates": {
     "today": "วันนี้",
     "tomorrow": "พรุ่งนี้",
-    "yesterday": "เมื่อวาน"
+    "yesterday": "เมื่อวาน",
+    "day": "วัน",
+    "month": "เดือน",
+    "year": "ปี"
   },
   "transactions": {
     "details": {

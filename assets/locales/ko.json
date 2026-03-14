@@ -55,14 +55,13 @@
           "limited": "활성화"
         }
       },
-      "face_id": "Face ID 요구",
       "language": "언어",
       "dark_mode": "다크 모드"
     },
     "currencies": {
       "header": "통화",
-      "default": "기본 통화",
-      "recalc": "환산 통화",
+      "default_currency_code": "기본 통화",
+      "recalc_currency_code": "환산 통화",
       "fractions": "소수점 표시",
       "explain": "통화 태그",
       "africa": "아프리카",
@@ -79,7 +78,7 @@
       "other": "기타",
       "cryptocurrency": "암호화폐",
       "refresh_rates": "환율",
-      "refresh_action": "업데이트"
+      "primary": "Primary"
     },
     "about": {
       "header": "앱 정보",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "후원하기",
-      "description": "이 앱은 무료이며 오픈 소스이고, 앞으로도 그럴 것입니다.\n다만 유지비가 필요하기에, 어떤 형태의 후원이든 감사히 받겠습니다.",
+      "description": "Uha는 독립적으로 개발되고 있습니다. 어떤 형태의 후원이든 앱의 운영과 성장에 도움이 됩니다.",
       "donate": "후원",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "모든 기능이 잠금 해제됨"
+    },
+    "data": {
+      "header": "데이터",
+      "backup": "백업",
+      "restore": "복원",
+      "export_csv": "Export CSV",
+      "backup_success": "백업이 생성되었습니다",
+      "restore_success": "데이터가 성공적으로 복원되었습니다",
+      "restore_error": "백업 복원에 실패했습니다",
+      "export_success": "내보내기 준비 완료",
+      "import_csv": "Import CSV",
+      "import_success": "데이터가 성공적으로 복원되었습니다",
+      "import_error": "백업 복원에 실패했습니다",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "백업 복원에 실패했습니다",
+      "export_error": "백업 복원에 실패했습니다",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI 기능",
+      "status": "기기 상태",
+      "supported": "사용 가능",
+      "not_supported": "사용 불가",
+      "footer": "양식 제안은 무료입니다. 다른 AI 기능은 Unlimited가 필요합니다.",
+      "toggle": "온디바이스 AI"
+    },
+    "tip_jar": {
+      "header": "팁",
+      "description": "Unlimited가 마음에 드시나요? 개발을 응원하는 팁을 남겨주세요.",
+      "small": "소액",
+      "medium": "중액",
+      "large": "고액",
+      "thanks": "후원해 주셔서 감사합니다!"
+    },
+    "title": "설정"
+  },
+  "paywall": {
+    "title": "Unlimited 잠금 해제",
+    "subtitle": "Uha를 최대한 활용하세요",
+    "features": {
+      "subscriptions": "무제한 구독",
+      "currencies": "모든 통화",
+      "horizon": "최대 10년 호라이즌",
+      "first_day": "주 시작일 설정",
+      "ai_premium": "AI 인사이트 및 스마트 알림"
+    },
+    "monthly": "월간",
+    "annual": "연간",
+    "lifetime": "평생",
+    "best_value": "최고 가성비",
+    "subscribe": "구독하기",
+    "restore": "구매 복원",
+    "ai_note": "양식 제안은 무료입니다. 다른 AI 기능은 Unlimited가 필요합니다.",
+    "terms": "이용약관",
+    "privacy": "개인정보 처리방침"
+  },
+  "limits": {
+    "subscription_limit": "무료 플랜은 최대 {{count}}개의 구독이 가능합니다",
+    "currency_restricted": "이 통화는 Unlimited가 필요합니다",
+    "horizon_locked": "{{max}}년을 초과하는 호라이즌은 Unlimited가 필요합니다",
+    "upgrade": "모든 기능 잠금 해제"
   },
   "dates": {
     "today": "오늘",
     "tomorrow": "내일",
-    "yesterday": "어제"
+    "yesterday": "어제",
+    "day": "일",
+    "month": "월",
+    "year": "년"
   },
   "transactions": {
     "details": {

@@ -43,6 +43,44 @@
     "search_payments": "भुगतानों में खोजें"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "सभी सुविधाएँ अनलॉक"
+    },
+    "data": {
+      "header": "डेटा",
+      "backup": "बैकअप",
+      "restore": "पुनर्स्थापित करें",
+      "export_csv": "Export CSV",
+      "backup_success": "बैकअप बनाया गया",
+      "restore_success": "डेटा सफलतापूर्वक पुनर्स्थापित",
+      "restore_error": "बैकअप पुनर्स्थापित करने में विफल",
+      "export_success": "निर्यात तैयार",
+      "import_csv": "Import CSV",
+      "import_success": "डेटा सफलतापूर्वक पुनर्स्थापित",
+      "import_error": "बैकअप पुनर्स्थापित करने में विफल",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "बैकअप पुनर्स्थापित करने में विफल",
+      "export_error": "बैकअप पुनर्स्थापित करने में विफल",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI सुविधाएँ",
+      "status": "डिवाइस स्थिति",
+      "supported": "उपलब्ध",
+      "not_supported": "उपलब्ध नहीं",
+      "footer": "फ़ॉर्म सुझाव मुफ़्त हैं। अन्य AI सुविधाओं के लिए Unlimited आवश्यक है।",
+      "toggle": "डिवाइस पर AI"
+    },
+    "tip_jar": {
+      "header": "टिप जार",
+      "description": "Unlimited पसंद आया? विकास को समर्थन देने के लिए टिप दें।",
+      "small": "छोटा",
+      "medium": "मध्यम",
+      "large": "बड़ा",
+      "thanks": "आपके समर्थन के लिए धन्यवाद!"
+    },
     "system": {
       "header": "सिस्टम",
       "oled_mode": "OLED मोड",
@@ -55,14 +93,13 @@
           "limited": "चालू"
         }
       },
-      "face_id": "Face ID आवश्यक",
       "language": "भाषा",
       "dark_mode": "डार्क मोड"
     },
     "currencies": {
       "header": "मुद्राएँ",
-      "default": "डिफ़ॉल्ट मुद्रा",
-      "recalc": "रूपांतरण मुद्रा",
+      "default_currency_code": "डिफ़ॉल्ट मुद्रा",
+      "recalc_currency_code": "रूपांतरण मुद्रा",
       "fractions": "दशमलव दिखाएँ",
       "explain": "मुद्रा लेबल",
       "africa": "अफ़्रीका",
@@ -79,7 +116,7 @@
       "other": "अन्य",
       "cryptocurrency": "क्रिप्टोकरेंसी",
       "refresh_rates": "विनिमय दरें",
-      "refresh_action": "अपडेट"
+      "primary": "Primary"
     },
     "about": {
       "header": "जानकारी",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "सहायता करें",
-      "description": "यह ऐप मुफ़्त और ओपन सोर्स है, और हमेशा रहेगा।\nहालाँकि, मुझे रखरखाव का खर्च उठाना पड़ता है, इसलिए किसी भी तरह की सहायता की सराहना करूँगी।",
+      "description": "Uha स्वतंत्र रूप से विकसित किया गया है। कोई भी सहायता ऐप को चालू रखने और बढ़ने में मदद करती है।",
       "donate": "दान करें",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Unlimited अनलॉक करें",
+    "subtitle": "Uha का पूरा लाभ उठाएँ",
+    "features": {
+      "subscriptions": "असीमित सदस्यताएँ",
+      "currencies": "सभी मुद्राएँ",
+      "horizon": "10 साल तक का होराइज़न",
+      "first_day": "सप्ताह का कस्टम पहला दिन",
+      "ai_premium": "AI विश्लेषण और स्मार्ट अलर्ट"
+    },
+    "monthly": "मासिक",
+    "annual": "वार्षिक",
+    "lifetime": "आजीवन",
+    "best_value": "सर्वोत्तम मूल्य",
+    "subscribe": "सदस्यता लें",
+    "restore": "खरीदारी पुनर्स्थापित करें",
+    "ai_note": "फ़ॉर्म सुझाव मुफ़्त हैं। अन्य AI सुविधाओं के लिए Unlimited आवश्यक है।",
+    "terms": "उपयोग की शर्तें",
+    "privacy": "गोपनीयता नीति"
+  },
+  "limits": {
+    "subscription_limit": "मुफ़्त योजना में {{count}} सदस्यताओं तक की अनुमति है",
+    "currency_restricted": "इस मुद्रा के लिए Unlimited आवश्यक है",
+    "horizon_locked": "{{max}} वर्ष से अधिक के होराइज़न के लिए Unlimited आवश्यक है",
+    "upgrade": "सभी सुविधाएँ अनलॉक करें"
+  },
   "dates": {
     "today": "आज",
     "tomorrow": "कल",
-    "yesterday": "कल"
+    "yesterday": "कल",
+    "day": "दिन",
+    "month": "महीना",
+    "year": "वर्ष"
   },
   "transactions": {
     "details": {

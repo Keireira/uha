@@ -55,14 +55,13 @@
           "limited": "Қосылған"
         }
       },
-      "face_id": "Face ID талап ету",
       "language": "Тіл",
       "dark_mode": "Қараңғы режим"
     },
     "currencies": {
       "header": "Валюталар",
-      "default": "Негізгі валюта",
-      "recalc": "Қайта есептеу валютасы",
+      "default_currency_code": "Негізгі валюта",
+      "recalc_currency_code": "Қайта есептеу валютасы",
       "fractions": "Бөлшектерді көрсету",
       "explain": "Валюта белгісі",
       "africa": "Африка",
@@ -79,7 +78,7 @@
       "other": "Өзгелер",
       "cryptocurrency": "Криптовалюталар",
       "refresh_rates": "Валюта бағамдары",
-      "refresh_action": "Жаңарту"
+      "primary": "Primary"
     },
     "about": {
       "header": "Қолданба туралы",
@@ -90,18 +89,96 @@
       "testflight": "TestFlight"
     },
     "donations": {
-      "header": "Қолдау көрсету",
-      "description": "Бұл қолданба тегін әрі ашық, және әрдайым солай болады.\nАлайда оны ұстап тұру шығынды талап етеді, сондықтан кез келген көмегіңізге ризамын.",
+      "header": "Мені қолдаңыз",
+      "description": "Uha бір әзірлеушімен жасалады. Сіздің қолдауыңыз қолданбаны дамытуға көмектеседі.",
       "donate": "Қолдау",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "preferences": {
+      "header": "Параметрлер",
+      "first_day": "Аптаның бірінші күні",
+      "max_horizon": "Максималды көкжиек",
+      "years_unit": "ж.",
+      "day_hint_us": "АҚШ стилі",
+      "day_hint_iso": "Халықаралық",
+      "grading_on": "Санаттар бойынша",
+      "grading_off": "Бірінші транзакция"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Барлық мүмкіндіктер ашылды"
+    },
+    "data": {
+      "header": "Деректер",
+      "backup": "Сақтық көшірме",
+      "restore": "Қалпына келтіру",
+      "export_csv": "CSV экспорттау",
+      "import_csv": "CSV импорттау",
+      "backup_success": "Сақтық көшірме жасалды",
+      "backup_error": "Сақтық көшірме жасалмады",
+      "restore_success": "Деректер сәтті қалпына келтірілді",
+      "restore_error": "Деректерді қалпына келтіру сәтсіз",
+      "export_success": "Экспорт дайын",
+      "export_error": "Экспорттау сәтсіз",
+      "import_success": "Деректер сәтті импортталды",
+      "import_error": "Деректерді импорттау сәтсіз",
+      "icloud_sync": "iCloud синхрондау",
+      "icloud_coming_soon": "Жақында",
+      "data_footer": "Сақтық көшірмені қалпына келтіру немесе CSV импорттау бар деректерді қайта жазады."
+    },
+    "ai": {
+      "header": "ЖИ мүмкіндіктері",
+      "status": "Құрылғы күйі",
+      "supported": "Қолжетімді",
+      "not_supported": "Қолжетімсіз",
+      "footer": "Форма ұсыныстары тегін. Басқа AI мүмкіндіктері үшін Unlimited қажет.",
+      "toggle": "Құрылғыдағы AI"
+    },
+    "tip_jar": {
+      "header": "Tip Jar",
+      "description": "Unlimited ұнады ма? Әзірлеуді қолдау үшін tip қалдырыңыз.",
+      "small": "Кішкентай",
+      "medium": "Орташа",
+      "large": "Үлкен",
+      "thanks": "Қолдауыңыз үшін рахмет!"
+    },
+    "title": "Параметрлер"
+  },
+  "paywall": {
+    "title": "Unlimited ашу",
+    "subtitle": "Uha-дан максимум алыңыз",
+    "features": {
+      "subscriptions": "Шексіз жазылымдар",
+      "currencies": "Барлық валюталар",
+      "horizon": "10 жылға дейінгі көкжиек",
+      "first_day": "Аптаның бірінші күнін таңдау",
+      "ai_premium": "AI аналитика және ақылды ескертулер"
+    },
+    "monthly": "Ай сайын",
+    "annual": "Жыл сайын",
+    "lifetime": "Мәңгілік",
+    "best_value": "Ең тиімді",
+    "subscribe": "Жазылу",
+    "restore": "Сатып алуларды қалпына келтіру",
+    "ai_note": "Форма ұсыныстары тегін. Басқа AI мүмкіндіктері үшін Unlimited қажет.",
+    "terms": "Пайдалану шарттары",
+    "privacy": "Құпиялылық саясаты"
+  },
+  "limits": {
+    "subscription_limit": "Тегін жоспар {{count}} жазылымға дейін рұқсат береді",
+    "currency_restricted": "Бұл валюта Unlimited қажет етеді",
+    "horizon_locked": "{{max}} жылдан жоғары көкжиек Unlimited қажет етеді",
+    "upgrade": "Барлық мүмкіндіктерді ашу"
   },
   "dates": {
     "today": "Бүгін",
     "tomorrow": "Ертең",
-    "yesterday": "Кеше"
+    "yesterday": "Кеше",
+    "day": "Күн",
+    "month": "Ай",
+    "year": "Жыл"
   },
   "transactions": {
     "details": {

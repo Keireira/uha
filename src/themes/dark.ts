@@ -1,10 +1,14 @@
 import type { ThemeConfigT } from './themes.d';
 
 const darkThemeConfig: ThemeConfigT = {
-	tint: 'dark', // +
+	tint: 'dark',
+	is_oled: false,
 
 	static: {
-		white: '#fafafa' // +
+		pure_white: '#ffffff',
+		white: '#fafafa',
+		pure_black: '#000000',
+		black: '#1C1C1E'
 	},
 
 	background: {
@@ -31,18 +35,18 @@ const darkThemeConfig: ThemeConfigT = {
 		inverse: '#1c1c1e' // +
 	},
 
-	accent: {
-		blue: '#0A84FF',
-		green: '#30D158',
-		orange: '#FF9F0A',
+	accents: {
 		red: '#FF453A',
-		purple: '#BF5AF2',
-		pink: '#FF375F',
+		orange: '#FF9F0A',
 		yellow: '#FFD60A',
-		teal: '#64D2FF',
-		indigo: '#5E5CE6',
+		green: '#30D158',
 		mint: '#63E6E2',
-		cyan: '#64D2FF'
+		teal: '#64D2FF',
+		cyan: '#64D2FF',
+		blue: '#0A84FF',
+		indigo: '#5E5CE6',
+		purple: '#BF5AF2',
+		pink: '#FF375F'
 	},
 
 	semantic: {

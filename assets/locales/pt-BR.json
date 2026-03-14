@@ -55,14 +55,13 @@
           "limited": "Ativadas"
         }
       },
-      "face_id": "Exigir Face ID",
       "language": "Idioma",
       "dark_mode": "Modo escuro"
     },
     "currencies": {
       "header": "Moedas",
-      "default": "Moeda principal",
-      "recalc": "Moeda de conversão",
+      "default_currency_code": "Moeda principal",
+      "recalc_currency_code": "Moeda de conversão",
       "fractions": "Mostrar centavos",
       "explain": "Rótulo da moeda",
       "africa": "África",
@@ -79,7 +78,7 @@
       "other": "Outros",
       "cryptocurrency": "Criptomoedas",
       "refresh_rates": "Taxas de câmbio",
-      "refresh_action": "Atualizar"
+      "primary": "Primary"
     },
     "about": {
       "header": "Sobre",
@@ -91,17 +90,85 @@
     },
     "donations": {
       "header": "Apoie-me",
-      "description": "Este aplicativo é gratuito e de código aberto, e sempre será.\nPorém, preciso arcar com os custos de manutenção, então ficarei grata por qualquer forma de apoio.",
+      "description": "Uha is built by a solo indie developer. Your support helps keep it alive and improving.",
       "donate": "Doar",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
-    }
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Todos os recursos desbloqueados"
+    },
+    "data": {
+      "header": "Dados",
+      "backup": "Backup",
+      "restore": "Restaurar",
+      "export_csv": "Export CSV",
+      "backup_success": "Backup criado",
+      "restore_success": "Dados restaurados com sucesso",
+      "restore_error": "Falha ao restaurar o backup",
+      "export_success": "Exportação pronta",
+      "import_csv": "Import CSV",
+      "import_success": "Dados restaurados com sucesso",
+      "import_error": "Falha ao restaurar o backup",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Falha ao restaurar o backup",
+      "export_error": "Falha ao restaurar o backup",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Recursos de IA",
+      "status": "Status do dispositivo",
+      "supported": "Disponível",
+      "not_supported": "Indisponível",
+      "footer": "Sugestões de formulários são gratuitas. Outros recursos de IA requerem Unlimited.",
+      "toggle": "IA no dispositivo"
+    },
+    "tip_jar": {
+      "header": "Gorjeta",
+      "description": "Curtindo o Unlimited? Deixe uma gorjeta para apoiar o desenvolvimento.",
+      "small": "Pequena",
+      "medium": "Média",
+      "large": "Grande",
+      "thanks": "Obrigado pelo seu apoio!"
+    },
+    "title": "Configurações"
+  },
+  "paywall": {
+    "title": "Desbloquear Unlimited",
+    "subtitle": "Aproveite o Uha ao máximo",
+    "features": {
+      "subscriptions": "Assinaturas ilimitadas",
+      "currencies": "Todas as moedas",
+      "horizon": "Horizonte de até 10 anos",
+      "first_day": "Primeiro dia da semana personalizado",
+      "ai_premium": "Análises IA e alertas inteligentes"
+    },
+    "monthly": "Mensal",
+    "annual": "Anual",
+    "lifetime": "Vitalício",
+    "best_value": "Melhor oferta",
+    "subscribe": "Assinar",
+    "restore": "Restaurar compras",
+    "ai_note": "Sugestões de formulários são gratuitas. Outros recursos de IA requerem Unlimited.",
+    "terms": "Termos de uso",
+    "privacy": "Política de privacidade"
+  },
+  "limits": {
+    "subscription_limit": "O plano gratuito permite até {{count}} assinaturas",
+    "currency_restricted": "Esta moeda requer o Unlimited",
+    "horizon_locked": "Horizontes acima de {{max}} anos requerem o Unlimited",
+    "upgrade": "Desbloquear todos os recursos"
   },
   "dates": {
     "today": "Hoje",
     "tomorrow": "Amanhã",
-    "yesterday": "Ontem"
+    "yesterday": "Ontem",
+    "day": "Dia",
+    "month": "Mês",
+    "year": "Ano"
   },
   "transactions": {
     "details": {

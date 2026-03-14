@@ -1,5 +1,5 @@
 import type { ServiceT } from '@models';
 
 export type PropsT = ServiceT & {
-	onPress?: () => void;
+	onPress?: (id: string) => void;
 };

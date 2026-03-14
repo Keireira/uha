@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { useRouter } from 'expo-router';
 import { useUnit } from 'effector-react';
 
 import useTitle from './use-title';
@@ -16,12 +17,12 @@ import { ALL_TIME_MODES } from '@screens/transactions/models/lenses';
 const TitleInteractive = () => {
 	const title = useTitle();
 	const theme = useTheme();
-	const { txViewMode } = useSearchParams();
+	const router = useRouter();
+	const { txViewMode, calendarScale } = useSearchParams();
 
-	const { lenses, view_mode, tx_dates } = useAppModel();
+	const { lenses, tx_dates } = useAppModel();
 	const lensesStore = useUnit(lenses.$store);
 	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const calendarScale = useUnit(view_mode.calendar.$scale);
 
 	if (txViewMode === 'list') {
 		const setNextTimeMode = () => {
@@ -42,7 +43,7 @@ const TitleInteractive = () => {
 	if (txViewMode === 'calendar') {
 		const setNextCalendarScale = () => {
 			const nextScale = calendarScale === 'year' ? 'month' : 'year';
-			view_mode.calendar.setScale(nextScale);
+			router.setParams({ calendar_scale: nextScale });
 		};
 
 		if (calendarScale !== 'year') {

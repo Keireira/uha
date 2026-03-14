@@ -55,14 +55,13 @@
           "limited": "已開啟"
         }
       },
-      "face_id": "要求 Face ID",
       "language": "語言",
       "dark_mode": "深色模式"
     },
     "currencies": {
       "header": "貨幣",
-      "default": "預設貨幣",
-      "recalc": "換算貨幣",
+      "default_currency_code": "預設貨幣",
+      "recalc_currency_code": "換算貨幣",
       "fractions": "顯示小數",
       "explain": "貨幣標籤",
       "africa": "非洲",
@@ -79,7 +78,7 @@
       "other": "其他",
       "cryptocurrency": "加密貨幣",
       "refresh_rates": "匯率",
-      "refresh_action": "更新"
+      "primary": "Primary"
     },
     "about": {
       "header": "關於",
@@ -91,17 +90,84 @@
     },
     "donations": {
       "header": "支持我",
-      "description": "這款應用程式是免費且開源的，並將始終如此。\n但維護需要費用，因此任何形式的支持我都非常感激。",
+      "description": "Uha 由獨立開發者打造。任何支持都有助於維持應用程式運行並持續改進。",
       "donate": "捐贈",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "所有功能已解鎖"
+    },
+    "data": {
+      "header": "資料",
+      "backup": "備份",
+      "restore": "還原",
+      "export_csv": "Export CSV",
+      "backup_success": "備份已建立",
+      "restore_success": "資料還原成功",
+      "restore_error": "備份還原失敗",
+      "export_success": "匯出已就緒",
+      "import_csv": "Import CSV",
+      "import_success": "資料還原成功",
+      "import_error": "備份還原失敗",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "備份還原失敗",
+      "export_error": "備份還原失敗",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI 功能",
+      "status": "裝置狀態",
+      "supported": "可用",
+      "not_supported": "不可用",
+      "footer": "表單建議免費。其他 AI 功能需要 Unlimited。",
+      "toggle": "裝置端 AI"
+    },
+    "tip_jar": {
+      "header": "打賞罐",
+      "description": "喜歡 Unlimited 嗎？打賞支持開發。",
+      "small": "小額",
+      "medium": "中額",
+      "large": "大額",
+      "thanks": "感謝您的支持！"
     }
+  },
+  "paywall": {
+    "title": "解鎖 Unlimited",
+    "subtitle": "充分發揮 Uha 的潛力",
+    "features": {
+      "subscriptions": "無限訂閱",
+      "currencies": "所有貨幣",
+      "horizon": "最長 10 年展望",
+      "first_day": "自訂每週起始日",
+      "ai_premium": "AI 分析與智慧提醒"
+    },
+    "monthly": "月付",
+    "annual": "年付",
+    "lifetime": "終身",
+    "best_value": "最划算",
+    "subscribe": "訂閱",
+    "restore": "還原購買",
+    "ai_note": "表單建議免費。其他 AI 功能需要 Unlimited。",
+    "terms": "使用條款",
+    "privacy": "隱私權政策"
+  },
+  "limits": {
+    "subscription_limit": "免費方案最多允許 {{count}} 個訂閱",
+    "currency_restricted": "此貨幣需要 Unlimited",
+    "horizon_locked": "超過 {{max}} 年的展望需要 Unlimited",
+    "upgrade": "解鎖全部功能"
   },
   "dates": {
     "today": "今天",
     "tomorrow": "明天",
-    "yesterday": "昨天"
+    "yesterday": "昨天",
+    "day": "日",
+    "month": "月",
+    "year": "年"
   },
   "transactions": {
     "details": {

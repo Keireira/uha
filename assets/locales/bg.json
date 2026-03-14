@@ -43,6 +43,44 @@
     "search_payments": "Търси в плащания"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Всички функции са отключени"
+    },
+    "data": {
+      "header": "Данни",
+      "backup": "Резервно копие",
+      "restore": "Възстановяване",
+      "export_csv": "Export CSV",
+      "backup_success": "Резервното копие е създадено",
+      "restore_success": "Данните са възстановени успешно",
+      "restore_error": "Неуспешно възстановяване на резервно копие",
+      "export_success": "Експортът е готов",
+      "import_csv": "Import CSV",
+      "import_success": "Данните са възстановени успешно",
+      "import_error": "Неуспешно възстановяване на резервно копие",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Неуспешно възстановяване на резервно копие",
+      "export_error": "Неуспешно възстановяване на резервно копие",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI функции",
+      "status": "Състояние на устройството",
+      "supported": "Налично",
+      "not_supported": "Не е налично",
+      "footer": "Подсказките във формите са безплатни. Останалите ИИ функции изискват Unlimited.",
+      "toggle": "ИИ на устройството"
+    },
+    "tip_jar": {
+      "header": "Кутия за бакшиши",
+      "description": "Харесва ви Unlimited? Оставете бакшиш в подкрепа на разработката.",
+      "small": "Малък",
+      "medium": "Среден",
+      "large": "Голям",
+      "thanks": "Благодарим за подкрепата!"
+    },
     "system": {
       "header": "Система",
       "oled_mode": "OLED режим",
@@ -55,14 +93,13 @@
           "limited": "Включени"
         }
       },
-      "face_id": "Изискване на Face ID",
       "language": "Език",
       "dark_mode": "Тъмен режим"
     },
     "currencies": {
       "header": "Валути",
-      "default": "Основна валута",
-      "recalc": "Валута за преизчисление",
+      "default_currency_code": "Основна валута",
+      "recalc_currency_code": "Валута за преизчисление",
       "fractions": "Показвай десетични",
       "explain": "Етикет на валута",
       "africa": "Африка",
@@ -79,7 +116,7 @@
       "other": "Други",
       "cryptocurrency": "Криптовалути",
       "refresh_rates": "Обменни курсове",
-      "refresh_action": "Обнови"
+      "primary": "Primary"
     },
     "about": {
       "header": "За приложението",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Подкрепи ме",
-      "description": "Това приложение е безплатно и с отворен код, и винаги ще бъде.\nВъпреки това трябва да покривам разходите за поддръжка, затова ще съм благодарна за всяка форма на подкрепа.",
+      "description": "Uha се разработва независимо. Всяка подкрепа помага приложението да работи и да се развива.",
       "donate": "Дарение",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Отключи Unlimited",
+    "subtitle": "Извлечете максимума от Uha",
+    "features": {
+      "subscriptions": "Неограничени абонаменти",
+      "currencies": "Всички валути",
+      "horizon": "До 10-годишен хоризонт",
+      "first_day": "Персонализиран първи ден от седмицата",
+      "ai_premium": "ИИ аналитика и умни известия"
+    },
+    "monthly": "Месечно",
+    "annual": "Годишно",
+    "lifetime": "Завинаги",
+    "best_value": "Най-добра стойност",
+    "subscribe": "Абонирай се",
+    "restore": "Възстановяване на покупки",
+    "ai_note": "Подсказките във формите са безплатни. Останалите ИИ функции изискват Unlimited.",
+    "terms": "Условия за ползване",
+    "privacy": "Политика за поверителност"
+  },
+  "limits": {
+    "subscription_limit": "Безплатният план позволява до {{count}} абонамента",
+    "currency_restricted": "Тази валута изисква Unlimited",
+    "horizon_locked": "Хоризонти над {{max}} години изискват Unlimited",
+    "upgrade": "Отключи всички функции"
+  },
   "dates": {
     "today": "Днес",
     "tomorrow": "Утре",
-    "yesterday": "Вчера"
+    "yesterday": "Вчера",
+    "day": "Ден",
+    "month": "Месец",
+    "year": "Година"
   },
   "transactions": {
     "details": {

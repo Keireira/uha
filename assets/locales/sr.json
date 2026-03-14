@@ -43,6 +43,44 @@
     "search_payments": "Претражи у плаћањима"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Све функције су откључане"
+    },
+    "data": {
+      "header": "Подаци",
+      "backup": "Резервна копија",
+      "restore": "Враћање",
+      "export_csv": "Export CSV",
+      "backup_success": "Резервна копија је направљена",
+      "restore_success": "Подаци су успешно враћени",
+      "restore_error": "Враћање резервне копије није успело",
+      "export_success": "Извоз је спреман",
+      "import_csv": "Import CSV",
+      "import_success": "Подаци су успешно враћени",
+      "import_error": "Враћање резервне копије није успело",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Враћање резервне копије није успело",
+      "export_error": "Враћање резервне копије није успело",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI функције",
+      "status": "Статус уређаја",
+      "supported": "Доступно",
+      "not_supported": "Није доступно",
+      "footer": "Предлози у формама су бесплатни. Остале AI функције захтевају Unlimited.",
+      "toggle": "AI на уређају"
+    },
+    "tip_jar": {
+      "header": "Кутија за напојнице",
+      "description": "Уживате у Unlimited? Оставите напојницу за подршку развоја.",
+      "small": "Мала",
+      "medium": "Средња",
+      "large": "Велика",
+      "thanks": "Хвала на подршци!"
+    },
     "system": {
       "header": "Систем",
       "oled_mode": "OLED режим",
@@ -55,14 +93,13 @@
           "limited": "Укључено"
         }
       },
-      "face_id": "Захтевај Face ID",
       "language": "Језик",
       "dark_mode": "Тамни режим"
     },
     "currencies": {
       "header": "Валуте",
-      "default": "Подразумевана валута",
-      "recalc": "Валута за конверзију",
+      "default_currency_code": "Подразумевана валута",
+      "recalc_currency_code": "Валута за конверзију",
       "fractions": "Прикажи децимале",
       "explain": "Ознака валуте",
       "africa": "Африка",
@@ -79,7 +116,7 @@
       "other": "Остало",
       "cryptocurrency": "Криптовалуте",
       "refresh_rates": "Курсеви",
-      "refresh_action": "Ажурирај"
+      "primary": "Primary"
     },
     "about": {
       "header": "О апликацији",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Подржи ме",
-      "description": "Ова апликација је бесплатна и отвореног кода, и увек ће бити.\nМеђутим, морам да покријем трошкове одржавања, па ћу бити захвална на свакој подршци.",
+      "description": "Uha се развија независно. Свака подршка помаже да апликација настави да ради и расте.",
       "donate": "Донирај",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Откључај Unlimited",
+    "subtitle": "Искористите Uha максимално",
+    "features": {
+      "subscriptions": "Неограничене претплате",
+      "currencies": "Све валуте",
+      "horizon": "До 10 година хоризонта",
+      "first_day": "Прилагођен први дан у недељи",
+      "ai_premium": "AI аналитика и паметна обавештења"
+    },
+    "monthly": "Месечно",
+    "annual": "Годишње",
+    "lifetime": "Доживотно",
+    "best_value": "Најбоља вредност",
+    "subscribe": "Претплати се",
+    "restore": "Обнови куповине",
+    "ai_note": "Предлози у формама су бесплатни. Остале AI функције захтевају Unlimited.",
+    "terms": "Услови коришћења",
+    "privacy": "Политика приватности"
+  },
+  "limits": {
+    "subscription_limit": "Бесплатни план дозвољава до {{count}} претплата",
+    "currency_restricted": "Ова валута захтева Unlimited",
+    "horizon_locked": "Хоризонти преко {{max}} година захтевају Unlimited",
+    "upgrade": "Откључај све функције"
+  },
   "dates": {
     "today": "Данас",
     "tomorrow": "Сутра",
-    "yesterday": "Јуче"
+    "yesterday": "Јуче",
+    "day": "Дан",
+    "month": "Месец",
+    "year": "Година"
   },
   "transactions": {
     "details": {

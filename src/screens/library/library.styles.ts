@@ -38,7 +38,7 @@ export const TabBar = styled(ScrollView).attrs({
 export const TabGlass = styled(GlassView)<{ $active: boolean }>`
 	border-radius: 20px;
 	overflow: hidden;
-	background-color: ${({ theme, $active }) => ($active ? `${theme.accent.orange}18` : 'transparent')};
+	background-color: ${({ theme, $active }) => ($active ? `${theme.accents.orange}18` : 'transparent')};
 	border-width: ${({ $active }) => ($active ? '0px' : '1px')};
 	border-color: ${({ theme }) => `${theme.border.default}30`};
 `;
@@ -51,6 +51,16 @@ export const TabLabel = styled(Text)<{ $active: boolean }>`
 	font-size: 14px;
 	font-weight: ${({ $active }) => ($active ? '700' : '500')};
 	color: ${({ theme, $active }) => ($active ? theme.text.primary : theme.text.secondary)};
+`;
+
+export const FixedHeader = styled.View`
+	padding-horizontal: 20px;
+	gap: 24px;
+`;
+
+export const Content = styled.View`
+	flex: 1;
+	padding-top: 8px;
 `;
 
 export default styled(ScrollView).attrs({

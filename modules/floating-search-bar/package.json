@@ -1,0 +1,9 @@
+{
+  "name": "floating-search-bar",
+  "version": "1.0.0",
+  "description": "Expo native view wrapping UISearchBar as a floating overlay",
+  "main": "index.ts",
+  "private": true,
+  "license": "AGPL-3.0",
+  "platforms": ["ios"]
+}

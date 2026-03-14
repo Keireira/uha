@@ -1,22 +1,23 @@
 {
   "expo": {
     "slug": "uha",
-    "version": "1.14.0",
+    "name": "Uha",
+    "version": "1.15.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "appleTeamId": "WU9ZX7QZRL",
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
       "userInterfaceStyle": "automatic",
+      "entitlements": {
+        "com.apple.developer.icloud-container-identifiers": ["iCloud.com.keireira.uha"],
+        "com.apple.developer.icloud-services": ["CloudKit"]
+      },
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "uha",
-          "уха"
-        ],
+        "LSApplicationQueriesSchemes": ["uha", "уха"],
         "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
@@ -67,6 +68,13 @@
       "expo-dev-client",
       "expo-localization",
       [
+        "expo-file-system",
+        {
+          "supportsOpeningDocumentsInPlace": true,
+          "enableFileSharing": true
+        }
+      ],
+      [
         "@howincodes/expo-dynamic-app-icon",
         {
           "enby": {
@@ -97,13 +105,21 @@
         }
       ],
       [
-        "react-native-permissions",
+        "expo-build-properties",
         {
-          "iosPermissions": [
-            "Notifications"
-          ]
+          "ios": {
+            "deploymentTarget": "17.0"
+          }
         }
       ],
+      [
+        "react-native-permissions",
+        {
+          "iosPermissions": ["Notifications"]
+        }
+      ],
+      "expo-image",
+      "expo-sharing",
       "expo-secure-store",
       "expo-sqlite"
     ],

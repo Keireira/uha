@@ -55,14 +55,13 @@
           "limited": "Attivate"
         }
       },
-      "face_id": "Richiedi Face ID",
       "language": "Lingua",
       "dark_mode": "Modalità scura"
     },
     "currencies": {
       "header": "Valute",
-      "default": "Valuta principale",
-      "recalc": "Valuta di conversione",
+      "default_currency_code": "Valuta principale",
+      "recalc_currency_code": "Valuta di conversione",
       "fractions": "Mostra decimali",
       "explain": "Etichetta valuta",
       "africa": "Africa",
@@ -79,7 +78,7 @@
       "other": "Altro",
       "cryptocurrency": "Criptovalute",
       "refresh_rates": "Tassi di cambio",
-      "refresh_action": "Aggiorna"
+      "primary": "Primary"
     },
     "about": {
       "header": "Info",
@@ -91,17 +90,84 @@
     },
     "donations": {
       "header": "Sostienimi",
-      "description": "Questa app è gratuita e open source, e lo sarà sempre.\nTuttavia, devo sostenere i costi di manutenzione, quindi sarò grata per qualsiasi forma di supporto.",
+      "description": "Uha è sviluppata in modo indipendente. Qualsiasi supporto aiuta a mantenere l'app attiva e in crescita.",
       "donate": "Dona",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Tutte le funzionalità sbloccate"
+    },
+    "data": {
+      "header": "Dati",
+      "backup": "Backup",
+      "restore": "Ripristina",
+      "export_csv": "Export CSV",
+      "backup_success": "Backup creato",
+      "restore_success": "Dati ripristinati con successo",
+      "restore_error": "Ripristino del backup fallito",
+      "export_success": "Esportazione pronta",
+      "import_csv": "Import CSV",
+      "import_success": "Dati ripristinati con successo",
+      "import_error": "Ripristino del backup fallito",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Ripristino del backup fallito",
+      "export_error": "Ripristino del backup fallito",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Funzioni AI",
+      "status": "Stato dispositivo",
+      "supported": "Disponibile",
+      "not_supported": "Non disponibile",
+      "footer": "I suggerimenti nei moduli sono gratuiti. Altre funzioni AI richiedono Unlimited.",
+      "toggle": "AI sul dispositivo"
+    },
+    "tip_jar": {
+      "header": "Barattolo delle mance",
+      "description": "Ti piace Unlimited? Lascia una mancia per sostenere lo sviluppo.",
+      "small": "Piccola",
+      "medium": "Media",
+      "large": "Grande",
+      "thanks": "Grazie per il tuo supporto!"
     }
+  },
+  "paywall": {
+    "title": "Sblocca Unlimited",
+    "subtitle": "Ottieni il massimo da Uha",
+    "features": {
+      "subscriptions": "Abbonamenti illimitati",
+      "currencies": "Tutte le valute",
+      "horizon": "Fino a 10 anni di orizzonte",
+      "first_day": "Primo giorno della settimana personalizzato",
+      "ai_premium": "Analisi AI e avvisi intelligenti"
+    },
+    "monthly": "Mensile",
+    "annual": "Annuale",
+    "lifetime": "A vita",
+    "best_value": "Miglior offerta",
+    "subscribe": "Abbonati",
+    "restore": "Ripristina acquisti",
+    "ai_note": "I suggerimenti nei moduli sono gratuiti. Altre funzioni AI richiedono Unlimited.",
+    "terms": "Termini di utilizzo",
+    "privacy": "Informativa sulla privacy"
+  },
+  "limits": {
+    "subscription_limit": "Il piano gratuito consente fino a {{count}} abbonamenti",
+    "currency_restricted": "Questa valuta richiede Unlimited",
+    "horizon_locked": "Orizzonti superiori a {{max}} anni richiedono Unlimited",
+    "upgrade": "Sblocca tutte le funzionalità"
   },
   "dates": {
     "today": "Oggi",
     "tomorrow": "Domani",
-    "yesterday": "Ieri"
+    "yesterday": "Ieri",
+    "day": "Giorno",
+    "month": "Mese",
+    "year": "Anno"
   },
   "transactions": {
     "details": {

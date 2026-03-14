@@ -2,7 +2,7 @@ import useSummariesQuery from './hooks/use-summaries';
 
 export type SummariesQueryReturnT = ReturnType<typeof useSummariesQuery>;
 
-export type CategoryT = {
+export type TxCategoryT = {
 	id: string;
 	amount: number;
 	color: string;
@@ -10,14 +10,14 @@ export type CategoryT = {
 
 export type CategoryAccumulatorT = {
 	total: number;
-	byCategoryId: Record<string, CategoryT>;
+	byCategoryId: Record<string, TxCategoryT>;
 };
 
-export type TransactionT = SummariesQueryReturnT['month'][number] | SummariesQueryReturnT['year'][number];
+export type TxSummaryT = SummariesQueryReturnT['month'][number] | SummariesQueryReturnT['year'][number];
 
 export type SummaryReturnT = {
 	rawDate: Date;
 	formattedDate: string;
 	total: number;
-	categories: CategoryT[];
+	categories: TxCategoryT[];
 };

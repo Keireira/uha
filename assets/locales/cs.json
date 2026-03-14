@@ -43,6 +43,44 @@
     "search_payments": "Hledat v platbách"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Všechny funkce odemčeny"
+    },
+    "data": {
+      "header": "Data",
+      "backup": "Záloha",
+      "restore": "Obnovit",
+      "export_csv": "Export CSV",
+      "backup_success": "Záloha vytvořena",
+      "restore_success": "Data úspěšně obnovena",
+      "restore_error": "Obnovení zálohy se nezdařilo",
+      "export_success": "Export připraven",
+      "import_csv": "Import CSV",
+      "import_success": "Data úspěšně obnovena",
+      "import_error": "Obnovení zálohy se nezdařilo",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Obnovení zálohy se nezdařilo",
+      "export_error": "Obnovení zálohy se nezdařilo",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "AI funkce",
+      "status": "Stav zařízení",
+      "supported": "Dostupné",
+      "not_supported": "Nedostupné",
+      "footer": "Návrhy ve formulářích jsou zdarma. Ostatní AI funkce vyžadují Unlimited.",
+      "toggle": "AI na zařízení"
+    },
+    "tip_jar": {
+      "header": "Kasička",
+      "description": "Líbí se vám Unlimited? Zanechte příspěvek na podporu vývoje.",
+      "small": "Malý",
+      "medium": "Střední",
+      "large": "Velký",
+      "thanks": "Děkujeme za vaši podporu!"
+    },
     "system": {
       "header": "Systém",
       "oled_mode": "OLED režim",
@@ -55,14 +93,13 @@
           "limited": "Zapnuto"
         }
       },
-      "face_id": "Vyžadovat Face ID",
       "language": "Jazyk",
       "dark_mode": "Tmavý režim"
     },
     "currencies": {
       "header": "Měny",
-      "default": "Hlavní měna",
-      "recalc": "Přepočetní měna",
+      "default_currency_code": "Hlavní měna",
+      "recalc_currency_code": "Přepočetní měna",
       "fractions": "Zobrazit desetinná místa",
       "explain": "Značka měny",
       "africa": "Afrika",
@@ -79,7 +116,7 @@
       "other": "Ostatní",
       "cryptocurrency": "Kryptoměny",
       "refresh_rates": "Směnné kurzy",
-      "refresh_action": "Aktualizovat"
+      "primary": "Primary"
     },
     "about": {
       "header": "O aplikaci",
@@ -91,17 +128,62 @@
     },
     "donations": {
       "header": "Podpořte mě",
-      "description": "Tato aplikace je zdarma a s otevřeným zdrojovým kódem, a vždy bude.\nMusím ale platit za její údržbu, takže budu vděčná za jakoukoli formu podpory.",
+      "description": "Uha je vyvíjena nezávisle. Jakákoli podpora pomáhá udržovat aplikaci v chodu a rozvíjet ji.",
       "donate": "Přispět",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Odemknout Unlimited",
+    "subtitle": "Získejte z Uha maximum",
+    "features": {
+      "subscriptions": "Neomezená předplatná",
+      "currencies": "Všechny měny",
+      "horizon": "Horizont až 10 let",
+      "first_day": "Vlastní první den v týdnu",
+      "ai_premium": "AI analytika a chytrá upozornění"
+    },
+    "monthly": "Měsíčně",
+    "annual": "Ročně",
+    "lifetime": "Doživotně",
+    "best_value": "Nejlepší hodnota",
+    "subscribe": "Předplatit",
+    "restore": "Obnovit nákupy",
+    "ai_note": "Návrhy ve formulářích jsou zdarma. Ostatní AI funkce vyžadují Unlimited.",
+    "terms": "Podmínky použití",
+    "privacy": "Zásady ochrany soukromí"
+  },
+  "limits": {
+    "subscription_limit": "Bezplatný plán umožňuje až {{count}} předplatných",
+    "currency_restricted": "Tato měna vyžaduje Unlimited",
+    "horizon_locked": "Horizonty nad {{max}} let vyžadují Unlimited",
+    "upgrade": "Odemknout všechny funkce"
+  },
   "dates": {
     "today": "Dnes",
     "tomorrow": "Zítra",
-    "yesterday": "Včera"
+    "yesterday": "Včera",
+    "day": "Den",
+    "month": "Měsíc",
+    "year": "Rok",
+    "in_month": "V {{month}}",
+    "in_year": "V {{year}}",
+    "in_months": {
+      "0": "V Lednu",
+      "1": "V Únoru",
+      "2": "V Březnu",
+      "3": "V Dubnu",
+      "4": "V Květnu",
+      "5": "V Červnu",
+      "6": "V Červenci",
+      "7": "V Srpnu",
+      "8": "V Září",
+      "9": "V Říjnu",
+      "10": "V Listopadu",
+      "11": "V Prosinci"
+    }
   },
   "transactions": {
     "details": {

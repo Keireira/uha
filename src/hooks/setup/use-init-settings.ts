@@ -14,14 +14,27 @@ const useInitSettings = () => {
 
 		const execute = async () => {
 			const userData = await db.select().from(userTable).limit(1).get();
-			const { theme, oled_mode, max_horizon, with_color_grading, recalc_currency, default_currency } = userData || {};
+			const {
+				theme,
+				oled_mode,
+				max_horizon,
+				recalc_currency,
+				default_currency,
+				is_unlimited,
+				accent,
+				first_day,
+				ai_enabled
+			} = userData || {};
 
 			const initTheme = Settings.get('theme');
 			const initOledMode = Settings.get('oled_mode');
 			const initMaxHorizon = Settings.get('max_horizon');
-			const initWithColorGrading = Settings.get('with_color_grading');
 			const initRecalcCurrency = Settings.get('recalc_currency');
 			const initDefaultCurrency = Settings.get('default_currency');
+			const initIsUnlimited = Settings.get('is_unlimited');
+			const initFirstDay = Settings.get('first_day');
+			const initAccent = Settings.get('accent');
+			const initAiEnabled = Settings.get('ai_enabled');
 
 			if (initTheme === undefined) {
 				setSettingsValue('theme', theme);
@@ -35,16 +48,28 @@ const useInitSettings = () => {
 				setSettingsValue('max_horizon', max_horizon);
 			}
 
-			if (initWithColorGrading === undefined) {
-				setSettingsValue('with_color_grading', with_color_grading);
-			}
-
 			if (initRecalcCurrency === undefined) {
 				setSettingsValue('recalc_currency', recalc_currency);
 			}
 
 			if (initDefaultCurrency === undefined) {
 				setSettingsValue('default_currency', default_currency);
+			}
+
+			if (initIsUnlimited === undefined) {
+				setSettingsValue('is_unlimited', is_unlimited ?? false);
+			}
+
+			if (!initFirstDay) {
+				setSettingsValue('first_day', first_day);
+			}
+
+			if (!initAccent) {
+				setSettingsValue('accent', accent);
+			}
+
+			if (initAiEnabled === undefined) {
+				setSettingsValue('ai_enabled', ai_enabled);
 			}
 
 			setIsReady(true);

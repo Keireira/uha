@@ -43,6 +43,44 @@
     "search_payments": "Caută în plăți"
   },
   "settings": {
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Toate funcțiile deblocate"
+    },
+    "data": {
+      "header": "Date",
+      "backup": "Copie de rezervă",
+      "restore": "Restaurare",
+      "export_csv": "Export CSV",
+      "backup_success": "Copie de rezervă creată",
+      "restore_success": "Datele au fost restaurate cu succes",
+      "restore_error": "Restaurarea copiei de rezervă a eșuat",
+      "export_success": "Export pregătit",
+      "import_csv": "Import CSV",
+      "import_success": "Datele au fost restaurate cu succes",
+      "import_error": "Restaurarea copiei de rezervă a eșuat",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Restaurarea copiei de rezervă a eșuat",
+      "export_error": "Restaurarea copiei de rezervă a eșuat",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Funcții AI",
+      "status": "Starea dispozitivului",
+      "supported": "Disponibil",
+      "not_supported": "Indisponibil",
+      "footer": "Sugestiile din formulare sunt gratuite. Alte funcții AI necesită Unlimited.",
+      "toggle": "AI pe dispozitiv"
+    },
+    "tip_jar": {
+      "header": "Borcanul de bacșișuri",
+      "description": "Îți place Unlimited? Lasă un bacșiș pentru a susține dezvoltarea.",
+      "small": "Mic",
+      "medium": "Mediu",
+      "large": "Mare",
+      "thanks": "Mulțumim pentru sprijinul tău!"
+    },
     "system": {
       "header": "Sistem",
       "oled_mode": "Mod OLED",
@@ -55,14 +93,13 @@
           "limited": "Activate"
         }
       },
-      "face_id": "Solicită Face ID",
       "language": "Limbă",
       "dark_mode": "Mod întunecat"
     },
     "currencies": {
       "header": "Valute",
-      "default": "Valuta principală",
-      "recalc": "Valuta de conversie",
+      "default_currency_code": "Valuta principală",
+      "recalc_currency_code": "Valuta de conversie",
       "fractions": "Afișează zecimale",
       "explain": "Etichetă valută",
       "africa": "Africa",
@@ -79,7 +116,7 @@
       "other": "Altele",
       "cryptocurrency": "Criptomonede",
       "refresh_rates": "Cursuri valutare",
-      "refresh_action": "Actualizează"
+      "primary": "Primary"
     },
     "about": {
       "header": "Despre",
@@ -91,17 +128,46 @@
     },
     "donations": {
       "header": "Susține-mă",
-      "description": "Această aplicație este gratuită și open source, și va fi mereu așa.\nTotuși, trebuie să plătesc pentru întreținere, așa că voi aprecia orice formă de sprijin.",
+      "description": "Uha is built by a solo indie developer. Your support helps keep it alive and improving.",
       "donate": "Donează",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
     }
   },
+  "paywall": {
+    "title": "Deblochează Unlimited",
+    "subtitle": "Profită la maximum de Uha",
+    "features": {
+      "subscriptions": "Abonamente nelimitate",
+      "currencies": "Toate valutele",
+      "horizon": "Orizont de până la 10 ani",
+      "first_day": "Prima zi a săptămânii personalizată",
+      "ai_premium": "Analize AI și alerte inteligente"
+    },
+    "monthly": "Lunar",
+    "annual": "Anual",
+    "lifetime": "Pe viață",
+    "best_value": "Cea mai bună ofertă",
+    "subscribe": "Abonează-te",
+    "restore": "Restaurează achizițiile",
+    "ai_note": "Sugestiile din formulare sunt gratuite. Alte funcții AI necesită Unlimited.",
+    "terms": "Termeni de utilizare",
+    "privacy": "Politica de confidențialitate"
+  },
+  "limits": {
+    "subscription_limit": "Planul gratuit permite până la {{count}} abonamente",
+    "currency_restricted": "Această valută necesită Unlimited",
+    "horizon_locked": "Orizonturile peste {{max}} ani necesită Unlimited",
+    "upgrade": "Deblochează toate funcțiile"
+  },
   "dates": {
     "today": "Astăzi",
     "tomorrow": "Mâine",
-    "yesterday": "Ieri"
+    "yesterday": "Ieri",
+    "day": "Zi",
+    "month": "Lună",
+    "year": "An"
   },
   "transactions": {
     "details": {

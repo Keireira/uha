@@ -55,14 +55,13 @@
           "limited": "Włączone"
         }
       },
-      "face_id": "Wymagaj Face ID",
       "language": "Język",
       "dark_mode": "Tryb ciemny"
     },
     "currencies": {
       "header": "Waluty",
-      "default": "Waluta główna",
-      "recalc": "Waluta przeliczeniowa",
+      "default_currency_code": "Waluta główna",
+      "recalc_currency_code": "Waluta przeliczeniowa",
       "fractions": "Pokaż grosze",
       "explain": "Znacznik waluty",
       "africa": "Afryka",
@@ -79,7 +78,7 @@
       "other": "Inne",
       "cryptocurrency": "Kryptowaluty",
       "refresh_rates": "Kursy walut",
-      "refresh_action": "Aktualizuj"
+      "primary": "Primary"
     },
     "about": {
       "header": "O aplikacji",
@@ -91,17 +90,100 @@
     },
     "donations": {
       "header": "Wesprzyj mnie",
-      "description": "Ta aplikacja jest darmowa i open source — i zawsze taka będzie.\nMuszę jednak pokrywać koszty utrzymania, więc będę wdzięczna za każdą formę wsparcia.",
+      "description": "Uha jest rozwijana niezależnie. Każde wsparcie pomaga utrzymać aplikację i rozwijać ją dalej.",
       "donate": "Wesprzyj",
       "patreon": "Patreon",
       "github": "GitHub",
       "boosty": "Boosty"
+    },
+    "unlimited": {
+      "badge": "Unlimited",
+      "active": "Wszystkie funkcje odblokowane"
+    },
+    "data": {
+      "header": "Dane",
+      "backup": "Kopia zapasowa",
+      "restore": "Przywróć",
+      "export_csv": "Export CSV",
+      "backup_success": "Kopia zapasowa utworzona",
+      "restore_success": "Dane przywrócone pomyślnie",
+      "restore_error": "Nie udało się przywrócić kopii zapasowej",
+      "export_success": "Eksport gotowy",
+      "import_csv": "Import CSV",
+      "import_success": "Dane przywrócone pomyślnie",
+      "import_error": "Nie udało się przywrócić kopii zapasowej",
+      "icloud_sync": "iCloud Sync",
+      "icloud_coming_soon": "Coming soon",
+      "backup_error": "Nie udało się przywrócić kopii zapasowej",
+      "export_error": "Nie udało się przywrócić kopii zapasowej",
+      "data_footer": "Restoring a backup or importing CSV will overwrite all existing data."
+    },
+    "ai": {
+      "header": "Funkcje AI",
+      "status": "Stan urządzenia",
+      "supported": "Dostępne",
+      "not_supported": "Niedostępne",
+      "footer": "Podpowiedzi w formularzach są bezpłatne. Inne funkcje AI wymagają Unlimited.",
+      "toggle": "AI na urządzeniu"
+    },
+    "tip_jar": {
+      "header": "Słoik na napiwki",
+      "description": "Podoba Ci się Unlimited? Zostaw napiwek, aby wesprzeć rozwój.",
+      "small": "Mały",
+      "medium": "Średni",
+      "large": "Duży",
+      "thanks": "Dziękujemy za wsparcie!"
     }
+  },
+  "paywall": {
+    "title": "Odblokuj Unlimited",
+    "subtitle": "Wykorzystaj Uha w pełni",
+    "features": {
+      "subscriptions": "Nieograniczone subskrypcje",
+      "currencies": "Wszystkie waluty",
+      "horizon": "Horyzont do 10 lat",
+      "first_day": "Własny pierwszy dzień tygodnia",
+      "ai_premium": "Analiza AI i inteligentne powiadomienia"
+    },
+    "monthly": "Miesięcznie",
+    "annual": "Rocznie",
+    "lifetime": "Na zawsze",
+    "best_value": "Najlepsza oferta",
+    "subscribe": "Subskrybuj",
+    "restore": "Przywróć zakupy",
+    "ai_note": "Podpowiedzi w formularzach są bezpłatne. Inne funkcje AI wymagają Unlimited.",
+    "terms": "Regulamin",
+    "privacy": "Polityka prywatności"
+  },
+  "limits": {
+    "subscription_limit": "Darmowy plan pozwala na maksymalnie {{count}} subskrypcji",
+    "currency_restricted": "Ta waluta wymaga Unlimited",
+    "horizon_locked": "Horyzonty powyżej {{max}} lat wymagają Unlimited",
+    "upgrade": "Odblokuj wszystkie funkcje"
   },
   "dates": {
     "today": "Dzisiaj",
     "tomorrow": "Jutro",
-    "yesterday": "Wczoraj"
+    "yesterday": "Wczoraj",
+    "day": "Dzień",
+    "month": "Miesiąc",
+    "year": "Rok",
+    "in_month": "W {{month}}",
+    "in_year": "W {{year}}",
+    "in_months": {
+      "0": "W Styczniu",
+      "1": "W Lutym",
+      "2": "W Marcu",
+      "3": "W Kwietniu",
+      "4": "W Maju",
+      "5": "W Czerwcu",
+      "6": "W Lipcu",
+      "7": "W Sierpniu",
+      "8": "We Wrześniu",
+      "9": "W Październiku",
+      "10": "W Listopadzie",
+      "11": "W Grudniu"
+    }
   },
   "transactions": {
     "details": {
