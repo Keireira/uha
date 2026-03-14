@@ -1,5 +1,7 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+.idea
+
 # dependencies
 node_modules/
 
@@ -47,3 +49,4 @@ android
 !modules/settings-bridge/ios
 !modules/floating-search-bar/ios
 !modules/ai-compat/ios
+!modules/cloud-backup/ios

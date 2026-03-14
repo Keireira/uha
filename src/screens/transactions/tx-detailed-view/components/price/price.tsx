@@ -16,7 +16,11 @@ const Price = ({ date, isPhantom, currencyCode, price, denominator }: Props) => 
 	const convertedPrice = r(basePrice);
 
 	if (!hasAnyRate) {
-		return null;
+		return (
+			<Root $withConversion={false}>
+				<BasePrice>{formattedBasePrice}</BasePrice>
+			</Root>
+		);
 	}
 
 	return (

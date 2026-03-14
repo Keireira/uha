@@ -39,7 +39,7 @@ const useCalendar = (transactions: PreparedDbTxT[]) => {
 				const mappedMonths = quarter.map((month) => ({
 					list_key: `calendar-year-quarter-month-${lightFormat(month, 'yyyy-MM')}`,
 					monthDate: month,
-					title: format(month, 'MMM'),
+					title: format(month, 'LLL'),
 					daysWithTxs: daysWithTxsFn(month),
 					isMonthInRange: isWithinInterval(month, interval(minDate, maxDate))
 				}));

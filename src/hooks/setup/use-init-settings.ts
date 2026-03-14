@@ -18,23 +18,23 @@ const useInitSettings = () => {
 				theme,
 				oled_mode,
 				max_horizon,
-				with_color_grading,
 				recalc_currency,
 				default_currency,
 				is_unlimited,
-				unlimited_type,
-				unlimited_expires_at
+				accent,
+				first_day,
+				ai_enabled
 			} = userData || {};
 
 			const initTheme = Settings.get('theme');
 			const initOledMode = Settings.get('oled_mode');
 			const initMaxHorizon = Settings.get('max_horizon');
-			const initWithColorGrading = Settings.get('with_color_grading');
 			const initRecalcCurrency = Settings.get('recalc_currency');
 			const initDefaultCurrency = Settings.get('default_currency');
 			const initIsUnlimited = Settings.get('is_unlimited');
-			const initUnlimitedType = Settings.get('unlimited_type');
-			const initUnlimitedExpiresAt = Settings.get('unlimited_expires_at');
+			const initFirstDay = Settings.get('first_day');
+			const initAccent = Settings.get('accent');
+			const initAiEnabled = Settings.get('ai_enabled');
 
 			if (initTheme === undefined) {
 				setSettingsValue('theme', theme);
@@ -46,10 +46,6 @@ const useInitSettings = () => {
 
 			if (initMaxHorizon === undefined) {
 				setSettingsValue('max_horizon', max_horizon);
-			}
-
-			if (initWithColorGrading === undefined) {
-				setSettingsValue('with_color_grading', with_color_grading);
 			}
 
 			if (initRecalcCurrency === undefined) {
@@ -64,12 +60,16 @@ const useInitSettings = () => {
 				setSettingsValue('is_unlimited', is_unlimited ?? false);
 			}
 
-			if (initUnlimitedType === undefined) {
-				setSettingsValue('unlimited_type', unlimited_type ?? null);
+			if (!initFirstDay) {
+				setSettingsValue('first_day', first_day);
 			}
 
-			if (initUnlimitedExpiresAt === undefined) {
-				setSettingsValue('unlimited_expires_at', unlimited_expires_at ?? null);
+			if (!initAccent) {
+				setSettingsValue('accent', accent);
+			}
+
+			if (initAiEnabled === undefined) {
+				setSettingsValue('ai_enabled', ai_enabled);
 			}
 
 			setIsReady(true);

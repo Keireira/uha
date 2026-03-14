@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { GlassView } from 'expo-glass-effect';
+import { BlurView } from 'expo-blur';
 import { Text } from '@ui';
 
 export const Top = styled.View`
@@ -24,9 +24,9 @@ export const Comment = styled(Text).attrs({
 	color: ${({ theme }) => theme.text.tertiary};
 `;
 
-export const IconWrapper = styled(GlassView)`
-	width: 36px;
-	height: 36px;
+export const IconWrapper = styled(BlurView).attrs({ intensity: 20, tint: 'prominent' })`
+	width: 40px;
+	height: 40px;
 	border-radius: 12px;
 	overflow: hidden;
 	align-items: center;
@@ -34,8 +34,8 @@ export const IconWrapper = styled(GlassView)`
 `;
 
 export const IconText = styled(Text)`
-	font-size: 20px;
-	line-height: 36px;
+	font-size: 22px;
+	line-height: 40px;
 	text-align: center;
 `;
 
@@ -43,19 +43,19 @@ export const Title = styled(Text).attrs({
 	numberOfLines: 1
 })`
 	flex: 1;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 600;
 	letter-spacing: 0.1px;
 	color: ${({ theme }) => theme.text.primary};
 `;
 
-export default styled(GlassView)`
+export default styled(BlurView).attrs({ intensity: 15, tint: 'prominent' })`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 	align-items: flex-start;
 	justify-content: flex-start;
 	padding: 14px;
-	border-radius: 16px;
+	border-radius: 18px;
 	overflow: hidden;
 `;

@@ -1,4 +1,32 @@
-// TODO: integrate RevenueCat SDK
-const useInitPurchases = () => {};
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
+import Purchases, { LOG_LEVEL } from 'react-native-purchases';
+
+import { setSettingsValue } from '../use-settings';
+
+import type { CustomerInfo } from 'react-native-purchases';
+
+const useInitPurchases = () => {
+	useEffect(() => {
+		Purchases.setLogLevel(LOG_LEVEL.WARN);
+		const iosApiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_IOS_PUB_KEY ?? '';
+
+		if (Platform.OS === 'ios') {
+			Purchases.configure({ apiKey: iosApiKey });
+		}
+	}, []);
+
+	useEffect(() => {
+		const onCustomerInfoUpdate = (customerInfo: CustomerInfo) => {
+			setSettingsValue('is_unlimited', Boolean(customerInfo.entitlements.active['Uha Unlimited']));
+		};
+
+		Purchases.addCustomerInfoUpdateListener(onCustomerInfoUpdate);
+
+		return () => {
+			Purchases.removeCustomerInfoUpdateListener(onCustomerInfoUpdate);
+		};
+	}, []);
+};
 
 export default useInitPurchases;

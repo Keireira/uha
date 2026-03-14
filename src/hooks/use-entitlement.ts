@@ -1,61 +1,72 @@
-import { useMemo } from 'react';
-import { useLocales } from 'expo-localization';
-import { useRouter } from 'expo-router';
+import { useEffect, useCallback } from 'react';
 import * as Haptics from 'expo-haptics';
+import Purchases from 'react-native-purchases';
+import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
-import { useSettingsValue } from './use-settings';
-import {
-	FREE_TIER,
-	UNLIMITED_TIER,
-	FREE_CURRENCY_BASE,
-	type EntitlementT,
-	type UnlimitedType
-} from '@lib/entitlement';
+import { useSettingsValue, setSettingsValue } from './use-settings';
+import { FREE_TIER, UNLIMITED_TIER, type EntitlementT } from '@lib/entitlement';
 
 export const useEntitlement = (): EntitlementT => {
 	const isUnlimited = useSettingsValue<boolean>('is_unlimited') ?? false;
-	const unlimitedType = useSettingsValue<UnlimitedType | null>('unlimited_type') ?? null;
-	const unlimitedExpiresAt = useSettingsValue<string | null>('unlimited_expires_at') ?? null;
 
-	return useMemo(
-		() => ({
-			isUnlimited,
-			unlimitedType,
-			unlimitedExpiresAt,
-			tier: isUnlimited ? UNLIMITED_TIER : FREE_TIER
-		}),
-		[isUnlimited, unlimitedType, unlimitedExpiresAt]
-	);
+	useEffect(() => {
+		const checkEntitlements = async () => {
+			try {
+				const customerInfo = await Purchases.getCustomerInfo();
+				const hasUnlimited = Boolean(customerInfo.entitlements.active['Uha Unlimited']);
+				setSettingsValue('is_unlimited', hasUnlimited);
+			} catch (e) {
+				console.error(e);
+			}
+		};
+
+		checkEntitlements();
+	}, []);
+
+	return {
+		isUnlimited,
+		tier: isUnlimited ? UNLIMITED_TIER : FREE_TIER
+	};
 };
 
 export const useFeatureGate = () => {
 	const { isUnlimited } = useEntitlement();
-	const router = useRouter();
 
-	const gate = (action: () => void) => {
-		if (isUnlimited) {
-			action();
-			return;
+	const presentPaywall = useCallback(async () => {
+		try {
+			const result = await RevenueCatUI.presentPaywallIfNeeded({
+				requiredEntitlementIdentifier: 'Uha Unlimited'
+			});
+
+			switch (result) {
+				case PAYWALL_RESULT.PURCHASED:
+				case PAYWALL_RESULT.RESTORED: {
+					setSettingsValue('is_unlimited', true);
+					return true;
+				}
+
+				default:
+					return false;
+			}
+		} catch (error) {
+			console.error('Paywall error:', error);
+			return false;
 		}
+	}, []);
 
-		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-		router.push('/(crossroad)/paywall');
-	};
+	const checkTheGate = useCallback(
+		(action?: () => void) => {
+			if (isUnlimited) {
+				if (typeof action === 'function') action();
 
-	return gate;
-};
+				return;
+			}
 
-export const useFreeCurrencies = (): string[] => {
-	const locales = useLocales();
-	const localeCurrency = locales[0]?.currencyCode;
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+			presentPaywall();
+		},
+		[presentPaywall, isUnlimited]
+	);
 
-	return useMemo(() => {
-		const codes = [...FREE_CURRENCY_BASE];
-
-		if (localeCurrency && !codes.includes(localeCurrency as typeof FREE_CURRENCY_BASE[number])) {
-			codes.push(localeCurrency);
-		}
-
-		return codes;
-	}, [localeCurrency]);
+	return checkTheGate;
 };

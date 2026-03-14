@@ -7,7 +7,7 @@ const Layout = () => {
 
 	return (
 		<Stack screenOptions={{ headerShown: false, animation: 'none' }}>
-			<Stack.Screen name="index" initialParams={{ tx_view_mode: 'list' }} />
+			<Stack.Screen name="index" initialParams={{ tx_view_mode: 'list', calendar_scale: 'month' }} />
 
 			<Stack.Screen
 				name="[transactionId]"

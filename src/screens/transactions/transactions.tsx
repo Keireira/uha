@@ -1,8 +1,6 @@
 import React from 'react';
-import { useUnit } from 'effector-react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAppModel } from '@models';
 import { useTransactions, useSearchParams } from '@hooks';
 
 import TxHeader from './tx-header';
@@ -14,12 +12,9 @@ import Root from './transactions.styles';
 
 const Transactions = () => {
 	const insets = useSafeAreaInsets();
-	const { txViewMode } = useSearchParams();
+	const { txViewMode, calendarScale } = useSearchParams();
 	/* @TODO: Move to effector?? */
 	const transactions = useTransactions('From Transactions');
-
-	const { view_mode } = useAppModel();
-	const calendarScale = useUnit(view_mode.calendar.$scale);
 
 	const withSummaries = txViewMode === 'list' || calendarScale === 'month';
 

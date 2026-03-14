@@ -4,9 +4,13 @@ export type ThemeT = 'dark' | 'light' | 'oled';
 
 export type ThemeConfigT = {
 	tint: 'dark' | 'light';
+	is_oled: boolean;
 
 	static: {
+		pure_white: string;
 		white: string;
+		pure_black: string;
+		black: string;
 	};
 
 	background: {
@@ -29,18 +33,18 @@ export type ThemeConfigT = {
 		tertiary: string;
 		inverse: string;
 	};
-	accent: {
-		blue: string;
-		green: string;
-		orange: string;
+	accents: {
 		red: string;
+		orange: string;
+		yellow: string;
+		green: string;
+		mint: string;
+		teal: string;
+		cyan: string;
+		blue: string;
+		indigo: string;
 		purple: string;
 		pink: string;
-		yellow: string;
-		teal: string;
-		indigo: string;
-		mint: string;
-		cyan: string;
 	};
 	semantic: {
 		success: string;
@@ -53,6 +57,8 @@ export type ThemeConfigT = {
 		subtle: string;
 	};
 };
+
+export type AccentT = keyof ThemeConfigT['accents'];
 
 declare module 'styled-components/native' {
 	/* eslint-disable-next-line @typescript-eslint/no-empty-object-type */

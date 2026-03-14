@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { GlassView } from 'expo-glass-effect';
+import { BlurView } from 'expo-blur';
 import { Text } from '@ui';
 
 export const Title = styled(Text).attrs({
@@ -8,24 +8,26 @@ export const Title = styled(Text).attrs({
 	font-size: 12px;
 	font-weight: 600;
 	text-align: center;
-	letter-spacing: 0.3px;
+	letter-spacing: 0.2px;
+	line-height: 16px;
 	color: ${({ theme }) => theme.text.primary};
 `;
 
-export const LogoGlass = styled(GlassView)`
-	width: 56px;
-	height: 56px;
-	border-radius: 16px;
+export const LogoGlass = styled(BlurView).attrs({ intensity: 40, tint: 'prominent' })`
+	width: 60px;
+	height: 60px;
+	border-radius: 18px;
 	overflow: hidden;
 	align-items: center;
 	justify-content: center;
+	background-color: ${({ theme }) => `${theme.surface.default}40`};
 `;
 
 export default styled.Pressable`
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 8px;
 	align-items: center;
 	justify-content: flex-start;
-	padding: 10px 8px;
+	padding: 12px 4px;
 `;

@@ -4,11 +4,16 @@
 
 ## TODO
 
+- [ ] utilize `max_horizon` settings
+
 ## WTF
 
 ```sh
 # update expo
-pnpx expo install expo@latest --fix
+pnpm expo install expo@latest --fix
+
+# fix errors
+pnpx expo-doctor
 
 # run dev
 pnpm expo run:ios --device

@@ -15,15 +15,15 @@ export const CheckCircle = styled.View<{ $isSelected: boolean; $isImplied: boole
 	align-items: center;
 	justify-content: center;
 	border-width: ${({ $isSelected }) => ($isSelected ? '0px' : '1.5px')};
-	background-color: ${({ theme, $isSelected }) => ($isSelected ? theme.accent.orange : 'transparent')};
-	border-color: ${({ theme, $isImplied }) => ($isImplied ? `${theme.accent.orange}90` : `${theme.text.secondary}30`)};
+	background-color: ${({ theme, $isSelected }) => ($isSelected ? theme.accents.orange : 'transparent')};
+	border-color: ${({ theme, $isImplied }) => ($isImplied ? `${theme.accents.orange}90` : `${theme.text.secondary}30`)};
 `;
 
 export const ImpliedDot = styled.View`
 	width: 8px;
 	height: 8px;
 	border-radius: 4px;
-	background-color: ${({ theme }) => `${theme.accent.orange}70`};
+	background-color: ${({ theme }) => `${theme.accents.orange}70`};
 `;
 
 /* Title | Start */

@@ -19,7 +19,7 @@ const SearchBar = ({ searchQuery, setSearchQuery }: Props) => {
 			value={searchQuery}
 			placeholder={t('transactions.filters.search')}
 			onChangeText={handleChangeText}
-			tintColor={theme.accent.orange}
+			tintColor={theme.accents.orange}
 		/>
 	);
 };
