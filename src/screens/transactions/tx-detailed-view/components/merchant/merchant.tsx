@@ -1,6 +1,5 @@
 import React from 'react';
 
-import logos from '@assets/logos';
 import { useDateLabel } from './hooks';
 import { useTheme } from 'styled-components/native';
 
@@ -13,11 +12,10 @@ import type { Props } from './merchant.d';
 const Merchant = ({ date, slug, emoji, customName, title, color, isPhantom }: Props) => {
 	const theme = useTheme();
 	const dateLabel = useDateLabel(date);
-	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
 
 	return (
 		<Root>
-			<LogoView logoId={logoUrl} emoji={emoji} name={customName || title} size={56} color={color} />
+			<LogoView name={customName || title} slug={slug} color={color} emoji={emoji} size={56} />
 
 			<Info>
 				<Name numberOfLines={1} ellipsizeMode="tail">

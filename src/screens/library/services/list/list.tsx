@@ -8,7 +8,6 @@ import { asc, like, eq } from 'drizzle-orm';
 import { servicesTable, categoriesTable } from '@db/schema';
 
 import { LogoView } from '@ui';
-import logos from '@assets/logos';
 import { ArrowLeftIcon } from '@ui/icons';
 import { ServiceRoot, Title, Header, HeaderTitle, Subtitle, Description, Icon, SectionLetter } from './list.styles';
 
@@ -97,12 +96,11 @@ const ServicesListScreen = ({ search }: Props) => {
 
 			const { services, categories } = item.row;
 			const color = services.color || categories?.color || '#333333';
-			const logoUrl = services.slug ? logos[services.slug as keyof typeof logos] : null;
 
 			return (
 				<ServiceRoot onPress={() => handlePress(services.id)}>
 					<Icon>
-						<LogoView name={services.title} logoId={logoUrl} color={color} size={34} />
+						<LogoView name={services.title} slug={services.slug} color={color} size={34} />
 					</Icon>
 
 					<Description>

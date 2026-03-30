@@ -1,6 +1,5 @@
 import React from 'react';
 
-import logos from '@assets/logos';
 import { LogoView, Divider, AccentRail } from '@ui';
 import { useService } from './use-service';
 import { formatPrice, formatCycle } from '../../format';
@@ -29,8 +28,6 @@ const ServiceDetail = () => {
 
 	if (!service) return null;
 
-	const logoUrl = service.slug ? logos[service.slug as keyof typeof logos] : null;
-
 	return (
 		<Root>
 			<AccentRail
@@ -43,7 +40,7 @@ const ServiceDetail = () => {
 			<Content>
 				<HeroSection>
 					<LogoWrapper $color={service.color}>
-						<LogoView name={service.title} logoId={logoUrl} color={service.color} size={56} />
+						<LogoView name={service.title} slug={service.slug} color={service.color} size={56} />
 					</LogoWrapper>
 
 					<HeroTitle>{service.title}</HeroTitle>

@@ -4,10 +4,9 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Image } from 'expo-image';
 
 import type { SvgProps } from 'react-native-svg';
-import type { ImageSource } from 'expo-image';
 
 type Props = SvgProps & {
-	link?: ImageSource;
+	link?: string;
 	size: number;
 	color?: string;
 };

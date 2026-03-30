@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
 
-import logos from '@assets/logos';
 import { useSettingsValue, useRates } from '@hooks';
 
 import { LargeText, H3, LogoView } from '@ui';
@@ -32,8 +31,6 @@ const TransactionCard = ({
 	const formattedBasePrice = formatCurrency(basePrice, currency_code);
 	const convertedPrice = r(basePrice);
 
-	const logoUrl = slug ? logos[slug as keyof typeof logos] : null;
-
 	const openTransactionView = () => {
 		router.push({
 			pathname: '/(tabs)/transactions/[transactionId]',
@@ -46,7 +43,7 @@ const TransactionCard = ({
 	return (
 		<Root onPress={openTransactionView}>
 			<LogoSection>
-				<LogoView logoId={logoUrl} emoji={emoji} name={customName || title} size={48} color={color} />
+				<LogoView slug={slug} emoji={emoji} name={customName || title} size={48} color={color} />
 			</LogoSection>
 
 			<DescSection>

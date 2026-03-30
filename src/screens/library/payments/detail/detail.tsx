@@ -1,6 +1,5 @@
 import React from 'react';
 
-import logos from '@assets/logos';
 import { LogoView, Divider } from '@ui';
 import { usePayment } from './use-payment';
 import { formatPrice, formatCycle } from '../../format';
@@ -65,11 +64,9 @@ const PaymentDetail = () => {
 				<EmptyHint>No subscriptions yet</EmptyHint>
 			) : (
 				subscriptions.map((sub) => {
-					const logoUrl = sub.service_slug ? logos[sub.service_slug as keyof typeof logos] : null;
-
 					return (
 						<SubscriptionRow key={sub.id}>
-							<LogoView name={sub.service_title} logoId={logoUrl} color={sub.service_color} size={36} />
+							<LogoView name={sub.service_title} slug={sub.service_slug} color={sub.service_color} size={36} />
 
 							<SubscriptionInfo>
 								<SubscriptionName numberOfLines={1}>{sub.custom_name || sub.service_title}</SubscriptionName>
