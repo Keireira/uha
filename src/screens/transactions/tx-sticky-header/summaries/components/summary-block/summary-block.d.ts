@@ -1,4 +1,4 @@
-import type { TxCategoryT } from '../../summaries.d';
+import type { TxCategoryT } from '@screens/transactions/transactions.d';
 
 export type Props = {
 	clavis: string;

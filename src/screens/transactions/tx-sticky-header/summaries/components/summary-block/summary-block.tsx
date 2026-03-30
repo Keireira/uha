@@ -13,7 +13,7 @@ import { Text } from '@ui';
 import Root, { DateText, CategoryChip, CategoryChips } from './summary-block.styles';
 
 import type { Props } from './summary-block.d';
-import type { TxCategoryT } from '../../summaries.d';
+import type { TxCategoryT } from '@screens/transactions/transactions.d';
 
 const renderCategoryChips = (categories: TxCategoryT[], total: Props['total'], clavis: Props['clavis']) => {
 	const categoryChips = categories.map((category) => {

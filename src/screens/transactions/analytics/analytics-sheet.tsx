@@ -13,7 +13,13 @@ import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useSettingsValue } from '@hooks';
-import { useDay, useYear, useMonth, useSummariesQuery, useGetLastKnownRates } from '../summaries/hooks';
+import {
+	useDay,
+	useYear,
+	useMonth,
+	useSummariesQuery,
+	useGetLastKnownRates
+} from '../tx-sticky-header/summaries/hooks';
 
 import useCategoryDetails from './use-category-details';
 import Root, {

@@ -5,8 +5,8 @@ import { useTheme } from 'styled-components/native';
 
 import { useSearchParams } from '@hooks';
 
-import TxHeader from '../tx-header';
-import Summaries from '../summaries';
+import TxHeader from './tx-header';
+import Summaries from './summaries';
 
 const TxStickyHeader = () => {
 	const insets = useSafeAreaInsets();

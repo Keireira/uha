@@ -1,12 +1,7 @@
 import useSummariesQuery from './hooks/use-summaries';
+import type { TxCategoryT } from '../../transactions';
 
 export type SummariesQueryReturnT = ReturnType<typeof useSummariesQuery>;
-
-export type TxCategoryT = {
-	id: string;
-	amount: number;
-	color: string;
-};
 
 export type CategoryAccumulatorT = {
 	total: number;

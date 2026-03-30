@@ -1,10 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { useTransactions, useSearchParams } from '@hooks';
 
 import TransactionsList from './txs-list';
 import TransactionsCalendar from './txs-calendar';
+import Root from './transactions.styles';
 
 const Transactions = () => {
 	const { txViewMode } = useSearchParams();
@@ -16,9 +16,9 @@ const Transactions = () => {
 	}
 
 	return (
-		<View style={{ flex: 1 }}>
+		<Root>
 			<TransactionsCalendar transactions={transactions} />
-		</View>
+		</Root>
 	);
 };
 
