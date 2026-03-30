@@ -2,8 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTipJar, useEntitlement, useScrollDirection } from '@hooks';
+import { useTipJar, useEntitlement } from '@hooks';
 
 import {
 	NeuroSetting,
@@ -25,18 +24,13 @@ import Root, { SectionWrap, SectionLabel, SectionCard, SectionFooterText, Row } 
 const SettingsScreen = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
-	const handleScroll = useScrollDirection();
 
 	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts } = useTipJar();
 	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
 
 	return (
-		<Root
-			contentContainerStyle={{ paddingTop: insets.top + 16, paddingBottom: insets.bottom + 48 }}
-			onScroll={handleScroll}
-		>
+		<Root>
 			<AppLogoPickerSetting />
 
 			{/* Appearance */}

@@ -71,7 +71,6 @@ const LoadFinalStage = () => {
 							initialRouteName="index"
 						>
 							<Stack.Screen name="index" />
-							<Stack.Screen name="search" />
 							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 							<Stack.Screen
 								name="(crossroad)"

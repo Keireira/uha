@@ -1,13 +1,13 @@
 import React from 'react';
+import { useSettingsValue } from '@hooks';
 // import { startOfToday, startOfMonth } from 'date-fns';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
-// import { useAppModel } from '@models';
-// import { useSearchParams } from '@hooks';
 
-// import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
-// import { ListIcon, CalendarIcon, SettingsIcon, LibraryIcon, AddIcon } from '@ui/icons';
+import type { AccentT } from '@themes';
 
 const TabLayout = () => {
+	const settingAccent = useSettingsValue<AccentT>('accent');
+
 	// const { txViewMode } = useSearchParams();
 	// const { view_mode, tx_dates } = useAppModel();
 
@@ -24,26 +24,28 @@ const TabLayout = () => {
 	// };
 
 	return (
-		<NativeTabs>
+		<NativeTabs key={settingAccent}>
 			<NativeTabs.Trigger name="transactions">
 				<NativeTabs.Trigger.Label>History</NativeTabs.Trigger.Label>
-				<NativeTabs.Trigger.Icon sf="checklist.unchecked" />
+				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="cabinet" />
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="library">
 				<NativeTabs.Trigger.Label>Library</NativeTabs.Trigger.Label>
-				<NativeTabs.Trigger.Icon sf="books.vertical" />
+				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="books.vertical" />
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="settings">
 				<NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
-				<NativeTabs.Trigger.Icon sf="gear" />
+				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="gear" />
 			</NativeTabs.Trigger>
 
-			<NativeTabs.Trigger name="search" role="search">
-				<NativeTabs.Trigger.Icon sf="plus" />
-				<NativeTabs.Trigger.Label>Search</NativeTabs.Trigger.Label>
+			<NativeTabs.Trigger name="add" role="search">
+				<NativeTabs.Trigger.Label>New</NativeTabs.Trigger.Label>
+				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="plus" />
 			</NativeTabs.Trigger>
+
+			<NativeTabs.Screen name="add" options={{ headerShown: false }} />
 		</NativeTabs>
 	);
 };
