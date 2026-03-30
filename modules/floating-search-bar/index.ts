@@ -1,4 +1,5 @@
 import { requireNativeView } from 'expo';
+
 import type { ViewProps } from 'react-native';
 
 export type FloatingSearchBarProps = ViewProps & {

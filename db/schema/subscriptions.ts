@@ -1,10 +1,10 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
+import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-import { tendersTable } from './tenders';
-import { servicesTable } from './services';
 import { categoriesTable } from './categories';
 import { currenciesTable } from './currencies';
+import { servicesTable } from './services';
+import { tendersTable } from './tenders';
 
 export const subscriptionsTable = sqliteTable(
 	'subscriptions',
@@ -29,9 +29,7 @@ export const subscriptionsTable = sqliteTable(
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...
 
-		first_payment_date: text()
-			.default(sql`(CURRENT_DATE)`)
-			.notNull(),
+		first_payment_date: text().default(sql`(CURRENT_DATE)`).notNull(),
 		tender_id: text().references(() => tendersTable.id), // uuid v4
 
 		cancellation_date: text() // Shall be empty if not canceled

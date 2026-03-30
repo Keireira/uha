@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
+import { index, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import { categoriesTable } from './categories';
 
@@ -10,10 +10,7 @@ export const servicesTable = sqliteTable(
 		slug: text().unique().notNull(), // adguard | spotify | ...
 		title: text().notNull(), // Adguard | Spotify | ...
 		color: text().notNull(), // #0000FF | #00FFFF | ...
-		aliases: text({ mode: 'json' })
-			.$type<string[]>()
-			.default(sql`'[]'`)
-			.notNull(), // ["адгард"]
+		aliases: text({ mode: 'json' }).$type<string[]>().default(sql`'[]'`).notNull(), // ["адгард"]
 		category_id: text()
 			.references(() => categoriesTable.id)
 			.notNull() // uuid v4

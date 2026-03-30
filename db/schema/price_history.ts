@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, real, index, unique } from 'drizzle-orm/sqlite-core';
+import { index, real, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core';
 
 import { currenciesTable } from './currencies';
 import { subscriptionsTable } from './subscriptions';
@@ -9,9 +9,7 @@ export const priceHistoryTable = sqliteTable(
 	{
 		id: text().primaryKey(), // uuid v4
 		amount: real().notNull(),
-		date: text()
-			.default(sql`(CURRENT_DATE)`)
-			.notNull(),
+		date: text().default(sql`(CURRENT_DATE)`).notNull(),
 		currency_id: text()
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...

@@ -1,1 +1,1 @@
-export { isAvailable, createBackup, fetchBackup, getTimestamp, zip, unzip } from './src/CloudBackupModule';
+export { createBackup, fetchBackup, getTimestamp, isAvailable, unzip, zip } from './src/CloudBackupModule';
