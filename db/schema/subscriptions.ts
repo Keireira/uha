@@ -29,7 +29,9 @@ export const subscriptionsTable = sqliteTable(
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...
 
-		first_payment_date: text().default(sql`(CURRENT_DATE)`).notNull(),
+		first_payment_date: text()
+			.default(sql`(CURRENT_DATE)`)
+			.notNull(),
 		tender_id: text().references(() => tendersTable.id), // uuid v4
 
 		cancellation_date: text() // Shall be empty if not canceled

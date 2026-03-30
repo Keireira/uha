@@ -9,7 +9,9 @@ export const priceHistoryTable = sqliteTable(
 	{
 		id: text().primaryKey(), // uuid v4
 		amount: real().notNull(),
-		date: text().default(sql`(CURRENT_DATE)`).notNull(),
+		date: text()
+			.default(sql`(CURRENT_DATE)`)
+			.notNull(),
 		currency_id: text()
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...

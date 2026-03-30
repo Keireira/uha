@@ -47,7 +47,9 @@ const ServicesListScreen = ({ search }: Props) => {
 			if (!cancelled) setData(result);
 		})();
 
-		return () => { cancelled = true; };
+		return () => {
+			cancelled = true;
+		};
 	}, [search]);
 
 	const listData = useMemo(() => {

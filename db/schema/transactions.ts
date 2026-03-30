@@ -9,7 +9,9 @@ export const transactionsTable = sqliteTable(
 	'transactions',
 	{
 		id: text().primaryKey(), // uuid v4
-		date: text().default(sql`(CURRENT_DATE)`).notNull(),
+		date: text()
+			.default(sql`(CURRENT_DATE)`)
+			.notNull(),
 
 		// in MINOR UNITS!!!! (100 for 1 USD, 1000 for 1000 JPY etc...)
 		amount: int({ mode: 'number' }).notNull(),

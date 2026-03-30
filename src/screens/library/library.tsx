@@ -8,7 +8,17 @@ import { Wrapper, TextInput } from '@ui';
 import { PaymentPreviews } from './payments';
 import { ServicePreviews } from './services';
 import { CategoryPreviews } from './categories';
-import { HeaderRow, ScreenTitle, AddButton, TabBar, TabGlass, TabInner, TabLabel, FixedHeader, Content } from './library.styles';
+import {
+	HeaderRow,
+	ScreenTitle,
+	AddButton,
+	TabBar,
+	TabGlass,
+	TabInner,
+	TabLabel,
+	FixedHeader,
+	Content
+} from './library.styles';
 
 type TabT = 'categories' | 'services' | 'payments';
 

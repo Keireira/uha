@@ -47,7 +47,9 @@ export const usePayment = () => {
 			setSubscriptions(subs);
 		})();
 
-		return () => { cancelled = true; };
+		return () => {
+			cancelled = true;
+		};
 	}, [id]);
 
 	return { payment, subscriptions };
