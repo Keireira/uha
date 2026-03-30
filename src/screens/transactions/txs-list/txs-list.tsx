@@ -3,6 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppModel } from '@models';
+import { useTheme } from 'styled-components/native';
 import { isHeaderSection } from './utils';
 import { useScrollDirection } from '@hooks';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
@@ -26,6 +27,7 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 const TxsList = ({ transactions }: Props) => {
 	const listRef = useRef<FlashListRef<HeaderSectionT | TransactionProps>>(null);
 	const insets = useSafeAreaInsets();
+	const theme = useTheme();
 	const { view_mode } = useAppModel();
 	const handleScroll = useScrollDirection();
 
@@ -55,8 +57,11 @@ const TxsList = ({ transactions }: Props) => {
 			<Root>
 				<FlashList
 					ref={listRef}
+					contentInsetAdjustmentBehavior="automatic"
 					contentContainerStyle={{
-						gap: 16
+						gap: 16,
+						paddingHorizontal: 16,
+						backgroundColor: theme.background.default
 					}}
 					data={sections}
 					onScroll={handleScroll}

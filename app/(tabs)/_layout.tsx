@@ -10,8 +10,8 @@ const TabLayout = () => {
 	return (
 		<NativeTabs key={settingAccent} minimizeBehavior="onScrollDown">
 			<NativeTabs.Trigger name="transactions">
-				<NativeTabs.Trigger.Label>History</NativeTabs.Trigger.Label>
-				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="cabinet" />
+				<NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="house" />
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="library">

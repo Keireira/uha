@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Stack } from 'expo-router';
-import TxHeader from '@screens/transactions/tx-header';
+import TxStickyHeader from '@screens/transactions/tx-sticky-header';
 import { useTheme } from 'styled-components/native';
 
 const Layout = () => {
@@ -13,7 +13,10 @@ const Layout = () => {
 				name="index"
 				initialParams={{ tx_view_mode: 'list', calendar_scale: 'month' }}
 				options={{
-					header: () => <TxHeader />
+					headerShown: true,
+					headerShadowVisible: false,
+					header: () => <TxStickyHeader />,
+					contentStyle: { backgroundColor: theme.background.default }
 				}}
 			/>
 
