@@ -39,42 +39,42 @@ const AddCategoryScreen = () => {
 			style={{ backgroundColor: color }}
 			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
 		>
-				<Header>
-					<Title $dark={dark}>New Category</Title>
-					<CloseGlass isInteractive>
-						<CloseInner onPress={() => router.back()} hitSlop={10}>
-							<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
-						</CloseInner>
-					</CloseGlass>
-				</Header>
+			<Header>
+				<Title $dark={dark}>New Category</Title>
+				<CloseGlass isInteractive>
+					<CloseInner onPress={() => router.back()} hitSlop={10}>
+						<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
+					</CloseInner>
+				</CloseGlass>
+			</Header>
 
-				<Preview $bg={previewBg}>
-					{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder $dark={dark}>?</PreviewPlaceholder>}
-				</Preview>
+			<Preview $bg={previewBg}>
+				{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder $dark={dark}>?</PreviewPlaceholder>}
+			</Preview>
 
-				<NameInput
-					$dark={dark}
-					value={title}
-					onChangeText={setTitle}
-					placeholder="Category name"
-					placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
-				/>
+			<NameInput
+				$dark={dark}
+				value={title}
+				onChangeText={setTitle}
+				placeholder="Category name"
+				placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
+			/>
 
-				<Main>
-					<Section>
-						<Caption $dark={dark}>Logo Emoji</Caption>
-						<EmojiPicker color={color} selected={emoji} onSelect={setEmoji} />
-					</Section>
+			<Main>
+				<Section>
+					<Caption $dark={dark}>Logo Emoji</Caption>
+					<EmojiPicker color={color} selected={emoji} onSelect={setEmoji} />
+				</Section>
 
-					<Section>
-						<Caption $dark={dark}>Support Color</Caption>
-						<ColorPicker value={color} onSelect={setColor} />
-					</Section>
-				</Main>
+				<Section>
+					<Caption $dark={dark}>Support Color</Caption>
+					<ColorPicker value={color} onSelect={setColor} />
+				</Section>
+			</Main>
 
-				<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-					<SaveLabel $dark={dark}>Create</SaveLabel>
-				</SaveButton>
+			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
+				<SaveLabel $dark={dark}>Create</SaveLabel>
+			</SaveButton>
 		</Container>
 	);
 };

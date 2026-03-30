@@ -30,8 +30,7 @@ const overrideItemLayout = (layout: { span?: number }, item: ListItem) => {
 	}
 };
 
-const keyExtractor = (item: ListItem) =>
-	item.type === 'header' ? `header-${item.letter}` : item.payment.id;
+const keyExtractor = (item: ListItem) => (item.type === 'header' ? `header-${item.letter}` : item.payment.id);
 
 const contentContainerStyle = { paddingHorizontal: PADDING };
 
@@ -53,7 +52,9 @@ const Previews = ({ search }: Props) => {
 			if (!cancelled) setPayments(result);
 		})();
 
-		return () => { cancelled = true; };
+		return () => {
+			cancelled = true;
+		};
 	}, [search]);
 
 	const listData = useMemo(() => {

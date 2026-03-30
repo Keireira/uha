@@ -9,19 +9,19 @@
 
 ## Сводка
 
-| Категория | Кол-во | Риск для Compiler | Сложность фикса |
-|-----------|--------|-------------------|-----------------|
-| [A. Stable ref (Reanimated SharedValue)](#a-stable-ref-reanimated-sharedvalue) | 5 | Низкий | Тривиальная |
-| [B. Stable ref (Effector model)](#b-stable-ref-effector-model) | 4 | Низкий | Тривиальная |
-| [C. Mount-only effect](#c-mount-only-effect) | 2 | Средний | Средняя |
-| [D. `.length` вместо массива (perf-hack)](#d-length-вместо-массива) | 4 | **Высокий** | Средняя |
-| [E. Пропущен `lastKnownRates`](#e-пропущен-lastknownrates) | 3 | **Высокий** | Низкая |
-| [F. Derived key как proxy dep](#f-derived-key-как-proxy-dep) | 3 | Средний | Средняя |
-| [G. Пропущены аргументы хука в deps](#g-пропущены-аргументы-хука-в-deps) | 1 | **Высокий** | Низкая |
-| [H. Reset state on ID change](#h-reset-state-on-id-change) | 1 | Средний | Низкая |
-| [I. Пропущен `t` (i18n)](#i-пропущен-t-i18n) | 1 | Низкий | Тривиальная |
-| [J. Theme deps narrowing](#j-theme-deps-narrowing) | 1 | Низкий | Низкая |
-| **Итого** | **25** | | |
+| Категория                                                                      | Кол-во | Риск для Compiler | Сложность фикса |
+| ------------------------------------------------------------------------------ | ------ | ----------------- | --------------- |
+| [A. Stable ref (Reanimated SharedValue)](#a-stable-ref-reanimated-sharedvalue) | 5      | Низкий            | Тривиальная     |
+| [B. Stable ref (Effector model)](#b-stable-ref-effector-model)                 | 4      | Низкий            | Тривиальная     |
+| [C. Mount-only effect](#c-mount-only-effect)                                   | 2      | Средний           | Средняя         |
+| [D. `.length` вместо массива (perf-hack)](#d-length-вместо-массива)            | 4      | **Высокий**       | Средняя         |
+| [E. Пропущен `lastKnownRates`](#e-пропущен-lastknownrates)                     | 3      | **Высокий**       | Низкая          |
+| [F. Derived key как proxy dep](#f-derived-key-как-proxy-dep)                   | 3      | Средний           | Средняя         |
+| [G. Пропущены аргументы хука в deps](#g-пропущены-аргументы-хука-в-deps)       | 1      | **Высокий**       | Низкая          |
+| [H. Reset state on ID change](#h-reset-state-on-id-change)                     | 1      | Средний           | Низкая          |
+| [I. Пропущен `t` (i18n)](#i-пропущен-t-i18n)                                   | 1      | Низкий            | Тривиальная     |
+| [J. Theme deps narrowing](#j-theme-deps-narrowing)                             | 1      | Низкий            | Низкая          |
+| **Итого**                                                                      | **25** |                   |                 |
 
 ---
 
@@ -42,8 +42,8 @@ src/elements/navbar/older-ios-navbar/hooks/use-icon-animations.ts
 ```tsx
 // Сейчас:
 useEffect(() => {
-    progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [isFocused, reducedMotion]);
 
 // Нужно:
@@ -61,8 +61,8 @@ src/elements/navbar/older-ios-navbar/hooks/use-animations.ts
 
 ```tsx
 useEffect(() => {
-    progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [direction, reducedMotion]);
 ```
 
@@ -77,8 +77,8 @@ src/screens/settings/components/accent-spectrum/accent-bar/accent-bar.tsx
 
 ```tsx
 useEffect(() => {
-    flex.value = withTiming(isActive ? 4 : 1.4, { duration: 180 });
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	flex.value = withTiming(isActive ? 4 : 1.4, { duration: 180 });
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [isActive]);
 ```
 
@@ -114,9 +114,9 @@ src/screens/transactions/summaries/hooks/use-animations.ts
 
 ```tsx
 useEffect(() => {
-    const target = txViewMode === 'calendar' ? COLLAPSED : direction === 'down' ? COLLAPSED : EXPANDED;
-    progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	const target = txViewMode === 'calendar' ? COLLAPSED : direction === 'down' ? COLLAPSED : EXPANDED;
+	progress.value = reducedMotion ? target : withSpring(target, ANIMATION_CONFIG);
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [direction, reducedMotion, txViewMode]);
 ```
 
@@ -140,10 +140,10 @@ src/hooks/use-transactions/index.ts
 
 ```tsx
 useEffect(() => {
-    if (txViewMode === 'calendar' && minMonthDate) {
-        tx_dates.minActiveDate.set(minMonthDate);
-    }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	if (txViewMode === 'calendar' && minMonthDate) {
+		tx_dates.minActiveDate.set(minMonthDate);
+	}
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [txViewMode, minMonthDate, maxMonthDate]);
 ```
 
@@ -154,8 +154,8 @@ useEffect(() => {
 
 ```tsx
 useEffect(() => {
-    tx_dates.maxActiveDate.set(maxMonthDate || new Date());
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	tx_dates.maxActiveDate.set(maxMonthDate || new Date());
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [maxMonthDate]);
 ```
 
@@ -170,12 +170,12 @@ src/screens/transactions/filters/hooks/use-auto-time-mode.ts
 
 ```tsx
 useEffect(() => {
-    if (futureCount.value === 0 && allTimeCount.value > 0 && timeMode === 'future' && hasFilters) {
-        lenses.time_mode.set('all');
-    } else if (futureCount.value > 0 && timeMode === 'all' && hasFilters) {
-        lenses.time_mode.set('future');
-    }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	if (futureCount.value === 0 && allTimeCount.value > 0 && timeMode === 'future' && hasFilters) {
+		lenses.time_mode.set('all');
+	} else if (futureCount.value > 0 && timeMode === 'all' && hasFilters) {
+		lenses.time_mode.set('future');
+	}
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [futureCount?.value, allTimeCount?.value, hasFilters, timeMode]);
 ```
 
@@ -190,8 +190,8 @@ src/screens/transactions/txs-list/hooks/use-get-viewables.ts
 
 ```tsx
 const handleViewableItemsChanged = useCallback(({ viewableItems }: ViewableItemsT) => {
-    // ... tx_dates.focused.set(dates);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+	// ... tx_dates.focused.set(dates);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 ```
 
@@ -213,11 +213,13 @@ src/hooks/setup/use-sync-settings.tsx
 
 ```tsx
 useEffect(() => {
-    // Читает theme, colorScheme
-    // Вызывает setSettingsValue, Appearance.setColorScheme
-    // Подписывается на SettingsBridgeModule.addListener
-    return () => { SettingsBridgeModule.removeAllListeners('onThemeChanged'); };
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	// Читает theme, colorScheme
+	// Вызывает setSettingsValue, Appearance.setColorScheme
+	// Подписывается на SettingsBridgeModule.addListener
+	return () => {
+		SettingsBridgeModule.removeAllListeners('onThemeChanged');
+	};
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, []);
 ```
 
@@ -253,6 +255,7 @@ useEffect(() => {
 пересчитывать при смене ссылки на массив, если длина не изменилась.
 
 **Почему опасно:**
+
 - Если массив поменялся по содержимому (например, элемент обновился), но длина осталась — memo вернёт stale данные.
 - React Compiler **полностью игнорирует** ручные deps и мемоизирует по своим правилам. Если компилятор
   решит, что нужно пересчитать — он это сделает. Если нет — нет. Ручной `.length` хак будет конфликтовать.
@@ -265,10 +268,8 @@ src/screens/transactions/summaries/hooks/use-summaries.ts
 
 ```tsx
 const transactionsMonth = useMemo(() => {
-    return transactions.filter((tx) =>
-        isWithinInterval(new Date(tx.date), interval(startOfMonth, endOfMonth))
-    );
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	return transactions.filter((tx) => isWithinInterval(new Date(tx.date), interval(startOfMonth, endOfMonth)));
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [recalcMonthKey, transactions.length]);
 ```
 
@@ -282,10 +283,8 @@ const transactionsMonth = useMemo(() => {
 
 ```tsx
 const transactionsYear = useMemo(() => {
-    return transactions.filter((tx) =>
-        isWithinInterval(new Date(tx.date), interval(startOfYear, endOfYear))
-    );
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	return transactions.filter((tx) => isWithinInterval(new Date(tx.date), interval(startOfYear, endOfYear)));
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [recalcYearKey, transactions.length]);
 ```
 
@@ -351,11 +350,11 @@ src/screens/transactions/summaries/hooks/use-categories.ts
 
 ```tsx
 const rates = useMemo(() => {
-    if (!ratesOnDate?.length) {
-        return lastKnownRates;  // ← используется как fallback
-    }
-    // ...
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	if (!ratesOnDate?.length) {
+		return lastKnownRates; // ← используется как fallback
+	}
+	// ...
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [ratesOnDate]);
 ```
 
@@ -366,9 +365,9 @@ const rates = useMemo(() => {
 
 ```tsx
 const summary = useMemo(() => {
-    const txsWithRates = updatePrices(transactions.month, rates, recalcCurrencyCode, lastKnownRates);
-    return computeSummary(txsWithRates);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	const txsWithRates = updatePrices(transactions.month, rates, recalcCurrencyCode, lastKnownRates);
+	return computeSummary(txsWithRates);
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [rates, recalcCurrencyCode, transactions.month]);
 ```
 
@@ -379,9 +378,9 @@ const summary = useMemo(() => {
 
 ```tsx
 const summary = useMemo(() => {
-    const txsWithRates = updatePrices(transactions.year, rates, recalcCurrencyCode, lastKnownRates);
-    return computeSummary(txsWithRates);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	const txsWithRates = updatePrices(transactions.year, rates, recalcCurrencyCode, lastKnownRates);
+	return computeSummary(txsWithRates);
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [rates, recalcCurrencyCode, transactions.year]);
 ```
 
@@ -404,9 +403,9 @@ src/hooks/use-transactions/db-queries/use-tx-dates-range.ts
 ```tsx
 // useGetMinMonthDate
 const minDbTxsDateResult = useMemo(() => {
-    const dateTxt = minDbTxsDate?.[0]?.minDate;
-    return dateTxt ? startOfMonth(dateTxt) : undefined;
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	const dateTxt = minDbTxsDate?.[0]?.minDate;
+	return dateTxt ? startOfMonth(dateTxt) : undefined;
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [minDbTxsDate, timeMode]);
 ```
 
@@ -420,8 +419,8 @@ const minDbTxsDateResult = useMemo(() => {
 
 ```tsx
 const formattedDate = useMemo(() => {
-    return format(transactions.dates.dayRaw, 'dd');
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	return format(transactions.dates.dayRaw, 'dd');
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [transactions.dates.dayFormatted]);
 ```
 
@@ -513,12 +512,12 @@ src/screens/transactions/tx-header/components/title-interactive/use-title.ts
 
 ```tsx
 const title = useMemo(() => {
-    if (txViewMode === 'list') {
-        return t(`transactions.time_mode.${lenses.time_mode}`);
-    } else if (txViewMode === 'subscriptions') {
-        return t('transactions.view_mode.subscriptions');
-    }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	if (txViewMode === 'list') {
+		return t(`transactions.time_mode.${lenses.time_mode}`);
+	} else if (txViewMode === 'subscriptions') {
+		return t('transactions.view_mode.subscriptions');
+	}
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [lenses.time_mode, txViewMode, activeMonth]);
 ```
 
@@ -538,13 +537,17 @@ src/screens/settings/components/system/system.tsx
 
 ```tsx
 const color = useMemo(() => {
-    switch (notification.status) {
-        case RESULTS.DENIED:  return theme.accents.pink;
-        case RESULTS.GRANTED: return theme.accents.green;
-        case RESULTS.LIMITED: return theme.accents.yellow;
-        default:              return theme.text.tertiary;
-    }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+	switch (notification.status) {
+		case RESULTS.DENIED:
+			return theme.accents.pink;
+		case RESULTS.GRANTED:
+			return theme.accents.green;
+		case RESULTS.LIMITED:
+			return theme.accents.yellow;
+		default:
+			return theme.text.tertiary;
+	}
+	/* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [theme.is_oled, theme.tint, notification.status]);
 ```
 
@@ -554,7 +557,7 @@ const color = useMemo(() => {
   от `is_oled` и `tint`, и использует их как proxy.
 - **Решение:** Заменить на прямые deps от используемых значений:
   ```tsx
-  [theme.accents.pink, theme.accents.green, theme.accents.yellow, theme.text.tertiary, notification.status]
+  [theme.accents.pink, theme.accents.green, theme.accents.yellow, theme.text.tertiary, notification.status];
   ```
   Или, если styled-components theme слишком нестабилен, вынести нужные цвета в переменные перед memo
   и зависеть от них.

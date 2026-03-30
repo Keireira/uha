@@ -1,3 +1,2 @@
-export { sharkieApi } from './api';
-
 export * from './sharkie';
+export * from './soup';

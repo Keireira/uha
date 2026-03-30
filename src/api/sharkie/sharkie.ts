@@ -1,18 +1,8 @@
 import * as Crypto from 'expo-crypto';
-import { sharkieApi } from './api';
 
-type GetRatesResponseT = {
-	base: string; // ISO 4217 currency code, USD by default
-	data: {
-		date: string; // YYYY-MM-DD
-		rates: Record<string, number>; // ISO 4217 currency code -> rate
-	}[];
-};
+import { sharkieApi } from '../api';
 
-type QueryParamsT = {
-	date: string;
-	currencies?: string;
-};
+import type { GetRatesResponseT, QueryParamsT } from './sharkie.d';
 
 export const getHistoryRates = (dates: string[], currencies?: string[]) => {
 	const queryParams: QueryParamsT = {

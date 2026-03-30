@@ -1,9 +1,11 @@
 {
   "name": "ai-compat",
   "version": "1.0.0",
-  "description": "Expo module for checking on-device AI compatibility",
-  "main": "index.ts",
   "private": true,
+  "description": "Expo module for checking on-device AI compatibility",
   "license": "AGPL-3.0",
-  "platforms": ["ios"]
+  "main": "index.ts",
+  "platforms": [
+    "ios"
+  ]
 }

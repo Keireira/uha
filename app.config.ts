@@ -1,6 +1,8 @@
-import { default as withAppleSettings, RadioGroup, ChildPane } from '@config-plugins/apple-settings';
+import appleSettings, { ChildPane, RadioGroup } from '@config-plugins/apple-settings';
 
-import type { ExpoConfig, ConfigContext } from 'expo/config';
+import type { ConfigContext, ExpoConfig } from 'expo/config';
+
+const withAppleSettings = typeof appleSettings === 'function' ? appleSettings : appleSettings.default;
 
 const localesTopLevel = {
 	en: {
