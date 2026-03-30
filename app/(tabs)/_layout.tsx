@@ -1,55 +1,50 @@
 import React from 'react';
-import { startOfToday, startOfMonth } from 'date-fns';
+// import { startOfToday, startOfMonth } from 'date-fns';
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
+// import { useAppModel } from '@models';
+// import { useSearchParams } from '@hooks';
 
-import { useAppModel } from '@models';
-import { useSearchParams } from '@hooks';
-
-import { Navbar } from '@elements';
-import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
+// import { Tabs, TabSlot, TabList, TabTrigger } from 'expo-router/ui';
+// import { ListIcon, CalendarIcon, SettingsIcon, LibraryIcon, AddIcon } from '@ui/icons';
 
 const TabLayout = () => {
-	const { txViewMode } = useSearchParams();
-	const { view_mode, tx_dates } = useAppModel();
+	// const { txViewMode } = useSearchParams();
+	// const { view_mode, tx_dates } = useAppModel();
 
-	const onTransactionsPress = () => {
-		if (txViewMode === 'list') {
-			view_mode.list.scrollToTop();
-		}
+	// const onTransactionsPress = () => {
+	// 	if (txViewMode === 'list') {
+	// 		view_mode.list.scrollToTop();
+	// 	}
 
-		if (txViewMode === 'calendar') {
-			const today = startOfToday();
-			tx_dates.selected.set(today);
-			tx_dates.activeMonth.set(startOfMonth(today));
-		}
-	};
+	// 	if (txViewMode === 'calendar') {
+	// 		const today = startOfToday();
+	// 		tx_dates.selected.set(today);
+	// 		tx_dates.activeMonth.set(startOfMonth(today));
+	// 	}
+	// };
 
 	return (
-		<Tabs>
-			<TabSlot />
+		<NativeTabs>
+			<NativeTabs.Trigger name="transactions">
+				<NativeTabs.Trigger.Label>History</NativeTabs.Trigger.Label>
+				<NativeTabs.Trigger.Icon sf="checklist.unchecked" />
+			</NativeTabs.Trigger>
 
-			<TabList asChild>
-				<Navbar>
-					<TabTrigger name="transactions" href="/(tabs)/transactions" asChild>
-						{/* @TODO: Remove singleton later */}
-						<Navbar.Button onActivePress={onTransactionsPress} onLongPress={onTransactionsPress}>
-							<Navbar.Icon name={txViewMode === 'list' ? 'list' : 'calendar'} />
-						</Navbar.Button>
-					</TabTrigger>
+			<NativeTabs.Trigger name="library">
+				<NativeTabs.Trigger.Label>Library</NativeTabs.Trigger.Label>
+				<NativeTabs.Trigger.Icon sf="books.vertical" />
+			</NativeTabs.Trigger>
 
-					<TabTrigger name="library" href="/library" asChild>
-						<Navbar.Button>
-							<Navbar.Icon name="library" />
-						</Navbar.Button>
-					</TabTrigger>
+			<NativeTabs.Trigger name="settings">
+				<NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+				<NativeTabs.Trigger.Icon sf="gear" />
+			</NativeTabs.Trigger>
 
-					<TabTrigger name="settings" href="/settings" asChild>
-						<Navbar.Button>
-							<Navbar.Icon name="settings" />
-						</Navbar.Button>
-					</TabTrigger>
-				</Navbar>
-			</TabList>
-		</Tabs>
+			<NativeTabs.Trigger name="search" role="search">
+				<NativeTabs.Trigger.Icon sf="plus" />
+				<NativeTabs.Trigger.Label>Search</NativeTabs.Trigger.Label>
+			</NativeTabs.Trigger>
+		</NativeTabs>
 	);
 };
 
