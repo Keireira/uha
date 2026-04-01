@@ -318,7 +318,7 @@ src/hooks/setup/use-backfill-rates.tsx
 useEffect(() => {
     if (!newDates.length) return;
     backfillRates().catch(() => {
-        Toast.show({ type: 'error', text1: t('rates.error_title'), ... });
+        Toast.show({ type: 'error', text1: t('rates.error.title'), ... });
     });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
 }, [newDates.length]);

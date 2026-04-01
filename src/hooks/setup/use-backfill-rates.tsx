@@ -132,8 +132,8 @@ const useBackfillRates = () => {
 		backfillRates().catch(() => {
 			Toast.show({
 				type: 'error',
-				text1: t('rates.error_title'),
-				text2: t('rates.error_description')
+				text1: t('rates.error.title'),
+				text2: t('rates.error.description')
 			});
 		});
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */

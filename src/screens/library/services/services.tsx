@@ -15,7 +15,7 @@ const ServicesScreen = () => {
 				<TextInput
 					leadingIcon="search"
 					autoCorrect={false}
-					placeholder={t('library.search_services')}
+					placeholder={t('library.search.services')}
 					value={search}
 					onChangeText={setSearch}
 					onClear={() => setSearch('')}

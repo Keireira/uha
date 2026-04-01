@@ -1,17 +1,22 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Root, { EmptyView, EmptyText } from './txs-at-day.styles';
 import { TransactionCard } from '@screens/transactions/txs-list/components';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 
-const Empty = () => (
-	<Root>
-		<EmptyView>
-			<EmptyText>No transactions</EmptyText>
-		</EmptyView>
-	</Root>
-);
+const Empty = () => {
+	const { t } = useTranslation();
+
+	return (
+		<Root>
+			<EmptyView>
+				<EmptyText>{t('transactions.calendar.no_txs')}</EmptyText>
+			</EmptyView>
+		</Root>
+	);
+};
 
 const TxsAtDay = ({ txs }: { txs: PreparedDbTxT[] }) => {
 	if (!txs || txs.length === 0) {

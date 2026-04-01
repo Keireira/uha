@@ -22,13 +22,13 @@ const RefreshButton = () => {
 
 			Toast.show({
 				type: 'success',
-				text1: t('rates.success_title')
+				text1: t('rates.success.title')
 			});
 		} catch {
 			Toast.show({
 				type: 'error',
-				text1: t('rates.error_title'),
-				text2: t('rates.error_description')
+				text1: t('rates.error.title'),
+				text2: t('rates.error.description')
 			});
 		} finally {
 			setIsRefreshing(false);

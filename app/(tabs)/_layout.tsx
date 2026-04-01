@@ -22,7 +22,7 @@ const TabLayout = () => {
 			{
 				tabIndex: 0,
 				actions: [
-					{ id: 'go_to_today', title: 'Go to Today', icon: 'calendar.badge.clock' },
+					// { id: 'go_to_today', title: 'Go to Today', icon: 'calendar.badge.clock' },
 					{ id: 'view_list', title: 'List View', icon: 'list.bullet' },
 					{ id: 'view_calendar', title: 'Calendar View', icon: 'calendar' },
 					{ id: 'open_filters', title: 'Filters', icon: 'line.3.horizontal.decrease.circle' }
@@ -38,9 +38,7 @@ const TabLayout = () => {
 			},
 			{
 				tabIndex: 2,
-				actions: [
-					{ id: 'refresh_rates', title: 'Update Rates', icon: 'arrow.triangle.2.circlepath' }
-				]
+				actions: [{ id: 'refresh_rates', title: 'Update Rates', icon: 'arrow.triangle.2.circlepath' }]
 			},
 			{
 				tabIndex: 3,
