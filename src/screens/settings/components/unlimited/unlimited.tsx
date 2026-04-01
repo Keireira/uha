@@ -24,7 +24,7 @@ const Unlimited = () => {
 					<H5 $color={accentColor}>{t('settings.unlimited.badge')}</H5>
 
 					<SmallText $color={theme.text.secondary}>
-						{isUnlimited ? t('settings.unlimited.active') : t('limits.upgrade')}
+						{isUnlimited ? t('settings.unlimited.active') : t('settings.unlimited.upgrade')}
 					</SmallText>
 				</TextView>
 

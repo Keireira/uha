@@ -16,7 +16,7 @@ const PaymentsScreen = () => {
 				<TextInput
 					leadingIcon="search"
 					autoCorrect={false}
-					placeholder={t('library.search_payments')}
+					placeholder={t('library.search.payments')}
 					value={search}
 					onChangeText={setSearch}
 					onClear={() => setSearch('')}

@@ -16,7 +16,7 @@ const CategoriesScreen = () => {
 				<TextInput
 					leadingIcon="search"
 					autoCorrect={false}
-					placeholder={t('library.search_categories')}
+					placeholder={t('library.search.categories')}
 					value={search}
 					onChangeText={setSearch}
 					onClear={() => setSearch('')}

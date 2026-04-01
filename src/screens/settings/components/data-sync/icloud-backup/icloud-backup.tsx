@@ -60,7 +60,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			await backupToCloudKit();
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-			Toast.show({ type: 'success', text1: t('settings.data.icloud_backup_success') });
+			Toast.show({ type: 'success', text1: t('settings.data.icloud.backup.success') });
 
 			markBackedUpNow();
 			setJustBackedUp(true);
@@ -68,7 +68,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			console.error('[iCloud] ✗ Backup failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.icloud_backup_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.icloud.backup.error') });
 		}
 	});
 
@@ -79,13 +79,13 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 			Toast.show({
 				type: ok ? 'success' : 'info',
-				text1: t(ok ? 'settings.data.icloud_restore_success' : 'settings.data.icloud_no_backup')
+				text1: t(ok ? 'settings.data.icloud.restoresuccess' : 'settings.data.icloud.statuses.no_backup')
 			});
 		} catch (err) {
 			console.error('[iCloud] ✗ Restore failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.icloud_restore_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.icloud.restore.error') });
 		}
 	});
 
@@ -97,7 +97,11 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: [t('settings.data.icloud_backup'), t('settings.data.icloud_restore'), t('settings.data.cancel')],
+				options: [
+					t('settings.data.icloud.backup.title'),
+					t('settings.data.icloud.restore.title'),
+					t('settings.data.cancel')
+				],
 				destructiveButtonIndex: 1,
 				cancelButtonIndex: 2
 			},
@@ -114,7 +118,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 				<Title>
 					<SymbolView name={iCloudSymbol} size={20} tintColor={accentColor} />
 
-					<Text $weight={500}>{t('settings.data.icloud_sync')}</Text>
+					<Text $weight={500}>{t('settings.data.icloud.sync')}</Text>
 				</Title>
 
 				{isLocalLoading ? (

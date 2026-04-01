@@ -53,15 +53,15 @@ const useStatusText = (loadingAction: UseLoadingReturnT['loadingAction']) => {
 	/* You don't need useMemo here because React 19+ && React Compiler */
 	switch (true) {
 		case iCloudStatus === BACKUP_STATUS.CHECKING:
-			return t('settings.data.icloud_checking');
+			return t('settings.data.icloud.statuses.checking');
 		case iCloudStatus !== BACKUP_STATUS.AVAILABLE:
-			return t('settings.data.icloud_unavailable');
+			return t('settings.data.icloud.statuses.unavailable');
 		case loadingAction === LOADING_ACTIONS.ICloudBackup:
-			return t('settings.data.icloud_backing_up');
+			return t('settings.data.icloud.statuses.backing_up');
 		case loadingAction === LOADING_ACTIONS.ICloudRestore:
-			return t('settings.data.icloud_restoring');
+			return t('settings.data.icloud.statuses.restoring');
 		default:
-			return lastBackupTimestamp ? formatDate(lastBackupTimestamp) : t('settings.data.icloud_no_backup');
+			return lastBackupTimestamp ? formatDate(lastBackupTimestamp) : t('settings.data.icloud.statuses.no_backup');
 	}
 };
 

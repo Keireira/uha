@@ -54,7 +54,7 @@ const LibraryScreen = () => {
 				<TextInput
 					leadingIcon="search"
 					autoCorrect={false}
-					placeholder={t('library.search')}
+					placeholder={t('library.search.all')}
 					value={search}
 					onChangeText={setSearch}
 					onClear={() => setSearch('')}

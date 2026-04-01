@@ -23,12 +23,12 @@ const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) 
 			await shareDbBackup();
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-			Toast.show({ type: 'success', text1: t('settings.data.backup_success') });
+			Toast.show({ type: 'success', text1: t('settings.data.db.backup.success') });
 		} catch (err) {
 			console.error('[DB] ✗ Backup failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.backup_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.db.backup.error') });
 		}
 	});
 
@@ -38,13 +38,13 @@ const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) 
 
 			if (ok) {
 				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-				Toast.show({ type: 'success', text1: t('settings.data.restore_success') });
+				Toast.show({ type: 'success', text1: t('settings.data.db.restore.success') });
 			}
 		} catch (err) {
 			console.error('[DB] ✗ Restore failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.restore_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.db.restore.error') });
 		}
 	});
 
@@ -58,7 +58,7 @@ const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) 
 						<SymbolView name="arrow.up.doc" size={20} tintColor={accentColor} />
 					)}
 
-					<Text $weight={500}>{t('settings.data.backup')}</Text>
+					<Text $weight={500}>{t('settings.data.db.backup.title')}</Text>
 				</Inner>
 			</Tile>
 
@@ -70,7 +70,7 @@ const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) 
 						<SymbolView name="arrow.down.doc" size={20} tintColor={accentColor} />
 					)}
 
-					<Text $weight={500}>{t('settings.data.restore')}</Text>
+					<Text $weight={500}>{t('settings.data.db.restore.title')}</Text>
 				</Inner>
 			</Tile>
 		</Root>
