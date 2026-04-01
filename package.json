@@ -1,50 +1,44 @@
 {
   "name": "uha",
-  "main": "expo-router/entry",
-  "version": "1.15.0",
+  "version": "1.16.0",
+  "private": true,
+  "keywords": [
+    "subscriptions tracker"
+  ],
   "license": "AGPL-3.0",
   "author": "Alena Dzhukich <github@alena.red>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Keireira/uha.git"
   },
-  "keywords": [
-    "subscriptions tracker"
-  ],
-  "expo": {
-    "doctor": {
-      "reactNativeDirectoryCheck": {
-        "exclude": [
-          "@howincodes/expo-dynamic-app-icon"
-        ]
-      }
-    }
-  },
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios --device",
-    "lint": "expo lint",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@config-plugins/apple-settings": "^6.0.0",
-    "@expo/ui": "55.0.2",
-    "@howincodes/expo-dynamic-app-icon": "^2.0.3",
+    "@expo/ui": "55.0.6",
+    "@howincodes/expo-dynamic-app-icon": "^3.0.1",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/drawer": "^7.5.0",
     "@react-navigation/elements": "^2.9.3",
     "@react-navigation/native": "^7.1.8",
     "@shopify/flash-list": "2.0.2",
-    "@vanillaes/csv": "^4.0.1",
-    "babel-plugin-react-compiler": "^1.0.0",
+    "@vanillaes/csv": "^4.0.3",
     "date-fns": "^4.1.0",
-    "drizzle-orm": "^0.45.1",
+    "drizzle-orm": "^0.45.2",
     "effector": "^23.4.4",
     "effector-react": "^23.3.0",
-    "expo": "~55.0.6",
+    "expo": "~55.0.9",
     "expo-application": "~55.0.8",
     "expo-blur": "~55.0.8",
     "expo-build-properties": "^55.0.9",
@@ -70,51 +64,58 @@
     "expo-status-bar": "~55.0.4",
     "expo-symbols": "~55.0.5",
     "expo-system-ui": "~55.0.9",
-    "i18next": "^25.8.17",
+    "i18next": "^26.0.2",
     "jszip": "^3.10.1",
     "patronum": "^2.3.0",
     "ramda": "^0.32.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-i18next": "^16.5.6",
-    "react-native": "0.83.2",
+    "react-i18next": "^17.0.1",
+    "react-native": "0.83.4",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-gifted-charts": "^1.4.76",
-    "react-native-pager-view": "8.0.0",
+    "react-native-pager-view": "^8.0.0",
     "react-native-permissions": "^5.5.1",
-    "react-native-purchases": "^9.11.2",
-    "react-native-purchases-ui": "^9.11.2",
+    "react-native-purchases": "^9.15.0",
+    "react-native-purchases-ui": "^9.15.0",
     "react-native-reanimated": "~4.2.1",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-screens": "~4.23.0",
-    "react-native-svg": "15.15.3",
+    "react-native-svg": "^15.15.3",
     "react-native-toast-message": "^2.3.3",
     "react-native-worklets": "0.7.2",
     "reanimated-color-picker": "^4.2.0",
-    "styled-components": "^6.3.11"
+    "styled-components": "^6.3.12"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
-    "@eslint/js": "^9.39.2",
     "@types/ramda": "^0.31.1",
     "@types/react": "~19.2.14",
     "@types/styled-components": "^5.1.36",
     "babel-plugin-inline-import": "^3.0.0",
-    "drizzle-kit": "^0.31.9",
-    "eslint": "^9.39.2",
-    "eslint-config-expo": "~55.0.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^10.1.0",
+    "eslint-plugin-expo": "^1.0.0",
     "globals": "^17.4.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
     "patch-package": "^8.0.1",
-    "prettier": "^3.8.1",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.57.0"
+    "typescript": "~5.9.3"
   },
   "pnpm": {
-    "overrides": {
-      "expo-modules-core": "55.0.15"
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@config-plugins/apple-settings>expo": "55"
+      }
     }
   },
-  "private": true
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "@howincodes/expo-dynamic-app-icon"
+        ]
+      }
+    }
+  }
 }

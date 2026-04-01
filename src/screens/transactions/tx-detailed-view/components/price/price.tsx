@@ -1,33 +1,26 @@
 import React from 'react';
-import { useRates, useSettingsValue } from '@hooks';
+
+import { isAfterToday } from '@lib/date';
+import { useFormattedPrice } from '@hooks/rates';
 
 import Root, { BasePrice, ConvertedPrice } from './price.styles';
 
 import type { Props } from './price.d';
 
-const Price = ({ date, isPhantom, currencyCode, price, denominator }: Props) => {
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
-	const { r, formatCurrency, hasAnyRate } = useRates(date, isPhantom, currencyCode);
-
-	const withConversion = currencyCode !== recalcCurrencyCode;
-
-	const basePrice = price / (denominator || 1);
-	const formattedBasePrice = formatCurrency(basePrice, currencyCode);
-	const convertedPrice = r(basePrice);
-
-	if (!hasAnyRate) {
-		return (
-			<Root $withConversion={false}>
-				<BasePrice>{formattedBasePrice}</BasePrice>
-			</Root>
-		);
-	}
+const Price = ({ date, price, currencyCode }: Props) => {
+	const { withConversion, basePrice, convertedPrice } = useFormattedPrice(date, price, currencyCode);
+	const isInFuture = isAfterToday(date);
 
 	return (
 		<Root $withConversion={withConversion}>
-			<BasePrice>{formattedBasePrice}</BasePrice>
+			<BasePrice>{basePrice}</BasePrice>
 
-			{withConversion && <ConvertedPrice>≈&nbsp;{convertedPrice}</ConvertedPrice>}
+			{withConversion && (
+				<ConvertedPrice>
+					{isInFuture ? `≈\u2009` : `=\u2009`}
+					{convertedPrice}
+				</ConvertedPrice>
+			)}
 		</Root>
 	);
 };

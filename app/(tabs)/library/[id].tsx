@@ -1,14 +1,14 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import CategoryDetail from '@screens/library/categories/detail';
 import ServiceDetail from '@screens/library/services/detail';
 import PaymentDetail from '@screens/library/payments/detail';
+import CategoryDetail from '@screens/library/categories/detail';
 
 const screens = {
-	category: CategoryDetail,
 	service: ServiceDetail,
-	payment: PaymentDetail
+	payment: PaymentDetail,
+	category: CategoryDetail
 } as const;
 
 type EntityType = keyof typeof screens;

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Stack } from 'expo-router';
+import TxStickyHeader from '@screens/transactions/tx-sticky-header';
 import { useTheme } from 'styled-components/native';
 
 const Layout = () => {
@@ -7,7 +9,16 @@ const Layout = () => {
 
 	return (
 		<Stack screenOptions={{ headerShown: false, animation: 'none' }}>
-			<Stack.Screen name="index" initialParams={{ tx_view_mode: 'list', calendar_scale: 'month' }} />
+			<Stack.Screen
+				name="index"
+				initialParams={{ tx_view_mode: 'list', calendar_scale: 'month' }}
+				options={{
+					headerShown: true,
+					headerShadowVisible: false,
+					header: () => <TxStickyHeader />,
+					contentStyle: { backgroundColor: theme.background.default }
+				}}
+			/>
 
 			<Stack.Screen
 				name="[transactionId]"

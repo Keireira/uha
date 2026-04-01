@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
+import { index, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import { categoriesTable } from './categories';
 

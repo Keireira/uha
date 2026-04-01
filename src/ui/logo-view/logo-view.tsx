@@ -21,16 +21,18 @@ const renderSwitch = (emoji: Props['emoji'], initials: string, size: Props['size
 	}
 };
 
-const useLogo = ({ logoId, logoUrl, emoji, name, color, size = 48 }: Props) => {
+const useLogo = ({ slug, emoji, name, color, size = 48 }: Props) => {
 	const initials = useInitials(name);
 
 	const Component = useMemo(() => {
-		if (logoId || logoUrl) {
-			return <SquircleMask size={size} color={color} link={(logoId || logoUrl || '')!} />;
+		if (slug) {
+			const link = `https://s3.uha.app/logos/${slug}.webp`;
+
+			return <SquircleMask size={size} color={color} link={link} />;
 		}
 
 		return renderSwitch(emoji, initials, size, color);
-	}, [emoji, logoId, initials, size, color, logoUrl]);
+	}, [emoji, slug, initials, size, color]);
 
 	return Component;
 };

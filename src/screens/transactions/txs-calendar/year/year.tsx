@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useCalendar } from './hooks';
-import { useScrollDirection } from '@hooks';
 import { isHeaderSection, getItemType, keyExtractor } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
@@ -23,7 +22,6 @@ const renderQuarterRow = ({ item }: ListRenderItemInfo<ItemT>) => {
 const Year = ({ transactions }: Props) => {
 	const listRef = useRef<FlashListRef<ItemT>>(null);
 	const insets = useSafeAreaInsets();
-	const handleScroll = useScrollDirection();
 
 	const calendarRows = useCalendar(transactions);
 
@@ -32,7 +30,6 @@ const Year = ({ transactions }: Props) => {
 			<FlashList
 				ref={listRef}
 				contentContainerStyle={{ gap: 16 }}
-				onScroll={handleScroll}
 				data={calendarRows}
 				getItemType={getItemType}
 				keyExtractor={keyExtractor}

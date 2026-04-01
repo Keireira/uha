@@ -1,0 +1,11 @@
+{
+  "name": "tab-context-menu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Context menus on native tab bar items via UIContextMenuInteraction",
+  "license": "AGPL-3.0",
+  "main": "index.ts",
+  "platforms": [
+    "ios"
+  ]
+}

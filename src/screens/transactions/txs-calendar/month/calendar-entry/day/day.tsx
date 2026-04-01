@@ -2,7 +2,6 @@ import React from 'react';
 import { head } from 'ramda';
 import * as Haptics from 'expo-haptics';
 
-import logos from '@assets/logos';
 import LogoView from '@ui/logo-view';
 import Root, { DayNumber, LogoContainer, OverflowText, OverflowBadge, EmptyLogo } from './day.styles';
 
@@ -10,7 +9,6 @@ import type { Props } from './day.d';
 
 const Day = ({ content, raw, txs, isSelected, iconSize, setSelectedDay }: Props) => {
 	const indexTx = head(txs);
-	const indexTxLogoUrl = indexTx?.slug ? logos[indexTx.slug as keyof typeof logos] : null;
 
 	const onPressHd = () => {
 		if (isSelected || !content) return;
@@ -24,7 +22,7 @@ const Day = ({ content, raw, txs, isSelected, iconSize, setSelectedDay }: Props)
 			<LogoContainer>
 				{txs.length > 0 && indexTx && (
 					<LogoView
-						logoId={indexTxLogoUrl}
+						slug={indexTx.slug}
 						color={indexTx.color}
 						name={indexTx.customName || indexTx.title}
 						size={iconSize}

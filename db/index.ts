@@ -1,6 +1,5 @@
-import * as SQLite from 'expo-sqlite';
-
 import { drizzle } from 'drizzle-orm/expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 
 const uhaDb = SQLite.openDatabaseSync('db.db', { enableChangeListener: true });
 

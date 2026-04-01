@@ -1,12 +1,17 @@
 import styled from 'styled-components/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
+
+export const Gradient = styled(LinearGradient)`
+	flex: 1;
+`;
 
 export const Masked = styled(MaskedView)`
 	flex: 1;
 `;
 
-export const BottomSpacer = styled.View<{ $height: number }>`
-	height: ${({ $height }) => $height + 64}px;
+export const BottomSpacer = styled.View`
+	height: 32px;
 `;
 
 export const ItemSeparator = styled.View`
@@ -15,6 +20,6 @@ export const ItemSeparator = styled.View`
 
 export default styled.View`
 	flex: 1;
-	flex-direction: column;
 	gap: 16px;
+	flex-direction: column;
 `;

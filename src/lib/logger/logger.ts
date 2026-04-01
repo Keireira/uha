@@ -11,9 +11,9 @@ const MAX_ENTRIES = 500;
 
 let entries: LogEntry[] = [];
 let nextId = 1;
-let listeners: Array<() => void> = [];
+let listeners: (() => void)[] = [];
 
-const ANSI_RE = /\x1b\[[0-9;]*m/g;
+const ANSI_RE = /\x1b\[[0-9;]*m/g; // eslint-disable-line no-control-regex
 const stripAnsi = (s: string) => s.replace(ANSI_RE, '');
 
 const notify = () => {
@@ -21,19 +21,21 @@ const notify = () => {
 };
 
 const push = (level: LogLevel, args: unknown[]) => {
-	const message = stripAnsi(args
-		.map((a) => {
-			if (a instanceof Error) return `${a.message}\n${a.stack ?? ''}`;
-			if (typeof a === 'object') {
-				try {
-					return JSON.stringify(a, null, 2);
-				} catch {
-					return String(a);
+	const message = stripAnsi(
+		args
+			.map((a) => {
+				if (a instanceof Error) return `${a.message}\n${a.stack ?? ''}`;
+				if (typeof a === 'object') {
+					try {
+						return JSON.stringify(a, null, 2);
+					} catch {
+						return String(a);
+					}
 				}
-			}
-			return String(a);
-		})
-		.join(' '));
+				return String(a);
+			})
+			.join(' ')
+	);
 
 	entries.push({ id: nextId++, level, message, timestamp: Date.now() });
 

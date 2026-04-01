@@ -50,7 +50,13 @@ const useTransactionsSections = (transactions: PreparedDbTxT[]) => {
 			const headerSection: HeaderSectionT = {
 				type: 'sectionHeader',
 				date: dateLabel,
-				total: rightPart
+				total: rightPart,
+				rawDate: date,
+				txs: txs.map((tx) => ({
+					currency_code: tx.currency_code,
+					denominator: tx.denominator,
+					price: tx.price
+				}))
 			};
 
 			return [headerSection, ...txs];

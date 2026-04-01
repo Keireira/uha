@@ -1,9 +1,9 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
+import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-import { tendersTable } from './tenders';
 import { currenciesTable } from './currencies';
 import { subscriptionsTable } from './subscriptions';
+import { tendersTable } from './tenders';
 
 export const transactionsTable = sqliteTable(
 	'transactions',

@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { FlashList } from '@shopify/flash-list';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppModel } from '@models';
 import { isHeaderSection } from './utils';
-import { useScrollDirection } from '@hooks';
+import { useTheme } from 'styled-components/native';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
 
-import { LinearGradient } from 'expo-linear-gradient';
+import { FlashList } from '@shopify/flash-list';
 import { HeaderCard, TransactionCard } from './components';
-import Root, { Masked, ItemSeparator, BottomSpacer } from './txs-list.styles';
+import Root, { Gradient, Masked, ItemSeparator, BottomSpacer } from './txs-list.styles';
 
 import type { HeaderSectionT, Props } from './txs-list.d';
 import type { ListRenderItemInfo, FlashListRef } from '@shopify/flash-list';
@@ -24,10 +22,9 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 };
 
 const TxsList = ({ transactions }: Props) => {
+	const theme = useTheme();
 	const listRef = useRef<FlashListRef<HeaderSectionT | TransactionProps>>(null);
-	const insets = useSafeAreaInsets();
 	const { view_mode } = useAppModel();
-	const handleScroll = useScrollDirection();
 
 	const sections = useTransactionsSections(transactions);
 	const handleViewableItemsChanged = useGetViewableItem();
@@ -43,30 +40,32 @@ const TxsList = ({ transactions }: Props) => {
 	return (
 		<Masked
 			maskElement={
-				<LinearGradient
+				<Gradient
 					colors={['transparent', 'black', 'black']}
 					locations={[0, 0.03, 1]}
 					start={{ x: 0, y: 0 }}
 					end={{ x: 0, y: 1 }}
-					style={{ flex: 1 }}
 				/>
 			}
 		>
 			<Root>
 				<FlashList
 					ref={listRef}
+					contentInsetAdjustmentBehavior="automatic"
 					contentContainerStyle={{
-						gap: 16
+						gap: 16,
+						paddingLeft: 12,
+						paddingRight: 8,
+						backgroundColor: theme.background.default
 					}}
 					data={sections}
-					onScroll={handleScroll}
 					renderItem={renderRowItem}
 					showsVerticalScrollIndicator={false}
 					onViewableItemsChanged={handleViewableItemsChanged}
 					getItemType={(item) => (isHeaderSection(item) ? 'sectionHeader' : 'row')}
 					keyExtractor={(item) => (isHeaderSection(item) ? item.date : item.id)}
 					ItemSeparatorComponent={ItemSeparator}
-					ListFooterComponent={<BottomSpacer $height={insets.bottom} />}
+					ListFooterComponent={<BottomSpacer />}
 				/>
 			</Root>
 		</Masked>

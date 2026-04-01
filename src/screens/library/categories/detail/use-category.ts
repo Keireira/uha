@@ -44,7 +44,9 @@ export const useCategory = () => {
 			setSubscriptions(subs);
 		})();
 
-		return () => { cancelled = true; };
+		return () => {
+			cancelled = true;
+		};
 	}, [id]);
 
 	return { category, subscriptions };

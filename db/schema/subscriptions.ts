@@ -1,10 +1,10 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
+import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-import { tendersTable } from './tenders';
-import { servicesTable } from './services';
 import { categoriesTable } from './categories';
 import { currenciesTable } from './currencies';
+import { servicesTable } from './services';
+import { tendersTable } from './tenders';
 
 export const subscriptionsTable = sqliteTable(
 	'subscriptions',
