@@ -5,7 +5,6 @@ import { lightFormat, isSameDay, isSameMonth } from 'date-fns';
 import { roundToEven } from '@lib';
 import { useAppModel } from '@models';
 import { useCalendarBones } from './hooks';
-import { useScrollDirection } from '@hooks';
 
 import Day from './day';
 import TxsAtDay from './txs-at-day';
@@ -19,7 +18,6 @@ const EMPTY_TXS: PreparedDbTxT[] = [];
 
 const CalendarEntry = ({ monthDate, transactions }: Props) => {
 	const { width } = useWindowDimensions();
-	const handleScroll = useScrollDirection();
 
 	const { tx_dates } = useAppModel();
 	const selectedDate = useUnit(tx_dates.selected.$value);
@@ -36,7 +34,7 @@ const CalendarEntry = ({ monthDate, transactions }: Props) => {
 
 	return (
 		<Root>
-			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} onScroll={handleScroll}>
+			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
 				<CalendarGrid>
 					{calendar.map((week) => (
 						<WeekRow key={week.item_key}>

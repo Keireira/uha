@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useScrollDirection } from '@hooks';
 import { useTranslation } from 'react-i18next';
 
 import PaymentsList from './list';
@@ -10,10 +9,9 @@ import { Wrapper, TextInput } from '@ui';
 const PaymentsScreen = () => {
 	const { t } = useTranslation();
 	const [search, setSearch] = useState('');
-	const handleScroll = useScrollDirection();
 
 	return (
-		<Wrapper as={Root} onScroll={handleScroll}>
+		<Wrapper as={Root}>
 			<View style={{ flex: 1 }}>
 				<TextInput
 					leadingIcon="search"

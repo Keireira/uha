@@ -11,4 +11,10 @@ export type HeaderSectionT = {
 	type: 'sectionHeader';
 	date: string;
 	total: string | null;
+	rawDate: Date;
+	txs: {
+		currency_code: PreparedDbTxT['currency_code'];
+		denominator: PreparedDbTxT['denominator'];
+		price: PreparedDbTxT['price'];
+	}[];
 };

@@ -1,8 +1,10 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import logger from './logger';
 
+import type { ErrorInfo, ReactNode } from 'react';
 type Props = { children: ReactNode };
 type State = { error: Error | null };
 
@@ -39,7 +41,7 @@ const Scroll = styled.ScrollView`
 
 const Stack = styled.Text`
 	font-size: 12px;
-	font-family: Menlo;
+	font-family: 'Nunito';
 	color: ${({ theme }) => theme.text.secondary};
 	line-height: 18px;
 `;
@@ -79,7 +81,7 @@ const ErrorScreen = ({ error, onReset }: { error: Error; onReset: () => void }) 
 	);
 };
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends React.Component<Props, State> {
 	state: State = { error: null };
 
 	static getDerivedStateFromError(error: Error) {
@@ -98,6 +100,7 @@ class ErrorBoundary extends Component<Props, State> {
 		if (this.state.error) {
 			return <ErrorScreen error={this.state.error} onReset={this.handleReset} />;
 		}
+
 		return this.props.children;
 	}
 }

@@ -435,42 +435,6 @@ const formattedDate = useMemo(() => {
 
 ## G. Пропущены аргументы хука в deps
 
-### G1. `use-rates.ts:39`
-
-```
-src/hooks/use-rates.ts
-```
-
-```tsx
-const useRates = (date: Date, isPhantom: boolean, txCurrencyCode: string) => {
-    const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
-
-    const [rate, usdRate] = useMemo(() => {
-        const whereClause = (code: string) =>
-            and(
-                eq(currencyRatesTable.target_currency_id, code),
-                isPhantom       // ← используется
-                    ? lte(currencyRatesTable.date, lightFormat(date, 'yyyy-MM-dd'))
-                    : eq(currencyRatesTable.date, lightFormat(date, 'yyyy-MM-dd'))
-            );
-
-        const result = db.select().from(currencyRatesTable)
-            .where(whereClause(recalcCurrencyCode))  // ← recalcCurrencyCode
-            ...
-        const usdResult = db.select().from(currencyRatesTable)
-            .where(whereClause(txCurrencyCode))        // ← используется
-            ...
-
-        return [result?.rate, usdResult?.rate];
-        /* eslint-disable-next-line react-hooks/exhaustive-deps */
-    }, [date, recalcCurrencyCode]);
-```
-
-- **Пропущены:** `isPhantom`, `txCurrencyCode`
-- **Это баг:** Если `isPhantom` или `txCurrencyCode` изменится — memo вернёт stale данные
-  (неправильный курс). Это **реальная проблема с данными**, а не просто lint-нюанс.
-- **Решение:** Добавить `isPhantom` и `txCurrencyCode` в deps. Без оговорок.
-
 ---
 
 ## H. Reset state on ID change

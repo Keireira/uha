@@ -4,7 +4,7 @@ import db from '@db';
 import { inArray } from 'drizzle-orm';
 import { categoriesTable } from '@db/schema';
 
-import type { TxCategoryT } from '../summaries/summaries.d';
+import type { TxCategoryT } from '@screens/transactions/transactions.d';
 
 export type EnrichedCategoryT = TxCategoryT & {
 	title: string;
