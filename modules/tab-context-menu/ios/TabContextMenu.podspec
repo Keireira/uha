@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-  s.name           = 'FloatingSearchBar'
+  s.name           = 'TabContextMenu'
   s.version        = '1.0.0'
-  s.summary        = 'Floating overlay search bar using native SwiftUI TextField'
-  s.description    = 'Renders a SwiftUI TextField via UIHostingController on the key window for overlay search'
+  s.summary        = 'Module so we can use longPress on navbar'
+  s.description    = 'Module so we can use longPress on navbar'
   s.author         = 'Alena Dzhukich'
-  s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/floating-search-bar'
+  s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/tab-context-menu'
   s.platforms      = {
     :ios => '17.0'
   }
@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'ExpoModulesCore'
 
+  # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',
   }

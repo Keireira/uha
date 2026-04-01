@@ -13,7 +13,11 @@ const Layout = () => {
 					},
 					headerShown: true,
 					headerTransparent: true,
-					headerShadowVisible: false
+					headerShadowVisible: false,
+					headerSearchBarOptions: {
+						placeholder: 'Search service to add',
+						autoFocus: true
+					}
 				}}
 			/>
 		</Stack>

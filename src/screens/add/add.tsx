@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSettingsValue } from '@hooks';
-import { useRouter, Stack } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 
 import { H5, SmallText } from '@ui';
@@ -43,8 +43,6 @@ const AddCrossroad = () => {
 
 	return (
 		<>
-			<Stack.SearchBar placement="automatic" placeholder="Search service to add" autoFocus onChangeText={() => {}} />
-
 			<Root>
 				<ScreenTitle>New entry</ScreenTitle>
 

@@ -5,7 +5,7 @@ rm:
 	rm -rf ./ios
 	rm -rf ./android
 	rm -rf ./.expo
-	rm ./pnpm-workspace.yaml
+	rm ./pnpm-lock.yaml
 
 
 fix:

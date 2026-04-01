@@ -6,8 +6,7 @@ Pod::Spec.new do |s|
   s.author         = 'Alena Dzhukich'
   s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/ai-compat'
   s.platforms      = {
-    :ios => '15.1',
-    :tvos => '15.1'
+    :ios => '17.0'
   }
   s.source         = { git: '' }
   s.static_framework = true
