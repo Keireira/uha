@@ -122,7 +122,7 @@ const TabLayout = () => {
 	}, [router, view_mode, tx_dates]);
 
 	return (
-		<NativeTabs key={settingAccent} minimizeBehavior="onScrollDown">
+		<NativeTabs minimizeBehavior="onScrollDown">
 			<NativeTabs.Trigger name="transactions">
 				<NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
 				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="house" />
