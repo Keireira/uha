@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 
 import { useAppModel } from '@models';
 import { isHeaderSection } from './utils';
-import { useScrollDirection } from '@hooks';
 import { useTheme } from 'styled-components/native';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
 
