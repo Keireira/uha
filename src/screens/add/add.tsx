@@ -43,7 +43,7 @@ const AddCrossroad = () => {
 
 	return (
 		<>
-			<Stack.SearchBar placement="automatic" placeholder="Search service to add" onChangeText={() => {}} />
+			<Stack.SearchBar placement="automatic" placeholder="Search service to add" autoFocus onChangeText={() => {}} />
 
 			<Root>
 				<ScreenTitle>New entry</ScreenTitle>

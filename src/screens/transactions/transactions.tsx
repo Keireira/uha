@@ -8,18 +8,22 @@ import Root from './transactions.styles';
 
 const Transactions = () => {
 	const { txViewMode } = useSearchParams();
-	/* @TODO: Move to effector?? */
+	/* @TODO: Move to effector/zustand? */
 	const transactions = useTransactions('From Transactions');
 
 	if (txViewMode === 'list') {
 		return <TransactionsList transactions={transactions} />;
 	}
 
-	return (
-		<Root>
-			<TransactionsCalendar transactions={transactions} />
-		</Root>
-	);
+	if (txViewMode === 'calendar') {
+		return (
+			<Root>
+				<TransactionsCalendar transactions={transactions} />
+			</Root>
+		);
+	}
+
+	return null;
 };
 
 export default Transactions;

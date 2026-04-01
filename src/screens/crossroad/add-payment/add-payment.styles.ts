@@ -3,7 +3,7 @@ import { GlassView } from 'expo-glass-effect';
 import { BaseText } from '@ui';
 
 export const Container = styled.ScrollView.attrs({
-	keyboardShouldPersistTaps: 'handled' as const,
+	keyboardShouldPersistTaps: 'handled',
 	showsVerticalScrollIndicator: false
 })`
 	flex: 1;

@@ -12,14 +12,8 @@ import { eq } from 'drizzle-orm';
 import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { useSettingsValue } from '@hooks';
-import {
-	useDay,
-	useYear,
-	useMonth,
-	useSummariesQuery,
-	useGetLastKnownRates
-} from '../tx-sticky-header/summaries/hooks';
+import { useSettingsValue, useGetFilledDateRates } from '@hooks';
+import { useDay, useYear, useMonth, useSummariesQuery } from '../tx-sticky-header/summaries/hooks';
 
 import useCategoryDetails from './use-category-details';
 import Root, {
@@ -69,15 +63,11 @@ const AnalyticsSheet = () => {
 	]);
 
 	const summaryTxs = useSummariesQuery();
-	const lastKnownRates = useGetLastKnownRates(
-		summaryTxs.dates.dayFormatted,
-		summaryTxs.dates.monthStartFormatted,
-		summaryTxs.dates.yearStartFormatted
-	);
+	const filledRates = useGetFilledDateRates(summaryTxs.dates.dayRaw);
 
-	const day = useDay(summaryTxs, lastKnownRates);
-	const month = useMonth(summaryTxs, lastKnownRates);
-	const year = useYear(summaryTxs, lastKnownRates);
+	const day = useDay(summaryTxs, filledRates);
+	const month = useMonth(summaryTxs, filledRates);
+	const year = useYear(summaryTxs, filledRates);
 
 	const activeSummary = activeClavis === 'day' ? day : activeClavis === 'year' ? year : month;
 	const titleDate = format(activeSummary.rawDate, DATE_FORMATS[activeClavis] ?? 'MMMM yyyy');

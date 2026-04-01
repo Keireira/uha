@@ -2,8 +2,8 @@ import React from 'react';
 import { isSameMonth } from 'date-fns';
 import { useRouter } from 'expo-router';
 
-import { useSearchParams } from '@hooks';
-import { useDay, useYear, useMonth, useSummariesQuery, useGetLastKnownRates } from './hooks';
+import { useSearchParams, useGetFilledDateRates } from '@hooks';
+import { useDay, useYear, useMonth, useSummariesQuery } from './hooks';
 
 import Root from './summaries.styles';
 import { SummaryBlock } from './components';
@@ -13,15 +13,11 @@ const Summaries = () => {
 	const { txViewMode } = useSearchParams();
 
 	const summaryTxs = useSummariesQuery();
-	const lastKnownRates = useGetLastKnownRates(
-		summaryTxs.dates.dayFormatted,
-		summaryTxs.dates.monthStartFormatted,
-		summaryTxs.dates.yearStartFormatted
-	);
+	const filledRates = useGetFilledDateRates(summaryTxs.dates.dayRaw);
 
-	const day = useDay(summaryTxs, lastKnownRates);
-	const year = useYear(summaryTxs, lastKnownRates);
-	const month = useMonth(summaryTxs, lastKnownRates);
+	const day = useDay(summaryTxs, filledRates);
+	const year = useYear(summaryTxs, filledRates);
+	const month = useMonth(summaryTxs, filledRates);
 
 	const openAnalytics = (clavis: string) => {
 		router.push({ pathname: '/(tabs)/transactions/analytics', params: { clavis } });

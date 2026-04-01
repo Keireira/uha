@@ -60,8 +60,8 @@ const LoadFinalStage = () => {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<ErrorBoundary>
-					<ThemeProvider theme={theme}>
+				<ThemeProvider theme={theme}>
+					<ErrorBoundary>
 						<Stack
 							screenOptions={{
 								headerShown: false,
@@ -88,8 +88,8 @@ const LoadFinalStage = () => {
 							/>
 						</Stack>
 						<AppToast />
-					</ThemeProvider>
-				</ErrorBoundary>
+					</ErrorBoundary>
+				</ThemeProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	);
