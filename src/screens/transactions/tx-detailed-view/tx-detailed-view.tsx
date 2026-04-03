@@ -29,7 +29,6 @@ const TxDetailedView = () => {
 			<Content>
 				<Price
 					date={date}
-					isPhantom={transaction.isPhantom}
 					currencyCode={transaction.currency_code}
 					price={transaction.price}
 					denominator={transaction.denominator}
@@ -44,7 +43,6 @@ const TxDetailedView = () => {
 					customName={transaction.customName}
 					title={transaction.title}
 					color={transaction.color}
-					isPhantom={transaction.isPhantom}
 				/>
 
 				<Divider />

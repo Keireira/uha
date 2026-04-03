@@ -47,7 +47,6 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
 				date: transactionsTable.date,
-				isPhantom: transactionsTable.is_phantom,
 				comment: transactionsTable.comment,
 
 				/* category-related fields */

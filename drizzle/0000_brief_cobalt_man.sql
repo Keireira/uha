@@ -88,7 +88,6 @@ CREATE TABLE `transactions` (
 	`currency_id` text NOT NULL,
 	`tender_id` text NOT NULL,
 	`subscription_id` text NOT NULL,
-	`is_phantom` integer DEFAULT false NOT NULL,
 	`comment` text DEFAULT '',
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action,
