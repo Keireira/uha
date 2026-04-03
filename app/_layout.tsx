@@ -12,15 +12,7 @@ import { setNotificationHandler } from 'expo-notifications';
 import Toast from 'react-native-toast-message';
 import { logger, ErrorBoundary } from '@lib/logger';
 
-import {
-	useSetupMocks,
-	useSqlMigrations,
-	useBackfillRates,
-	useFillUpMissedTxs,
-	useInitSettings,
-	useSyncSettings,
-	useInitPurchases
-} from '@hooks/setup';
+import { useSqlMigrations, useBackfillRates, useInitSettings, useSyncSettings, useInitPurchases } from '@hooks/setup';
 
 import '@src/i18n';
 
@@ -98,18 +90,16 @@ const LoadFinalStage = () => {
 const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
 	useSyncSettings();
-	const { seeded, recreated } = useSetupMocks();
 
 	const [fontsLoaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
 	const navigation = useRootNavigationState();
-	const areTxsFilled = useFillUpMissedTxs(seeded, recreated);
 
 	const isAppReadyToGo = useMemo(() => {
-		return seeded && areTxsFilled && fontsLoaded && areSettingsReady && navigation?.key;
-	}, [seeded, areTxsFilled, fontsLoaded, areSettingsReady, navigation?.key]);
+		return fontsLoaded && areSettingsReady && navigation?.key;
+	}, [fontsLoaded, areSettingsReady, navigation?.key]);
 
 	if (!isAppReadyToGo) {
 		return null;

@@ -3,8 +3,42 @@ import { Settings } from 'react-native';
 
 import db from '@db';
 import { userTable } from '@db/schema';
-
 import { setSettingsValue } from '../use-settings';
+
+import type { UserT } from '@models';
+
+type UserKey =
+	| 'theme'
+	| 'oled_mode'
+	| 'max_horizon'
+	| 'recalc_currency'
+	| 'default_currency'
+	| 'first_day'
+	| 'ai_enabled'
+	| 'is_unlimited'
+	| 'accent';
+
+const SETTINGS_KEYS: UserKey[] = [
+	'theme',
+	'oled_mode',
+	'max_horizon',
+	'recalc_currency',
+	'default_currency',
+	'first_day',
+	'ai_enabled',
+	'is_unlimited',
+	'accent'
+];
+
+const DEFAULTS: Partial<Omit<UserT, 'id'>> = {
+	theme: 'auto',
+	oled_mode: false,
+	max_horizon: 3,
+	first_day: 'monday',
+	ai_enabled: false,
+	is_unlimited: false,
+	accent: 'orange'
+};
 
 const useInitSettings = () => {
 	const [isReady, setIsReady] = useState(false);
@@ -12,71 +46,22 @@ const useInitSettings = () => {
 	useEffect(() => {
 		if (isReady) return;
 
-		const execute = async () => {
-			const userData = await db.select().from(userTable).limit(1).get();
-			const {
-				theme,
-				oled_mode,
-				max_horizon,
-				recalc_currency,
-				default_currency,
-				is_unlimited,
-				accent,
-				first_day,
-				ai_enabled
-			} = userData || {};
+		const userData = db.select().from(userTable).limit(1).get();
 
-			const initTheme = Settings.get('theme');
-			const initOledMode = Settings.get('oled_mode');
-			const initMaxHorizon = Settings.get('max_horizon');
-			const initRecalcCurrency = Settings.get('recalc_currency');
-			const initDefaultCurrency = Settings.get('default_currency');
-			const initIsUnlimited = Settings.get('is_unlimited');
-			const initFirstDay = Settings.get('first_day');
-			const initAccent = Settings.get('accent');
-			const initAiEnabled = Settings.get('ai_enabled');
+		SETTINGS_KEYS.forEach((settingKey) => {
+			const currentValue = Settings.get(settingKey);
 
-			if (initTheme === undefined) {
-				setSettingsValue('theme', theme);
+			console.log('currentValue:', currentValue, typeof currentValue);
+
+			if (currentValue === undefined || currentValue === null) {
+				const possibleValue = userData?.[settingKey] ?? DEFAULTS[settingKey];
+
+				setSettingsValue(settingKey, possibleValue);
 			}
+		});
 
-			if (initOledMode === undefined) {
-				setSettingsValue('oled_mode', oled_mode);
-			}
-
-			if (initMaxHorizon === undefined) {
-				setSettingsValue('max_horizon', max_horizon);
-			}
-
-			if (initRecalcCurrency === undefined) {
-				setSettingsValue('recalc_currency', recalc_currency);
-			}
-
-			if (initDefaultCurrency === undefined) {
-				setSettingsValue('default_currency', default_currency);
-			}
-
-			if (initIsUnlimited === undefined) {
-				setSettingsValue('is_unlimited', is_unlimited ?? false);
-			}
-
-			if (!initFirstDay) {
-				setSettingsValue('first_day', first_day);
-			}
-
-			if (!initAccent) {
-				setSettingsValue('accent', accent);
-			}
-
-			if (initAiEnabled === undefined) {
-				setSettingsValue('ai_enabled', ai_enabled);
-			}
-
-			setIsReady(true);
-		};
-
-		execute();
-	}, []);
+		setIsReady(true);
+	}, [isReady]);
 
 	return isReady;
 };
