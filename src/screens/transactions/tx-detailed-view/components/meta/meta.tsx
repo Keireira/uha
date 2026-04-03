@@ -74,7 +74,7 @@ const IndexMeta = ({ categoryTitle, categorySlug, currencyCode }: IndexMetaProps
 			return categoryTitle;
 		}
 
-		return t(`default_categories.${categorySlug}`);
+		return t(`category.${categorySlug}`);
 	}, [t, categoryTitle, categorySlug]);
 
 	return (

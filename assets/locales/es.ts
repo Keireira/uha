@@ -327,7 +327,7 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Rufiyaa maldiva'
 };
 
-const defaultCategories: LocaleRootT['default_categories'] = {
+const defaultCategories: LocaleRootT['category'] = {
 	ai: 'IA',
 	automotive: 'Automotriz',
 	beauty_care: 'Belleza y cuidado',
@@ -384,7 +384,7 @@ const spanish: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
-	default_categories: defaultCategories,
+	category: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

@@ -327,7 +327,7 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Мальдив руфиясы'
 };
 
-const defaultCategories: LocaleRootT['default_categories'] = {
+const defaultCategories: LocaleRootT['category'] = {
 	ai: 'ЖИ',
 	automotive: 'Автокөлік',
 	beauty_care: 'Сұлулық және күтім',
@@ -384,7 +384,7 @@ const kazakh: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
-	default_categories: defaultCategories,
+	category: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

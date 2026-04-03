@@ -1,15 +1,4 @@
-type SourceT = 'local' | 'brandfetch' | 'logodev';
-
-// type Response<T> =
-// 	| {
-// 			status: 'success';
-// 			data: T;
-// 	  }
-// 	| {
-// 			status: 'error';
-// 			code: 400 | 404 | 500;
-// 			message: string;
-// 	  };
+export type SourceT = 'local' | 'brandfetch' | 'logo.dev';
 
 /* GET /search */
 export type SearchQueryT = {
@@ -39,10 +28,7 @@ export type ServiceResponseT = {
 	alternative_names: string[];
 	tags: string[];
 	verified: boolean;
-	category: {
-		id: string;
-		title: string;
-	};
+	category: string;
 	colors: {
 		primary: string;
 	};

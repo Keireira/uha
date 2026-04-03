@@ -46,7 +46,7 @@ const TransactionCard = ({
 				</H3>
 
 				<BottomText numberOfLines={1} ellipsizeMode="tail">
-					{category_title || t(`default_categories.${category_slug}`)}
+					{category_title || t(`category.${category_slug}`)}
 				</BottomText>
 			</DescSection>
 

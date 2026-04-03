@@ -352,7 +352,7 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'モルディブ・ルフィヤ'
 };
 
-const defaultCategories: LocaleRootT['default_categories'] = {
+const defaultCategories: LocaleRootT['category'] = {
 	ai: 'AI',
 	automotive: '自動車',
 	beauty_care: '美容・ケア',
@@ -409,7 +409,7 @@ const nihongo: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
-	default_categories: defaultCategories,
+	category: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stack } from 'expo-router';
+import { searchCallbackRef } from '@screens/add/search-callback';
 
 const Layout = () => {
 	return (
@@ -16,7 +17,9 @@ const Layout = () => {
 					headerShadowVisible: false,
 					headerSearchBarOptions: {
 						placeholder: 'Search service to add',
-						autoFocus: true
+						autoFocus: true,
+						onChangeText: (e) => searchCallbackRef.current(e.nativeEvent.text),
+						onCancelButtonPress: () => searchCallbackRef.current('')
 					}
 				}}
 			/>

@@ -183,7 +183,7 @@ export type LocaleRootT = {
 		};
 	};
 	languages: Record<LanguageCode, string>;
-	default_categories: Record<CategorySlugs, string>;
+	category: Record<CategorySlugs, string>;
 	currencies: Record<CurrencyCode, string>;
 
 	navbar: {

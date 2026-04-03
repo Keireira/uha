@@ -51,15 +51,6 @@ INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title") VA
   ('88888888-0000-0000-0000-000000000015', '⛓️💥', '', '#635BFF', false, 'Stripe'),
   ('88888888-0000-0000-0000-000000000016', '📨', '', '#3B7BBF', false, 'Direct Debit');
 --> statement-breakpoint
-INSERT INTO "services" ("id", "slug", "title", "color", "aliases", "category_slug") VALUES
-  ('55000001-0001-4000-8000-000000000001', 'peacock-tv', 'Peacock', '#000000', '[]', 'video_streaming'),
-  ('55000001-0001-4000-8000-000000000002', 'admin-vps', 'MUBI', '#000000', '["муби"]', 'video_streaming'),
-  ('55000004-0001-4000-8000-000000000001', 'nytimes', 'The New York Times', '#000000', '["nyt"]', 'news_and_reading'),
-  ('55000004-0001-4000-8000-000000000002', 'avira', 'The Washington Post', '#000000', '[]', 'news_and_reading'),
-  ('55000004-0001-4000-8000-000000000003', 'wsj', 'The Wall Street Journal', '#000000', '[]', 'news_and_reading'),
-  ('55000004-0001-4000-8000-000000000004', 'make', 'The Economist', '#E3120B', '[]', 'news_and_reading'),
-  ('55000004-0001-4000-8000-000000000005', 'ft', 'Financial Times', '#FFF1E5', '[]', 'news_and_reading');
---> statement-breakpoint
 INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, region) VALUES
 	('AOA', 'Kz', 100, 2, 'pt-AO', 'africa'),
 	('BWP', 'P', 100, 2, 'en-BW', 'africa'),
