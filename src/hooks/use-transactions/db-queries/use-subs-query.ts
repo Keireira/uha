@@ -39,14 +39,14 @@ const useSubscriptionsQuery = () => {
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
 
-				/* category-related fields. category_id is already included in the `getTableColumns()` call */
+				/* category-related fields. category_slug is already included in the `getTableColumns()` call */
 				category_title: categoriesTable.title,
 				category_color: categoriesTable.color
 			})
 			.from(subscriptionsTable)
 			.innerJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 			.innerJoin(transactionsTable, and(eq(subscriptionsTable.id, transactionsTable.subscription_id)))
 			.where(buildWhereConditions(lensesStore.filters))

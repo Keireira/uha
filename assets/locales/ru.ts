@@ -327,6 +327,39 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Мальдивская руфия'
 };
 
+const defaultCategories: LocaleRootT['default_categories'] = {
+	ai: 'AI',
+	automotive: 'Авто',
+	beauty_care: 'Красота и уход',
+	bundles: 'Бандлы',
+	cloud_storage: 'Облачное хранилище',
+	creator_platforms: 'Площадки для авторов',
+	datings: 'Знакомства',
+	design_and_creative: 'Дизайн и креатив',
+	developer_tools: 'Инструменты разработчика',
+	domains_and_dns: 'Доменные регистраторы',
+	education: 'Образование',
+	finances_and_insurance: 'Финансы и страхование',
+	food_and_delivery: 'Еда и доставка',
+	gaming: 'Игры',
+	health_and_fitness: 'Здоровье и фитнес',
+	hosting_and_vps: 'Хостинг и VPS',
+	marketing: 'Маркетинг',
+	music_and_audiobooks: 'Музыка и аудиокниги',
+	news_and_reading: 'Новости и чтение',
+	paas_and_deployment: 'PaaS',
+	pets: 'Зоотовары',
+	productivity: 'Продуктивность',
+	shopping_and_memberships: 'Покупки и членства',
+	smart_home_and_iot: 'Умный дом / IoT',
+	social: 'Соцсети',
+	transportation: 'Транспорт',
+	travel_and_flights: 'Путешествия',
+	utilities_and_bills: 'Коммуналка и счета',
+	vpn_and_security: 'VPN и безопасность',
+	video_streaming: 'Видеостриминг'
+};
+
 const russian: LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: 'Uha'
@@ -351,6 +384,7 @@ const russian: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
+	default_categories: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

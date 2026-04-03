@@ -327,6 +327,39 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Мальдив руфиясы'
 };
 
+const defaultCategories: LocaleRootT['default_categories'] = {
+	ai: 'ЖИ',
+	automotive: 'Автокөлік',
+	beauty_care: 'Сұлулық және күтім',
+	bundles: 'Пакеттер',
+	cloud_storage: 'Бұлттық сақтау',
+	creator_platforms: 'Авторлар платформасы',
+	datings: 'Танысу',
+	design_and_creative: 'Дизайн және шығармашылық',
+	developer_tools: 'Әзірлеуші құралдары',
+	domains_and_dns: 'Домендер және DNS',
+	education: 'Білім',
+	finances_and_insurance: 'Қаржы және сақтандыру',
+	food_and_delivery: 'Тамақ және жеткізу',
+	gaming: 'Ойындар',
+	health_and_fitness: 'Денсаулық және фитнес',
+	hosting_and_vps: 'Хостинг және VPS',
+	marketing: 'Маркетинг',
+	music_and_audiobooks: 'Музыка және аудиокітаптар',
+	news_and_reading: 'Жаңалықтар және оқу',
+	paas_and_deployment: 'PaaS және орналастыру',
+	pets: 'Үй жануарлары',
+	productivity: 'Өнімділік',
+	shopping_and_memberships: 'Сатып алу және мүшелік',
+	smart_home_and_iot: 'Ақылды үй және IoT',
+	social: 'Әлеуметтік желілер',
+	transportation: 'Көлік',
+	travel_and_flights: 'Саяхат және ұшулар',
+	utilities_and_bills: 'Коммуналдық және шоттар',
+	vpn_and_security: 'VPN және қауіпсіздік',
+	video_streaming: 'Бейне стриминг'
+};
+
 const kazakh: LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: 'Uha'
@@ -351,6 +384,7 @@ const kazakh: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
+	default_categories: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

@@ -49,6 +49,7 @@ const TxDetailedView = () => {
 
 				<Meta
 					id={transaction.id}
+					categorySlug={transaction.category_slug}
 					categoryTitle={transaction.category_title}
 					currencyCode={transaction.currency_code}
 					tenderTitle={transaction.tender_title}

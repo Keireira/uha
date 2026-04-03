@@ -38,7 +38,7 @@ export const useCategory = () => {
 				.from(subscriptionsTable)
 				.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
 				.innerJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
-				.where(eq(subscriptionsTable.category_id, id));
+				.where(eq(subscriptionsTable.category_slug, id));
 
 			if (cancelled) return;
 			setSubscriptions(subs);

@@ -41,7 +41,7 @@ const ServicesListScreen = ({ search }: Props) => {
 				.from(servicesTable)
 				.where(like(servicesTable.title, `%${search.trim()}%`))
 				.orderBy(asc(servicesTable.title))
-				.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id));
+				.leftJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug));
 
 			if (!cancelled) setData(result);
 		})();

@@ -47,7 +47,7 @@ const useFilterValues = () => {
 				subtitle: categoriesTable.title
 			})
 			.from(servicesTable)
-			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.leftJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.where(
 				inArray(
 					servicesTable.id,
@@ -70,9 +70,9 @@ const useFilterValues = () => {
 			.from(categoriesTable)
 			.where(
 				inArray(
-					categoriesTable.id,
+					categoriesTable.slug,
 					db
-						.selectDistinct({ id: subscriptionsTable.category_id })
+						.selectDistinct({ id: subscriptionsTable.category_slug })
 						.from(subscriptionsTable)
 						.innerJoin(transactionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 				)

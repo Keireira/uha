@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useFormattedPrice } from '@hooks/rates';
 
 import { LargeText, H3, LogoView } from '@ui';
@@ -10,16 +11,18 @@ import type { TransactionProps } from './transaction-card.d';
 const TransactionCard = ({
 	id,
 	currency_code,
+	category_slug,
+	category_title,
 	price,
 	slug,
 	customName,
 	title,
 	emoji,
-	category_title,
 	color,
 	date
 }: TransactionProps) => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { withConversion, basePrice, convertedPrice } = useFormattedPrice(date, price, currency_code);
 
 	const openTransactionView = () => {
@@ -43,7 +46,7 @@ const TransactionCard = ({
 				</H3>
 
 				<BottomText numberOfLines={1} ellipsizeMode="tail">
-					{category_title}
+					{category_title || t(`default_categories.${category_slug}`)}
 				</BottomText>
 			</DescSection>
 

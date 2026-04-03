@@ -38,7 +38,7 @@ const useAutoTimeMode = () => {
 			.from(transactionsTable)
 			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.where(
@@ -59,7 +59,7 @@ const useAutoTimeMode = () => {
 			.from(transactionsTable)
 			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.where(and(buildWhereConditions(lensesStore.filters), isNull(subscriptionsTable.cancellation_date))),

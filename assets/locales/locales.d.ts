@@ -127,6 +127,38 @@ type CurrencyCode =
 
 type LanguageCode = 'en' | 'ru' | 'kk' | 'es' | 'ja';
 
+type CategorySlugs =
+	| 'ai'
+	| 'automotive'
+	| 'beauty_care'
+	| 'bundles'
+	| 'cloud_storage'
+	| 'creator_platforms'
+	| 'datings'
+	| 'design_and_creative'
+	| 'developer_tools'
+	| 'domains_and_dns'
+	| 'education'
+	| 'finances_and_insurance'
+	| 'food_and_delivery'
+	| 'gaming'
+	| 'health_and_fitness'
+	| 'hosting_and_vps'
+	| 'marketing'
+	| 'music_and_audiobooks'
+	| 'news_and_reading'
+	| 'paas_and_deployment'
+	| 'pets'
+	| 'productivity'
+	| 'shopping_and_memberships'
+	| 'smart_home_and_iot'
+	| 'social'
+	| 'transportation'
+	| 'travel_and_flights'
+	| 'utilities_and_bills'
+	| 'vpn_and_security'
+	| 'video_streaming';
+
 export type LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: string;
@@ -151,6 +183,7 @@ export type LocaleRootT = {
 		};
 	};
 	languages: Record<LanguageCode, string>;
+	default_categories: Record<CategorySlugs, string>;
 	currencies: Record<CurrencyCode, string>;
 
 	navbar: {

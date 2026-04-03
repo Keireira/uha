@@ -1,14 +1,14 @@
 {
-  "id": "29390c79-618d-4beb-aaa0-92120f560641",
-  "prevId": "e053a68f-7e83-419b-ba30-85ed59ffefbf",
+  "id": "6f33e8c7-cbb0-48ab-96a0-d26f074e3160",
+  "prevId": "b3967dac-ea4d-4c09-8d6d-e95c32fee330",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
     "categories": {
       "name": "categories",
       "columns": {
-        "id": {
-          "name": "id",
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": true,
           "notNull": true,
@@ -18,28 +18,28 @@
           "name": "title",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "emoji": {
           "name": "emoji",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "color": {
           "name": "color",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         }
       },
       "indexes": {
         "categories_full_unique": {
           "name": "categories_full_unique",
-          "columns": ["title", "emoji", "color"],
+          "columns": ["emoji", "color"],
           "isUnique": true
         }
       },
@@ -277,8 +277,8 @@
           "autoincrement": false,
           "default": "'[]'"
         },
-        "category_id": {
-          "name": "category_id",
+        "category_slug": {
+          "name": "category_slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -291,9 +291,9 @@
           "columns": ["slug"],
           "isUnique": true
         },
-        "services_category_id_idx": {
-          "name": "services_category_id_idx",
-          "columns": ["category_id"],
+        "services_category_slug_idx": {
+          "name": "services_category_slug_idx",
+          "columns": ["category_slug"],
           "isUnique": false
         },
         "services_title_idx": {
@@ -303,12 +303,12 @@
         }
       },
       "foreignKeys": {
-        "services_category_id_categories_id_fk": {
-          "name": "services_category_id_categories_id_fk",
+        "services_category_slug_categories_slug_fk": {
+          "name": "services_category_slug_categories_slug_fk",
           "tableFrom": "services",
-          "columnsFrom": ["category_id"],
+          "columnsFrom": ["category_slug"],
           "tableTo": "categories",
-          "columnsTo": ["id"],
+          "columnsTo": ["slug"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -327,8 +327,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "category_id": {
-          "name": "category_id",
+        "category_slug": {
+          "name": "category_slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -402,9 +402,9 @@
         }
       },
       "indexes": {
-        "subscriptions_category_id_idx": {
-          "name": "subscriptions_category_id_idx",
-          "columns": ["category_id"],
+        "subscriptions_category_slug_idx": {
+          "name": "subscriptions_category_slug_idx",
+          "columns": ["category_slug"],
           "isUnique": false
         },
         "subscriptions_service_id_idx": {
@@ -424,12 +424,12 @@
         }
       },
       "foreignKeys": {
-        "subscriptions_category_id_categories_id_fk": {
-          "name": "subscriptions_category_id_categories_id_fk",
+        "subscriptions_category_slug_categories_slug_fk": {
+          "name": "subscriptions_category_slug_categories_slug_fk",
           "tableFrom": "subscriptions",
-          "columnsFrom": ["category_id"],
+          "columnsFrom": ["category_slug"],
           "tableTo": "categories",
-          "columnsTo": ["id"],
+          "columnsTo": ["slug"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },

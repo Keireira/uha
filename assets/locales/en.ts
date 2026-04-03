@@ -327,6 +327,39 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Maldivian Rufiyaa'
 };
 
+const defaultCategories: LocaleRootT['default_categories'] = {
+	ai: 'AI',
+	automotive: 'Automotive',
+	beauty_care: 'Beauty & Care',
+	bundles: 'Bundles',
+	cloud_storage: 'Cloud Storage',
+	creator_platforms: 'Creator Platforms',
+	datings: 'Datings',
+	design_and_creative: 'Design & Creative',
+	developer_tools: 'Developer Tools',
+	domains_and_dns: 'Domains & DNS',
+	education: 'Education',
+	finances_and_insurance: 'Finances & Insurance',
+	food_and_delivery: 'Food & Delivery',
+	gaming: 'Gaming',
+	health_and_fitness: 'Health & Fitness',
+	hosting_and_vps: 'Hosting & VPS',
+	marketing: 'Marketing',
+	music_and_audiobooks: 'Music & Audiobooks',
+	news_and_reading: 'News & Reading',
+	paas_and_deployment: 'PaaS & Deployment',
+	pets: 'Pets',
+	productivity: 'Productivity',
+	shopping_and_memberships: 'Shopping & Memberships',
+	smart_home_and_iot: 'Smart Home & IoT',
+	social: 'Social',
+	transportation: 'Transportation',
+	travel_and_flights: 'Travel & Flights',
+	utilities_and_bills: 'Utilities & Bills',
+	vpn_and_security: 'VPN & Security',
+	video_streaming: 'Video Streaming'
+};
+
 const english: LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: 'Uha'
@@ -351,6 +384,7 @@ const english: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
+	default_categories: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {

@@ -50,7 +50,7 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 				comment: transactionsTable.comment,
 
 				/* category-related fields */
-				category_id: categoriesTable.id,
+				category_slug: categoriesTable.slug,
 				category_title: categoriesTable.title,
 				category_color: categoriesTable.color,
 
@@ -72,7 +72,7 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
 			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode), customWhere)),

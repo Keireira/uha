@@ -26,7 +26,7 @@ export const useService = () => {
 					category_color: categoriesTable.color
 				})
 				.from(servicesTable)
-				.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+				.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 				.where(eq(servicesTable.id, id));
 
 			if (cancelled) return;

@@ -1,6 +1,6 @@
-import m0000 from './0000_brief_cobalt_man.sql';
-import m0001 from './0001_overjoyed_dreaming_celestial.sql';
 import journal from './meta/_journal.json';
+import m0000 from './0000_far_maria_hill.sql';
+import m0001 from './0001_lively_karma.sql';
 
 export default {
 	journal,

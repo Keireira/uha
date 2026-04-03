@@ -14,7 +14,7 @@ export type PreparedDbTxT = {
 	date: TransactionT['date'];
 	comment: TransactionT['comment'];
 
-	category_id: CategoryT['id'];
+	category_slug: CategoryT['slug'];
 	category_title: CategoryT['title'];
 	category_color: CategoryT['color'];
 
@@ -37,7 +37,7 @@ export type PreparedSubscriptionT = SubscriptionT & {
 	emoji: CategoryT['emoji'];
 	color: ServiceT['color'];
 
-	/* category-related fields. category_id is already included in the SubscriptionT */
+	/* category-related fields. category_slug is already included in the SubscriptionT */
 	category_title: CategoryT['title'];
 	category_color: CategoryT['color'];
 };
