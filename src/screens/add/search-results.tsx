@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { SymbolView } from 'expo-symbols';
@@ -7,8 +7,6 @@ import { SymbolView } from 'expo-symbols';
 import SquircleMask from '@assets/masks/squircle.svg.tsx';
 
 import {
-	Container,
-	ResultsCount,
 	SectionWrap,
 	SectionLabel,
 	SectionCard,
@@ -61,8 +59,6 @@ const getInitials = (name: string) =>
 		.map((w) => w[0].toUpperCase())
 		.join('');
 
-/* ── Glass logo ──────────────────────────── */
-
 const GlassLogo = ({ logoUrl, name, size }: { logoUrl: string; name: string; size: number }) => (
 	<LogoGlass $size={size}>
 		<LogoInner>
@@ -76,8 +72,6 @@ const GlassLogo = ({ logoUrl, name, size }: { logoUrl: string; name: string; siz
 		</LogoInner>
 	</LogoGlass>
 );
-
-/* ── Source badge ─────────────────────────── */
 
 const SourceBadge = ({ source }: { source: string }) => {
 	const meta = SOURCE_META[source as SourceT] ?? FALLBACK_META;
@@ -94,8 +88,6 @@ const SourceBadge = ({ source }: { source: string }) => {
 		</BadgeGlass>
 	);
 };
-
-/* ── Top Hit ──────────────────────────────── */
 
 const TopHitCard = ({ result, onPress }: { result: SearchResultT; onPress: () => void }) => {
 	const domain = result.domains?.[0];
@@ -119,8 +111,6 @@ const TopHitCard = ({ result, onPress }: { result: SearchResultT; onPress: () =>
 	);
 };
 
-/* ── Row ──────────────────────────────────── */
-
 const ResultRow = ({ result, isLast, onPress }: { result: SearchResultT; isLast: boolean; onPress: () => void }) => {
 	const domain = result.domains?.[0];
 
@@ -141,19 +131,14 @@ const ResultRow = ({ result, isLast, onPress }: { result: SearchResultT; isLast:
 	);
 };
 
-/* ── Section ──────────────────────────────── */
-
-const ResultSection = ({
-	label,
-	footer,
-	results,
-	onPress
-}: {
+type ResultsProps = {
 	label: string;
 	footer?: string;
 	results: SearchResultT[];
 	onPress: (r: SearchResultT) => void;
-}) => {
+};
+
+const ResultSection = ({ label, footer, results, onPress }: ResultsProps) => {
 	if (results.length === 0) return null;
 
 	return (
@@ -174,11 +159,9 @@ const ResultSection = ({
 	);
 };
 
-/* ── Main ─────────────────────────────────── */
-
 const SearchResults = ({ results, loading, query }: Props) => {
-	const router = useRouter();
 	const theme = useTheme();
+	const router = useRouter();
 
 	const { topHit, localRest, onlineRest } = useMemo(() => {
 		if (results.length === 0) return { topHit: null, localRest: [], onlineRest: [] };
@@ -226,12 +209,8 @@ const SearchResults = ({ results, loading, query }: Props) => {
 		);
 	}
 
-	const totalCount = results.length;
-
 	return (
-		<Container>
-			{totalCount > 0 && <ResultsCount>{totalCount} results</ResultsCount>}
-
+		<>
 			{topHit && <TopHitCard result={topHit} onPress={() => handlePress(topHit)} />}
 
 			<ResultSection label="Verified" results={localRest} onPress={handlePress} />
@@ -242,7 +221,7 @@ const SearchResults = ({ results, loading, query }: Props) => {
 				results={onlineRest}
 				onPress={handlePress}
 			/>
-		</Container>
+		</>
 	);
 };
 

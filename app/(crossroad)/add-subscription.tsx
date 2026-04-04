@@ -1,3 +1,3 @@
-import AddSubscriptionScreen from '@screens/crossroad/add-subscription';
+import { AddSubscriptionScreen } from '@screens/crossroad';
 
 export default AddSubscriptionScreen;

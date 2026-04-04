@@ -3,20 +3,6 @@ import { BlurView } from 'expo-blur';
 import { GlassView } from 'expo-glass-effect';
 import { BaseText, H6, SmallText } from '@ui';
 
-/* ── Layout ─────────────────────────────── */
-
-export const Container = styled.View`
-	padding-top: 4px;
-`;
-
-export const ResultsCount = styled(BaseText)`
-	font-size: 13px;
-	font-weight: 500;
-	color: ${({ theme }) => theme.text.tertiary};
-	text-align: center;
-	margin-bottom: 24px;
-`;
-
 /* ── Section ────────────────────────────── */
 
 export const SectionWrap = styled.View`

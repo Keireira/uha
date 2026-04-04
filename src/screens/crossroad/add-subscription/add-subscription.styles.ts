@@ -4,7 +4,8 @@ import { BaseText } from '@ui';
 
 export const Container = styled.ScrollView.attrs({
 	keyboardShouldPersistTaps: 'handled' as const,
-	showsVerticalScrollIndicator: false
+	showsVerticalScrollIndicator: false,
+	contentInsetAdjustmentBehavior: 'automatic'
 })`
 	flex: 1;
 `;

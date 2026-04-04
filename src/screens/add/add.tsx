@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
+import { useRouter } from 'expo-router';
 import { useSettingsValue } from '@hooks';
-import { useFocusEffect, useNavigation, useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 
 import { H5, SmallText } from '@ui';
 import { SymbolView } from 'expo-symbols';
 import SearchResults from './search-results';
 import useSearch from './use-search';
-import { searchCallbackRef } from './search-callback';
 import Root, { ScreenTitle, Grid, CardGlass, CardInner } from './add.styles';
 
 import type { AccentT } from '@themes';
@@ -42,41 +41,15 @@ const ITEMS = [
 const AddCrossroad = () => {
 	const theme = useTheme();
 	const router = useRouter();
-	const navigation = useNavigation();
+	const { query, results, isLoading } = useSearch();
 	const settingAccent = useSettingsValue<AccentT>('accent');
-	const { query, search, results, loading } = useSearch();
 
-	useEffect(() => {
-		searchCallbackRef.current = search;
-		return () => {
-			searchCallbackRef.current = () => {};
-		};
-	}, [search]);
-
-	// Re-trigger autoFocus on every tab focus (iOS doesn't re-trigger on tab switch)
-	useFocusEffect(
-		useCallback(() => {
-			const timer = setTimeout(() => {
-				navigation.setOptions({
-					headerSearchBarOptions: {
-						placeholder: 'Search service to add',
-						autoFocus: true,
-						onChangeText: (e: { nativeEvent: { text: string } }) => searchCallbackRef.current(e.nativeEvent.text),
-						onCancelButtonPress: () => searchCallbackRef.current('')
-					}
-				});
-			}, 50);
-
-			return () => clearTimeout(timer);
-		}, [navigation])
-	);
-
-	const isSearching = query.trim().length > 0;
+	const isSearching = query.trim().length > 1 || isLoading;
 
 	return (
 		<Root>
 			{isSearching ? (
-				<SearchResults results={results} loading={loading} query={query} />
+				<SearchResults results={results} loading={isLoading} query={query} />
 			) : (
 				<>
 					<ScreenTitle>New entry</ScreenTitle>

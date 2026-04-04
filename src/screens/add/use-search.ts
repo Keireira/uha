@@ -1,65 +1,90 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 import { useAsyncDebouncer } from '@tanstack/react-pacer';
+import { sort } from 'ramda';
+
 import { searchService } from '@api/soup';
 
 import type { SearchResultT, SourceT } from '@api/soup/soup.d';
 
-const DEBOUNCE_MS = 400;
-
-const SOURCE_PRIORITY: Record<SourceT, number> = { local: 0, brandfetch: 1, 'logo.dev': 2 };
+const DEBOUNCE_MS = 300;
+const SOURCE_PRIORITY: Record<SourceT, number> = {
+	local: 0,
+	brandfetch: 1,
+	'logo.dev': 2
+};
 
 const processResults = (results: SearchResultT[]): SearchResultT[] => {
-	const sorted = [...results].sort((a, b) => SOURCE_PRIORITY[a.source] - SOURCE_PRIORITY[b.source]);
+	const sorted = sort(
+		(a: SearchResultT, b: SearchResultT) => SOURCE_PRIORITY[a.source] - SOURCE_PRIORITY[b.source],
+		results
+	);
 
-	const seen = new Set<string>();
+	return sorted;
+};
 
-	return sorted.filter((item) => {
-		const key = item.name.toLowerCase().trim();
-		if (seen.has(key)) return false;
-		seen.add(key);
-		return true;
-	});
+type SearchState = {
+	query: string;
+	results: SearchResultT[];
+};
+
+let state: SearchState = { query: '', results: [] };
+const listeners = new Set<() => void>();
+
+const getSnapshot = () => state;
+
+const setState = (next: Partial<SearchState>) => {
+	state = { ...state, ...next };
+	listeners.forEach((l) => l());
+};
+
+const subscribe = (listener: () => void) => {
+	listeners.add(listener);
+	return () => listeners.delete(listener);
 };
 
 const useSearch = () => {
-	const [query, setQuery] = useState('');
-	const [results, setResults] = useState<SearchResultT[]>([]);
+	const snap = useSyncExternalStore(subscribe, getSnapshot);
 
 	const debouncer = useAsyncDebouncer(
 		async (trimmed: string) => {
 			const data = await searchService(trimmed);
-			setResults(processResults(data));
+
+			setState({ results: processResults(data) });
 		},
 		{
 			wait: DEBOUNCE_MS,
-			onError: () => setResults([])
+			onError: () => setState({ results: [] })
 		},
-		(state) => ({
-			isPending: state.isPending,
-			isExecuting: state.isExecuting
+		(s) => ({
+			isPending: s.isPending,
+			isExecuting: s.isExecuting
 		})
 	);
 
-	const loading = debouncer.state.isPending || debouncer.state.isExecuting;
-
-	const search = useCallback(
+	const runSearch = useCallback(
 		(text: string) => {
-			setQuery(text);
+			const trimmedText = text.trim();
 
-			const trimmed = text.trim();
+			setState({ query: trimmedText });
 
-			if (trimmed.length < 2) {
+			if (text.length < 2) {
 				debouncer.cancel();
-				setResults([]);
+				setState({ results: [] });
+
 				return;
 			}
 
-			debouncer.maybeExecute(trimmed);
+			debouncer.maybeExecute(trimmedText);
 		},
 		[debouncer]
 	);
 
-	return { query, search, results, loading };
+	return {
+		query: snap.query,
+		results: snap.results,
+		runSearch,
+		isLoading: debouncer.state.isPending || debouncer.state.isExecuting
+	};
 };
 
 export default useSearch;

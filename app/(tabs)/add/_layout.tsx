@@ -1,14 +1,27 @@
-import React from 'react';
-import { Stack } from 'expo-router';
-import { searchCallbackRef } from '@screens/add/search-callback';
+import React, { useCallback, useRef } from 'react';
+import { Stack, useFocusEffect } from 'expo-router';
+import { useSearch } from '@screens/add';
+
+import type { SearchBarCommands } from 'react-native-screens';
 
 const Layout = () => {
+	const { runSearch } = useSearch();
+	const searchBarRef = useRef<SearchBarCommands>(null);
+
+	const focusSearchBar = useCallback(() => {
+		if (!searchBarRef.current) return;
+
+		searchBarRef.current?.focus();
+	}, []);
+
+	useFocusEffect(focusSearchBar);
+
 	return (
 		<Stack>
 			<Stack.Screen
 				name="index"
 				options={{
-					title: '—',
+					title: 'Find new Service',
 					headerTitleStyle: {
 						color: 'transparent'
 					},
@@ -16,10 +29,12 @@ const Layout = () => {
 					headerTransparent: true,
 					headerShadowVisible: false,
 					headerSearchBarOptions: {
+						ref: searchBarRef,
+						hideNavigationBar: false,
 						placeholder: 'Search service to add',
-						autoFocus: true,
-						onChangeText: (e) => searchCallbackRef.current(e.nativeEvent.text),
-						onCancelButtonPress: () => searchCallbackRef.current('')
+						onChangeText: (e) => {
+							runSearch(e.nativeEvent.text);
+						}
 					}
 				}}
 			/>
