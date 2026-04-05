@@ -32,9 +32,12 @@ const TxsList = ({ transactions }: Props) => {
 
 	const handleScrollY = useDirectionStore((s) => s.handleScrollY);
 
-	const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
-		handleScrollY(e.nativeEvent.contentOffset.y);
-	}, [handleScrollY]);
+	const onScroll = useCallback(
+		(e: NativeSyntheticEvent<NativeScrollEvent>) => {
+			handleScrollY(e.nativeEvent.contentOffset.y);
+		},
+		[handleScrollY]
+	);
 
 	return (
 		<Masked

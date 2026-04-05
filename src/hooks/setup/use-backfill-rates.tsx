@@ -8,7 +8,7 @@ import { lightFormat, startOfTomorrow } from 'date-fns';
 import { withRetry } from '@lib';
 import { getHistoryRates } from '@api/sharkie';
 
-import db from '@db';
+import db, { silentDb, uhaDb } from '@db';
 import { lt, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { currencyRatesTable, transactionsTable } from '@db/schema';
@@ -79,7 +79,7 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 
 	const batches = splitEvery(150, valuesToInsert);
 
-	await db.transaction(async (tx) => {
+	await silentDb.transaction(async (tx) => {
 		for (const batch of batches) {
 			await tx
 				.insert(currencyRatesTable)
@@ -91,6 +91,8 @@ export const backfillRates = async (): Promise<{ success: boolean; fetchedCount:
 				.execute();
 		}
 	});
+
+	uhaDb.runSync('UPDATE currency_rates SET rate = rate WHERE rowid = (SELECT MIN(rowid) FROM currency_rates)');
 
 	return {
 		success: true,

@@ -91,17 +91,29 @@ const replaceAllData = (db: SQLite.SQLiteDatabase, tableData: Map<TableName, Csv
 			if (isEmpty(rows)) continue;
 
 			const columns = keys(rows[0]) as string[];
-			const placeholders = join(
+			const singlePlaceholder = `(${join(
 				',',
 				map(() => '?', columns)
-			);
-			const sql = `INSERT INTO ${table} (${join(',', columns)}) VALUES (${placeholders})`;
+			)})`;
 
-			for (const row of rows) {
-				const values = map((col): string | null => {
-					const v = row[col];
-					return v === '' ? null : v;
-				}, columns);
+			const batches = [];
+			for (let i = 0; i < rows.length; i += 150) {
+				batches.push(rows.slice(i, i + 150));
+			}
+
+			for (const batch of batches) {
+				const allPlaceholders = join(
+					',',
+					map(() => singlePlaceholder, batch)
+				);
+				const sql = `INSERT INTO ${table} (${join(',', columns)}) VALUES ${allPlaceholders}`;
+
+				const values = batch.flatMap((row) =>
+					map((col): string | null => {
+						const v = row[col];
+						return v === '' ? null : v;
+					}, columns)
+				);
 
 				db.runSync(sql, values);
 			}
