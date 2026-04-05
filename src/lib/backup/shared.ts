@@ -1,6 +1,6 @@
 import { File } from 'expo-file-system';
 
-export const DB_NAME = 'db.db';
+export const DB_NAME = 'uha.db';
 export const SQLITE_MAGIC = 'SQLite format 3';
 
 export enum BACKUP_STATUS {

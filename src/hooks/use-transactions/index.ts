@@ -5,7 +5,7 @@ import { useTxDatesStore, useLensesStore } from '@screens/transactions/models';
 import useSearchParams from '../use-search-params';
 import { useTransactionsQuery, useTxDatesRange } from './db-queries';
 
-const useTransactions = (debugLabel: string) => {
+const useTransactions = () => {
 	const { txViewMode } = useSearchParams();
 	const timeMode_raw = useLensesStore((s) => s.time_mode);
 	const setMinActiveDate = useTxDatesStore((s) => s.setMinActiveDate);

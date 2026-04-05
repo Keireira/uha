@@ -1,82 +1,58 @@
 import React, { useMemo, useCallback } from 'react';
-import {
-	endOfWeek,
-	endOfMonth,
-	lightFormat,
-	isSameMonth,
-	startOfMonth,
-	eachDayOfInterval,
-	eachWeekOfInterval
-} from 'date-fns';
-import { splitEvery } from 'ramda';
 
-import { useRouter } from 'expo-router';
-import { useTxDatesStore } from '@screens/transactions/models';
-import { useSettingsValue } from '@hooks';
+import { useTheme } from 'styled-components/native';
+import { lightFormat, startOfMonth, getDay, getDaysInMonth } from 'date-fns';
 
-import DayPreview from '../day-preview';
-import Root, { MonthHeader, Week, DaysGrid } from './month-preview.styles';
+import { MonthGridView } from '@modules/month-grid';
 
-import type { UserT } from '@models';
-import type { QuarterRowDataT } from '../../year.d';
+import type { Props } from './month-preview.d';
 
-const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
-	const router = useRouter();
-	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
+const ROW_HEIGHT = 24;
 
-	const firstDay = useSettingsValue<UserT['first_day']>('first_day');
-	const weekStartsOn = useMemo(() => (firstDay === 'monday' ? 1 : 0), [firstDay]);
+const MonthPreview = ({
+	monthDate,
+	daysWithTxs,
+	title,
+	isMonthInRange,
+	selectedDate,
+	weekStartsOn,
+	onPressMonth
+}: Props) => {
+	const theme = useTheme();
 
-	const weeks = useMemo(() => {
-		const weekStartDates = eachWeekOfInterval(
-			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
-			{ weekStartsOn }
-		);
+	const colors = {
+		emptyBg: `${theme.surface.default}30`,
+		textPrimary: theme.text.primary,
+		textHighlight: theme.static.white,
+		markSelected: theme.accents.orange,
+		markTx: theme.accents.purple,
+		headerColor: theme.text.primary
+	};
 
-		const allDays = weekStartDates.flatMap((weekStartDate) => {
-			const weekDays = eachDayOfInterval({
-				start: weekStartDate,
-				end: endOfWeek(weekStartDate, { weekStartsOn })
-			});
+	const weekCount = useMemo(() => {
+		const first = startOfMonth(monthDate);
+		const dow = (getDay(first) - weekStartsOn + 7) % 7;
 
-			return weekDays.map((day) => ({
-				raw: day,
-				item_key: `calendar-year-day-${lightFormat(day, 'yyyy-MM-dd')}`,
-				content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
-			}));
-		});
-
-		return splitEvery(7, allDays);
+		return Math.ceil((dow + getDaysInMonth(monthDate)) / 7);
 	}, [monthDate, weekStartsOn]);
 
-	const onPressMonth = useCallback(() => {
-		setActiveMonth(monthDate);
-		router.setParams({ calendar_scale: 'month' });
-	}, [monthDate, setActiveMonth, router]);
+	const handlePress = useCallback(() => {
+		onPressMonth(monthDate);
+	}, [monthDate, onPressMonth]);
 
 	return (
-		<Root $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>
-			<MonthHeader>{title}</MonthHeader>
-
-			<DaysGrid>
-				{weeks.map((week) => {
-					const days = week.map((day) => {
-						const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
-
-						return (
-							<DayPreview
-								key={day.item_key}
-								dayDate={day.raw}
-								content={day.content}
-								withTransactions={withTransactions}
-							/>
-						);
-					});
-
-					return <Week key={`week-${week[0].item_key}`}>{days}</Week>;
-				})}
-			</DaysGrid>
-		</Root>
+		<MonthGridView
+			style={{ flex: 1, height: ROW_HEIGHT + weekCount * ROW_HEIGHT }}
+			title={title}
+			year={monthDate.getFullYear()}
+			month={monthDate.getMonth() + 1}
+			weekStartsOn={weekStartsOn}
+			isInRange={isMonthInRange}
+			daysWithTxs={Array.from(daysWithTxs)}
+			selectedDay={lightFormat(selectedDate, 'yyyy-MM-dd')}
+			colors={colors}
+			onPressMonth={handlePress}
+		/>
 	);
 };
 
