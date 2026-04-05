@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import * as Crypto from 'expo-crypto';
 
 import db from '@db';
 import { categoriesTable } from '@db/schema';
@@ -18,7 +17,7 @@ const useAddCategory = () => {
 		if (!isValid) return;
 
 		await db.insert(categoriesTable).values({
-			id: Crypto.randomUUID(),
+			slug: title.trim().toLowerCase().replace(/\s+/g, '-'),
 			title: title.trim(),
 			emoji,
 			color

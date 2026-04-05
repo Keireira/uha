@@ -15,7 +15,7 @@ export const useCategory = () => {
 		let cancelled = false;
 
 		(async () => {
-			const categories = await db.select().from(categoriesTable).where(eq(categoriesTable.id, id));
+			const categories = await db.select().from(categoriesTable).where(eq(categoriesTable.slug, id));
 
 			if (cancelled) return;
 			setCategory(first(categories));

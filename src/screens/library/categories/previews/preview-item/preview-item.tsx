@@ -5,10 +5,10 @@ import Root, { IconWrapper, Title } from './preview-item.styles';
 
 import type { PropsT } from './preview-item.d';
 
-const PreviewItem = ({ id, title, emoji, color, onPress }: PropsT) => {
+const PreviewItem = ({ slug, title, emoji, color, onPress }: PropsT) => {
 	const handlePress = useCallback(() => {
-		onPress?.(id);
-	}, [id, onPress]);
+		onPress?.(slug);
+	}, [slug, onPress]);
 
 	return (
 		<Root onPress={handlePress}>

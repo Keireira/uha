@@ -142,12 +142,12 @@ const AddServiceScreen = () => {
 						<CategoriesList>
 							{categories.map((cat) => (
 								<CategoryOption
-									key={cat.id}
-									$selected={selectedCategoryId === cat.id}
-									onPress={() => setSelectedCategoryId(cat.id)}
+									key={cat.slug}
+									$selected={selectedCategoryId === cat.slug}
+									onPress={() => setSelectedCategoryId(cat.slug)}
 								>
 									<CategoryEmoji>{cat.emoji}</CategoryEmoji>
-									<CategoryLabel $dark={dark} $selected={selectedCategoryId === cat.id}>
+									<CategoryLabel $dark={dark} $selected={selectedCategoryId === cat.slug}>
 										{cat.title}
 									</CategoryLabel>
 								</CategoryOption>

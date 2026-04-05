@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useTranslation } from 'react-i18next';
 
 import db from '@db';
 import { eq, inArray } from 'drizzle-orm';
@@ -15,17 +16,21 @@ import type { ActiveEntryT } from '../filters.d';
 
 type CoalesceDataT = {
 	id: string;
-	title: string;
+	title: string | null;
 	emoji?: string | null;
 	subtitle?: string | null;
 };
 
 const coalesce = (data: CoalesceDataT[]): ActiveEntryT[] => {
-	const result = data.map(({ id, title, subtitle, emoji }) => ({
-		id,
-		title: emoji ? `${emoji}  ${title}` : title,
-		subtitle: subtitle ?? undefined
-	}));
+	const result = data.map(({ id, title, subtitle, emoji }) => {
+		const label = title ?? id;
+
+		return {
+			id,
+			title: emoji ? `${emoji}  ${label}` : label,
+			subtitle: subtitle ?? undefined
+		};
+	});
 
 	return result satisfies ActiveEntryT[];
 };
@@ -63,7 +68,7 @@ const useFilterValues = () => {
 	const { data: categories } = useLiveQuery(
 		db
 			.selectDistinct({
-				id: categoriesTable.id,
+				slug: categoriesTable.slug,
 				title: categoriesTable.title,
 				emoji: categoriesTable.emoji
 			})
@@ -109,9 +114,11 @@ const useFilterValues = () => {
 			)
 	);
 
+	const mappedCategories = categories.map((c) => ({ id: c.slug, title: c.title, emoji: c.emoji }));
+
 	return {
 		services: coalesce(services),
-		categories: coalesce(categories),
+		categories: coalesce(mappedCategories),
 		tenders: coalesce(tenders),
 		currencies: coalesce(currencies)
 	} satisfies UseFilterValuesReturnT;

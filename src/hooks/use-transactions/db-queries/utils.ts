@@ -8,7 +8,7 @@ import type { AppliedFilterT, TimeModesT } from '@screens/transactions/models/ty
 
 /* Master Filters */
 const filterTypeToIdColumn = {
-	category: categoriesTable.id,
+	category: categoriesTable.slug,
 	service: servicesTable.id,
 	currency: currenciesTable.id,
 	tender: tendersTable.id

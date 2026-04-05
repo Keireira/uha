@@ -37,20 +37,21 @@ const CategoriesListScreen = ({ search }: Props) => {
 			</Header>
 
 			{categories.map((category, index) => {
-				const letter = category.title.charAt(0).toUpperCase();
-				const prev = index > 0 ? categories[index - 1].title.charAt(0).toUpperCase() : '';
+				const title = category.title ?? category.slug;
+				const letter = title.charAt(0).toUpperCase();
+				const prev = index > 0 ? (categories[index - 1].title ?? categories[index - 1].slug).charAt(0).toUpperCase() : '';
 
 				return (
-					<React.Fragment key={category.id}>
+					<React.Fragment key={category.slug}>
 						{letter !== prev && <SectionLetter>{letter}</SectionLetter>}
 
 						<CategoryRoot
 							onPress={() =>
-								router.push({ pathname: '/(tabs)/library/[id]', params: { id: category.id, type: 'category' } })
+								router.push({ pathname: '/(tabs)/library/[id]', params: { id: category.slug, type: 'category' } })
 							}
 						>
-							<Emoji $color={category.color}>{category.emoji}</Emoji>
-							<Title>{category.title}</Title>
+							<Emoji $color={category.color ?? '#888'}>{category.emoji ?? '?'}</Emoji>
+							<Title>{title}</Title>
 						</CategoryRoot>
 					</React.Fragment>
 				);

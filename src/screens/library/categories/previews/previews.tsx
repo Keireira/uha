@@ -30,7 +30,7 @@ const overrideItemLayout = (layout: { span?: number }, item: ListItem) => {
 	}
 };
 
-const keyExtractor = (item: ListItem) => (item.type === 'header' ? `header-${item.letter}` : item.category.id);
+const keyExtractor = (item: ListItem) => (item.type === 'header' ? `header-${item.letter}` : item.category.slug);
 
 const contentContainerStyle = { paddingHorizontal: PADDING };
 
@@ -61,8 +61,9 @@ const Previews = ({ search }: Props) => {
 		const items: ListItem[] = [];
 
 		categories.forEach((category, index) => {
-			const letter = category.title.charAt(0).toUpperCase();
-			const prev = index > 0 ? categories[index - 1].title.charAt(0).toUpperCase() : '';
+			const title = category.title ?? category.slug;
+			const letter = title.charAt(0).toUpperCase();
+			const prev = index > 0 ? (categories[index - 1].title ?? categories[index - 1].slug).charAt(0).toUpperCase() : '';
 
 			if (letter !== prev) {
 				items.push({ type: 'header', letter });
@@ -91,9 +92,17 @@ const Previews = ({ search }: Props) => {
 				);
 			}
 
+			const cat = item.category;
+
 			return (
 				<GridItem $width={itemWidth}>
-					<PreviewItem {...item.category} onPress={handlePress} />
+					<PreviewItem
+						slug={cat.slug}
+						title={cat.title ?? cat.slug}
+						emoji={cat.emoji ?? '?'}
+						color={cat.color ?? '#888'}
+						onPress={handlePress}
+					/>
 				</GridItem>
 			);
 		},

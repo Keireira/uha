@@ -49,6 +49,15 @@ const FilterSheet = () => {
 				};
 			}
 
+			if (tab === 'category') {
+				const localizedName = t(`category.${entry.id}`, { defaultValue: '' });
+
+				return {
+					title: localizedName || entry.title,
+					subtitle: entry.subtitle
+				};
+			}
+
 			return {
 				title: entry.title,
 				subtitle: entry.subtitle
