@@ -1,13 +1,3 @@
-import React from 'react';
+import { AddSubscriptionScreen } from '@screens/crossroad';
 
-import { Text, Wrapper } from '@ui';
-
-const AddSubscription = () => {
-	return (
-		<Wrapper>
-			<Text>Add Subscription</Text>
-		</Wrapper>
-	);
-};
-
-export default AddSubscription;
+export default AddSubscriptionScreen;

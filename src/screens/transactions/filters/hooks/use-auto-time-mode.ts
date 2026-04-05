@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { startOfToday, lightFormat } from 'date-fns';
 
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { useLensesStore } from '@screens/transactions/models';
 
 import {
 	tendersTable,
@@ -23,11 +22,11 @@ import { buildWhereConditions } from '@hooks/use-transactions';
  * to 'all' mode so the user can see results.
  */
 const useAutoTimeMode = () => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const timeMode = useLensesStore((s) => s.time_mode);
+	const filters = useLensesStore((s) => s.filters);
+	const setTimeMode = useLensesStore((s) => s.setTimeMode);
 
-	const timeMode = lensesStore.time_mode;
-	const hasFilters = lensesStore.filters.length > 0;
+	const hasFilters = filters.length > 0;
 	const today = lightFormat(startOfToday(), 'yyyy-MM-dd');
 
 	const {
@@ -38,17 +37,17 @@ const useAutoTimeMode = () => {
 			.from(transactionsTable)
 			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.where(
 				and(
-					buildWhereConditions(lensesStore.filters),
+					buildWhereConditions(filters),
 					gte(transactionsTable.date, today),
 					isNull(subscriptionsTable.cancellation_date)
 				)
 			),
-		[lensesStore.filters]
+		[filters]
 	);
 
 	const {
@@ -59,11 +58,11 @@ const useAutoTimeMode = () => {
 			.from(transactionsTable)
 			.innerJoin(subscriptionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.innerJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.where(and(buildWhereConditions(lensesStore.filters), isNull(subscriptionsTable.cancellation_date))),
-		[lensesStore.filters]
+			.where(and(buildWhereConditions(filters), isNull(subscriptionsTable.cancellation_date))),
+		[filters]
 	);
 
 	useEffect(() => {
@@ -72,9 +71,9 @@ const useAutoTimeMode = () => {
 		}
 
 		if (futureCount.value === 0 && allTimeCount.value > 0 && timeMode === 'future' && hasFilters) {
-			lenses.time_mode.set('all');
+			setTimeMode('all');
 		} else if (futureCount.value > 0 && timeMode === 'all' && hasFilters) {
-			lenses.time_mode.set('future');
+			setTimeMode('future');
 		}
 
 		/* eslint-disable-next-line react-hooks/exhaustive-deps */

@@ -327,6 +327,39 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Rufiyaa maldiva'
 };
 
+const defaultCategories: LocaleRootT['category'] = {
+	ai: 'IA',
+	automotive: 'Automotriz',
+	beauty_care: 'Belleza y cuidado',
+	bundles: 'Paquetes',
+	cloud_storage: 'Almacenamiento en la nube',
+	creator_platforms: 'Plataformas para creadores',
+	datings: 'Citas',
+	design_and_creative: 'Diseño y creatividad',
+	developer_tools: 'Herramientas de desarrollo',
+	domains_and_dns: 'Dominios y DNS',
+	education: 'Educación',
+	finances_and_insurance: 'Finanzas y seguros',
+	food_and_delivery: 'Comida y delivery',
+	gaming: 'Videojuegos',
+	health_and_fitness: 'Salud y fitness',
+	hosting_and_vps: 'Hosting y VPS',
+	marketing: 'Marketing',
+	music_and_audiobooks: 'Música y audiolibros',
+	news_and_reading: 'Noticias y lectura',
+	paas_and_deployment: 'PaaS y despliegue',
+	pets: 'Mascotas',
+	productivity: 'Productividad',
+	shopping_and_memberships: 'Compras y membresías',
+	smart_home_and_iot: 'Hogar inteligente e IoT',
+	social: 'Redes sociales',
+	transportation: 'Transporte',
+	travel_and_flights: 'Viajes y vuelos',
+	utilities_and_bills: 'Servicios y facturas',
+	vpn_and_security: 'VPN y seguridad',
+	video_streaming: 'Streaming de video'
+};
+
 const spanish: LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: 'Uha'
@@ -351,6 +384,7 @@ const spanish: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
+	category: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {
@@ -382,7 +416,39 @@ const spanish: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'Categoría',
+				description: 'Agrupar servicios por tipo'
+			},
+			service: {
+				title: 'Servicio',
+				description: 'Aplicación o servicio'
+			},
+			payment: {
+				title: 'Método de pago',
+				description: 'Tarjeta u otro método de pago'
+			},
+			subscription: {
+				title: 'Suscripciones',
+				description: 'Lamentablemente (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'Buscar servicio',
+			search_bar: 'Buscar servicio',
+			no_results: 'No se encontró nada',
+			search_results: 'Resultados',
+			sections: {
+				top_hit: 'Mejor resultado',
+				verified: 'Verificados',
+				external: 'Externos'
+			}
+		}
+	}
 };
 
 export default spanish;

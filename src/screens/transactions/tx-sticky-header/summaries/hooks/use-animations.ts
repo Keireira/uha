@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { useAppModel } from '@models';
+import { useDirectionStore } from '@models';
 import { useSearchParams } from '@hooks';
-import { useUnit } from 'effector-react';
 import {
 	withSpring,
 	interpolate,
@@ -21,12 +20,10 @@ const COLLAPSED = 1;
 const EXPANDED = 0;
 
 const useSummaryAnimations = () => {
-	const { scroll } = useAppModel();
+	const direction = useDirectionStore((s) => s.direction);
 	const { txViewMode } = useSearchParams();
-	const direction = useUnit(scroll.$direction);
 
 	const progress = useSharedValue(txViewMode === 'calendar' ? COLLAPSED : EXPANDED);
-	/* https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/ */
 	const reducedMotion = useReducedMotion();
 
 	const opacity = useDerivedValue(() => interpolate(progress.value, [0, COLLAPSED], [1, EXPANDED]));
@@ -44,11 +41,6 @@ const useSummaryAnimations = () => {
 	}));
 
 	useEffect(() => {
-		/* In the calendar mode, always stay collapsed (1)
-		 * In the list mode, collapse (1) on scroll down, expand (0) on scroll up
-		 *
-		 * yeah, yeah I know nested ternaries are ugly af
-		 */
 		/* prettier-ignore */
 		const target = txViewMode === 'calendar'
 			? COLLAPSED

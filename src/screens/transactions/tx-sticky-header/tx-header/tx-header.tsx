@@ -1,10 +1,9 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
-import { useUnit } from 'effector-react';
 import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
 
-import { useAppModel } from '@models';
+import { useLensesStore, useTxDatesStore } from '@screens/transactions/models';
 import { useSearchParams } from '@hooks';
 
 import { H3 } from '@ui';
@@ -18,11 +17,10 @@ const TxHeader = () => {
 	const router = useRouter();
 	const { txViewMode, calendarScale } = useSearchParams();
 
-	const { lenses, tx_dates } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
-	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const filters = useLensesStore((s) => s.filters);
+	const activeMonth = useTxDatesStore((s) => s.activeMonth);
 
-	const hasActiveFilters = lensesStore.filters.length > 0;
+	const hasActiveFilters = filters.length > 0;
 
 	const setCalendarViewMode = () => {
 		router.setParams({ tx_view_mode: 'calendar' });

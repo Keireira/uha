@@ -352,6 +352,39 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'モルディブ・ルフィヤ'
 };
 
+const defaultCategories: LocaleRootT['category'] = {
+	ai: 'AI',
+	automotive: '自動車',
+	beauty_care: '美容・ケア',
+	bundles: 'バンドル',
+	cloud_storage: 'クラウドストレージ',
+	creator_platforms: 'クリエイタープラットフォーム',
+	datings: '出会い',
+	design_and_creative: 'デザイン・クリエイティブ',
+	developer_tools: '開発ツール',
+	domains_and_dns: 'ドメイン・DNS',
+	education: '教育',
+	finances_and_insurance: '金融・保険',
+	food_and_delivery: 'フード・デリバリー',
+	gaming: 'ゲーム',
+	health_and_fitness: '健康・フィットネス',
+	hosting_and_vps: 'ホスティング・VPS',
+	marketing: 'マーケティング',
+	music_and_audiobooks: '音楽・オーディオブック',
+	news_and_reading: 'ニュース・読書',
+	paas_and_deployment: 'PaaS・デプロイ',
+	pets: 'ペット',
+	productivity: '生産性',
+	shopping_and_memberships: 'ショッピング・会員制',
+	smart_home_and_iot: 'スマートホーム・IoT',
+	social: 'ソーシャル',
+	transportation: '交通',
+	travel_and_flights: '旅行・フライト',
+	utilities_and_bills: '公共料金・請求',
+	vpn_and_security: 'VPN・セキュリティ',
+	video_streaming: '動画ストリーミング'
+};
+
 const nihongo: LocaleRootT = {
 	ios: {
 		CFBundleDisplayName: 'Uha'
@@ -376,6 +409,7 @@ const nihongo: LocaleRootT = {
 		}
 	},
 	languages: i18nLanguages,
+	category: defaultCategories,
 	currencies: currenciesList,
 
 	navbar: {
@@ -407,7 +441,39 @@ const nihongo: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'カテゴリ',
+				description: 'サービスの分類'
+			},
+			service: {
+				title: 'サービス',
+				description: 'アプリまたはサービス'
+			},
+			payment: {
+				title: '支払い方法',
+				description: 'カードまたはその他の決済手段'
+			},
+			subscription: {
+				title: 'サブスクリプション',
+				description: '残念 (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'サービスを探す',
+			search_bar: 'サービスを検索',
+			no_results: '見つかりませんでした',
+			search_results: '検索結果',
+			sections: {
+				top_hit: 'ベストマッチ',
+				verified: '認証済み',
+				external: '外部'
+			}
+		}
+	}
 };
 
 export default nihongo;

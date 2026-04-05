@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppModel } from '@models';
 import { useRouter } from 'expo-router';
 import { startOfMonth } from 'date-fns';
 import { useSettingsValue } from '@hooks';
 import { backfillRates } from '@hooks/setup';
+import { useTxDatesStore } from '@screens/transactions/models';
 
 import TabContextMenu from '@modules/tab-context-menu';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
@@ -16,7 +16,7 @@ import type { TabContextMenuActionEvent } from '@modules/tab-context-menu';
 const TabLayout = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
-	const { view_mode, tx_dates } = useAppModel();
+	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
 	const settingAccent = useSettingsValue<AccentT>('accent');
 
 	useEffect(() => {
@@ -62,8 +62,7 @@ const TabLayout = () => {
 		const sub = TabContextMenu.addListener('onAction', (e: TabContextMenuActionEvent) => {
 			switch (e.actionId) {
 				case 'go_to_today': {
-					tx_dates.activeMonth.set(startOfMonth(new Date()));
-					view_mode.list.scrollToTop();
+					setActiveMonth(startOfMonth(new Date()));
 					break;
 				}
 
@@ -125,7 +124,7 @@ const TabLayout = () => {
 		});
 
 		return () => sub.remove();
-	}, [t, router, view_mode, tx_dates]);
+	}, [t, router, setActiveMonth]);
 
 	return (
 		<NativeTabs minimizeBehavior="onScrollDown">

@@ -1,11 +1,11 @@
 CREATE TABLE `categories` (
-	`id` text PRIMARY KEY NOT NULL,
-	`title` text NOT NULL,
-	`emoji` text NOT NULL,
-	`color` text NOT NULL
+	`slug` text PRIMARY KEY NOT NULL,
+	`title` text,
+	`emoji` text,
+	`color` text
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`title`,`emoji`,`color`);--> statement-breakpoint
+CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`emoji`,`color`);--> statement-breakpoint
 CREATE TABLE `currencies` (
 	`id` text PRIMARY KEY NOT NULL,
 	`symbol` text NOT NULL,
@@ -39,20 +39,20 @@ CREATE INDEX `currency_rates_lookup_idx` ON `currency_rates` (`target_currency_i
 CREATE UNIQUE INDEX `currency_rates_unique` ON `currency_rates` (`target_currency_id`,`date`);--> statement-breakpoint
 CREATE TABLE `services` (
 	`id` text PRIMARY KEY NOT NULL,
-	`slug` text NOT NULL,
+	`slug` text,
 	`title` text NOT NULL,
 	`color` text NOT NULL,
+	`logo_url` text,
 	`aliases` text DEFAULT '[]' NOT NULL,
-	`category_id` text NOT NULL,
-	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action
+	`category_slug` text NOT NULL,
+	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `services_slug_unique` ON `services` (`slug`);--> statement-breakpoint
-CREATE INDEX `services_category_id_idx` ON `services` (`category_id`);--> statement-breakpoint
+CREATE INDEX `services_category_slug_idx` ON `services` (`category_slug`);--> statement-breakpoint
 CREATE INDEX `services_title_idx` ON `services` (`title`);--> statement-breakpoint
 CREATE TABLE `subscriptions` (
 	`id` text PRIMARY KEY NOT NULL,
-	`category_id` text NOT NULL,
+	`category_slug` text NOT NULL,
 	`service_id` text NOT NULL,
 	`custom_name` text,
 	`billing_cycle_type` text DEFAULT 'months' NOT NULL,
@@ -62,13 +62,13 @@ CREATE TABLE `subscriptions` (
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`tender_id` text,
 	`cancellation_date` text,
-	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`current_currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE INDEX `subscriptions_category_id_idx` ON `subscriptions` (`category_id`);--> statement-breakpoint
+CREATE INDEX `subscriptions_category_slug_idx` ON `subscriptions` (`category_slug`);--> statement-breakpoint
 CREATE INDEX `subscriptions_service_id_idx` ON `subscriptions` (`service_id`);--> statement-breakpoint
 CREATE INDEX `subscriptions_current_currency_id_idx` ON `subscriptions` (`current_currency_id`);--> statement-breakpoint
 CREATE INDEX `subscriptions_tender_id_idx` ON `subscriptions` (`tender_id`);--> statement-breakpoint
@@ -88,7 +88,6 @@ CREATE TABLE `transactions` (
 	`currency_id` text NOT NULL,
 	`tender_id` text NOT NULL,
 	`subscription_id` text NOT NULL,
-	`is_phantom` integer DEFAULT false NOT NULL,
 	`comment` text DEFAULT '',
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action,

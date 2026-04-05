@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useDateLabel } from './hooks';
+import { isAfterToday } from '@lib/date';
 import { useTheme } from 'styled-components/native';
 
 import { LogoView } from '@ui';
@@ -9,9 +10,10 @@ import Root, { Info, Name, DateRow, DateText } from './merchant.styles';
 
 import type { Props } from './merchant.d';
 
-const Merchant = ({ date, slug, emoji, customName, title, color, isPhantom }: Props) => {
+const Merchant = ({ date, slug, emoji, customName, title, color }: Props) => {
 	const theme = useTheme();
 	const dateLabel = useDateLabel(date);
+	const isInFuture = isAfterToday(date);
 
 	return (
 		<Root>
@@ -23,7 +25,7 @@ const Merchant = ({ date, slug, emoji, customName, title, color, isPhantom }: Pr
 				</Name>
 
 				<DateRow>
-					{isPhantom && <SymbolView name="clock" tintColor={theme.accents.orange} size={14} />}
+					{isInFuture && <SymbolView name="clock" tintColor={theme.accents.orange} size={14} />}
 
 					<DateText numberOfLines={1} ellipsizeMode="tail">
 						{dateLabel}

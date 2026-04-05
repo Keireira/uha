@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
-import { useUnit } from 'effector-react';
 import { lightFormat, isSameDay, isSameMonth } from 'date-fns';
 
 import { roundToEven } from '@lib';
-import { useAppModel } from '@models';
+import { useTxDatesStore } from '@screens/transactions/models';
 import { useCalendarBones } from './hooks';
 
 import Day from './day';
@@ -19,9 +18,9 @@ const EMPTY_TXS: PreparedDbTxT[] = [];
 const CalendarEntry = ({ monthDate, transactions }: Props) => {
 	const { width } = useWindowDimensions();
 
-	const { tx_dates } = useAppModel();
-	const selectedDate = useUnit(tx_dates.selected.$value);
-	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const selectedDate = useTxDatesStore((s) => s.selectedDate);
+	const activeMonth = useTxDatesStore((s) => s.activeMonth);
+	const setSelectedDate = useTxDatesStore((s) => s.setSelectedDate);
 	const { txsByDate, calendar } = useCalendarBones(monthDate, transactions);
 
 	const selectedDateTxs = useMemo(() => {
@@ -45,7 +44,7 @@ const CalendarEntry = ({ monthDate, transactions }: Props) => {
 									iconSize={iconSize}
 									isSelected={isSameDay(day.raw, selectedDate)}
 									txs={txsByDate[day.item_key] || EMPTY_TXS}
-									setSelectedDay={tx_dates.selected.set}
+									setSelectedDay={setSelectedDate}
 								/>
 							))}
 						</WeekRow>

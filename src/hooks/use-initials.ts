@@ -1,19 +1,16 @@
-import { useMemo } from 'react';
+import { split, join, toUpper, take } from 'ramda';
 
-const useInitials = (name: string = '') => {
-	const initials = useMemo(() => {
-		if (!name) return '';
+const getInitials = (raw: string): string => {
+	const parts = split(/\s+/, raw);
+	const letters = parts.map((w) => w[0]);
 
-		const result = name
-			.trim()
-			.split(' ')
-			.filter(Boolean)
-			.reduce((acc, item) => acc + item[0].toUpperCase(), '');
+	return toUpper(join('', take(2, letters)));
+};
 
-		return result;
-	}, [name]);
+const useInitials = (fullName?: string) => {
+	const name = fullName?.trim();
 
-	return initials;
+	return name ? getInitials(name) : '';
 };
 
 export default useInitials;

@@ -1,73 +1,34 @@
-import { createEvent, createStore, sample } from 'effector';
+import { create } from 'zustand';
 import { startOfMonth, endOfMonth, startOfToday } from 'date-fns';
 
-const createTxDatesModel = () => {
-	const $focusedDate = createStore<Date>(startOfToday());
-	const setFocusedDate = createEvent<Date>();
-
-	sample({
-		clock: setFocusedDate,
-		target: $focusedDate
-	});
-
-	const $selectedDate = createStore<Date>(startOfToday());
-	const setSelectedDate = createEvent<Date>();
-
-	sample({
-		clock: setSelectedDate,
-		target: $selectedDate
-	});
-
-	const $activeMonth = createStore<Date>(startOfMonth(new Date()));
-	const setActiveMonth = createEvent<Date>();
-
-	sample({
-		clock: setActiveMonth,
-		target: $activeMonth
-	});
-
-	const $maxActiveDate = createStore<Date>(endOfMonth(new Date()));
-	const setMaxActiveDate = createEvent<Date>();
-
-	sample({
-		clock: setMaxActiveDate,
-		target: $maxActiveDate
-	});
-
-	const $minActiveDate = createStore<Date>(startOfMonth(new Date()));
-	const setMinActiveDate = createEvent<Date>();
-
-	sample({
-		clock: setMinActiveDate,
-		target: $minActiveDate
-	});
-
-	return {
-		/* currently shown month in the list view */
-		focused: {
-			$value: $focusedDate,
-			set: setFocusedDate
-		},
-		/* The date we select in calendar view to show list of txs */
-		selected: {
-			$value: $selectedDate,
-			set: setSelectedDate
-		},
-		/* Calendar month that is shown (as primary calendar) in the calendar view */
-		activeMonth: {
-			$value: $activeMonth,
-			set: setActiveMonth
-		},
-		/* Limits of month generation in calendar view (look at useTransactions hook, this is where it sets) */
-		maxActiveDate: {
-			$value: $maxActiveDate,
-			set: setMaxActiveDate
-		},
-		minActiveDate: {
-			$value: $minActiveDate,
-			set: setMinActiveDate
-		}
-	};
+type TxDatesState = {
+	focusedDate: Date;
+	selectedDate: Date;
+	activeMonth: Date;
+	maxActiveDate: Date;
+	minActiveDate: Date;
 };
 
-export default createTxDatesModel;
+type TxDatesActions = {
+	setFocusedDate: (date: Date) => void;
+	setSelectedDate: (date: Date) => void;
+	setActiveMonth: (date: Date) => void;
+	setMaxActiveDate: (date: Date) => void;
+	setMinActiveDate: (date: Date) => void;
+};
+
+const useTxDatesStore = create<TxDatesState & TxDatesActions>((set) => ({
+	focusedDate: startOfToday(),
+	selectedDate: startOfToday(),
+	activeMonth: startOfMonth(new Date()),
+	maxActiveDate: endOfMonth(new Date()),
+	minActiveDate: startOfMonth(new Date()),
+
+	setFocusedDate: (date) => set({ focusedDate: date }),
+	setSelectedDate: (date) => set({ selectedDate: date }),
+	setActiveMonth: (date) => set({ activeMonth: date }),
+	setMaxActiveDate: (date) => set({ maxActiveDate: date }),
+	setMinActiveDate: (date) => set({ minActiveDate: date })
+}));
+
+export default useTxDatesStore;

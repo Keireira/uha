@@ -2,27 +2,37 @@
 INSERT INTO "user" ("id", "theme", "oled_mode", "max_horizon", "recalc_currency", "default_currency", "is_unlimited", "accent", "first_day", "ai_enabled") VALUES
   ('00000000-0000-0000-0000-000000000000', 'auto', false, 3, 'USD', 'USD', false, 'orange', 'monday', false);
 --> statement-breakpoint
-INSERT INTO "categories" ("id", "color", "emoji", "title") VALUES
-  ('44444444-0000-0000-0000-000000000001', '#7B68EE', '🎬', 'Video Streaming'),
-  ('44444444-0000-0000-0000-000000000002', '#1DB954', '🎵', 'Music'),
-  ('44444444-0000-0000-0000-000000000003', '#E74C3C', '🎮', 'Gaming'),
-  ('44444444-0000-0000-0000-000000000004', '#795548', '📰', 'News & Reading'),
-  ('44444444-0000-0000-0000-000000000005', '#FF6B35', '🤖', 'AI'),
-  ('44444444-0000-0000-0000-000000000006', '#3498DB', '📋', 'Productivity'),
-  ('44444444-0000-0000-0000-000000000007', '#A855F7', '🎨', 'Design & Creative'),
-  ('44444444-0000-0000-0000-000000000008', '#2C3E50', '💻', 'Developer Tools'),
-  ('44444444-0000-0000-0000-000000000009', '#8B3A3A', '☁️', 'Hosting & SaaS'),
-  ('44444444-0000-0000-0000-000000000010', '#2196F3', '💾', 'Cloud Storage'),
-  ('44444444-0000-0000-0000-000000000011', '#FFD700', '🔐', 'VPN & Security'),
-  ('44444444-0000-0000-0000-000000000012', '#00BCD4', '💬', 'Communication & Social'),
-  ('44444444-0000-0000-0000-000000000013', '#FF9800', '🛒', 'Shopping & Memberships'),
-  ('44444444-0000-0000-0000-000000000014', '#4CAF50', '💪', 'Health & Fitness'),
-  ('44444444-0000-0000-0000-000000000015', '#FF5722', '🍔', 'Food & Delivery'),
-  ('44444444-0000-0000-0000-000000000016', '#009688', '🎓', 'Education'),
-  ('44444444-0000-0000-0000-000000000017', '#607D8B', '💳', 'Finance & Insurance'),
-  ('44444444-0000-0000-0000-000000000018', '#E91E63', '✨', 'Creator Platforms'),
-  ('44444444-0000-0000-0000-000000000019', '#455A64', '🔧', 'Utilities & Bills'),
-  ('44444444-0000-0000-0000-000000000020', '#9C27B0', '📦', 'Bundles');
+INSERT INTO "categories" ("color", "emoji", "slug", "title") VALUES
+  ('#FF6B35', '🤖', 'ai', NULL),
+  ('#3F51B5', '🚗', 'automotive', NULL),
+  ('#FF69B4', '💅', 'beauty_care', NULL),
+  ('#9C27B0', '📦', 'bundles', NULL),
+  ('#2196F3', '💾', 'cloud_storage', NULL),
+  ('#E91E63', '✨', 'creator_platforms', NULL),
+  ('#FF4081', '💕', 'datings', NULL),
+  ('#A855F7', '🎨', 'design_and_creative', NULL),
+  ('#2C3E50', '💻', 'developer_tools', NULL),
+  ('#5C6BC0', '🌐', 'domains_and_dns', NULL),
+  ('#009688', '🎓', 'education', NULL),
+  ('#607D8B', '💳', 'finances_and_insurance', NULL),
+  ('#FF5722', '🍔', 'food_and_delivery', NULL),
+  ('#E74C3C', '🎮', 'gaming', NULL),
+  ('#4CAF50', '💪', 'health_and_fitness', NULL),
+  ('#8B3A3A', '☁️', 'hosting_and_vps', NULL),
+  ('#FF7043', '📣', 'marketing', NULL),
+  ('#1DB954', '🎵', 'music_and_audiobooks', NULL),
+  ('#795548', '📰', 'news_and_reading', NULL),
+  ('#26A69A', '🚀', 'paas_and_deployment', NULL),
+  ('#8D6E63', '🐾', 'pets', NULL),
+  ('#3498DB', '📋', 'productivity', NULL),
+  ('#FF9800', '🛒', 'shopping_and_memberships', NULL),
+  ('#78909C', '🏠', 'smart_home_and_iot', NULL),
+  ('#00BCD4', '💬', 'social', NULL),
+  ('#42A5F5', '🚌', 'transportation', NULL),
+  ('#29B6F6', '✈️', 'travel_and_flights', NULL),
+  ('#455A64', '🔧', 'utilities_and_bills', NULL),
+  ('#FFD700', '🔐', 'vpn_and_security', NULL),
+  ('#7B68EE', '🎬', 'video_streaming', NULL);
 --> statement-breakpoint
 INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title") VALUES
   ('88888888-0000-0000-0000-000000000001', '💳', '', '#1A1F71', true, 'Credit Card'),
@@ -40,15 +50,6 @@ INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title") VA
   ('88888888-0000-0000-0000-000000000014', '🐲', '', '#07C160', false, 'WeChat Pay'),
   ('88888888-0000-0000-0000-000000000015', '⛓️💥', '', '#635BFF', false, 'Stripe'),
   ('88888888-0000-0000-0000-000000000016', '📨', '', '#3B7BBF', false, 'Direct Debit');
---> statement-breakpoint
-INSERT INTO "services" ("id", "slug", "title", "color", "aliases", "category_id") VALUES
-  ('55000001-0001-4000-8000-000000000001', 'peacock-tv', 'Peacock', '#000000', '[]', '44444444-0000-0000-0000-000000000001'),
-  ('55000001-0001-4000-8000-000000000002', 'admin-vps', 'MUBI', '#000000', '["муби"]', '44444444-0000-0000-0000-000000000001'),
-  ('55000004-0001-4000-8000-000000000001', 'nytimes', 'The New York Times', '#000000', '["nyt"]', '44444444-0000-0000-0000-000000000004'),
-  ('55000004-0001-4000-8000-000000000002', 'avira', 'The Washington Post', '#000000', '[]', '44444444-0000-0000-0000-000000000004'),
-  ('55000004-0001-4000-8000-000000000003', 'wsj', 'The Wall Street Journal', '#000000', '[]', '44444444-0000-0000-0000-000000000004'),
-  ('55000004-0001-4000-8000-000000000004', 'make', 'The Economist', '#E3120B', '[]', '44444444-0000-0000-0000-000000000004'),
-  ('55000004-0001-4000-8000-000000000005', 'ft', 'Financial Times', '#FFF1E5', '[]', '44444444-0000-0000-0000-000000000004');
 --> statement-breakpoint
 INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, region) VALUES
 	('AOA', 'Kz', 100, 2, 'pt-AO', 'africa'),

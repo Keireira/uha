@@ -7,5 +7,4 @@ export type Props = {
 	customName: PreparedDbTxT['customName'];
 	title: PreparedDbTxT['title'];
 	color: PreparedDbTxT['color'];
-	isPhantom: PreparedDbTxT['isPhantom'];
 };

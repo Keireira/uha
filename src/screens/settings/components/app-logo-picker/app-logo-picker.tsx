@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import * as Haptics from 'expo-haptics';
 import { useWindowDimensions } from 'react-native';
@@ -46,7 +46,11 @@ const getLineStyle = (from: PositionT, to: PositionT) => {
 
 const AppLogoPicker = () => {
 	const { width } = useWindowDimensions();
-	const [activeIcon, setActiveIcon] = useState(getAppIcon);
+	const [activeIcon, setActiveIcon] = useState<AppLogoT['key']>('DEFAULT');
+
+	useEffect(() => {
+		getAppIcon().then(setActiveIcon);
+	}, []);
 
 	const starPositions = getStarPositions(width);
 

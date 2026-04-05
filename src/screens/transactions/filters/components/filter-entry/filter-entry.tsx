@@ -2,7 +2,7 @@ import React from 'react';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from 'styled-components/native';
 
-import { useAppModel } from '@models';
+import { useLensesStore } from '@screens/transactions/models';
 
 import { SmallText } from '@ui';
 import { SymbolView } from 'expo-symbols';
@@ -22,12 +22,13 @@ const FilterEntry = ({
 	isEligible
 }: Props) => {
 	const theme = useTheme();
-	const { lenses } = useAppModel();
+	const addFilter = useLensesStore((s) => s.addFilter);
+	const removeFilter = useLensesStore((s) => s.removeFilter);
 
 	const isDisabled = !isEligible && !isSelected;
 
 	const handleItemPress = () => {
-		const filterAction = isSelected ? lenses.filters.remove : lenses.filters.add;
+		const filterAction = isSelected ? removeFilter : addFilter;
 
 		filterAction({
 			type: activeTab,

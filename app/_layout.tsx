@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import appModel from '@models';
 import { useFonts } from 'expo-font';
-import { withFactory, useFactoryModel } from '@lib/effector';
 import * as SplashScreen from 'expo-splash-screen';
 import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,15 +10,7 @@ import { setNotificationHandler } from 'expo-notifications';
 import Toast from 'react-native-toast-message';
 import { logger, ErrorBoundary } from '@lib/logger';
 
-import {
-	useSetupMocks,
-	useSqlMigrations,
-	useBackfillRates,
-	useFillUpMissedTxs,
-	useInitSettings,
-	useSyncSettings,
-	useInitPurchases
-} from '@hooks/setup';
+import { useSqlMigrations, useBackfillRates, useInitSettings, useSyncSettings, useInitPurchases } from '@hooks/setup';
 
 import '@src/i18n';
 
@@ -71,7 +61,9 @@ const LoadFinalStage = () => {
 							initialRouteName="index"
 						>
 							<Stack.Screen name="index" />
+
 							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
 							<Stack.Screen
 								name="(crossroad)"
 								options={{
@@ -87,6 +79,7 @@ const LoadFinalStage = () => {
 								}}
 							/>
 						</Stack>
+
 						<AppToast />
 					</ErrorBoundary>
 				</ThemeProvider>
@@ -98,18 +91,16 @@ const LoadFinalStage = () => {
 const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
 	useSyncSettings();
-	const { seeded, recreated } = useSetupMocks();
 
 	const [fontsLoaded] = useFonts({
 		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
 	});
 
 	const navigation = useRootNavigationState();
-	const areTxsFilled = useFillUpMissedTxs(seeded, recreated);
 
 	const isAppReadyToGo = useMemo(() => {
-		return seeded && areTxsFilled && fontsLoaded && areSettingsReady && navigation?.key;
-	}, [seeded, areTxsFilled, fontsLoaded, areSettingsReady, navigation?.key]);
+		return fontsLoaded && areSettingsReady && navigation?.key;
+	}, [fontsLoaded, areSettingsReady, navigation?.key]);
 
 	if (!isAppReadyToGo) {
 		return null;
@@ -118,8 +109,7 @@ const LoadStageTwo = () => {
 	return <LoadFinalStage />;
 };
 
-const LoadStageOne = () => {
-	useFactoryModel(appModel);
+const RootLayout = () => {
 	const areMigrationsReady = useSqlMigrations();
 
 	if (!areMigrationsReady) {
@@ -128,10 +118,5 @@ const LoadStageOne = () => {
 
 	return <LoadStageTwo />;
 };
-
-const RootLayout = withFactory({
-	Component: LoadStageOne,
-	factory: appModel
-});
 
 export default RootLayout;

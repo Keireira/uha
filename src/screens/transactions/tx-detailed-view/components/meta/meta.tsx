@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
@@ -17,12 +17,12 @@ import {
 	NoteInput
 } from './meta.styles';
 
-import type { Props } from './meta.d';
+import type { Props, TenderMetaProps, IndexMetaProps } from './meta.d';
 
-const NoteMeta = (props: Props) => {
+const NoteMeta = ({ id, comment }: Props) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	const { note, setNote, handleBlur } = useComment(props);
+	const { note, setNote, handleBlur } = useComment(id, comment);
 
 	return (
 		<Row>
@@ -44,7 +44,7 @@ const NoteMeta = (props: Props) => {
 	);
 };
 
-const TenderMeta = ({ tenderTitle, tenderEmoji, tenderComment }: Props) => {
+const TenderMeta = ({ tenderTitle, tenderEmoji, tenderComment }: TenderMetaProps) => {
 	const { t } = useTranslation();
 
 	return (
@@ -66,15 +66,23 @@ const TenderMeta = ({ tenderTitle, tenderEmoji, tenderComment }: Props) => {
 	);
 };
 
-const IndexMeta = ({ categoryTitle, currencyCode }: Props) => {
+const IndexMeta = ({ categoryTitle, categorySlug, currencyCode }: IndexMetaProps) => {
 	const { t } = useTranslation();
+
+	const realCategoryTitle = useMemo(() => {
+		if (categoryTitle) {
+			return categoryTitle;
+		}
+
+		return t(`category.${categorySlug}`);
+	}, [t, categoryTitle, categorySlug]);
 
 	return (
 		<Row>
 			<MetaItem>
 				<Label>{t('transactions.details.category')}</Label>
 
-				<MetaValue>{categoryTitle}</MetaValue>
+				<MetaValue>{realCategoryTitle}</MetaValue>
 			</MetaItem>
 
 			<MetaItem>

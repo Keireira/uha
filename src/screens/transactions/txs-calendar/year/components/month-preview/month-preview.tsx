@@ -11,7 +11,7 @@ import {
 import { splitEvery } from 'ramda';
 
 import { useRouter } from 'expo-router';
-import { useAppModel } from '@models';
+import { useTxDatesStore } from '@screens/transactions/models';
 import { useSettingsValue } from '@hooks';
 
 import DayPreview from '../day-preview';
@@ -22,7 +22,7 @@ import type { QuarterRowDataT } from '../../year.d';
 
 const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
 	const router = useRouter();
-	const { tx_dates } = useAppModel();
+	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
 
 	const firstDay = useSettingsValue<UserT['first_day']>('first_day');
 	const weekStartsOn = useMemo(() => (firstDay === 'monday' ? 1 : 0), [firstDay]);
@@ -50,9 +50,9 @@ const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Quarter
 	}, [monthDate, weekStartsOn]);
 
 	const onPressMonth = useCallback(() => {
-		tx_dates.activeMonth.set(monthDate);
+		setActiveMonth(monthDate);
 		router.setParams({ calendar_scale: 'month' });
-	}, [monthDate, tx_dates, router]);
+	}, [monthDate, setActiveMonth, router]);
 
 	return (
 		<Root $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>

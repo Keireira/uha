@@ -23,7 +23,7 @@ const filterByType = (type: FilterTypeT) => (acc: string[], filter: AppliedFilte
  * filters are currently active in OTHER tabs.
  *
  * E.g. if "Entertainment" category is selected, eligible services
- * are only those whose category_id matches a subscription in that category.
+ * are only those whose category_slug matches a subscription in that category.
  */
 const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 	const filters = useMemo(() => {
@@ -41,7 +41,7 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 	const { data: subscriptions } = useLiveQuery(
 		db
 			.select({
-				category_id: subscriptionsTable.category_id,
+				category_slug: subscriptionsTable.category_slug,
 				service_id: subscriptionsTable.service_id,
 				tender_id: subscriptionsTable.tender_id,
 				currency_id: subscriptionsTable.current_currency_id
@@ -69,14 +69,14 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 			 * - noFilters: obv you will match sub if no filters has been applied
 			 * - tender_id: may be null, but we can check if it's included in the filters anyway, so '!' is needed
 			 */
-			const matchesCategory = noFilters(filters.category) || filters.category.includes(sub.category_id);
+			const matchesCategory = noFilters(filters.category) || filters.category.includes(sub.category_slug);
 			const matchesService = noFilters(filters.service) || filters.service.includes(sub.service_id);
 			const matchesTender = noFilters(filters.tender) || filters.tender.includes(sub.tender_id!);
 			const matchesCurrency = noFilters(filters.currency) || filters.currency.includes(sub.currency_id);
 
 			/* Eligible for category tab: subscription matches 'service + tender + currency' filters */
 			if (matchesService && matchesTender && matchesCurrency) {
-				result.category.add(sub.category_id);
+				result.category.add(sub.category_slug);
 			}
 
 			/* Eligible for service tab: subscription matches 'category + tender + currency' filters */

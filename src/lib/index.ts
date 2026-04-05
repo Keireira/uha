@@ -1,4 +1,3 @@
-export * from './effector-factory';
 export * from './http-client';
 
 export * from './date';
