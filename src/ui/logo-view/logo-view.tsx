@@ -21,11 +21,15 @@ const renderSwitch = (emoji: Props['emoji'], initials: string, size: Props['size
 	}
 };
 
-const useLogo = ({ slug, url, emoji, name, color, size = 48 }: Props) => {
+const useLogo = ({ slug, url, assetId, emoji, name, color, size = 48 }: Props) => {
 	const initials = useInitials(name);
 
 	// @TODO: Add error fallback & initials
 	const Component = useMemo(() => {
+		if (assetId) {
+			return <SquircleMask size={size} color={color} assetId={assetId} />;
+		}
+
 		if (url) {
 			const link = url;
 
@@ -39,7 +43,7 @@ const useLogo = ({ slug, url, emoji, name, color, size = 48 }: Props) => {
 		}
 
 		return renderSwitch(emoji, initials, size, color);
-	}, [emoji, slug, url, initials, size, color]);
+	}, [emoji, assetId, slug, url, initials, size, color]);
 
 	return Component;
 };

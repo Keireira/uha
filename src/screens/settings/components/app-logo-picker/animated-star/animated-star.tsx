@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
-import { Pressable } from 'react-native';
-import SquircleMask from '@assets/masks/squircle.svg.tsx';
-import { DotWrapper, Dot, Star, Glow, Ray } from './animated-star.styles';
 import useStarAnimations from './use-star-animations';
+
+import { LogoView } from '@ui';
+import { Pressable } from 'react-native';
+import { DotWrapper, Dot, Star, Glow, Ray } from './animated-star.styles';
+
 import type { Props } from './animated-star.d';
 
 const STAR_SIZE = 64;
@@ -49,7 +51,7 @@ const AnimatedStar = ({ logo, dotSize, position, isActive, onPress }: Props) => 
 
 			<Star style={[starPosition, animations.pulse]}>
 				<Pressable hitSlop={HIT_SLOP} onPress={onPress}>
-					<SquircleMask link={logo.source} size={STAR_SIZE} />
+					<LogoView name={logo.key} assetId={logo.source} size={STAR_SIZE} />
 				</Pressable>
 			</Star>
 

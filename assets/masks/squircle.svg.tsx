@@ -7,6 +7,7 @@ import type { SvgProps } from 'react-native-svg';
 
 type Props = SvgProps & {
 	link?: string;
+	assetId?: number;
 	size: number;
 	color?: string;
 };
@@ -23,7 +24,7 @@ const MASK = `
 	0,0.5
 `;
 
-const SvgComponent = ({ children, size, link, ...restProps }: Props) => {
+const SvgComponent = ({ children, size, link, assetId, ...restProps }: Props) => {
 	return (
 		<MaskedView
 			style={{ width: size, height: size }}
@@ -33,7 +34,9 @@ const SvgComponent = ({ children, size, link, ...restProps }: Props) => {
 				</Svg>
 			}
 		>
-			{link ? <Image source={link} style={{ width: size, height: size }} cachePolicy="disk" /> : children}
+			{link ? <Image source={link} style={{ width: size, height: size }} cachePolicy="disk" /> : null}
+			{assetId ? <Image source={assetId} style={{ width: size, height: size }} /> : null}
+			{!link && !assetId && children}
 		</MaskedView>
 	);
 };
