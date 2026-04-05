@@ -6,7 +6,7 @@ import { transactionsTable } from '@db/schema';
 
 import type { Props } from '../meta.d';
 
-const useComment = ({ id, comment }: Props) => {
+const useComment = (id: Props['id'], comment: Props['comment']) => {
 	const [note, setNote] = useState(comment ?? '');
 
 	const updateComment = useCallback(

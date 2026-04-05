@@ -9,9 +9,6 @@
       "@app/*": ["./app/*"],
       "@assets/*": ["./assets/*"],
 
-      "@lib/effector": ["./src/lib/effector-factory"],
-      "@lib/effector/*": ["./src/lib/effector-factory/*"],
-
       "@api": ["./src/api"],
       "@api/*": ["./src/api/*"],
 

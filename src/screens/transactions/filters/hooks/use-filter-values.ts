@@ -15,17 +15,21 @@ import type { ActiveEntryT } from '../filters.d';
 
 type CoalesceDataT = {
 	id: string;
-	title: string;
+	title: string | null;
 	emoji?: string | null;
 	subtitle?: string | null;
 };
 
 const coalesce = (data: CoalesceDataT[]): ActiveEntryT[] => {
-	const result = data.map(({ id, title, subtitle, emoji }) => ({
-		id,
-		title: emoji ? `${emoji}  ${title}` : title,
-		subtitle: subtitle ?? undefined
-	}));
+	const result = data.map(({ id, title, subtitle, emoji }) => {
+		const label = title ?? id;
+
+		return {
+			id,
+			title: emoji ? `${emoji}  ${label}` : label,
+			subtitle: subtitle ?? undefined
+		};
+	});
 
 	return result satisfies ActiveEntryT[];
 };
@@ -47,7 +51,7 @@ const useFilterValues = () => {
 				subtitle: categoriesTable.title
 			})
 			.from(servicesTable)
-			.leftJoin(categoriesTable, eq(servicesTable.category_id, categoriesTable.id))
+			.leftJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.where(
 				inArray(
 					servicesTable.id,
@@ -63,16 +67,16 @@ const useFilterValues = () => {
 	const { data: categories } = useLiveQuery(
 		db
 			.selectDistinct({
-				id: categoriesTable.id,
+				slug: categoriesTable.slug,
 				title: categoriesTable.title,
 				emoji: categoriesTable.emoji
 			})
 			.from(categoriesTable)
 			.where(
 				inArray(
-					categoriesTable.id,
+					categoriesTable.slug,
 					db
-						.selectDistinct({ id: subscriptionsTable.category_id })
+						.selectDistinct({ id: subscriptionsTable.category_slug })
 						.from(subscriptionsTable)
 						.innerJoin(transactionsTable, eq(transactionsTable.subscription_id, subscriptionsTable.id))
 				)
@@ -109,9 +113,11 @@ const useFilterValues = () => {
 			)
 	);
 
+	const mappedCategories = categories.map((c) => ({ id: c.slug, title: c.title, emoji: c.emoji }));
+
 	return {
 		services: coalesce(services),
-		categories: coalesce(categories),
+		categories: coalesce(mappedCategories),
 		tenders: coalesce(tenders),
 		currencies: coalesce(currencies)
 	} satisfies UseFilterValuesReturnT;

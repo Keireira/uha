@@ -27,7 +27,7 @@ const Support = () => {
 				<Root>
 					{tipProducts.map((product) => {
 						const purchase = () => purchaseTip(product);
-						const title = t(`settings.tip_jar.${product.identifier}`) || product.title;
+						const title = t(`settings.tip_jar.products.${product.identifier}`) || product.title;
 
 						return (
 							<Pill key={product.identifier} $color={accentColor}>

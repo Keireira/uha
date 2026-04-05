@@ -22,17 +22,17 @@ const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TxSummaryT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
 	acc.total += tx.price / denominator;
 
-	if (!tx.category_id) {
+	if (!tx.category_slug) {
 		return acc;
 	}
 
-	acc.byCategoryId[tx.category_id] ??= {
-		id: tx.category_id,
+	acc.byCategoryId[tx.category_slug] ??= {
+		id: tx.category_slug,
 		color: tx.category_color || __STUB_COLOR,
 		amount: 0
 	};
 
-	acc.byCategoryId[tx.category_id].amount += tx.price / denominator;
+	acc.byCategoryId[tx.category_slug].amount += tx.price / denominator;
 
 	return acc;
 };

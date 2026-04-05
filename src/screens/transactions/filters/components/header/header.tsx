@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
-import { useUnit } from 'effector-react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { useAppModel } from '@models';
-import { useSearchParams } from '@hooks';
+import { useLensesStore } from '@screens/transactions/models';
 
 import Tab from './tab';
 import { View } from 'react-native';
@@ -18,8 +16,7 @@ import type { Props, FilterTabT } from './header.d';
 export const TABS: FilterTabT[] = ['category', 'service', 'tender', 'currency'];
 
 const useCounters = (): Record<FilterTabT | 'total', number> => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const filters = useLensesStore((s) => s.filters);
 
 	const counters = useMemo(() => {
 		const sizes = {
@@ -29,16 +26,16 @@ const useCounters = (): Record<FilterTabT | 'total', number> => {
 			currency: 0
 		};
 
-		for (const filter of lensesStore.filters) {
+		for (const filter of filters) {
 			sizes[filter.type] += 1;
 		}
 
 		return sizes;
-	}, [lensesStore.filters]);
+	}, [filters]);
 
 	return {
 		...counters,
-		total: lensesStore.filters.length
+		total: filters.length
 	};
 };
 
@@ -48,18 +45,13 @@ const Header = ({ activeTab, setActiveTab }: Props) => {
 	const { t } = useTranslation();
 
 	const counters = useCounters();
-	const { txViewMode } = useSearchParams();
-	const { view_mode, lenses } = useAppModel();
+	const clearFilters = useLensesStore((s) => s.clearFilters);
 
 	const clear = () => {
-		lenses.filters.clear();
+		clearFilters();
 	};
 
 	const confirm = () => {
-		if (txViewMode === 'list') {
-			view_mode.list.scrollToTop();
-		}
-
 		router.back();
 	};
 

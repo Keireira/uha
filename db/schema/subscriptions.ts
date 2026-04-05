@@ -11,8 +11,8 @@ export const subscriptionsTable = sqliteTable(
 	{
 		id: text().primaryKey(), // uuid v4
 
-		category_id: text()
-			.references(() => categoriesTable.id)
+		category_slug: text()
+			.references(() => categoriesTable.slug)
 			.notNull(), // uuid v4
 
 		service_id: text()
@@ -37,7 +37,7 @@ export const subscriptionsTable = sqliteTable(
 		cancellation_date: text() // Shall be empty if not canceled
 	},
 	(table) => [
-		index('subscriptions_category_id_idx').on(table.category_id),
+		index('subscriptions_category_slug_idx').on(table.category_slug),
 		index('subscriptions_service_id_idx').on(table.service_id),
 		index('subscriptions_current_currency_id_idx').on(table.current_currency_id),
 		index('subscriptions_tender_id_idx').on(table.tender_id)

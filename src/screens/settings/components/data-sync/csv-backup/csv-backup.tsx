@@ -35,12 +35,12 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 			await shareCsvExport();
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-			Toast.show({ type: 'success', text1: t('settings.data.export_success') });
+			Toast.show({ type: 'success', text1: t('settings.data.csv.export.success') });
 		} catch (err) {
 			console.error('[CSV] ✗ Backup failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.export_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.csv.export.error') });
 		}
 	});
 
@@ -50,13 +50,13 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 
 			if (ok) {
 				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-				Toast.show({ type: 'success', text1: t('settings.data.import_success') });
+				Toast.show({ type: 'success', text1: t('settings.data.csv.import.success') });
 			}
 		} catch (err) {
 			console.error('[CSV] ✗ Restore failed:', err);
 
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-			Toast.show({ type: 'error', text1: t('settings.data.import_error') });
+			Toast.show({ type: 'error', text1: t('settings.data.csv.import.error') });
 		}
 	});
 
@@ -67,7 +67,7 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: [t('settings.data.export_csv'), t('settings.data.import_csv'), t('settings.data.cancel')],
+				options: [t('settings.data.csv.export.title'), t('settings.data.csv.import.title'), t('settings.data.cancel')],
 				destructiveButtonIndex: 1,
 				cancelButtonIndex: 2
 			},

@@ -39,7 +39,7 @@ export const usePayment = () => {
 				})
 				.from(subscriptionsTable)
 				.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-				.innerJoin(categoriesTable, eq(subscriptionsTable.category_id, categoriesTable.id))
+				.innerJoin(categoriesTable, eq(subscriptionsTable.category_slug, categoriesTable.slug))
 				.innerJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
 				.where(eq(subscriptionsTable.tender_id, id));
 

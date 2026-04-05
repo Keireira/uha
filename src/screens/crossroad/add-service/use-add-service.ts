@@ -51,7 +51,7 @@ const useAddService = () => {
 			title: trimmedTitle,
 			color,
 			aliases: [],
-			category_id: selectedCategoryId
+			category_slug: selectedCategoryId
 		});
 
 		router.back();

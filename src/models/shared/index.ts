@@ -1,1 +1,1 @@
-export { default as createDirectionModel } from './direction';
+export { default as useDirectionStore } from './direction';

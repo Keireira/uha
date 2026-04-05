@@ -24,11 +24,11 @@ const useCategoryDetails = (categories: TxCategoryT[], currency: CatCurrencyT | 
 			return [];
 		}
 
-		const categoryIds = categories.map((c) => c.id);
+		const categorySlugs = categories.map((c) => c.id);
 
-		const dbCategories = db.select().from(categoriesTable).where(inArray(categoriesTable.id, categoryIds)).all();
+		const dbCategories = db.select().from(categoriesTable).where(inArray(categoriesTable.slug, categorySlugs)).all();
 
-		const categoryMap = new Map(dbCategories.map((c) => [c.id, c]));
+		const categoryMap = new Map(dbCategories.map((c) => [c.slug, c]));
 
 		return categories.map((cat) => {
 			const details = categoryMap.get(cat.id);

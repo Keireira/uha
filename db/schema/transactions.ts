@@ -26,8 +26,6 @@ export const transactionsTable = sqliteTable(
 			.references(() => subscriptionsTable.id)
 			.notNull(),
 
-		is_phantom: int({ mode: 'boolean' }).default(false).notNull(),
-
 		comment: text().default('')
 	},
 	(table) => [

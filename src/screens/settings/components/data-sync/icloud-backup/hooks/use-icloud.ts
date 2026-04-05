@@ -1,5 +1,4 @@
-import { useUnit } from 'effector-react';
-import { createEvent, createStore } from 'effector';
+import { create } from 'zustand';
 
 import { BACKUP_STATUS } from '@lib/backup';
 import { isAvailable, getTimestamp } from '@modules/cloud-backup';
@@ -14,8 +13,7 @@ const INITIAL: ICloudMeta = {
 	lastBackupTimestamp: null
 };
 
-const updated = createEvent<ICloudMeta>();
-const $iCloudMeta = createStore(INITIAL).on(updated, (_, next) => next);
+const useICloudStore = create<ICloudMeta>(() => INITIAL);
 
 const fetchICloudMeta = async (): Promise<ICloudMeta> => {
 	const available = await isAvailable();
@@ -47,13 +45,13 @@ const fetchICloudMeta = async (): Promise<ICloudMeta> => {
 };
 
 const checkICloudMeta = async () => {
-	updated(INITIAL);
+	useICloudStore.setState(INITIAL);
 
 	try {
 		const result = await fetchICloudMeta();
-		updated(result);
+		useICloudStore.setState(result);
 	} catch {
-		updated({ status: BACKUP_STATUS.UNAVAILABLE, lastBackupTimestamp: null });
+		useICloudStore.setState({ status: BACKUP_STATUS.UNAVAILABLE, lastBackupTimestamp: null });
 	}
 };
 
@@ -61,14 +59,14 @@ const checkICloudMeta = async () => {
 checkICloudMeta();
 
 const markBackedUpNow = () => {
-	updated({
+	useICloudStore.setState({
 		status: BACKUP_STATUS.AVAILABLE,
 		lastBackupTimestamp: new Date().toISOString()
 	});
 };
 
 const useICloud = () => {
-	const meta = useUnit($iCloudMeta);
+	const meta = useICloudStore();
 
 	return {
 		checkICloudMeta,
