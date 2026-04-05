@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useAppModel } from '@models';
+import { useTxDatesStore } from '@screens/transactions/models';
 
 import { isHeaderSection } from '../utils';
 
@@ -12,7 +12,7 @@ type ViewableItemsT = {
 };
 
 const useGetViewableItem = () => {
-	const { tx_dates } = useAppModel();
+	const setFocusedDate = useTxDatesStore((s) => s.setFocusedDate);
 
 	const handleViewableItemsChanged = useCallback(({ viewableItems }: ViewableItemsT) => {
 		if (viewableItems.length === 0) return;
@@ -28,7 +28,7 @@ const useGetViewableItem = () => {
 		if (firstItem) {
 			const dates = new Date(firstItem.date);
 
-			tx_dates.focused.set(dates);
+			setFocusedDate(dates);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

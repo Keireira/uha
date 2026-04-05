@@ -39,15 +39,15 @@ CREATE INDEX `currency_rates_lookup_idx` ON `currency_rates` (`target_currency_i
 CREATE UNIQUE INDEX `currency_rates_unique` ON `currency_rates` (`target_currency_id`,`date`);--> statement-breakpoint
 CREATE TABLE `services` (
 	`id` text PRIMARY KEY NOT NULL,
-	`slug` text NOT NULL,
+	`slug` text,
 	`title` text NOT NULL,
 	`color` text NOT NULL,
+	`logo_url` text,
 	`aliases` text DEFAULT '[]' NOT NULL,
 	`category_slug` text NOT NULL,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `services_slug_unique` ON `services` (`slug`);--> statement-breakpoint
 CREATE INDEX `services_category_slug_idx` ON `services` (`category_slug`);--> statement-breakpoint
 CREATE INDEX `services_title_idx` ON `services` (`title`);--> statement-breakpoint
 CREATE TABLE `subscriptions` (

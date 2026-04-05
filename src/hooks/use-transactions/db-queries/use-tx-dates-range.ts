@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
-import { useUnit } from 'effector-react';
 import { startOfMonth, startOfToday } from 'date-fns';
 import { timeModeClause, globalFiltersClause } from './utils';
 
 import db from '@db';
-import { useAppModel } from '@models';
+import { useLensesStore } from '@screens/transactions/models';
 import { and, min, max, eq } from 'drizzle-orm';
 import {
 	tendersTable,
@@ -19,8 +18,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import type { TimeModesT } from '@screens/transactions/models/types.d';
 
 export const useGetMinMonthDate = (timeMode: TimeModesT, withFilters: boolean = true) => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const filters = useLensesStore((s) => s.filters);
 
 	const { data: minDbTxsDate } = useLiveQuery(
 		db
@@ -31,8 +29,8 @@ export const useGetMinMonthDate = (timeMode: TimeModesT, withFilters: boolean = 
 			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode))),
-		[lensesStore.filters, timeMode]
+			.where(and(globalFiltersClause(withFilters, filters), timeModeClause(timeMode))),
+		[filters, timeMode]
 	);
 
 	const minDbTxsDateResult = useMemo(() => {
@@ -46,8 +44,7 @@ export const useGetMinMonthDate = (timeMode: TimeModesT, withFilters: boolean = 
 };
 
 export const useGetMaxMonthDate = (timeMode: TimeModesT, withFilters: boolean = true) => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const filters = useLensesStore((s) => s.filters);
 
 	const { data: maxDbTxsDate } = useLiveQuery(
 		db
@@ -58,8 +55,8 @@ export const useGetMaxMonthDate = (timeMode: TimeModesT, withFilters: boolean = 
 			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.innerJoin(currenciesTable, eq(transactionsTable.currency_id, currenciesTable.id))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
-			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode))),
-		[lensesStore.filters, timeMode]
+			.where(and(globalFiltersClause(withFilters, filters), timeModeClause(timeMode))),
+		[filters, timeMode]
 	);
 
 	const maxDbTxsDateResult = useMemo(() => {
@@ -76,12 +73,11 @@ type MinDateT = ReturnType<typeof useGetMinMonthDate>;
 type MaxDateT = ReturnType<typeof useGetMaxMonthDate>;
 
 const useTxDatesRange = (forcedTimeMode: TimeModesT | undefined, withFilters: boolean = true): [MinDateT, MaxDateT] => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const time_mode = useLensesStore((s) => s.time_mode);
 
 	const timeMode = useMemo(() => {
-		return forcedTimeMode || lensesStore.time_mode;
-	}, [forcedTimeMode, lensesStore.time_mode]);
+		return forcedTimeMode || time_mode;
+	}, [forcedTimeMode, time_mode]);
 
 	const minMonthDate = useGetMinMonthDate(timeMode, withFilters);
 	const maxMonthDate = useGetMaxMonthDate(timeMode, withFilters);

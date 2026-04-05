@@ -1,73 +1,45 @@
-import { createEvent, createStore, combine, sample } from 'effector';
+import { create } from 'zustand';
 import { uniqBy, remove } from 'ramda';
 
 import type { FilterTypeT, AppliedFilterT, LensesModel, TimeModesT } from './types.d';
 
 export const ALL_TIME_MODES: TimeModesT[] = ['all', 'future'];
 
-const createLensesModel = () => {
-	// Time Modes | Start
-	const $timeMode = createStore<LensesModel['time_mode']>('future');
-	const setTimeMode = createEvent<LensesModel['time_mode']>();
-	sample({
-		clock: setTimeMode,
-		target: $timeMode
-	});
-	// Time Modes | End
-
-	// Filters | Start
-	const $filters = createStore<LensesModel['applied_filters']>([]);
-
-	const addFilter = createEvent<AppliedFilterT>();
-	sample({
-		clock: addFilter,
-		source: $filters,
-		fn: (filters, newFilter) => uniqBy((filter) => `${filter.type}${filter.value}`, [...filters, newFilter]),
-		target: $filters
-	});
-
-	const removeFilter = createEvent<{ type: FilterTypeT; value?: string }>();
-	sample({
-		clock: removeFilter,
-		source: $filters,
-		fn: (filters, filterToRemove) => {
-			const indexToRemove = filters.findIndex((filter) => {
-				return filter.type === filterToRemove.type && filter.value === filterToRemove.value;
-			});
-
-			if (indexToRemove === -1) {
-				return filters;
-			}
-
-			return remove(indexToRemove, 1, filters);
-		},
-		target: $filters
-	});
-
-	const clearFilters = createEvent();
-	sample({
-		clock: clearFilters,
-		target: $filters,
-		fn: () => []
-	});
-	// Filters | End
-
-	const $combinedStore = combine({
-		time_mode: $timeMode,
-		filters: $filters
-	});
-
-	return {
-		$store: $combinedStore,
-		time_mode: {
-			set: setTimeMode
-		},
-		filters: {
-			add: addFilter,
-			remove: removeFilter,
-			clear: clearFilters
-		}
-	};
+type LensesState = {
+	time_mode: LensesModel['time_mode'];
+	filters: LensesModel['applied_filters'];
 };
 
-export default createLensesModel;
+type LensesActions = {
+	setTimeMode: (mode: LensesModel['time_mode']) => void;
+	addFilter: (filter: AppliedFilterT) => void;
+	removeFilter: (filter: { type: FilterTypeT; value?: string }) => void;
+	clearFilters: () => void;
+};
+
+const useLensesStore = create<LensesState & LensesActions>((set) => ({
+	time_mode: 'future',
+	filters: [],
+
+	setTimeMode: (mode) => set({ time_mode: mode }),
+
+	addFilter: (newFilter) =>
+		set((state) => ({
+			filters: uniqBy((filter) => `${filter.type}${filter.value}`, [...state.filters, newFilter])
+		})),
+
+	removeFilter: (filterToRemove) =>
+		set((state) => {
+			const indexToRemove = state.filters.findIndex(
+				(filter) => filter.type === filterToRemove.type && filter.value === filterToRemove.value
+			);
+
+			if (indexToRemove === -1) return state;
+
+			return { filters: remove(indexToRemove, 1, state.filters) };
+		}),
+
+	clearFilters: () => set({ filters: [] })
+}));
+
+export default useLensesStore;

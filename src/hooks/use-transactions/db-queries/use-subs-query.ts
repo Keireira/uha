@@ -1,5 +1,4 @@
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { useLensesStore } from '@screens/transactions/models';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { getTableColumns, and, eq, max } from 'drizzle-orm';
 
@@ -18,8 +17,7 @@ import type { PreparedSubscriptionT } from '../types.d';
 
 /* Get all subscriptions with their latest transaction date and keys for filtering */
 const useSubscriptionsQuery = () => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const filters = useLensesStore((sub) => sub.filters);
 
 	const { data: subscriptions } = useLiveQuery(
 		db
@@ -49,9 +47,9 @@ const useSubscriptionsQuery = () => {
 			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 			.innerJoin(transactionsTable, and(eq(subscriptionsTable.id, transactionsTable.subscription_id)))
-			.where(buildWhereConditions(lensesStore.filters))
+			.where(buildWhereConditions(filters))
 			.groupBy(subscriptionsTable.id),
-		[lensesStore.filters]
+		[filters]
 	);
 
 	return subscriptions satisfies PreparedSubscriptionT[];

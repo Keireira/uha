@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useUnit } from 'effector-react';
 import { eq, asc, and } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
@@ -12,7 +11,7 @@ import {
 	subscriptionsTable
 } from '@db/schema';
 import db from '@db';
-import { useAppModel } from '@models';
+import { useLensesStore } from '@screens/transactions/models';
 import { timeModeClause, globalFiltersClause } from './utils';
 
 import type { SQL } from 'drizzle-orm';
@@ -26,12 +25,12 @@ type UseTransactionsQueryParams = {
 };
 
 const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseTransactionsQueryParams) => {
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const time_mode = useLensesStore((s) => s.time_mode);
+	const filters = useLensesStore((s) => s.filters);
 
 	const timeMode = useMemo(() => {
-		return forcedTimeMode || lensesStore.time_mode;
-	}, [forcedTimeMode, lensesStore.time_mode]);
+		return forcedTimeMode || time_mode;
+	}, [forcedTimeMode, time_mode]);
 
 	const { data: dbTxs } = useLiveQuery(
 		db
@@ -75,8 +74,8 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.leftJoin(tendersTable, eq(transactionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(transactionsTable.date))
-			.where(and(globalFiltersClause(withFilters, lensesStore.filters), timeModeClause(timeMode), customWhere)),
-		[lensesStore.filters, timeMode]
+			.where(and(globalFiltersClause(withFilters, filters), timeModeClause(timeMode), customWhere)),
+		[filters, timeMode]
 	);
 
 	return dbTxs satisfies PreparedDbTxT[];

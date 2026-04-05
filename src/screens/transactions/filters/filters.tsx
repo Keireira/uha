@@ -1,9 +1,8 @@
 import React, { useRef, useState, useMemo, useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useUnit } from 'effector-react';
 
-import { useAppModel } from '@models';
+import { useLensesStore } from '@screens/transactions/models';
 import { TABS } from './components/header';
 import { useFilterValues, useEligibleIds, useAutoTimeMode } from './hooks';
 
@@ -22,10 +21,9 @@ const FilterSheet = () => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const isSearching = searchQuery.trim().length > 0;
 
-	const { lenses } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
+	const filters = useLensesStore((s) => s.filters);
 	const entries = useFilterValues();
-	const eligibleIds = useEligibleIds(lensesStore.filters);
+	const eligibleIds = useEligibleIds(filters);
 
 	const contentRef = useRef<ScrollView>(null);
 	const [activeTab, setActiveTab] = useState<FilterTabT>(TABS[0]);
@@ -62,9 +60,9 @@ const FilterSheet = () => {
 	/* Default mode (wo search) */
 	const sortedEntries: FilterEntryT[] = useMemo(() => {
 		const currentEntries = entriesMap[activeTab];
-		const activeIds = new Set(lensesStore.filters.filter((f) => f.type === activeTab).map((f) => f.value));
+		const activeIds = new Set(filters.filter((f) => f.type === activeTab).map((f) => f.value));
 		const eligible = eligibleIds[activeTab];
-		const hasOtherFilters = lensesStore.filters.some((f) => f.type !== activeTab);
+		const hasOtherFilters = filters.some((f) => f.type !== activeTab);
 
 		const selected: FilterEntryT[] = [];
 		const unselectedEligible: FilterEntryT[] = [];
@@ -98,7 +96,7 @@ const FilterSheet = () => {
 		}
 
 		return [...selected, ...unselectedEligible, ...unselectedIneligible];
-	}, [entriesMap, activeTab, lensesStore.filters, eligibleIds, resolveTitle]);
+	}, [entriesMap, activeTab, filters, eligibleIds, resolveTitle]);
 
 	/* Search mode */
 	const searchResults: SearchSectionT[] = useMemo(() => {
@@ -109,7 +107,7 @@ const FilterSheet = () => {
 
 		for (const tab of TABS) {
 			const currentEntries = entriesMap[tab];
-			const activeIds = new Set(lensesStore.filters.filter((f) => f.type === tab).map((f) => f.value));
+			const activeIds = new Set(filters.filter((f) => f.type === tab).map((f) => f.value));
 
 			const matched: FilterEntryT[] = [];
 
@@ -144,7 +142,7 @@ const FilterSheet = () => {
 			if (b.tab === activeTab) return 1;
 			return 0;
 		});
-	}, [searchQuery, entriesMap, lensesStore.filters, resolveTitle, t, activeTab]);
+	}, [searchQuery, entriesMap, filters, resolveTitle, t, activeTab]);
 
 	const ineligibleStartIndex = useMemo(() => {
 		const idx = sortedEntries.findIndex((e) => !e.isEligible && !e.isSelected);

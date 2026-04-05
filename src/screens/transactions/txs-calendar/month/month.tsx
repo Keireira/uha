@@ -1,8 +1,7 @@
 import React, { useRef, useMemo, useCallback, useLayoutEffect } from 'react';
 import { lightFormat, addMonths, subMonths, isAfter } from 'date-fns';
-import { useUnit } from 'effector-react';
 
-import { useAppModel } from '@models';
+import { useTxDatesStore } from '@screens/transactions/models';
 
 import Weekdays from './weekdays';
 import CalendarEntry from './calendar-entry';
@@ -19,10 +18,10 @@ const Month = ({ transactions }: Props) => {
 	const currentPageRef = useRef(1);
 	const isSettingPageRef = useRef(false);
 
-	const { tx_dates } = useAppModel();
-	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const maxActiveDate = useUnit(tx_dates.maxActiveDate.$value);
-	const minActiveDate = useUnit(tx_dates.minActiveDate.$value);
+	const activeMonth = useTxDatesStore((s) => s.activeMonth);
+	const maxActiveDate = useTxDatesStore((s) => s.maxActiveDate);
+	const minActiveDate = useTxDatesStore((s) => s.minActiveDate);
+	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
 
 	const isAtMaxBoundary = isAfter(addMonths(activeMonth, 1), maxActiveDate);
 	const isAtMinBoundary = !isAfter(activeMonth, minActiveDate);
@@ -97,16 +96,16 @@ const Month = ({ transactions }: Props) => {
 			isSettingPageRef.current = true;
 
 			if (position === 0 && !isAtMinBoundary) {
-				tx_dates.activeMonth.set(subMonths(activeMonth, 1));
+				setActiveMonth(subMonths(activeMonth, 1));
 			} else if (position === pages.length - 1 && !isAtMaxBoundary) {
-				tx_dates.activeMonth.set(addMonths(activeMonth, 1));
+				setActiveMonth(addMonths(activeMonth, 1));
 			}
 
 			setTimeout(() => {
 				isSettingPageRef.current = false;
 			}, 100);
 		},
-		[activeMonth, isAtMinBoundary, isAtMaxBoundary, currentIndex, pages.length, tx_dates.activeMonth]
+		[activeMonth, isAtMinBoundary, isAtMaxBoundary, currentIndex, pages.length, setActiveMonth]
 	);
 
 	return (

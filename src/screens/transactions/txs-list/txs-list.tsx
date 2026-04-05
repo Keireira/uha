@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
-import { useAppModel } from '@models';
+import { useDirectionStore } from '@models';
 import { isHeaderSection } from './utils';
 import { useTheme } from 'styled-components/native';
 import { useTransactionsSections, useGetViewableItem } from './hooks';
+
+import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 import { HeaderCard, TransactionCard } from './components';
@@ -24,18 +26,15 @@ const renderRowItem = ({ item }: ListRenderItemInfo<HeaderSectionT | Transaction
 const TxsList = ({ transactions }: Props) => {
 	const theme = useTheme();
 	const listRef = useRef<FlashListRef<HeaderSectionT | TransactionProps>>(null);
-	const { view_mode } = useAppModel();
 
 	const sections = useTransactionsSections(transactions);
 	const handleViewableItemsChanged = useGetViewableItem();
 
-	useEffect(() => {
-		const unsubscribe = view_mode.list.scrollToTop.watch(() => {
-			listRef.current?.scrollToOffset({ offset: 0, animated: true });
-		});
+	const handleScrollY = useDirectionStore((s) => s.handleScrollY);
 
-		return () => unsubscribe();
-	}, [view_mode.list.scrollToTop]);
+	const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		handleScrollY(e.nativeEvent.contentOffset.y);
+	}, [handleScrollY]);
 
 	return (
 		<Masked
@@ -51,6 +50,8 @@ const TxsList = ({ transactions }: Props) => {
 			<Root>
 				<FlashList
 					ref={listRef}
+					onScroll={onScroll}
+					scrollEventThrottle={16}
 					contentInsetAdjustmentBehavior="automatic"
 					contentContainerStyle={{
 						gap: 16,

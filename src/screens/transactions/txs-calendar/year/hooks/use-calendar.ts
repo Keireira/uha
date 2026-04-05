@@ -2,17 +2,15 @@ import { useMemo } from 'react';
 import { splitEvery } from 'ramda';
 import { format, eachMonthOfInterval, startOfYear, endOfYear, lightFormat, interval, isWithinInterval } from 'date-fns';
 
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { useTxDatesStore } from '@screens/transactions/models';
 import useDaysWithTxs from './use-days-with-txs';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
 import type { ItemT, HeaderRowT, QuarterRowT } from '../year.d';
 
 const useCalendar = (transactions: PreparedDbTxT[]) => {
-	const { tx_dates } = useAppModel();
-	const maxDate = useUnit(tx_dates.maxActiveDate.$value);
-	const minDate = useUnit(tx_dates.minActiveDate.$value);
+	const maxDate = useTxDatesStore((s) => s.maxActiveDate);
+	const minDate = useTxDatesStore((s) => s.minActiveDate);
 
 	const daysWithTxsFn = useDaysWithTxs(transactions);
 

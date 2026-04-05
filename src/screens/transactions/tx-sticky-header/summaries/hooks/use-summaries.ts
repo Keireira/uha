@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useUnit } from 'effector-react';
 import {
 	format,
 	interval,
@@ -12,7 +11,7 @@ import {
 	endOfYear as endOfYearFn
 } from 'date-fns';
 
-import { useAppModel } from '@models';
+import { useTxDatesStore } from '@screens/transactions/models';
 import { useSearchParams, useTransactions } from '@hooks';
 
 import type { PreparedDbTxT } from '@hooks/use-transactions';
@@ -39,10 +38,9 @@ const useSummariesQuery = (): ReturnT => {
 	const { txViewMode } = useSearchParams();
 	const transactions = useTransactions('From useSummariesQuery');
 
-	const { tx_dates } = useAppModel();
-	const focusedDate = useUnit(tx_dates.focused.$value);
-	const activeMonth = useUnit(tx_dates.activeMonth.$value);
-	const selectedDate = useUnit(tx_dates.selected.$value);
+	const focusedDate = useTxDatesStore((s) => s.focusedDate);
+	const activeMonth = useTxDatesStore((s) => s.activeMonth);
+	const selectedDate = useTxDatesStore((s) => s.selectedDate);
 
 	/**
 	 * for the optimized chain of rerenders

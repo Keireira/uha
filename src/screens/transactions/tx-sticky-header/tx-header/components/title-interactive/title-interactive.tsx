@@ -1,10 +1,9 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { useUnit } from 'effector-react';
 
 import useTitle from './use-title';
-import { useAppModel } from '@models';
+import { useLensesStore, useTxDatesStore } from '@screens/transactions/models';
 import { useSearchParams } from '@hooks';
 import { useTheme } from 'styled-components/native';
 
@@ -20,17 +19,16 @@ const TitleInteractive = () => {
 	const router = useRouter();
 	const { txViewMode, calendarScale } = useSearchParams();
 
-	const { lenses, tx_dates } = useAppModel();
-	const lensesStore = useUnit(lenses.$store);
-	const activeMonth = useUnit(tx_dates.activeMonth.$value);
+	const timeMode = useLensesStore((s) => s.time_mode);
+	const setTimeMode = useLensesStore((s) => s.setTimeMode);
+	const activeMonth = useTxDatesStore((s) => s.activeMonth);
 
 	if (txViewMode === 'list') {
 		const setNextTimeMode = () => {
-			const timeMode = lensesStore.time_mode;
 			const currentIndex = ALL_TIME_MODES.indexOf(timeMode);
 			const nextIndex = (currentIndex + 1) % ALL_TIME_MODES.length;
 			const nextTimeMode = ALL_TIME_MODES[nextIndex];
-			lenses.time_mode.set(nextTimeMode);
+			setTimeMode(nextTimeMode);
 		};
 
 		return (

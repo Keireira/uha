@@ -1,20 +1,32 @@
-import { createEvent, createStore, sample } from 'effector';
+import { create } from 'zustand';
 
-import type { ScrollDirection } from '@models/app-model.d';
+type ScrollDirection = 'up' | 'down' | 'idle';
 
-const createDirectionModel = () => {
-	const $direction = createStore<ScrollDirection>('idle');
-	const setScrollDirection = createEvent<ScrollDirection>();
+const THRESHOLD = 10;
 
-	sample({
-		clock: setScrollDirection,
-		target: $direction
-	});
-
-	return {
-		$direction,
-		setDirection: setScrollDirection
-	};
+type DirectionState = {
+	direction: ScrollDirection;
 };
 
-export default createDirectionModel;
+type DirectionActions = {
+	handleScrollY: (y: number) => void;
+};
+
+let lastY = 0;
+
+const useDirectionStore = create<DirectionState & DirectionActions>((set, get) => ({
+	direction: 'idle',
+
+	handleScrollY: (y: number) => {
+		const delta = y - lastY;
+		lastY = y;
+
+		const next = delta > THRESHOLD ? 'down' : delta < -THRESHOLD ? 'up' : null;
+
+		if (next && next !== get().direction) {
+			set({ direction: next });
+		}
+	}
+}));
+
+export default useDirectionStore;

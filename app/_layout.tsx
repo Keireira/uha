@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import appModel from '@models';
 import { useFonts } from 'expo-font';
-import { withFactory, useFactoryModel } from '@lib/effector';
 import * as SplashScreen from 'expo-splash-screen';
 import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -63,7 +61,9 @@ const LoadFinalStage = () => {
 							initialRouteName="index"
 						>
 							<Stack.Screen name="index" />
+
 							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
 							<Stack.Screen
 								name="(crossroad)"
 								options={{
@@ -79,6 +79,7 @@ const LoadFinalStage = () => {
 								}}
 							/>
 						</Stack>
+
 						<AppToast />
 					</ErrorBoundary>
 				</ThemeProvider>
@@ -108,8 +109,7 @@ const LoadStageTwo = () => {
 	return <LoadFinalStage />;
 };
 
-const LoadStageOne = () => {
-	useFactoryModel(appModel);
+const RootLayout = () => {
 	const areMigrationsReady = useSqlMigrations();
 
 	if (!areMigrationsReady) {
@@ -118,10 +118,5 @@ const LoadStageOne = () => {
 
 	return <LoadStageTwo />;
 };
-
-const RootLayout = withFactory({
-	Component: LoadStageOne,
-	factory: appModel
-});
 
 export default RootLayout;

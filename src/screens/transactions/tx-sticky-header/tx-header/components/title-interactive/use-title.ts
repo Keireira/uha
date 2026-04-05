@@ -1,24 +1,22 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppModel } from '@models';
-import { useUnit } from 'effector-react';
+import { useLensesStore } from '@screens/transactions/models';
 import { useSearchParams } from '@hooks';
 
 const useTitle = () => {
 	const { t } = useTranslation();
-	const appModel = useAppModel();
 	const { txViewMode } = useSearchParams();
 
-	const lenses = useUnit(appModel.lenses.$store);
+	const timeMode = useLensesStore((s) => s.time_mode);
 
 	const title = useMemo(() => {
 		if (txViewMode === 'list') {
-			return t(`transactions.time_mode.${lenses.time_mode}`);
+			return t(`transactions.time_mode.${timeMode}`);
 		} else if (txViewMode === 'subscriptions') {
 			return t('transactions.view_mode.subscriptions');
 		}
-	}, [t, lenses.time_mode, txViewMode]);
+	}, [t, timeMode, txViewMode]);
 
 	return title;
 };
