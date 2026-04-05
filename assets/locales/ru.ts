@@ -416,7 +416,39 @@ const russian: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'Категория',
+				description: 'Группировка сервисов'
+			},
+			service: {
+				title: 'Сервис',
+				description: 'Приложение или сервис'
+			},
+			payment: {
+				title: 'Метод оплаты',
+				description: 'Карта или другой способ оплаты'
+			},
+			subscription: {
+				title: 'Подписки',
+				description: 'К сожалению (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'Найти сервис',
+			search_bar: 'Поиск сервиса',
+			no_results: 'Ничего не найдено',
+			search_results: 'Результаты поиска',
+			sections: {
+				top_hit: 'Лучшее совпадение',
+				verified: 'Проверенные',
+				external: 'Внешние'
+			}
+		}
+	}
 };
 
 export default russian;

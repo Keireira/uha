@@ -416,7 +416,39 @@ const english: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'Category',
+				description: 'Group services by type'
+			},
+			service: {
+				title: 'Service',
+				description: 'A vendor or provider'
+			},
+			payment: {
+				title: 'Payment',
+				description: 'Card or payment method'
+			},
+			subscription: {
+				title: 'Subscription',
+				description: 'Unfortunate (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'Find new Service',
+			search_bar: 'Search service to add',
+			no_results: 'No services has been found',
+			search_results: 'Search Results',
+			sections: {
+				top_hit: 'Top Hit',
+				verified: 'Verified',
+				external: 'External'
+			}
+		}
+	}
 };
 
 export default english;

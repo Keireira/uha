@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { H4, LogoView } from '@ui';
 import { SourceBadge } from '../../components';
@@ -7,6 +8,8 @@ import Root, { Label, GlassCard, Inner, Info, Domain } from './top-hit-card.styl
 import type { Props } from './top-hit-card.d';
 
 const TopHitCard = ({ id, logo_url, name, domains, source, onPress }: Props) => {
+	const { t } = useTranslation();
+
 	const domain = domains?.[0];
 
 	const onPressHd = () => {
@@ -15,7 +18,7 @@ const TopHitCard = ({ id, logo_url, name, domains, source, onPress }: Props) => 
 
 	return (
 		<Root>
-			<Label>Top Hit</Label>
+			<Label>{t('crossroad.add.sections.top_hit')}</Label>
 
 			<GlassCard isInteractive>
 				<Inner onPress={onPressHd}>

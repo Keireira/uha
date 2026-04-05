@@ -416,7 +416,39 @@ const kazakh: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'Санат',
+				description: 'Қызметтерді топтау'
+			},
+			service: {
+				title: 'Қызмет',
+				description: 'Қолданба немесе қызмет'
+			},
+			payment: {
+				title: 'Төлем тәсілі',
+				description: 'Карта немесе басқа төлем тәсілі'
+			},
+			subscription: {
+				title: 'Жазылымдар',
+				description: 'Өкінішті (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'Қызмет іздеу',
+			search_bar: 'Қызметті іздеу',
+			no_results: 'Ештеңе табылмады',
+			search_results: 'Іздеу нәтижелері',
+			sections: {
+				top_hit: 'Ең жақсы сәйкестік',
+				verified: 'Тексерілген',
+				external: 'Сыртқы'
+			}
+		}
+	}
 };
 
 export default kazakh;

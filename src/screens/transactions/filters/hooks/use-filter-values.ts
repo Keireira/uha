@@ -1,5 +1,4 @@
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useTranslation } from 'react-i18next';
 
 import db from '@db';
 import { eq, inArray } from 'drizzle-orm';

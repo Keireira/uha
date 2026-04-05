@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 import { useSearch } from '@screens/add/hooks';
 
@@ -10,6 +11,7 @@ import type { SearchResultT } from '@api/soup/soup.d';
 
 const SearchMode = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { results, isLoading, isFilled } = useSearch();
 
 	const [topHit, ...restResults] = results.length ? results : [];
@@ -44,7 +46,7 @@ const SearchMode = () => {
 
 	return (
 		<>
-			<ScreenTitle>Search Results</ScreenTitle>
+			<ScreenTitle>{t('crossroad.add.search_results')}</ScreenTitle>
 
 			{isFetching && <Loader />}
 
@@ -53,8 +55,17 @@ const SearchMode = () => {
 			{withResults && (
 				<>
 					{topHit && <TopHitCard {...topHit} onPress={goToNewService} />}
-					<ResultSection label="Verified" results={inHouseResults} onPress={goToNewService} />
-					<ResultSection label="External" results={externalResults} onPress={goToNewService} />
+
+					<ResultSection
+						label={t('crossroad.add.sections.verified')}
+						results={inHouseResults}
+						onPress={goToNewService}
+					/>
+					<ResultSection
+						label={t('crossroad.add.sections.external')}
+						results={externalResults}
+						onPress={goToNewService}
+					/>
 				</>
 			)}
 		</>

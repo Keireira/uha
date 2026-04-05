@@ -441,7 +441,39 @@ const nihongo: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'カテゴリ',
+				description: 'サービスの分類'
+			},
+			service: {
+				title: 'サービス',
+				description: 'アプリまたはサービス'
+			},
+			payment: {
+				title: '支払い方法',
+				description: 'カードまたはその他の決済手段'
+			},
+			subscription: {
+				title: 'サブスクリプション',
+				description: '残念 (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'サービスを探す',
+			search_bar: 'サービスを検索',
+			no_results: '見つかりませんでした',
+			search_results: '検索結果',
+			sections: {
+				top_hit: 'ベストマッチ',
+				verified: '認証済み',
+				external: '外部'
+			}
+		}
+	}
 };
 
 export default nihongo;

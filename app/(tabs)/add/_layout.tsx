@@ -1,10 +1,13 @@
 import React, { useCallback, useRef } from 'react';
 import { Stack, useFocusEffect } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+
 import { useSearch } from '@screens/add/hooks';
 
 import type { SearchBarCommands } from 'react-native-screens';
 
 const Layout = () => {
+	const { t } = useTranslation();
 	const { runSearch } = useSearch();
 	const searchBarRef = useRef<SearchBarCommands>(null);
 
@@ -21,7 +24,7 @@ const Layout = () => {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: 'Find new Service',
+					title: t('crossroad.add.header'),
 					headerTitleStyle: {
 						color: 'transparent'
 					},
@@ -31,7 +34,7 @@ const Layout = () => {
 					headerSearchBarOptions: {
 						ref: searchBarRef,
 						hideNavigationBar: false,
-						placeholder: 'Search service to add',
+						placeholder: t('crossroad.add.search_bar'),
 						onChangeText: (e) => {
 							runSearch(e.nativeEvent.text);
 						}

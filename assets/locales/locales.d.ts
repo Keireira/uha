@@ -401,4 +401,35 @@ export type LocaleRootT = {
 			};
 		};
 	};
+	crossroad: {
+		grid: {
+			category: {
+				title: string;
+				description: string;
+			};
+			service: {
+				title: string;
+				description: string;
+			};
+			payment: {
+				title: string;
+				description: string;
+			};
+			subscription: {
+				title: string;
+				description: string;
+			};
+		};
+		add: {
+			header: string;
+			search_bar: string;
+			no_results: string;
+			search_results: string;
+			sections: {
+				top_hit: string;
+				verified: string;
+				external: string;
+			};
+		};
+	};
 };

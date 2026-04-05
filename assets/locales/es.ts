@@ -416,7 +416,39 @@ const spanish: LocaleRootT = {
 
 	transactions: transactionsScreen,
 	library: libraryScreen,
-	settings: settingsScreen
+	settings: settingsScreen,
+
+	crossroad: {
+		grid: {
+			category: {
+				title: 'Categoría',
+				description: 'Agrupar servicios por tipo'
+			},
+			service: {
+				title: 'Servicio',
+				description: 'Aplicación o servicio'
+			},
+			payment: {
+				title: 'Método de pago',
+				description: 'Tarjeta u otro método de pago'
+			},
+			subscription: {
+				title: 'Suscripciones',
+				description: 'Lamentablemente (◞‸◟)'
+			}
+		},
+		add: {
+			header: 'Buscar servicio',
+			search_bar: 'Buscar servicio',
+			no_results: 'No se encontró nada',
+			search_results: 'Resultados',
+			sections: {
+				top_hit: 'Mejor resultado',
+				verified: 'Verificados',
+				external: 'Externos'
+			}
+		}
+	}
 };
 
 export default spanish;
