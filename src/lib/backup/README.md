@@ -4,7 +4,7 @@ Step-by-step guide for setting up iCloud/CloudKit backup.
 
 ## How it works
 
-The app backs up the SQLite database (`db.db` (`const DB_NAME`)) to the CloudKit Private Database.
+The app backs up the SQLite database (`uha.db` (`const DB_NAME`)) to the CloudKit Private Database.
 
 - **Backup**: WAL checkpoint -> read db file -> encode to base64 -> save as a CloudKit record
 - **Restore**: query record from CloudKit -> decode base64 -> validate SQLite header -> replace db -> reload app

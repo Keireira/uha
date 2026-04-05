@@ -6,6 +6,7 @@ import * as Haptics from 'expo-haptics';
 import { setSettingsValue, useSettingsValue, useEntitlement, useFeatureGate } from '@hooks';
 
 import { SymbolView } from 'expo-symbols';
+import { regenerateAllTxs } from '@hooks/setup';
 import Root, { Label, Code, Stepper, StepperButton } from './max-horizon.styles';
 
 import type { UserT } from '@models';
@@ -21,20 +22,29 @@ const MaxHorizon = () => {
 	const decreaseYear = () => {
 		if (maxHorizon <= 2) return;
 
-		setSettingsValue('max_horizon', maxHorizon - 1);
+		const newValue = maxHorizon - 1;
+		setSettingsValue('max_horizon', newValue);
+		regenerateAllTxs(newValue);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	const addYear = () => {
 		if (maxHorizon >= tier.maxHorizon) {
 			openFeatureGate();
+
 			return;
 		}
 
-		if (maxHorizon < 10) {
-			setSettingsValue('max_horizon', maxHorizon + 1);
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		const nextHorizon = maxHorizon + 1;
+
+		if (nextHorizon > tier.maxHorizon) {
+			return;
 		}
+
+		setSettingsValue('max_horizon', nextHorizon);
+		regenerateAllTxs(nextHorizon);
+
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	return (

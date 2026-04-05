@@ -8,8 +8,7 @@ import Root from './transactions.styles';
 
 const Transactions = () => {
 	const { txViewMode } = useSearchParams();
-	/* @TODO: Move to effector/zustand? */
-	const transactions = useTransactions('From Transactions');
+	const transactions = useTransactions();
 
 	if (txViewMode === 'list') {
 		return <TransactionsList transactions={transactions} />;

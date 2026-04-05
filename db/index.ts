@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 
-const uhaDb = SQLite.openDatabaseSync('db.db', { enableChangeListener: true });
+export const uhaDb = SQLite.openDatabaseSync('uha.db', { enableChangeListener: true });
 
 if (__DEV__) {
 	console.log('\x1b[34m[DEV SETUP]: \x1b[35mSetting up dev mode...\x1b[0m');
@@ -11,5 +11,9 @@ if (__DEV__) {
 }
 
 const db = drizzle(uhaDb);
+
+/** Silent connection for bulk writes — no change listener, avoids flooding useLiveQuery */
+const silentClient = SQLite.openDatabaseSync('uha.db');
+export const silentDb = drizzle(silentClient);
 
 export default db;

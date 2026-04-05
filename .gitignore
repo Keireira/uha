@@ -46,8 +46,4 @@ ios
 android
 
 # modules
-!modules/settings-bridge/ios
-!modules/floating-search-bar/ios
-!modules/ai-compat/ios
-!modules/cloud-backup/ios
-!modules/tab-context-menu/ios
+!modules/*/ios

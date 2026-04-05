@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useTxDatesStore } from '@screens/transactions/models';
 
 import { isHeaderSection } from '../utils';
@@ -14,7 +13,7 @@ type ViewableItemsT = {
 const useGetViewableItem = () => {
 	const setFocusedDate = useTxDatesStore((s) => s.setFocusedDate);
 
-	const handleViewableItemsChanged = useCallback(({ viewableItems }: ViewableItemsT) => {
+	const handleViewableItemsChanged = ({ viewableItems }: ViewableItemsT) => {
 		if (viewableItems.length === 0) return;
 
 		const possibleItem = viewableItems[1]?.item;
@@ -30,8 +29,7 @@ const useGetViewableItem = () => {
 
 			setFocusedDate(dates);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	};
 
 	return handleViewableItemsChanged;
 };
