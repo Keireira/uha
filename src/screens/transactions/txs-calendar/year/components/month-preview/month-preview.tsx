@@ -3,6 +3,7 @@ import {
 	endOfWeek,
 	endOfMonth,
 	lightFormat,
+	isSameDay,
 	isSameMonth,
 	startOfMonth,
 	eachDayOfInterval,
@@ -10,23 +11,26 @@ import {
 } from 'date-fns';
 import { splitEvery } from 'ramda';
 
-import { useRouter } from 'expo-router';
-import { useTxDatesStore } from '@screens/transactions/models';
-import { useSettingsValue } from '@hooks';
-
 import DayPreview from '../day-preview';
 import Root, { MonthHeader, Week, DaysGrid } from './month-preview.styles';
 
-import type { UserT } from '@models';
 import type { QuarterRowDataT } from '../../year.d';
 
-const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: QuarterRowDataT) => {
-	const router = useRouter();
-	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
+type Props = QuarterRowDataT & {
+	selectedDate: Date;
+	weekStartsOn: 0 | 1;
+	onPressMonth: (monthDate: Date) => void;
+};
 
-	const firstDay = useSettingsValue<UserT['first_day']>('first_day');
-	const weekStartsOn = useMemo(() => (firstDay === 'monday' ? 1 : 0), [firstDay]);
-
+const MonthPreview = ({
+	monthDate,
+	daysWithTxs,
+	title,
+	isMonthInRange,
+	selectedDate,
+	weekStartsOn,
+	onPressMonth
+}: Props) => {
 	const weeks = useMemo(() => {
 		const weekStartDates = eachWeekOfInterval(
 			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
@@ -49,32 +53,28 @@ const MonthPreview = ({ monthDate, daysWithTxs, title, isMonthInRange }: Quarter
 		return splitEvery(7, allDays);
 	}, [monthDate, weekStartsOn]);
 
-	const onPressMonth = useCallback(() => {
-		setActiveMonth(monthDate);
-		router.setParams({ calendar_scale: 'month' });
-	}, [monthDate, setActiveMonth, router]);
+	const handlePress = useCallback(() => {
+		onPressMonth(monthDate);
+	}, [monthDate, onPressMonth]);
 
 	return (
-		<Root $isMonthInRange={isMonthInRange} onPress={onPressMonth} disabled={!isMonthInRange}>
+		<Root $isMonthInRange={isMonthInRange} onPress={handlePress} disabled={!isMonthInRange}>
 			<MonthHeader>{title}</MonthHeader>
 
 			<DaysGrid>
-				{weeks.map((week) => {
-					const days = week.map((day) => {
-						const withTransactions = daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'));
-
-						return (
+				{weeks.map((week) => (
+					<Week key={`week-${week[0].item_key}`}>
+						{week.map((day) => (
 							<DayPreview
 								key={day.item_key}
 								dayDate={day.raw}
 								content={day.content}
-								withTransactions={withTransactions}
+								withTransactions={daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'))}
+								isSelected={day.content !== undefined && isSameDay(day.raw, selectedDate)}
 							/>
-						);
-					});
-
-					return <Week key={`week-${week[0].item_key}`}>{days}</Week>;
-				})}
+						))}
+					</Week>
+				))}
 			</DaysGrid>
 		</Root>
 	);
