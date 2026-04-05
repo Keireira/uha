@@ -197,6 +197,7 @@ const useAddSubscription = () => {
 
 		const subscription = {
 			id: subscriptionId,
+			color,
 			service_id: service.id,
 			category_slug: selectedCategorySlug,
 			custom_name: customName.trim() || null,

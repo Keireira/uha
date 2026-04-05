@@ -1,62 +1,58 @@
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
+import { useTheme } from 'styled-components/native';
 
 import { useInitials } from '@hooks';
-import { useTheme } from 'styled-components/native';
 
 import { H3 } from '../typography';
 import { SymbolView } from 'expo-symbols';
 import SquircleMask from '@assets/masks/squircle.svg.tsx';
 import Root, { Emoji } from './logo-view.styles';
 
-import type { Props } from './logo-view.d';
+import type { Props, FallbackProps } from './logo-view.d';
 
-const renderSwitch = (emoji: Props['emoji'], initials: string, size: Props['size'], color: Props['color']) => {
-	switch (true) {
-		case Boolean(emoji):
-			return <Emoji $align="center">{emoji}</Emoji>;
-		case Boolean(initials):
-			return <H3 $align="center">{initials}</H3>;
-		default:
-			return <SymbolView name="questionmark" size={size ? Math.round(size / 2) : 24} tintColor={color} />;
+const getLink = (url?: string | null, slug?: string | null) => {
+	if (url) {
+		return url;
 	}
+
+	if (slug) {
+		return `https://s3.uha.app/logos/${slug}.webp`;
+	}
+
+	return;
 };
 
-const useLogo = ({ slug, url, assetId, emoji, name, color, size = 48 }: Props) => {
-	const initials = useInitials(name);
+const Fallback = ({ emoji, initials, size, color }: FallbackProps) => {
+	if (initials) {
+		return <H3 $align="center">{initials}</H3>;
+	}
 
-	// @TODO: Add error fallback & initials
-	const Component = useMemo(() => {
-		if (assetId) {
-			return <SquircleMask size={size} color={color} assetId={assetId} />;
-		}
+	if (emoji) {
+		return <Emoji $align="center">{emoji}</Emoji>;
+	}
 
-		if (url) {
-			const link = url;
-
-			return <SquircleMask size={size} color={color} link={link} />;
-		}
-
-		if (slug) {
-			const link = `https://s3.uha.app/logos/${slug}.webp`;
-
-			return <SquircleMask size={size} color={color} link={link} />;
-		}
-
-		return renderSwitch(emoji, initials, size, color);
-	}, [emoji, assetId, slug, url, initials, size, color]);
-
-	return Component;
+	return <SymbolView name="questionmark" size={Math.round(size / 2)} tintColor={color ?? undefined} />;
 };
 
-const LogoView = (props: Props) => {
+const LogoView = ({ emoji, assetId, slug, url, name, color, size = 48, children }: Props) => {
 	const theme = useTheme();
-	const logoContent = useLogo(props);
+	const initials = useInitials(name);
+	const [imgFailed, setImgFailed] = useState(false);
+
+	const link = getLink(url, slug);
+	const showRemote = (link || assetId) && !imgFailed;
+
+	const content = showRemote ? (
+		<SquircleMask size={size} color={color ?? undefined} link={link} assetId={assetId} onError={() => setImgFailed(true)} />
+	) : (
+		<Fallback emoji={emoji} initials={initials} size={size} color={color} />
+	);
 
 	return (
-		<SquircleMask size={props.size || 48}>
-			<Root $color={props.color || theme.surface.default}>{logoContent}</Root>
+		<SquircleMask size={size}>
+			<Root $color={color ?? theme.surface.default}>{content}</Root>
 
-			{props.children && props.children}
+			{children}
 		</SquircleMask>
 	);
 };

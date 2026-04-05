@@ -31,7 +31,6 @@ import {
 	CycleHint,
 	PillList,
 	Pill,
-	PillEmoji,
 	PillLabel,
 	TenderScroll,
 	TenderChip,
