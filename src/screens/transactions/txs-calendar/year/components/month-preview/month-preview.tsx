@@ -1,26 +1,13 @@
 import React, { useMemo, useCallback } from 'react';
-import {
-	endOfWeek,
-	endOfMonth,
-	lightFormat,
-	isSameDay,
-	isSameMonth,
-	startOfMonth,
-	eachDayOfInterval,
-	eachWeekOfInterval
-} from 'date-fns';
-import { splitEvery } from 'ramda';
 
-import DayPreview from '../day-preview';
-import Root, { MonthHeader, Week, DaysGrid } from './month-preview.styles';
+import { useTheme } from 'styled-components/native';
+import { lightFormat, startOfMonth, getDay, getDaysInMonth } from 'date-fns';
 
-import type { QuarterRowDataT } from '../../year.d';
+import { MonthGridView } from '@modules/month-grid';
 
-type Props = QuarterRowDataT & {
-	selectedDate: Date;
-	weekStartsOn: 0 | 1;
-	onPressMonth: (monthDate: Date) => void;
-};
+import type { Props } from './month-preview.d';
+
+const ROW_HEIGHT = 24;
 
 const MonthPreview = ({
 	monthDate,
@@ -31,26 +18,22 @@ const MonthPreview = ({
 	weekStartsOn,
 	onPressMonth
 }: Props) => {
-	const weeks = useMemo(() => {
-		const weekStartDates = eachWeekOfInterval(
-			{ start: startOfMonth(monthDate), end: endOfMonth(monthDate) },
-			{ weekStartsOn }
-		);
+	const theme = useTheme();
 
-		const allDays = weekStartDates.flatMap((weekStartDate) => {
-			const weekDays = eachDayOfInterval({
-				start: weekStartDate,
-				end: endOfWeek(weekStartDate, { weekStartsOn })
-			});
+	const colors = {
+		emptyBg: `${theme.surface.default}30`,
+		textPrimary: theme.text.primary,
+		textHighlight: theme.static.white,
+		markSelected: theme.accents.orange,
+		markTx: theme.accents.purple,
+		headerColor: theme.text.primary
+	};
 
-			return weekDays.map((day) => ({
-				raw: day,
-				item_key: `calendar-year-day-${lightFormat(day, 'yyyy-MM-dd')}`,
-				content: isSameMonth(day, monthDate) ? lightFormat(day, 'd') : undefined
-			}));
-		});
+	const weekCount = useMemo(() => {
+		const first = startOfMonth(monthDate);
+		const dow = (getDay(first) - weekStartsOn + 7) % 7;
 
-		return splitEvery(7, allDays);
+		return Math.ceil((dow + getDaysInMonth(monthDate)) / 7);
 	}, [monthDate, weekStartsOn]);
 
 	const handlePress = useCallback(() => {
@@ -58,25 +41,18 @@ const MonthPreview = ({
 	}, [monthDate, onPressMonth]);
 
 	return (
-		<Root $isMonthInRange={isMonthInRange} onPress={handlePress} disabled={!isMonthInRange}>
-			<MonthHeader>{title}</MonthHeader>
-
-			<DaysGrid>
-				{weeks.map((week) => (
-					<Week key={`week-${week[0].item_key}`}>
-						{week.map((day) => (
-							<DayPreview
-								key={day.item_key}
-								dayDate={day.raw}
-								content={day.content}
-								withTransactions={daysWithTxs.has(lightFormat(day.raw, 'yyyy-MM-dd'))}
-								isSelected={day.content !== undefined && isSameDay(day.raw, selectedDate)}
-							/>
-						))}
-					</Week>
-				))}
-			</DaysGrid>
-		</Root>
+		<MonthGridView
+			style={{ flex: 1, height: ROW_HEIGHT + weekCount * ROW_HEIGHT }}
+			title={title}
+			year={monthDate.getFullYear()}
+			month={monthDate.getMonth() + 1}
+			weekStartsOn={weekStartsOn}
+			isInRange={isMonthInRange}
+			daysWithTxs={Array.from(daysWithTxs)}
+			selectedDay={lightFormat(selectedDate, 'yyyy-MM-dd')}
+			colors={colors}
+			onPressMonth={handlePress}
+		/>
 	);
 };
 
