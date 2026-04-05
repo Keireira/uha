@@ -21,10 +21,17 @@ const renderSwitch = (emoji: Props['emoji'], initials: string, size: Props['size
 	}
 };
 
-const useLogo = ({ slug, emoji, name, color, size = 48 }: Props) => {
+const useLogo = ({ slug, url, emoji, name, color, size = 48 }: Props) => {
 	const initials = useInitials(name);
 
+	// @TODO: Add error fallback & initials
 	const Component = useMemo(() => {
+		if (url) {
+			const link = url;
+
+			return <SquircleMask size={size} color={color} link={link} />;
+		}
+
 		if (slug) {
 			const link = `https://s3.uha.app/logos/${slug}.webp`;
 
@@ -32,7 +39,7 @@ const useLogo = ({ slug, emoji, name, color, size = 48 }: Props) => {
 		}
 
 		return renderSwitch(emoji, initials, size, color);
-	}, [emoji, slug, initials, size, color]);
+	}, [emoji, slug, url, initials, size, color]);
 
 	return Component;
 };
@@ -44,6 +51,7 @@ const LogoView = (props: Props) => {
 	return (
 		<SquircleMask size={props.size || 48}>
 			<Root $color={props.color || theme.surface.default}>{logoContent}</Root>
+
 			{props.children && props.children}
 		</SquircleMask>
 	);

@@ -6,7 +6,13 @@ import { searchService } from '@api/soup';
 
 import type { SearchResultT, SourceT } from '@api/soup/soup.d';
 
-const DEBOUNCE_MS = 300;
+type SearchState = {
+	query: string;
+	results: SearchResultT[];
+	isLoading: boolean;
+};
+
+const DEBOUNCE_MS = 250;
 const SOURCE_PRIORITY: Record<SourceT, number> = {
 	local: 0,
 	brandfetch: 1,
@@ -22,54 +28,67 @@ const processResults = (results: SearchResultT[]): SearchResultT[] => {
 	return sorted;
 };
 
-type SearchState = {
-	query: string;
-	results: SearchResultT[];
+// @TODO: Use zustand here (and replace effector with zustand)
+// this is miserable singleton
+let state: SearchState = {
+	query: '',
+	results: [],
+	isLoading: false
 };
 
-let state: SearchState = { query: '', results: [] };
 const listeners = new Set<() => void>();
 
-const getSnapshot = () => state;
-
 const setState = (next: Partial<SearchState>) => {
-	state = { ...state, ...next };
+	state = {
+		...state,
+		...next
+	};
+
 	listeners.forEach((l) => l());
 };
 
 const subscribe = (listener: () => void) => {
 	listeners.add(listener);
+
 	return () => listeners.delete(listener);
 };
 
 const useSearch = () => {
-	const snap = useSyncExternalStore(subscribe, getSnapshot);
+	const snapshot = useSyncExternalStore(subscribe, () => state);
 
 	const debouncer = useAsyncDebouncer(
-		async (trimmed: string) => {
-			const data = await searchService(trimmed);
+		async (trimmedSearchText: string) => {
+			setState({ isLoading: true });
 
-			setState({ results: processResults(data) });
+			const data = await searchService(trimmedSearchText);
+
+			setState({
+				results: processResults(data),
+				isLoading: false
+			});
 		},
 		{
 			wait: DEBOUNCE_MS,
-			onError: () => setState({ results: [] })
-		},
-		(s) => ({
-			isPending: s.isPending,
-			isExecuting: s.isExecuting
-		})
+			leading: true,
+			onError: () => setState({ results: [], isLoading: false })
+		}
 	);
 
 	const runSearch = useCallback(
 		(text: string) => {
 			const trimmedText = text.trim();
 
-			setState({ query: trimmedText });
+			setState({
+				query: trimmedText
+			});
 
 			if (text.length < 2) {
 				debouncer.cancel();
-				setState({ results: [] });
+
+				setState({
+					results: [],
+					isLoading: false
+				});
 
 				return;
 			}
@@ -80,10 +99,12 @@ const useSearch = () => {
 	);
 
 	return {
-		query: snap.query,
-		results: snap.results,
 		runSearch,
-		isLoading: debouncer.state.isPending || debouncer.state.isExecuting
+		query: snapshot.query,
+		results: snapshot.results,
+		isFilled: snapshot.query.length >= 2,
+		isSearchMode: snapshot.query.length > 1,
+		isLoading: snapshot.isLoading
 	};
 };
 

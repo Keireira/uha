@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Stack, useFocusEffect } from 'expo-router';
-import { useSearch } from '@screens/add';
+import { useSearch } from '@screens/add/hooks';
 
 import type { SearchBarCommands } from 'react-native-screens';
 

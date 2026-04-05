@@ -8,7 +8,7 @@ const useInitials = (name: string = '') => {
 			.trim()
 			.split(' ')
 			.filter(Boolean)
-			.reduce((acc, item) => acc + item[0].toUpperCase(), '');
+			.reduce((acc, word) => acc + word[0].toUpperCase(), '');
 
 		return result;
 	}, [name]);
