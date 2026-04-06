@@ -33,7 +33,7 @@ const System = () => {
 	const color = useMemo(() => {
 		switch (notification.status) {
 			case RESULTS.DENIED:
-				return theme.accents.pink;
+				return theme.accents.red;
 			case RESULTS.GRANTED:
 				return theme.accents.green;
 			case RESULTS.LIMITED:
@@ -60,7 +60,7 @@ const System = () => {
 				<Inner onPress={openSettings}>
 					<Title numberOfLines={1}>{t('settings.system.language')}</Title>
 
-					<Subtitle numberOfLines={1}>{t(`languages.${i18n.language}`)}</Subtitle>
+					<Subtitle numberOfLines={1}>{t(`tokens.languages.${i18n.language}`)}</Subtitle>
 				</Inner>
 			</Root>
 		</>

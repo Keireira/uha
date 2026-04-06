@@ -37,6 +37,23 @@ const Layout = () => {
 					}
 				}}
 			/>
+			<Stack.Screen
+				name="select-store-option"
+				options={{
+					headerShown: false,
+					gestureEnabled: true,
+					presentation: 'formSheet',
+					sheetAllowedDetents: [0.75, 1.0],
+					sheetLargestUndimmedDetentIndex: 'none',
+					sheetGrabberVisible: true,
+					sheetCornerRadius: -1,
+					animation: 'slide_from_bottom',
+
+					contentStyle: {
+						backgroundColor: theme.background.secondary
+					}
+				}}
+			/>
 		</Stack>
 	);
 };

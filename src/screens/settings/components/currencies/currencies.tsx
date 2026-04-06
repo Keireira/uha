@@ -25,7 +25,7 @@ const Currencies = () => {
 					<Label numberOfLines={1}>{t('settings.currencies.default_currency_code')}</Label>
 					<Code numberOfLines={1}>{defaultCurrencyCode}</Code>
 
-					<Subtitle numberOfLines={1}>{t(`currencies.${defaultCurrencyCode}`)}</Subtitle>
+					<Subtitle numberOfLines={1}>{t(`tokens.currencies.${defaultCurrencyCode}`)}</Subtitle>
 				</Inner>
 			</Root>
 
@@ -34,7 +34,7 @@ const Currencies = () => {
 					<Label numberOfLines={1}>{t('settings.currencies.recalc_currency_code')}</Label>
 					<Code numberOfLines={1}>{recalcCurrencyCode}</Code>
 
-					<Subtitle numberOfLines={1}>{t(`currencies.${recalcCurrencyCode}`)}</Subtitle>
+					<Subtitle numberOfLines={1}>{t(`tokens.currencies.${recalcCurrencyCode}`)}</Subtitle>
 				</Inner>
 			</Root>
 		</>

@@ -16,7 +16,11 @@ type UserKey =
 	| 'first_day'
 	| 'ai_enabled'
 	| 'is_unlimited'
-	| 'accent';
+	| 'accent'
+	| 'appstore_country'
+	| 'playstore_country'
+	| 'playstore_lang'
+	| 'search_sources';
 
 const SETTINGS_KEYS: UserKey[] = [
 	'theme',
@@ -27,7 +31,11 @@ const SETTINGS_KEYS: UserKey[] = [
 	'first_day',
 	'ai_enabled',
 	'is_unlimited',
-	'accent'
+	'accent',
+	'appstore_country',
+	'playstore_country',
+	'playstore_lang',
+	'search_sources'
 ];
 
 const DEFAULTS: Partial<Omit<UserT, 'id'>> = {
@@ -37,7 +45,11 @@ const DEFAULTS: Partial<Omit<UserT, 'id'>> = {
 	first_day: 'monday',
 	ai_enabled: false,
 	is_unlimited: false,
-	accent: 'orange'
+	accent: 'orange',
+	appstore_country: 'US',
+	playstore_country: 'US',
+	playstore_lang: 'en',
+	search_sources: ['appstore', 'playstore', 'web', 'brandfetch', 'logo.dev']
 };
 
 const useInitSettings = () => {
@@ -51,10 +63,8 @@ const useInitSettings = () => {
 		SETTINGS_KEYS.forEach((settingKey) => {
 			const currentValue = Settings.get(settingKey);
 
-			console.log('currentValue:', currentValue, typeof currentValue);
-
 			if (currentValue === undefined || currentValue === null) {
-				const possibleValue = userData?.[settingKey] ?? DEFAULTS[settingKey];
+				let possibleValue = userData?.[settingKey] ?? DEFAULTS[settingKey];
 
 				setSettingsValue(settingKey, possibleValue);
 			}

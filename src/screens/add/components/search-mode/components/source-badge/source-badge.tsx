@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from 'styled-components/native';
 
 import { SmallText } from '@ui';
 import { SymbolView } from 'expo-symbols';
@@ -8,35 +9,49 @@ import type { SourceT } from '@api/soup/soup.d';
 import type { Props } from './source-badge.d';
 
 const SOURCE_META = {
-	local: {
-		color: '#34C759',
+	inhouse: {
+		color_slug: 'green',
 		label: ''
 	},
+	appstore: {
+		color_slug: 'blue',
+		label: 'App Store'
+	},
+	playstore: {
+		color_slug: 'green',
+		label: 'Google Play'
+	},
+	web: {
+		color_slug: 'orange',
+		label: 'Web'
+	},
 	brandfetch: {
-		color: '#30D158',
+		color_slug: 'purple',
 		label: 'Brandfetch'
 	},
 	'logo.dev': {
-		color: '#64D2FF',
+		color_slug: 'mint',
 		label: 'logo.dev'
 	},
 	unknown: {
-		color: '#FF375F',
+		color_slug: 'pink',
 		label: 'unknown'
 	}
 } as const;
 
 const SourceBadge = ({ source }: Props) => {
+	const theme = useTheme();
 	const meta = SOURCE_META[source as SourceT] ?? SOURCE_META.unknown;
+	const color = theme.accents[meta.color_slug];
 
-	if (source === 'local') {
-		return <SymbolView name="checkmark.seal.fill" size={20} tintColor={meta.color} />;
+	if (source === 'inhouse') {
+		return <SymbolView name="checkmark.seal.fill" size={20} tintColor={color} />;
 	}
 
 	return (
 		<Root>
-			<Inner $color={meta.color}>
-				<SmallText $weight={600} $color={meta.color}>
+			<Inner $color={color}>
+				<SmallText $weight={600} $color={color}>
 					{meta.label}
 				</SmallText>
 			</Inner>

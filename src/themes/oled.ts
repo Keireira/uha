@@ -34,17 +34,17 @@ const oledThemeConfig: ThemeConfigT = {
 	},
 
 	accents: {
-		red: '#FF453A',
-		orange: '#FF9F0A',
-		yellow: '#FFD60A',
-		green: '#30D158',
-		mint: '#63E6E2',
-		teal: '#64D2FF',
-		cyan: '#64D2FF',
-		blue: '#0A84FF',
-		indigo: '#5E5CE6',
-		purple: '#BF5AF2',
-		pink: '#FF375F'
+		red: '#FF6165',
+		orange: '#FFA056',
+		yellow: '#FEDF43',
+		green: '#4AD968',
+		mint: '#54DFCB',
+		teal: '#3BDDEC',
+		cyan: '#6DD9FF',
+		blue: '#5CB8FF',
+		indigo: '#A7AAFF',
+		purple: '#EA8DFF',
+		pink: '#FF8AC4'
 	},
 
 	semantic: {

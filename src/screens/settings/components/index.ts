@@ -9,4 +9,5 @@ export { default as UnlimitedSetting, PaywallScreen } from './unlimited';
 export { default as SystemSetting } from './system';
 export { default as SupportSetting } from './support';
 export { default as DataSyncSection } from './data-sync';
+export { default as SearchSourcesSetting, SelectStoreOptionScreen } from './search-sources';
 export { default as FooterSection } from './footer';

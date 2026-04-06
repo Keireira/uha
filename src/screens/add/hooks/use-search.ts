@@ -3,6 +3,7 @@ import { useAsyncDebouncer } from '@tanstack/react-pacer';
 import { sort } from 'ramda';
 
 import { searchService } from '@api/soup';
+import { getEnabledSources, getStoreSettings } from '@screens/settings/components/search-sources/search-sources';
 
 import type { SearchResultT, SourceT } from '@api/soup/soup.d';
 
@@ -14,15 +15,24 @@ type SearchState = {
 
 const DEBOUNCE_MS = 250;
 const SOURCE_PRIORITY: Record<SourceT, number> = {
-	local: 0,
-	brandfetch: 1,
-	'logo.dev': 2
+	inhouse: 0,
+	web: 1,
+	appstore: 2,
+	brandfetch: 3,
+	playstore: 4,
+	'logo.dev': 5
 };
 
 const processResults = (results: SearchResultT[]): SearchResultT[] => {
+	const enabledSources = getEnabledSources();
+
+	const filtered = results.filter(
+		(r) => r.source === 'inhouse' || enabledSources.includes(r.source)
+	);
+
 	const sorted = sort(
 		(a: SearchResultT, b: SearchResultT) => SOURCE_PRIORITY[a.source] - SOURCE_PRIORITY[b.source],
-		results
+		filtered
 	);
 
 	return sorted;
@@ -60,7 +70,8 @@ const useSearch = () => {
 		async (trimmedSearchText: string) => {
 			setState({ isLoading: true });
 
-			const data = await searchService(trimmedSearchText);
+			const storeSettings = getStoreSettings();
+			const data = await searchService(trimmedSearchText, storeSettings);
 
 			setState({
 				results: processResults(data),
