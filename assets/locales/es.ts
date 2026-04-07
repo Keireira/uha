@@ -394,8 +394,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	currencies: {
 		header: 'Monedas',
-		default_currency_code: 'Moneda principal',
-		recalc_currency_code: 'Moneda de conversión',
+		default_currency: 'Moneda principal',
+		recalc_currency: 'Moneda de conversión',
 		refresh_rates: 'Tasas de cambio',
 		search: 'Buscar monedas',
 		primary: 'Principal'

@@ -1,5 +1,5 @@
 export type SearchParamsT = {
-	target: string; // e.g. 'appstore_country', 'appstore_lang', 'playstore_country', 'playstore_lang'
+	target: 'appstore_country' | 'playstore_country' | 'playstore_lang';
 };
 
 export type OptionItem = {

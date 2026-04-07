@@ -22,6 +22,7 @@ const OptionRow = ({ code, name, subtitle, isLast, isForbidden }: Props) => {
 
 		const action = () => {
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+			console.log('next:', target, code);
 			setSettingsValue(target, code);
 			router.back();
 		};
@@ -39,6 +40,7 @@ const OptionRow = ({ code, name, subtitle, isLast, isForbidden }: Props) => {
 				<Title $settingAccent={settingAccent} $isSelected={currentValue === code}>
 					{name}
 				</Title>
+
 				{subtitle && <Code>{subtitle}</Code>}
 			</Root>
 

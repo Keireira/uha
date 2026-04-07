@@ -31,7 +31,12 @@ export const searchService = (query: SearchQueryT['q'], options?: SearchOptions)
 	return request satisfies Promise<SearchResponseT>;
 };
 
-export const getService = (serviceId: string, sourceHint?: ServiceQueryT['source_hint'], country?: string, language?: string) => {
+export const getService = (
+	serviceId: string,
+	sourceHint?: ServiceQueryT['source_hint'],
+	country?: string,
+	language?: string
+) => {
 	const queryParams: ServiceQueryT = {};
 
 	if (sourceHint) {

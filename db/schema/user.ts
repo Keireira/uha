@@ -1,4 +1,3 @@
-import { sql } from 'drizzle-orm';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import { currenciesTable } from './currencies';
@@ -24,8 +23,8 @@ export const userTable = sqliteTable('user', {
 	appstore_country: text().default('US').notNull(),
 	playstore_country: text().default('US').notNull(),
 	playstore_lang: text().default('en').notNull(),
-	search_sources: text()
+	search_sources: text({ enum: ['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logodev'] })
 		.$type<SourceT[]>()
-		.default(sql`'["appstore", "playstore", "web", "brandfetch", "logo.dev"]'`)
+		.default(['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logodev'])
 		.notNull()
 });

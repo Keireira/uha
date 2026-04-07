@@ -62,7 +62,7 @@ const countries: Record<CountriesList, string> = {
 	HR: 'Хорватия',
 	CY: 'Кипр',
 	CZ: 'Чехия',
-	CI: 'Кот-д\'Ивуар',
+	CI: "Кот-д'Ивуар",
 	DK: 'Дания',
 	DM: 'Доминика',
 	DO: 'Доминикан Республикасы',
@@ -394,8 +394,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	currencies: {
 		header: 'Валюталар',
-		default_currency_code: 'Негізгі валюта',
-		recalc_currency_code: 'Қайта есептеу валютасы',
+		default_currency: 'Негізгі валюта',
+		recalc_currency: 'Қайта есептеу валютасы',
 		refresh_rates: 'Айырбас бағамы',
 		search: 'Валюта іздеу',
 		primary: 'Негізгі'

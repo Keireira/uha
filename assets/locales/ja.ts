@@ -417,8 +417,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	currencies: {
 		header: '通貨',
-		default_currency_code: 'デフォルト通貨',
-		recalc_currency_code: '換算通貨',
+		default_currency: 'デフォルト通貨',
+		recalc_currency: '換算通貨',
 		refresh_rates: '為替レート',
 		search: '通貨を検索',
 		primary: '主要'

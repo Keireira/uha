@@ -392,8 +392,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	currencies: {
 		header: 'Валюты',
-		default_currency_code: 'Основная валюта',
-		recalc_currency_code: 'Валюта пересчёта',
+		default_currency: 'Основная валюта',
+		recalc_currency: 'Валюта пересчёта',
 		refresh_rates: 'Курсы валют',
 		search: 'Поиск валют',
 		primary: 'Основные'

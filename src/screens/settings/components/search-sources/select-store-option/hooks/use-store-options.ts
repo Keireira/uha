@@ -239,8 +239,7 @@ type UseStoreOptionsT = {
 	sections: RowItem[];
 	freeCodes: string[];
 	isLangMode: boolean;
-	searchQuery: string;
-	setSearchQuery: (query: string) => void;
+	setSearchQuery: (value: string) => void;
 };
 
 const useStoreOptions = (): UseStoreOptionsT => {
@@ -384,7 +383,7 @@ const useStoreOptions = (): UseStoreOptionsT => {
 
 	const activeFree = isLangMode ? FREE_STORE_LANG_BASE : freeCodes;
 
-	return { sections, freeCodes: activeFree, isLangMode, searchQuery, setSearchQuery };
+	return { sections, freeCodes: activeFree, isLangMode, setSearchQuery };
 };
 
 export default useStoreOptions;

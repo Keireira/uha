@@ -53,7 +53,7 @@ const convertPrice = (
 
 const useFormattedPrice = (date: Date | string, rawPrice: number, baseCurrencyCode: CurrencyT['id']) => {
 	const rates = useGetFilledDateRates(date);
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const currency = useGetCurrency(baseCurrencyCode);
 	const recalcCurrency = useGetCurrency(recalcCurrencyCode);

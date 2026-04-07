@@ -1,4 +1,4 @@
-export type SourceT = 'inhouse' | 'brandfetch' | 'logo.dev' | 'appstore' | 'playstore' | 'web';
+export type SourceT = 'inhouse' | 'brandfetch' | 'logodev' | 'appstore' | 'playstore' | 'web';
 
 /* GET /search */
 export type SearchQueryT = {

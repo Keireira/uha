@@ -30,7 +30,6 @@ const format = (text: string) => text.toLocaleLowerCase().trim();
 
 type UseCurrenciesT = {
 	sections: RowItem[];
-	searchQuery: string;
 	freeCurrencies: string[];
 	setSearchQuery: (query: string) => void;
 };
@@ -160,7 +159,6 @@ const useCurrencies = (): UseCurrenciesT => {
 
 	return {
 		sections,
-		searchQuery,
 		setSearchQuery,
 		freeCurrencies
 	};

@@ -31,7 +31,7 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled, on
 	const { t } = useTranslation();
 	const { txViewMode } = useSearchParams();
 	const animations = useSummaryAnimations();
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 	const {
 		data: [currency]
 	} = useLiveQuery(db.select().from(currenciesTable).where(eq(currenciesTable.id, recalcCurrencyCode)).limit(1), [

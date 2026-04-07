@@ -520,8 +520,8 @@ export type LocaleRootT = {
 		};
 		currencies: {
 			header: string;
-			default_currency_code: string;
-			recalc_currency_code: string;
+			default_currency: string;
+			recalc_currency: string;
 			refresh_rates: string;
 			search: string;
 			primary: string;

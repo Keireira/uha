@@ -1,6 +1,6 @@
 -- Custom SQL migration file, put your code below! --
-INSERT INTO "user" ("id", "theme", "oled_mode", "max_horizon", "recalc_currency", "default_currency", "is_unlimited", "accent", "first_day", "ai_enabled") VALUES
-  ('00000000-0000-0000-0000-000000000000', 'auto', false, 3, 'USD', 'USD', false, 'orange', 'monday', false);
+INSERT INTO "user" ("id", "recalc_currency", "default_currency") VALUES
+  ('00000000-0000-0000-0000-000000000000', 'USD', 'USD');
 --> statement-breakpoint
 INSERT INTO "categories" ("color", "emoji", "slug", "title") VALUES
   ('#FF6B35', '🤖', 'ai', NULL),

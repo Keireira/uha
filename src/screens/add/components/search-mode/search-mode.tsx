@@ -2,8 +2,8 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { useSettingsValue } from '@hooks';
 import { useSearch } from '@screens/add/hooks';
-import { getStoreSettings } from '@screens/settings/components/search-sources/search-sources';
 
 import { ResultSection, TopHitCard, NoResults, Loader } from './components';
 import { ScreenTitle } from './search-mode.styles';
@@ -14,6 +14,9 @@ const SearchMode = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 	const { results, isLoading, isFilled } = useSearch();
+	const language = useSettingsValue<string>('playstore_lang');
+	const appStoreCountry = useSettingsValue<string>('appstore_country');
+	const playStoreCountry = useSettingsValue<string>('playstore_country');
 
 	const [topHit, ...restResults] = results.length ? results : [];
 	const { inHouseResults, externalResults } = restResults.reduce(
@@ -31,16 +34,12 @@ const SearchMode = () => {
 
 	const goToNewService = (result: SearchResultT) => {
 		const isInNeedFoHint = ['appstore', 'playstore', 'web'].includes(result.source);
-		const storeSettings = getStoreSettings();
 
 		const additionalParams = isInNeedFoHint
 			? {
 					source_hint: result.source,
-					store_country:
-						result.source === 'appstore'
-							? storeSettings.app_store_country
-							: storeSettings.playstore_country,
-					store_language: storeSettings.language
+					store_country: result.source === 'appstore' ? appStoreCountry : playStoreCountry,
+					store_language: result.source === 'playstore' ? language : undefined
 				}
 			: {};
 
@@ -77,6 +76,7 @@ const SearchMode = () => {
 						results={inHouseResults}
 						onPress={goToNewService}
 					/>
+
 					<ResultSection
 						label={t('crossroad.add.sections.external')}
 						results={externalResults}

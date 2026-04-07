@@ -1,9 +1,31 @@
 import React from 'react';
 import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-const Layout = () => {
+import type { StackScreenProps } from 'expo-router';
+
+const useGetSharedConfig = () => {
 	const theme = useTheme();
+
+	return {
+		gestureEnabled: true,
+		presentation: 'formSheet',
+		sheetAllowedDetents: [1.0],
+		sheetLargestUndimmedDetentIndex: 'none',
+		sheetGrabberVisible: true,
+		sheetCornerRadius: -1,
+		animation: 'slide_from_bottom',
+
+		contentStyle: {
+			backgroundColor: theme.background.secondary
+		}
+	} satisfies StackScreenProps['options'];
+};
+
+const Layout = () => {
+	const { t } = useTranslation();
+	const sharedScreenConfig = useGetSharedConfig();
 
 	return (
 		<Stack screenOptions={{ headerShown: false, animation: 'none' }}>
@@ -21,37 +43,34 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="select-currency"
+				name="select-default-currency"
 				options={{
-					headerShown: false,
-					gestureEnabled: true,
-					presentation: 'formSheet',
-					sheetAllowedDetents: [1.0],
-					sheetLargestUndimmedDetentIndex: 'none',
-					sheetGrabberVisible: true,
-					sheetCornerRadius: -1,
-					animation: 'slide_from_bottom',
-
-					contentStyle: {
-						backgroundColor: theme.background.secondary
-					}
+					title: t('settings.currencies.default_currency'),
+					...sharedScreenConfig
 				}}
 			/>
-			<Stack.Screen
-				name="select-store-option"
-				options={{
-					headerShown: false,
-					gestureEnabled: true,
-					presentation: 'formSheet',
-					sheetAllowedDetents: [0.75, 1.0],
-					sheetLargestUndimmedDetentIndex: 'none',
-					sheetGrabberVisible: true,
-					sheetCornerRadius: -1,
-					animation: 'slide_from_bottom',
 
-					contentStyle: {
-						backgroundColor: theme.background.secondary
-					}
+			<Stack.Screen
+				name="select-recalc-currency"
+				options={{
+					title: t('settings.currencies.recalc_currency'),
+					...sharedScreenConfig
+				}}
+			/>
+
+			<Stack.Screen
+				name="pick-a-store-apple"
+				options={{
+					title: t('settings.sources.appstore'),
+					...sharedScreenConfig
+				}}
+			/>
+
+			<Stack.Screen
+				name="pick-a-store"
+				options={{
+					title: t('settings.sources.playstore'),
+					...sharedScreenConfig
 				}}
 			/>
 		</Stack>

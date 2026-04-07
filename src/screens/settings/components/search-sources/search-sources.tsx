@@ -1,15 +1,12 @@
 import React, { useCallback } from 'react';
-import { Switch, Settings } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
-import * as Localization from 'expo-localization';
 
-import i18n from '@src/i18n';
+import { codeToFlag } from './data';
 import * as Haptics from 'expo-haptics';
 import { useSettingsValue, setSettingsValue, useAccent } from '@hooks';
 
-import { codeToFlag } from './data';
 import Root, {
 	Dot,
 	Separator,
@@ -20,6 +17,7 @@ import Root, {
 	ConfigPill,
 	ConfigPillText
 } from './search-sources.styles';
+import { Switch } from 'react-native';
 
 import type { SourceT } from '@api/soup/soup.d';
 import type { AccentT } from '@themes/themes.d';
@@ -32,28 +30,34 @@ type ProviderMeta = {
 };
 
 const PROVIDERS: ProviderMeta[] = [
-	{ key: 'appstore', color_slug: 'blue', labelKey: 'settings.sources.appstore', storeConfig: 'country' },
-	{ key: 'playstore', color_slug: 'green', labelKey: 'settings.sources.playstore', storeConfig: 'country+lang' },
-	{ key: 'web', color_slug: 'orange', labelKey: 'settings.sources.web' },
-	{ key: 'brandfetch', color_slug: 'purple', labelKey: 'settings.sources.brandfetch' },
-	{ key: 'logo.dev', color_slug: 'mint', labelKey: 'settings.sources.logo_dev' }
+	{
+		key: 'appstore',
+		color_slug: 'blue',
+		labelKey: 'settings.sources.appstore',
+		storeConfig: 'country'
+	},
+	{
+		key: 'playstore',
+		color_slug: 'green',
+		labelKey: 'settings.sources.playstore',
+		storeConfig: 'country+lang'
+	},
+	{
+		key: 'web',
+		color_slug: 'orange',
+		labelKey: 'settings.sources.web'
+	},
+	{
+		key: 'brandfetch',
+		color_slug: 'purple',
+		labelKey: 'settings.sources.brandfetch'
+	},
+	{
+		key: 'logodev',
+		color_slug: 'mint',
+		labelKey: 'settings.sources.logo_dev'
+	}
 ];
-
-const ALL_EXTERNAL: SourceT[] = PROVIDERS.map((p) => p.key);
-
-const getDeviceRegion = (): string => Localization.getLocales()[0]?.regionCode?.toUpperCase() || 'US';
-
-export const getEnabledSources = (): SourceT[] => {
-	const raw = Settings.get('search_sources');
-	if (!Array.isArray(raw)) return ALL_EXTERNAL;
-	return raw;
-};
-
-export const getStoreSettings = () => ({
-	app_store_country: (Settings.get('appstore_country') as string) || getDeviceRegion(),
-	playstore_country: (Settings.get('playstore_country') as string) || getDeviceRegion(),
-	language: (Settings.get('playstore_lang') as string) || i18n.language
-});
 
 const SearchSources = () => {
 	const theme = useTheme();
@@ -61,14 +65,11 @@ const SearchSources = () => {
 	const { t } = useTranslation();
 	const accentColor = useAccent();
 
-	const deviceRegion = getDeviceRegion();
+	const enabledSources = useSettingsValue<SourceT[]>('search_sources') || ['inhouse'];
 
-	const sources = useSettingsValue<SourceT[]>('search_sources');
-	const enabledSources = Array.isArray(sources) ? sources : ALL_EXTERNAL;
-
-	const appstoreCountry = useSettingsValue<string>('appstore_country') || deviceRegion;
-	const playstoreCountry = useSettingsValue<string>('playstore_country') || deviceRegion;
-	const playstoreLang = useSettingsValue<string>('playstore_lang') || i18n.language;
+	const playstoreLang = useSettingsValue<string>('playstore_lang');
+	const appstoreCountry = useSettingsValue<string>('appstore_country');
+	const playstoreCountry = useSettingsValue<string>('playstore_country');
 
 	const toggle = useCallback(
 		(source: SourceT) => {
@@ -84,8 +85,12 @@ const SearchSources = () => {
 	);
 
 	const openPicker = (target: string) => {
+		const pathname = target.startsWith('appstore')
+			? '/(tabs)/settings/pick-a-store-apple'
+			: '/(tabs)/settings/pick-a-store';
+
 		router.push({
-			pathname: '/(tabs)/settings/select-store-option',
+			pathname,
 			params: { target }
 		});
 	};

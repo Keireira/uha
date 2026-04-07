@@ -98,7 +98,7 @@ const updatePrices = (
 };
 
 export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const ratesOnDate = useMemo(() => {
 		return db
@@ -158,7 +158,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 
 export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const { t } = useTranslation();
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const ratesInRange = useMemo(() => {
 		return db
@@ -203,7 +203,7 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 
 export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const { t } = useTranslation();
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const ratesInRange = useMemo(() => {
 		return db

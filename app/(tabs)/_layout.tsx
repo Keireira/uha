@@ -127,7 +127,7 @@ const TabLayout = () => {
 	}, [t, router, setActiveMonth]);
 
 	return (
-		<NativeTabs minimizeBehavior="onScrollDown">
+		<NativeTabs minimizeBehavior="onScrollDown" tintColor={settingAccent}>
 			<NativeTabs.Trigger name="transactions">
 				<NativeTabs.Trigger.Label>{t('navbar.transactions.title')}</NativeTabs.Trigger.Label>
 				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="house" />

@@ -8,7 +8,7 @@ import { isHeaderSection } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
 import { View, useWindowDimensions } from 'react-native';
-import { Header, SearchBar, OptionRow } from './components';
+import { Header, SearchBar, OptionRow, NoFilters } from './components';
 import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-store-option.styles';
 
 import type { ListRenderItemInfo } from '@shopify/flash-list';
@@ -32,8 +32,7 @@ const SelectStoreOptionScreen = () => {
 	const { target } = useLocalSearchParams<SearchParamsT>();
 
 	const { tier } = useEntitlement();
-	const { sections, freeCodes, searchQuery, setSearchQuery } = useStoreOptions();
-	const isAllowed = target.endsWith('_country') ? tier.allRegions : tier.allLanguages;
+	const { sections, freeCodes, setSearchQuery } = useStoreOptions();
 
 	return (
 		<>
@@ -47,18 +46,22 @@ const SelectStoreOptionScreen = () => {
 							data={sections}
 							renderItem={renderRowItem}
 							keyboardShouldPersistTaps="handled"
-							extraData={{ freeCodes, isAllowed }}
+							contentInsetAdjustmentBehavior="automatic"
+							extraData={{
+								freeCodes,
+								isAllowed: target.endsWith('_country') ? tier.allRegions : tier.allLanguages
+							}}
 							showsVerticalScrollIndicator={false}
 							getItemType={(item) => item.type}
+							ListEmptyComponent={NoFilters}
 							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}
-							ListHeaderComponent={<VerticalSpacer $height={insets.top} />}
-							ListFooterComponent={<VerticalSpacer $height={insets.bottom + 64} />}
+							ListFooterComponent={<VerticalSpacer $height={insets.bottom} />}
 						/>
 					</View>
 				</Content>
 			</Root>
 
-			<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+			<SearchBar setSearchQuery={setSearchQuery} />
 		</>
 	);
 };
