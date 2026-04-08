@@ -1,9 +1,16 @@
 export type SourceT = 'inhouse' | 'brandfetch' | 'logodev' | 'appstore' | 'playstore' | 'web';
 
 /* GET /search */
+export type SearchOptions = {
+	sources?: SourceT[];
+	app_store_country?: string;
+	playstore_country?: string;
+	language?: string;
+};
+
 export type SearchQueryT = {
 	q: string;
-	sources: 'all' | 'external' | 'mobile' | SourceT;
+	sources: string;
 	app_store_country?: string;
 	playstore_country?: string;
 	language?: string;

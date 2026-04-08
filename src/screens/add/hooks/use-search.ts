@@ -74,7 +74,7 @@ const useSearch = () => {
 			const data = await searchService(trimmedSearchText, {
 				playstore_country: playStoreCountry,
 				app_store_country: appStoreCountry,
-				sources: searchSources.join(',') as SourceT,
+				sources: searchSources,
 				language
 			});
 

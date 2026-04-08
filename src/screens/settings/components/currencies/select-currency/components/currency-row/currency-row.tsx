@@ -4,8 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSettingsValue, useAccent, setSettingsValue, useFeatureGate } from '@hooks';
 
-import { Text } from '@ui';
-import Root, { Code, Separator } from './currency-row.styles';
+import Root, { Title, Code, Separator } from './currency-row.styles';
 
 import type { Props } from './currency-row.d';
 import type { SearchParamsT } from '../../select-currency.d';
@@ -37,9 +36,9 @@ const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
 	return (
 		<>
 			<Root onPress={onSelectHd}>
-				<Text $color={settingAccent} $weight={currentValue === code ? 600 : 400}>
+				<Title $accent={settingAccent} $isSelected={currentValue === code}>
 					{name}
-				</Text>
+				</Title>
 
 				<Code>{code}</Code>
 			</Root>

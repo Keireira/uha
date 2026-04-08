@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';

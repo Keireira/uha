@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams } from 'expo-router';
 
 import i18n from '@src/i18n';
-import { RAW_LANGUAGES, codeToFlag } from '../../data';
+import { codeToFlag } from '@lib';
+import { RAW_LANGUAGES } from '../../data';
 import { FREE_STORE_REGIONS_BASE, FREE_STORE_LANG_BASE } from '@lib/entitlement';
 
 import type { SearchParamsT, OptionItem, OptionSection, RowItem } from '../select-store-option.d';

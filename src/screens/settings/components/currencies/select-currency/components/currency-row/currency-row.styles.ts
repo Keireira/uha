@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
-import { SmallText } from '@ui';
+import { Text, SmallText } from '@ui';
+
+export const Title = styled(Text)<{ $accent: string; $isSelected: boolean }>`
+	font-weight: ${({ $isSelected }) => ($isSelected ? 600 : 400)};
+	color: ${({ $isSelected, $accent, theme }) => ($isSelected ? $accent : theme.text.primary)};
+`;
 
 export const Code = styled(SmallText)`
 	color: ${({ theme }) => theme.text.secondary};

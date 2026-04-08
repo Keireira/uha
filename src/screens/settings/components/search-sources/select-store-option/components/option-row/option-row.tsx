@@ -4,8 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSettingsValue, setSettingsValue, useFeatureGate, useAccent } from '@hooks';
 
-import { Text } from '@ui';
-import Root, { Code, Separator } from './option-row.styles';
+import Root, { Title, Code, Separator } from './option-row.styles';
 
 import type { Props } from './option-row.d';
 import type { SearchParamsT } from '../../select-store-option.d';
@@ -38,9 +37,9 @@ const OptionRow = ({ code, name, subtitle, isLast, isForbidden }: Props) => {
 	return (
 		<>
 			<Root onPress={onSelect}>
-				<Text $color={settingAccent} $weight={currentValue === code ? 600 : 400}>
+				<Title $accent={settingAccent} $isSelected={currentValue === code}>
 					{name}
-				</Text>
+				</Title>
 
 				{subtitle && <Code>{subtitle}</Code>}
 			</Root>
