@@ -38,12 +38,6 @@ const initI18n = () => {
 	setDefaultOptions({
 		locale: dateFnsLocales[langCode as keyof typeof dateFnsLocales]
 	});
-
-	// i18n.on('languageChanged', (lng) => {
-	// 	setDefaultOptions({
-	// 		locale: dateFnsLocales[langCode as keyof typeof dateFnsLocales]
-	// 	});
-	// });
 };
 
 initI18n();

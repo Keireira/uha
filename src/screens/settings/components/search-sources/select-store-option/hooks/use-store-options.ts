@@ -91,7 +91,6 @@ const flattenToRows = (sections: OptionSection[]): RowItem[] =>
 
 type UseStoreOptionsT = {
 	sections: RowItem[];
-	freeCodes: string[];
 	isLangMode: boolean;
 	setSearchQuery: (value: string) => void;
 };
@@ -126,7 +125,6 @@ const useStoreOptions = (): UseStoreOptionsT => {
 
 	return {
 		sections,
-		freeCodes: isLangMode ? FREE_STORE_LANG_BASE : freeCodes,
 		isLangMode,
 		setSearchQuery
 	};
