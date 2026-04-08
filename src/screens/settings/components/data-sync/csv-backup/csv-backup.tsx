@@ -63,7 +63,9 @@ const CSVBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT)
 	const handleCSVPress = () => {
 		if (isDisabled) return;
 
-		if (!tier.csvExport) return openFeatureGate();
+		if (!tier.backup) {
+			return openFeatureGate();
+		}
 
 		ActionSheetIOS.showActionSheetWithOptions(
 			{

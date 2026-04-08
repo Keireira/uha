@@ -92,7 +92,7 @@ const ICloudBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingRetur
 	const handleICloudPress = () => {
 		if (isDisabled) return;
 
-		if (!tier.iCloudSync) return openFeatureGate();
+		if (!tier.backup) return openFeatureGate();
 		if (!isAvailable) return openSettings();
 
 		ActionSheetIOS.showActionSheetWithOptions(

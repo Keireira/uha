@@ -2,9 +2,9 @@ import React from 'react';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 
-import { useAccent } from '@hooks';
 import { LOADING_ACTIONS } from '../use-loading';
 import { shareDbBackup, restoreFromDbBackup } from '@lib/backup';
+import { useAccent, useEntitlement, useFeatureGate } from '@hooks';
 
 import { Text } from '@ui';
 import { SymbolView } from 'expo-symbols';
@@ -17,6 +17,8 @@ import type { UseLoadingReturnT } from '../use-loading';
 const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) => {
 	const { t } = useTranslation();
 	const accentColor = useAccent();
+	const { tier } = useEntitlement();
+	const openFeatureGate = useFeatureGate();
 
 	const createDbBackup = withLoading(LOADING_ACTIONS.DBBackup, async () => {
 		try {
@@ -33,6 +35,10 @@ const DBBackup = ({ withLoading, loadingAction, isLoading }: UseLoadingReturnT) 
 	});
 
 	const restoreDbBackup = withLoading(LOADING_ACTIONS.DBRestore, async () => {
+		if (!tier.backup) {
+			return openFeatureGate();
+		}
+
 		try {
 			const ok = await restoreFromDbBackup();
 
