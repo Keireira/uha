@@ -24,7 +24,13 @@ const FirstDay = () => {
 	const { t } = useTranslation();
 	const firstDay = useSettingsValue<UserT['first_day']>('first_day');
 
-	const dayName = useMemo(() => format(REFERENCE_DATES[firstDay], 'EEEE'), [firstDay]);
+	const dayName = useMemo(() => {
+		if (!firstDay) {
+			return '';
+		}
+
+		return format(REFERENCE_DATES[firstDay], 'EEEE');
+	}, [firstDay]);
 
 	const setDay = () => {
 		setSettingsValue<UserT['first_day']>('first_day', NEXT_DAYS_MAP[firstDay]);

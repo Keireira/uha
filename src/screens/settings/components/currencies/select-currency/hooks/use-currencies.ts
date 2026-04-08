@@ -30,7 +30,6 @@ const format = (text: string) => text.toLocaleLowerCase().trim();
 
 type UseCurrenciesT = {
 	sections: RowItem[];
-	searchQuery: string;
 	freeCurrencies: string[];
 	setSearchQuery: (query: string) => void;
 };
@@ -55,7 +54,7 @@ const useCurrencies = (): UseCurrenciesT => {
 	const rawSections = useMemo(() => {
 		/* Primary (pre-defined) */
 		const primaryItems: CurrencyItem[] = freeCurrencies.map((code) => {
-			const name = t(`currencies.${code}`);
+			const name = t(`tokens.currencies.${code}`);
 
 			return {
 				id: code,
@@ -70,7 +69,7 @@ const useCurrencies = (): UseCurrenciesT => {
 		const regionMap = new Map<string, CurrencyItem[]>();
 
 		for (const currency of currencies) {
-			const name = t(`currencies.${currency.id}`);
+			const name = t(`tokens.currencies.${currency.id}`);
 
 			const item: CurrencyItem = {
 				id: currency.id,
@@ -103,7 +102,7 @@ const useCurrencies = (): UseCurrenciesT => {
 
 			if (items?.length) {
 				sections.push({
-					title: t(`settings.currencies.${region}`),
+					title: t(`tokens.regions.${region}`),
 					data: items
 				});
 			}
@@ -160,7 +159,6 @@ const useCurrencies = (): UseCurrenciesT => {
 
 	return {
 		sections,
-		searchQuery,
 		setSearchQuery,
 		freeCurrencies
 	};

@@ -4,7 +4,8 @@
 
 ## TODO
 
-- [ ] utilize `max_horizon` settings
+- [x] utilize `max_horizon` settings
+- [ ] unify `formSheet` pages with searchBar & remove `floating-search-bar` module
 
 ## WTF
 

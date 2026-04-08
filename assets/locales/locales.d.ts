@@ -1,3 +1,19 @@
+export type RegionsT = {
+	europe: string;
+	north_america: string;
+	central_america: string;
+	south_america: string;
+	caribbean: string;
+	central_asia: string;
+	south_asia: string;
+	east_asia: string;
+	southeast_asia: string;
+	oceania: string;
+	africa: string;
+	other: string;
+	cryptocurrency: string;
+};
+
 type CurrencyCode =
 	| 'AOA'
 	| 'BWP'
@@ -125,7 +141,222 @@ type CurrencyCode =
 	| 'EGP'
 	| 'MVR';
 
-type LanguageCode = 'en' | 'ru' | 'kk' | 'es' | 'ja';
+type CountriesList =
+	| 'AF'
+	| 'AL'
+	| 'DZ'
+	| 'AD'
+	| 'AO'
+	| 'AI'
+	| 'AG'
+	| 'AR'
+	| 'AM'
+	| 'AU'
+	| 'AT'
+	| 'AZ'
+	| 'BS'
+	| 'BH'
+	| 'BD'
+	| 'BB'
+	| 'BY'
+	| 'BE'
+	| 'BZ'
+	| 'BJ'
+	| 'BM'
+	| 'BT'
+	| 'BO'
+	| 'BA'
+	| 'BW'
+	| 'BR'
+	| 'BN'
+	| 'BG'
+	| 'BF'
+	| 'CV'
+	| 'KH'
+	| 'CM'
+	| 'CA'
+	| 'KY'
+	| 'CF'
+	| 'TD'
+	| 'CL'
+	| 'CN'
+	| 'CO'
+	| 'CD'
+	| 'CG'
+	| 'CR'
+	| 'HR'
+	| 'CY'
+	| 'CZ'
+	| 'CI'
+	| 'DK'
+	| 'DM'
+	| 'DO'
+	| 'EC'
+	| 'EG'
+	| 'SV'
+	| 'EE'
+	| 'SZ'
+	| 'ET'
+	| 'FJ'
+	| 'FI'
+	| 'FR'
+	| 'GA'
+	| 'GM'
+	| 'GE'
+	| 'DE'
+	| 'GH'
+	| 'GR'
+	| 'GD'
+	| 'GT'
+	| 'GN'
+	| 'GW'
+	| 'GY'
+	| 'HN'
+	| 'HK'
+	| 'HU'
+	| 'IS'
+	| 'IN'
+	| 'ID'
+	| 'IQ'
+	| 'IE'
+	| 'IL'
+	| 'IT'
+	| 'JM'
+	| 'JP'
+	| 'JO'
+	| 'KZ'
+	| 'KE'
+	| 'KR'
+	| 'KW'
+	| 'KG'
+	| 'LA'
+	| 'LV'
+	| 'LB'
+	| 'LR'
+	| 'LY'
+	| 'LI'
+	| 'LT'
+	| 'LU'
+	| 'MO'
+	| 'MG'
+	| 'MW'
+	| 'MY'
+	| 'MV'
+	| 'ML'
+	| 'MT'
+	| 'MR'
+	| 'MU'
+	| 'MX'
+	| 'FM'
+	| 'MD'
+	| 'MC'
+	| 'MN'
+	| 'ME'
+	| 'MS'
+	| 'MA'
+	| 'MZ'
+	| 'MM'
+	| 'NA'
+	| 'NR'
+	| 'NP'
+	| 'NL'
+	| 'NZ'
+	| 'NI'
+	| 'NE'
+	| 'NG'
+	| 'MK'
+	| 'NO'
+	| 'OM'
+	| 'PK'
+	| 'PW'
+	| 'PA'
+	| 'PG'
+	| 'PY'
+	| 'PE'
+	| 'PH'
+	| 'PL'
+	| 'PT'
+	| 'PS'
+	| 'QA'
+	| 'RO'
+	| 'RU'
+	| 'RW'
+	| 'KN'
+	| 'LC'
+	| 'VC'
+	| 'WS'
+	| 'ST'
+	| 'SA'
+	| 'SN'
+	| 'RS'
+	| 'SC'
+	| 'SL'
+	| 'SG'
+	| 'SK'
+	| 'SI'
+	| 'SB'
+	| 'ZA'
+	| 'ES'
+	| 'LK'
+	| 'SR'
+	| 'SE'
+	| 'CH'
+	| 'TW'
+	| 'TJ'
+	| 'TZ'
+	| 'TH'
+	| 'TO'
+	| 'TT'
+	| 'TN'
+	| 'TR'
+	| 'TM'
+	| 'TC'
+	| 'UG'
+	| 'UA'
+	| 'AE'
+	| 'GB'
+	| 'US'
+	| 'UY'
+	| 'UZ'
+	| 'VU'
+	| 'VE'
+	| 'VN'
+	| 'VG'
+	| 'XK'
+	| 'YE'
+	| 'ZM'
+	| 'ZW';
+
+type LanguageCode =
+	| 'en'
+	| 'ru'
+	| 'kk'
+	| 'es'
+	| 'ja'
+	| 'de'
+	| 'fr'
+	| 'it'
+	| 'pt'
+	| 'nl'
+	| 'pl'
+	| 'cs'
+	| 'hu'
+	| 'ro'
+	| 'uk'
+	| 'tr'
+	| 'ar'
+	| 'he'
+	| 'ko'
+	| 'zh'
+	| 'th'
+	| 'vi'
+	| 'id'
+	| 'ms'
+	| 'hi'
+	| 'sv'
+	| 'da'
+	| 'nb'
+	| 'fi';
 
 type CategorySlugs =
 	| 'ai'
@@ -160,6 +391,12 @@ type CategorySlugs =
 	| 'video_streaming';
 
 export type LocaleRootT = {
+	tokens: {
+		regions: RegionsT;
+		countries: Record<CountriesList, string>;
+		languages: Record<LanguageCode, string>;
+		currencies: Record<CurrencyCode, string>;
+	};
 	ios: {
 		CFBundleDisplayName: string;
 	};
@@ -182,9 +419,7 @@ export type LocaleRootT = {
 			title: string;
 		};
 	};
-	languages: Record<LanguageCode, string>;
 	category: Record<CategorySlugs, string>;
-	currencies: Record<CurrencyCode, string>;
 
 	navbar: {
 		transactions: {
@@ -285,26 +520,23 @@ export type LocaleRootT = {
 		};
 		currencies: {
 			header: string;
-			default_currency_code: string;
-			recalc_currency_code: string;
+			default_currency: string;
+			recalc_currency: string;
 			refresh_rates: string;
 			search: string;
 			primary: string;
-
-			// target/region
-			europe: string;
-			north_america: string;
-			central_america: string;
-			south_america: string;
-			caribbean: string;
-			central_asia: string;
-			south_asia: string;
-			east_asia: string;
-			southeast_asia: string;
-			oceania: string;
-			africa: string;
-			cryptocurrency: string;
-			other: string;
+		};
+		sources: {
+			header: string;
+			footer: string;
+			search: string;
+			primary: string;
+			language: string;
+			appstore: string;
+			playstore: string;
+			web: string;
+			brandfetch: string;
+			logo_dev: string;
 		};
 		about: {
 			sources: string;

@@ -1,4 +1,4 @@
-export { useSettingsValue, setSettingsValue } from './use-settings';
+export { useSettingsValue, setSettingsValue } from './settings/use-settings';
 export { default as useSearchParams, type SearchParamsT } from './use-search-params';
 
 export { default as useInitials } from './use-initials';

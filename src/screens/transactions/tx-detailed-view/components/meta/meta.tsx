@@ -88,7 +88,7 @@ const IndexMeta = ({ categoryTitle, categorySlug, currencyCode }: IndexMetaProps
 			<MetaItem>
 				<Label>{t('transactions.details.currency')}</Label>
 
-				<MetaValue>{t(`currencies.${currencyCode}`)}</MetaValue>
+				<MetaValue>{t(`tokens.currencies.${currencyCode}`)}</MetaValue>
 			</MetaItem>
 		</Row>
 	);

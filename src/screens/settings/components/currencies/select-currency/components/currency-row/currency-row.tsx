@@ -2,18 +2,18 @@ import React from 'react';
 import * as Haptics from 'expo-haptics';
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useSettingsValue, setSettingsValue, useFeatureGate } from '@hooks';
+import { useSettingsValue, useAccent, setSettingsValue, useFeatureGate } from '@hooks';
 
 import Root, { Title, Code, Separator } from './currency-row.styles';
 
-import type { AccentT } from '@themes';
 import type { Props } from './currency-row.d';
 import type { SearchParamsT } from '../../select-currency.d';
 
 const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
 	const router = useRouter();
+	const settingAccent = useAccent();
 	const openFeatureGate = useFeatureGate();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+
 	const { target } = useLocalSearchParams<SearchParamsT>();
 	const currentValue = useSettingsValue<string>(target);
 
@@ -36,9 +36,10 @@ const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
 	return (
 		<>
 			<Root onPress={onSelectHd}>
-				<Title $settingAccent={settingAccent} $isSelected={currentValue === code}>
+				<Title $accent={settingAccent} $isSelected={currentValue === code}>
 					{name}
 				</Title>
+
 				<Code>{code}</Code>
 			</Root>
 

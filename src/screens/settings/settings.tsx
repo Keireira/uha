@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { useTipJar, useEntitlement } from '@hooks';
 
 import {
-	NeuroSetting,
+	// NeuroSetting,
 	SystemSetting,
 	FooterSection,
 	SupportSetting,
@@ -17,7 +17,8 @@ import {
 	MaxHorizonSetting,
 	ThemePickerSetting,
 	AppLogoPickerSetting,
-	AccentSpectrumSetting
+	AccentSpectrumSetting,
+	SearchSourcesSetting
 } from './components';
 import Root, { SectionWrap, SectionLabel, SectionCard, SectionFooterText, Row } from './settings.styles';
 
@@ -57,6 +58,17 @@ const SettingsScreen = () => {
 				</SectionCard>
 			</SectionWrap>
 
+			{/* Search Sources */}
+			<SectionWrap>
+				<SectionLabel>{t('settings.sources.header')}</SectionLabel>
+
+				<SectionCard glassEffectStyle={glassEffectStyle}>
+					<SearchSourcesSetting />
+				</SectionCard>
+
+				<SectionFooterText>{t('settings.sources.footer')}</SectionFooterText>
+			</SectionWrap>
+
 			{/* Preferences */}
 			<SectionWrap>
 				<SectionLabel>{t('settings.preferences.header')}</SectionLabel>
@@ -70,8 +82,9 @@ const SettingsScreen = () => {
 				</SectionCard>
 			</SectionWrap>
 
+			{/*@TODO: Use it later, when I'll do AI here*/}
 			{/* AI Features */}
-			<SectionWrap>
+			{/*<SectionWrap>
 				<SectionLabel>{t('settings.ai.header')}</SectionLabel>
 
 				<SectionCard glassEffectStyle={glassEffectStyle}>
@@ -79,7 +92,7 @@ const SettingsScreen = () => {
 				</SectionCard>
 
 				<SectionFooterText>{t('settings.ai.footer')}</SectionFooterText>
-			</SectionWrap>
+			</SectionWrap>*/}
 
 			{/* Unlimited / Upgrade */}
 			<SectionWrap>

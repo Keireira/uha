@@ -3,6 +3,7 @@ import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { currenciesTable } from './currencies';
 
 import type { AccentT } from '@themes/themes.d';
+import type { SourceT } from '@api/soup';
 
 export const userTable = sqliteTable('user', {
 	id: text().primaryKey(), // uuid v4
@@ -18,5 +19,12 @@ export const userTable = sqliteTable('user', {
 	first_day: text().$type<'monday' | 'sunday'>().default('monday').notNull(),
 	ai_enabled: int({ mode: 'boolean' }).default(false).notNull(),
 	is_unlimited: int({ mode: 'boolean' }).default(false).notNull(),
-	accent: text().$type<AccentT>().default('orange').notNull()
+	accent: text().$type<AccentT>().default('orange').notNull(),
+	appstore_country: text().default('US').notNull(),
+	playstore_country: text().default('US').notNull(),
+	playstore_lang: text().default('en').notNull(),
+	search_sources: text({ enum: ['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logo.dev'] })
+		.$type<SourceT[]>()
+		.default(['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logo.dev'])
+		.notNull()
 });

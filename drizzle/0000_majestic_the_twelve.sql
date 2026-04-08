@@ -107,6 +107,10 @@ CREATE TABLE `user` (
 	`ai_enabled` integer DEFAULT false NOT NULL,
 	`is_unlimited` integer DEFAULT false NOT NULL,
 	`accent` text DEFAULT 'orange' NOT NULL,
+	`appstore_country` text DEFAULT 'US' NOT NULL,
+	`playstore_country` text DEFAULT 'US' NOT NULL,
+	`playstore_lang` text DEFAULT 'en' NOT NULL,
+	`search_sources` text DEFAULT '["inhouse","appstore","playstore","web","brandfetch","logo.dev"]' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`default_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );

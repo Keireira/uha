@@ -8,7 +8,7 @@ import { isHeaderSection } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
 import { View, useWindowDimensions } from 'react-native';
-import { Header, SearchBar, CurrencyRow } from './components';
+import { Header, SearchBar, CurrencyRow, NoFilters } from './components';
 import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-currency.styles';
 
 import type { RowItem } from './select-currency.d';
@@ -30,7 +30,7 @@ const SelectCurrencyScreen = () => {
 	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
 	const { tier } = useEntitlement();
-	const { sections, freeCurrencies, searchQuery, setSearchQuery } = useCurrencies();
+	const { sections, freeCurrencies, setSearchQuery } = useCurrencies();
 
 	return (
 		<>
@@ -48,17 +48,17 @@ const SelectCurrencyScreen = () => {
 								freeCurrencies,
 								isAllowed: tier.allCurrencies
 							}}
+							ListEmptyComponent={NoFilters}
 							showsVerticalScrollIndicator={false}
 							getItemType={(item) => item.type}
 							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}
-							ListHeaderComponent={<VerticalSpacer $height={insets.top} />}
-							ListFooterComponent={<VerticalSpacer $height={insets.bottom + 64} />}
+							ListFooterComponent={<VerticalSpacer $height={insets.bottom} />}
 						/>
 					</View>
 				</Content>
 			</Root>
 
-			<SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+			<SearchBar setSearchQuery={setSearchQuery} />
 		</>
 	);
 };

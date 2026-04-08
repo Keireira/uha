@@ -3,6 +3,7 @@ import { useAsyncDebouncer } from '@tanstack/react-pacer';
 import { sort } from 'ramda';
 
 import { searchService } from '@api/soup';
+import { useSettingsValue } from '@hooks';
 
 import type { SearchResultT, SourceT } from '@api/soup/soup.d';
 
@@ -13,16 +14,22 @@ type SearchState = {
 };
 
 const DEBOUNCE_MS = 250;
+
 const SOURCE_PRIORITY: Record<SourceT, number> = {
-	local: 0,
-	brandfetch: 1,
-	'logo.dev': 2
+	inhouse: 0,
+	web: 1,
+	appstore: 2,
+	brandfetch: 3,
+	playstore: 4,
+	'logo.dev': 5
 };
 
-const processResults = (results: SearchResultT[]): SearchResultT[] => {
+const processResults = (results: SearchResultT[], searchSources: SourceT[]) => {
+	const filtered = results.filter((r) => r.source === 'inhouse' || searchSources.includes(r.source));
+
 	const sorted = sort(
 		(a: SearchResultT, b: SearchResultT) => SOURCE_PRIORITY[a.source] - SOURCE_PRIORITY[b.source],
-		results
+		filtered
 	);
 
 	return sorted;
@@ -54,16 +61,25 @@ const subscribe = (listener: () => void) => {
 };
 
 const useSearch = () => {
+	const searchSources = useSettingsValue<SourceT[]>('search_sources');
+	const appStoreCountry = useSettingsValue<string>('appstore_country');
+	const playStoreCountry = useSettingsValue<string>('playstore_country');
+	const language = useSettingsValue<string>('playstore_lang');
 	const snapshot = useSyncExternalStore(subscribe, () => state);
 
 	const debouncer = useAsyncDebouncer(
 		async (trimmedSearchText: string) => {
 			setState({ isLoading: true });
 
-			const data = await searchService(trimmedSearchText);
+			const data = await searchService(trimmedSearchText, {
+				playstore_country: playStoreCountry,
+				app_store_country: appStoreCountry,
+				sources: searchSources,
+				language
+			});
 
 			setState({
-				results: processResults(data),
+				results: processResults(data, searchSources),
 				isLoading: false
 			});
 		},

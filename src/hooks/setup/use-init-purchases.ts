@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 
-import { setSettingsValue } from '../use-settings';
+import { setSettingsValue } from '../settings';
 
 import type { CustomerInfo } from 'react-native-purchases';
 

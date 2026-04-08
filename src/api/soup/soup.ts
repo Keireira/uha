@@ -1,30 +1,38 @@
 import * as Crypto from 'expo-crypto';
 
 import { soupApi } from '@api/api';
+import searchService from './search';
 
-import type { SearchQueryT, SearchResponseT, ServiceResponseT } from './soup.d';
+import type { ServiceResponseT, ServiceQueryT } from './soup.d';
 
-export const searchService = (query: SearchQueryT['q'], sources?: SearchQueryT['sources']) => {
-	const queryParams: SearchQueryT = {
-		q: query,
-		sources: sources ?? 'all'
-	};
+export { searchService };
 
-	const request = soupApi<SearchResponseT>('/search', {
+export const getService = (
+	serviceId: string,
+	sourceHint?: ServiceQueryT['source_hint'],
+	country?: string,
+	language?: string
+) => {
+	const queryParams: ServiceQueryT = {};
+
+	if (sourceHint) {
+		queryParams.source_hint = sourceHint;
+	}
+
+	if (country) {
+		queryParams.country = country;
+	}
+
+	if (language) {
+		queryParams.language = language;
+	}
+
+	const request = soupApi<ServiceResponseT>(`/service/${serviceId}`, {
 		traceId: Crypto.randomUUID(),
 		method: 'get',
 		params: {
 			queryParams
 		}
-	});
-
-	return request satisfies Promise<SearchResponseT>;
-};
-
-export const getService = (serviceId: string) => {
-	const request = soupApi<ServiceResponseT>(`/service/${serviceId}`, {
-		traceId: Crypto.randomUUID(),
-		method: 'get'
 	});
 
 	return request satisfies Promise<ServiceResponseT>;
