@@ -21,7 +21,7 @@ const SOURCE_PRIORITY: Record<SourceT, number> = {
 	appstore: 2,
 	brandfetch: 3,
 	playstore: 4,
-	logodev: 5
+	'logo.dev': 5
 };
 
 const processResults = (results: SearchResultT[], searchSources: SourceT[]) => {

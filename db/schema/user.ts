@@ -23,8 +23,8 @@ export const userTable = sqliteTable('user', {
 	appstore_country: text().default('US').notNull(),
 	playstore_country: text().default('US').notNull(),
 	playstore_lang: text().default('en').notNull(),
-	search_sources: text({ enum: ['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logodev'] })
+	search_sources: text({ enum: ['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logo.dev'] })
 		.$type<SourceT[]>()
-		.default(['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logodev'])
+		.default(['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logo.dev'])
 		.notNull()
 });

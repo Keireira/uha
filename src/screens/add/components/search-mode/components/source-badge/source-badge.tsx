@@ -29,7 +29,7 @@ const SOURCE_META = {
 		color_slug: 'purple',
 		label: 'Brandfetch'
 	},
-	logodev: {
+	'logo.dev': {
 		color_slug: 'mint',
 		label: 'logo.dev'
 	},

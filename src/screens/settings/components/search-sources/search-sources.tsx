@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 
 import { codeToFlag } from '@lib';
-import { PROVIDERS } from './data';
 import * as Haptics from 'expo-haptics';
 import { useSettingsValue, setSettingsValue, useAccent } from '@hooks';
 
@@ -21,6 +20,37 @@ import Root, {
 import { Switch } from 'react-native';
 
 import type { SourceT } from '@api/soup/soup.d';
+import type { ProviderMeta } from './search-sources.d';
+
+export const PROVIDERS: ProviderMeta[] = [
+	{
+		key: 'appstore',
+		color_slug: 'blue',
+		labelKey: 'settings.sources.appstore',
+		storeConfig: 'country'
+	},
+	{
+		key: 'playstore',
+		color_slug: 'green',
+		labelKey: 'settings.sources.playstore',
+		storeConfig: 'country+lang'
+	},
+	{
+		key: 'web',
+		color_slug: 'orange',
+		labelKey: 'settings.sources.web'
+	},
+	{
+		key: 'brandfetch',
+		color_slug: 'purple',
+		labelKey: 'settings.sources.brandfetch'
+	},
+	{
+		key: 'logo.dev',
+		color_slug: 'mint',
+		labelKey: 'settings.sources.logo_dev'
+	}
+];
 
 const useStoreConfigs = () => {
 	const playstoreLang = useSettingsValue<string>('playstore_lang');
