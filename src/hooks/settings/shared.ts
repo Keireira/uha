@@ -40,5 +40,6 @@ export const deserialize = (key: UserKey, raw: any): any => {
 			return raw;
 		}
 	}
+
 	return raw;
 };

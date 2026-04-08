@@ -86,7 +86,7 @@ const useInitSettings = () => {
 		const defaults: Partial<Omit<UserT, 'id'>> = {
 			theme: 'auto',
 			oled_mode: false,
-			max_horizon: 3,
+			max_horizon: 2,
 			first_day: calendar.firstWeekday === 1 ? 'sunday' : 'monday',
 			ai_enabled: false,
 			is_unlimited: false,
