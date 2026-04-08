@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import Purchases from 'react-native-purchases';
 import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
-import { useSettingsValue, setSettingsValue } from './use-settings';
+import { useSettingsValue, setSettingsValue } from './settings';
 import { FREE_TIER, UNLIMITED_TIER, type EntitlementT } from '@lib/entitlement';
 
 export const useEntitlement = (): EntitlementT => {

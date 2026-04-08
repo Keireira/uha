@@ -7,7 +7,7 @@ import db from '@db';
 import { eq, between } from 'drizzle-orm';
 import { currencyRatesTable } from '@db/schema';
 
-import { useSettingsValue } from '@hooks/use-settings';
+import { useSettingsValue } from '@/src/hooks/settings/use-settings';
 
 import type { CurrencyRateT } from '@models';
 import type { PreparedDbTxT } from '@hooks/use-transactions';
