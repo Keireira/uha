@@ -3,7 +3,8 @@ import { useTheme } from 'styled-components/native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 
-import { codeToFlag } from './data';
+import { codeToFlag } from '@lib';
+import { PROVIDERS } from './data';
 import * as Haptics from 'expo-haptics';
 import { useSettingsValue, setSettingsValue, useAccent } from '@hooks';
 
@@ -20,44 +21,19 @@ import Root, {
 import { Switch } from 'react-native';
 
 import type { SourceT } from '@api/soup/soup.d';
-import type { AccentT } from '@themes/themes.d';
 
-type ProviderMeta = {
-	key: SourceT;
-	color_slug: AccentT;
-	labelKey: string;
-	storeConfig?: 'country' | 'country+lang';
+const useStoreConfigs = () => {
+	const playstoreLang = useSettingsValue<string>('playstore_lang');
+	const appstoreCountry = useSettingsValue<string>('appstore_country');
+	const playstoreCountry = useSettingsValue<string>('playstore_country');
+
+	const storeConfigs: Record<string, { country: string; lang?: string }> = {
+		appstore: { country: appstoreCountry },
+		playstore: { country: playstoreCountry, lang: playstoreLang }
+	};
+
+	return storeConfigs;
 };
-
-const PROVIDERS: ProviderMeta[] = [
-	{
-		key: 'appstore',
-		color_slug: 'blue',
-		labelKey: 'settings.sources.appstore',
-		storeConfig: 'country'
-	},
-	{
-		key: 'playstore',
-		color_slug: 'green',
-		labelKey: 'settings.sources.playstore',
-		storeConfig: 'country+lang'
-	},
-	{
-		key: 'web',
-		color_slug: 'orange',
-		labelKey: 'settings.sources.web'
-	},
-	{
-		key: 'brandfetch',
-		color_slug: 'purple',
-		labelKey: 'settings.sources.brandfetch'
-	},
-	{
-		key: 'logodev',
-		color_slug: 'mint',
-		labelKey: 'settings.sources.logo_dev'
-	}
-];
 
 const SearchSources = () => {
 	const theme = useTheme();
@@ -65,24 +41,18 @@ const SearchSources = () => {
 	const { t } = useTranslation();
 	const accentColor = useAccent();
 
-	const enabledSources = useSettingsValue<SourceT[]>('search_sources') || ['inhouse'];
+	const storeConfigs = useStoreConfigs();
+	const enabledSources = useSettingsValue<SourceT[]>('search_sources');
 
-	const playstoreLang = useSettingsValue<string>('playstore_lang');
-	const appstoreCountry = useSettingsValue<string>('appstore_country');
-	const playstoreCountry = useSettingsValue<string>('playstore_country');
+	const toggleSource = (source: SourceT) => {
+		const isEnabled = enabledSources.includes(source);
+		const next = isEnabled ? enabledSources.filter((s) => s !== source) : [...enabledSources, source];
 
-	const toggle = useCallback(
-		(source: SourceT) => {
-			const isEnabled = enabledSources.includes(source);
-			const next = isEnabled ? enabledSources.filter((s) => s !== source) : [...enabledSources, source];
+		if (next.length === 0) return;
 
-			if (next.length === 0) return;
-
-			setSettingsValue('search_sources', next);
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		},
-		[enabledSources]
-	);
+		setSettingsValue('search_sources', next);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+	};
 
 	const openPicker = (target: string) => {
 		const pathname = target.startsWith('appstore')
@@ -93,11 +63,6 @@ const SearchSources = () => {
 			pathname,
 			params: { target }
 		});
-	};
-
-	const storeConfigs: Record<string, { country: string; lang?: string }> = {
-		appstore: { country: appstoreCountry },
-		playstore: { country: playstoreCountry, lang: playstoreLang }
 	};
 
 	return (
@@ -117,7 +82,11 @@ const SearchSources = () => {
 								<ProviderName>{t(provider.labelKey)}</ProviderName>
 							</ProviderInfo>
 
-							<Switch value={isEnabled} trackColor={{ true: accentColor }} onValueChange={() => toggle(provider.key)} />
+							<Switch
+								value={isEnabled}
+								trackColor={{ true: accentColor }}
+								onValueChange={() => toggleSource(provider.key)}
+							/>
 						</ProviderRow>
 
 						{provider.storeConfig && isEnabled && cfg && (

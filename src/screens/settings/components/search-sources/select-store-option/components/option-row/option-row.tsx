@@ -2,18 +2,19 @@ import React from 'react';
 import * as Haptics from 'expo-haptics';
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useSettingsValue, setSettingsValue, useFeatureGate } from '@hooks';
+import { useSettingsValue, setSettingsValue, useFeatureGate, useAccent } from '@hooks';
 
-import Root, { Title, Code, Separator } from './option-row.styles';
+import { Text } from '@ui';
+import Root, { Code, Separator } from './option-row.styles';
 
-import type { AccentT } from '@themes';
 import type { Props } from './option-row.d';
 import type { SearchParamsT } from '../../select-store-option.d';
 
 const OptionRow = ({ code, name, subtitle, isLast, isForbidden }: Props) => {
 	const router = useRouter();
+	const settingAccent = useAccent();
 	const openFeatureGate = useFeatureGate();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+
 	const { target } = useLocalSearchParams<SearchParamsT>();
 	const currentValue = useSettingsValue<string>(target);
 
@@ -37,9 +38,9 @@ const OptionRow = ({ code, name, subtitle, isLast, isForbidden }: Props) => {
 	return (
 		<>
 			<Root onPress={onSelect}>
-				<Title $settingAccent={settingAccent} $isSelected={currentValue === code}>
+				<Text $color={settingAccent} $weight={currentValue === code ? 600 : 400}>
 					{name}
-				</Title>
+				</Text>
 
 				{subtitle && <Code>{subtitle}</Code>}
 			</Root>

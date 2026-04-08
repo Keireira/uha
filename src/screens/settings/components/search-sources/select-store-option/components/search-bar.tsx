@@ -1,11 +1,9 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 
-import { useSettingsValue } from '@hooks';
+import { useAccent } from '@hooks';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
 
-import type { AccentT } from '@themes';
 import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 type Props = {
@@ -13,9 +11,8 @@ type Props = {
 };
 
 const SearchBar = ({ setSearchQuery }: Props) => {
-	const theme = useTheme();
 	const { t } = useTranslation();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+	const settingAccent = useAccent();
 
 	const handleChangeText = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
 		setSearchQuery(e.nativeEvent.text);
@@ -29,7 +26,7 @@ const SearchBar = ({ setSearchQuery }: Props) => {
 				autoCapitalize="none"
 				hideNavigationBar={false}
 				onChangeText={handleChangeText}
-				tintColor={theme.accents[settingAccent]}
+				tintColor={settingAccent}
 				placeholder={t('settings.sources.search')}
 			/>
 		</Stack.Toolbar>

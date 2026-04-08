@@ -1,6 +1,34 @@
-/** Convert ISO 3166-1 alpha-2 code to flag emoji */
-export const codeToFlag = (code: string): string =>
-	String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1a5 + c.charCodeAt(0)));
+import type { ProviderMeta } from './search-sources.d';
+
+export const PROVIDERS: ProviderMeta[] = [
+	{
+		key: 'appstore',
+		color_slug: 'blue',
+		labelKey: 'settings.sources.appstore',
+		storeConfig: 'country'
+	},
+	{
+		key: 'playstore',
+		color_slug: 'green',
+		labelKey: 'settings.sources.playstore',
+		storeConfig: 'country+lang'
+	},
+	{
+		key: 'web',
+		color_slug: 'orange',
+		labelKey: 'settings.sources.web'
+	},
+	{
+		key: 'brandfetch',
+		color_slug: 'purple',
+		labelKey: 'settings.sources.brandfetch'
+	},
+	{
+		key: 'logodev',
+		color_slug: 'mint',
+		labelKey: 'settings.sources.logo_dev'
+	}
+];
 
 export const RAW_LANGUAGES: { code: string; name: string }[] = [
 	{ code: 'en', name: 'English' },

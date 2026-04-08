@@ -1,19 +1,15 @@
 import React from 'react';
-import { useSettingsValue } from '@hooks';
-import { useTheme } from 'styled-components/native';
+import { useAccent } from '@hooks';
 
 import { ActivityIndicator } from 'react-native';
 import Root from './loader.styles';
 
-import type { AccentT } from '@themes';
-
 const Loader = () => {
-	const theme = useTheme();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+	const settingAccent = useAccent();
 
 	return (
 		<Root>
-			<ActivityIndicator size="large" color={theme.accents[settingAccent]} />
+			<ActivityIndicator size="large" color={settingAccent} />
 		</Root>
 	);
 };

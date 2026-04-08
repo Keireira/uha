@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-
 import { useRouter } from 'expo-router';
 import { startOfMonth } from 'date-fns';
-import { useSettingsValue } from '@hooks';
+import { useTranslation } from 'react-i18next';
+
+import { useAccent } from '@hooks';
 import { backfillRates } from '@hooks/setup';
 import { useTxDatesStore } from '@screens/transactions/models';
 
 import TabContextMenu from '@modules/tab-context-menu';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 
-import type { AccentT } from '@themes';
 import type { TabContextMenuActionEvent } from '@modules/tab-context-menu';
 
 const TabLayout = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
+	const settingAccent = useAccent();
 	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
-	const settingAccent = useSettingsValue<AccentT>('accent');
 
 	useEffect(() => {
 		TabContextMenu.configure([

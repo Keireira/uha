@@ -22,10 +22,10 @@ const hydrateSettings = (dbRow: UserT | undefined, defaults: Partial<Omit<UserT,
 	}
 
 	if (!dbRow) {
-		const row: UserT = {
+		const row = {
 			id: USER_ID,
 			...defaults
-		};
+		} as UserT;
 
 		silentDb.insert(userTable).values(row).execute().catch(console.warn);
 	}
@@ -73,28 +73,6 @@ const useSyncSettings = () => {
 			setSettingsValue('theme', theme);
 		}
 	}, [theme, colorScheme]);
-
-	// useEffect(() => {
-	// 	console.log('theme:', theme, 'colorScheme:', colorScheme);
-	// 	if (!theme || theme === 'auto') {
-	// 		Appearance.setColorScheme(colorScheme);
-	// 		setSettingsValue('theme', colorScheme);
-	// 	} else {
-	// 		Appearance.setColorScheme(theme);
-	// 	}
-	// }, [theme, colorScheme]);
-
-	// useEffect(() => {
-	// 	const sub = SettingsBridgeModule.addListener('onThemeChanged', (event) => {
-	// 		if (__DEV__) {
-	// 			console.log(`[SYNC] onThemeChanged: ${event.newValue}`);
-	// 		}
-
-	// 		setSettingsValue('theme', event.newValue);
-	// 	});
-
-	// 	return () => sub.remove();
-	// }, []);
 };
 
 const useInitSettings = () => {

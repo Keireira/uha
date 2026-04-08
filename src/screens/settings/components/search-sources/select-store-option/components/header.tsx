@@ -1,23 +1,14 @@
 import React from 'react';
-import { useSettingsValue } from '@hooks';
-import { useTheme } from 'styled-components/native';
+import { useAccent } from '@hooks';
 import { Stack, useRouter } from 'expo-router';
 
-import type { AccentT } from '@themes';
-
 const Header = () => {
-	const theme = useTheme();
 	const router = useRouter();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+	const settingAccent = useAccent();
 
 	return (
 		<Stack.Toolbar placement="right">
-			<Stack.Toolbar.Button
-				icon="checkmark"
-				onPress={() => router.back()}
-				variant="done"
-				tintColor={theme.accents[settingAccent]}
-			/>
+			<Stack.Toolbar.Button icon="checkmark" onPress={() => router.back()} variant="done" tintColor={settingAccent} />
 		</Stack.Toolbar>
 	);
 };
