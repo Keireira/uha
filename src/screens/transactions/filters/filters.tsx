@@ -41,7 +41,7 @@ const FilterSheet = () => {
 	const resolveTitle = useCallback(
 		(tab: FilterTabT, entry: { id: string; title: string; subtitle?: string }) => {
 			if (tab === 'currency') {
-				const localizedName = t(`currencies.${entry.id}`, { defaultValue: '' });
+				const localizedName = t(`tokens.currencies.${entry.id}`, { defaultValue: '' });
 
 				return {
 					title: localizedName || entry.id,

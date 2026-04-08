@@ -1,4 +1,4 @@
-.PHONY: rm fix dev dev-logs build-release
+.PHONY: rm fix dev dev-logs build-release migrate migrate-custom
 
 rm:
 	rm -rf ./node_modules
@@ -6,7 +6,6 @@ rm:
 	rm -rf ./android
 	rm -rf ./.expo
 	rm ./pnpm-lock.yaml
-
 
 fix:
 	pnpm expo install expo@latest --fix
@@ -19,3 +18,9 @@ dev-logs:
 
 build-release:
 	eas build --platform ios --profile production --local
+
+migrate:
+	pnpm drizzle-kit generate
+
+migrate-custom:
+	pnpm drizzle-kit generate --custom

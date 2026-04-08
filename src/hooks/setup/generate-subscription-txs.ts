@@ -1,8 +1,8 @@
-import * as Crypto from 'expo-crypto';
 import { splitEvery } from 'ramda';
+import * as Crypto from 'expo-crypto';
 import { useSettingsValue } from '@hooks';
-import { startOfToday, addYears, endOfYear } from 'date-fns';
 import { advanceDate } from '@hooks/use-transactions/utils';
+import { startOfToday, addYears, endOfYear } from 'date-fns';
 
 import db, { silentDb, uhaDb } from '@db';
 import { subscriptionsTable, transactionsTable } from '@db/schema';
@@ -55,8 +55,10 @@ export const regenerateAllTxs = async (maxHorizonYears: number) => {
 	const allTxs = subscriptions.flatMap((sub) => buildTxsForSubscription(sub, horizon));
 	const batches = splitEvery(150, allTxs);
 
-	/* Write through silent connection (no change listener) to avoid
-	   ~1000 useLiveQuery re-runs that block the JS thread for 18+ seconds */
+	/*
+	 * Write through silent connection (no change listener) to avoid ~1000 useLiveQuery re-runs
+	 * that block the JS thread for 18+ seconds
+	 */
 	await silentDb.transaction(async (tx) => {
 		await tx.delete(transactionsTable);
 
@@ -65,11 +67,11 @@ export const regenerateAllTxs = async (maxHorizonYears: number) => {
 		}
 	});
 
-	/* Single touch through the main (listener-enabled) connection
-	   to trigger exactly one useLiveQuery refresh */
-	uhaDb.runSync(
-		'UPDATE transactions SET comment = comment WHERE rowid = (SELECT MIN(rowid) FROM transactions)'
-	);
+	/*
+	 * Single touch through the main (listener-enabled) connection
+	 * to trigger exactly one useLiveQuery refresh
+	 */
+	uhaDb.runSync('UPDATE transactions SET comment = comment WHERE rowid = (SELECT MIN(rowid) FROM transactions)');
 };
 
 export const useGenerateTxs = () => {

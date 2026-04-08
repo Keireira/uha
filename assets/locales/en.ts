@@ -1,205 +1,239 @@
-import type { LocaleRootT } from './locales.d';
+import type { LocaleRootT, RegionsT, CurrencyCode, LanguageCode, CountriesList } from './locales.d';
 
-const i18nLanguages: LocaleRootT['languages'] = {
+// Tokens
+const regions: RegionsT = {
+	europe: 'Europe',
+	north_america: 'North America',
+	central_america: 'Central America',
+	south_america: 'South America',
+	caribbean: 'Caribbean',
+	central_asia: 'Central Asia',
+	south_asia: 'South Asia',
+	east_asia: 'East Asia',
+	southeast_asia: 'Southeast Asia',
+	oceania: 'Oceania',
+	africa: 'Africa',
+	other: 'Other',
+	cryptocurrency: 'Cryptocurrencies'
+};
+const countries: Record<CountriesList, string> = {
+	AF: 'Afghanistan',
+	AL: 'Albania',
+	DZ: 'Algeria',
+	AD: 'Andorra',
+	AO: 'Angola',
+	AI: 'Anguilla',
+	AG: 'Antigua and Barbuda',
+	AR: 'Argentina',
+	AM: 'Armenia',
+	AU: 'Australia',
+	AT: 'Austria',
+	AZ: 'Azerbaijan',
+	BS: 'Bahamas',
+	BH: 'Bahrain',
+	BD: 'Bangladesh',
+	BB: 'Barbados',
+	BY: 'Belarus',
+	BE: 'Belgium',
+	BZ: 'Belize',
+	BJ: 'Benin',
+	BM: 'Bermuda',
+	BT: 'Bhutan',
+	BO: 'Bolivia',
+	BA: 'Bosnia and Herzegovina',
+	BW: 'Botswana',
+	BR: 'Brazil',
+	BN: 'Brunei',
+	BG: 'Bulgaria',
+	BF: 'Burkina Faso',
+	CV: 'Cabo Verde',
+	KH: 'Cambodia',
+	CM: 'Cameroon',
+	CA: 'Canada',
+	KY: 'Cayman Islands',
+	CF: 'Central African Republic',
+	TD: 'Chad',
+	CL: 'Chile',
+	CN: 'China',
+	CO: 'Colombia',
+	CD: 'Congo (DR)',
+	CG: 'Congo',
+	CR: 'Costa Rica',
+	HR: 'Croatia',
+	CY: 'Cyprus',
+	CZ: 'Czechia',
+	CI: "Côte d'Ivoire",
+	DK: 'Denmark',
+	DM: 'Dominica',
+	DO: 'Dominican Republic',
+	EC: 'Ecuador',
+	EG: 'Egypt',
+	SV: 'El Salvador',
+	EE: 'Estonia',
+	SZ: 'Eswatini',
+	ET: 'Ethiopia',
+	FJ: 'Fiji',
+	FI: 'Finland',
+	FR: 'France',
+	GA: 'Gabon',
+	GM: 'Gambia',
+	GE: 'Georgia',
+	DE: 'Germany',
+	GH: 'Ghana',
+	GR: 'Greece',
+	GD: 'Grenada',
+	GT: 'Guatemala',
+	GN: 'Guinea',
+	GW: 'Guinea-Bissau',
+	GY: 'Guyana',
+	HN: 'Honduras',
+	HK: 'Hong Kong',
+	HU: 'Hungary',
+	IS: 'Iceland',
+	IN: 'India',
+	ID: 'Indonesia',
+	IQ: 'Iraq',
+	IE: 'Ireland',
+	IL: 'Israel',
+	IT: 'Italy',
+	JM: 'Jamaica',
+	JP: 'Japan',
+	JO: 'Jordan',
+	KZ: 'Kazakhstan',
+	KE: 'Kenya',
+	KR: 'Korea',
+	KW: 'Kuwait',
+	KG: 'Kyrgyzstan',
+	LA: 'Laos',
+	LV: 'Latvia',
+	LB: 'Lebanon',
+	LR: 'Liberia',
+	LY: 'Libya',
+	LI: 'Liechtenstein',
+	LT: 'Lithuania',
+	LU: 'Luxembourg',
+	MO: 'Macao',
+	MG: 'Madagascar',
+	MW: 'Malawi',
+	MY: 'Malaysia',
+	MV: 'Maldives',
+	ML: 'Mali',
+	MT: 'Malta',
+	MR: 'Mauritania',
+	MU: 'Mauritius',
+	MX: 'Mexico',
+	FM: 'Micronesia',
+	MD: 'Moldova',
+	MC: 'Monaco',
+	MN: 'Mongolia',
+	ME: 'Montenegro',
+	MS: 'Montserrat',
+	MA: 'Morocco',
+	MZ: 'Mozambique',
+	MM: 'Myanmar',
+	NA: 'Namibia',
+	NR: 'Nauru',
+	NP: 'Nepal',
+	NL: 'Netherlands',
+	NZ: 'New Zealand',
+	NI: 'Nicaragua',
+	NE: 'Niger',
+	NG: 'Nigeria',
+	MK: 'North Macedonia',
+	NO: 'Norway',
+	OM: 'Oman',
+	PK: 'Pakistan',
+	PW: 'Palau',
+	PA: 'Panama',
+	PG: 'Papua New Guinea',
+	PY: 'Paraguay',
+	PE: 'Peru',
+	PH: 'Philippines',
+	PL: 'Poland',
+	PT: 'Portugal',
+	PS: 'Palestine',
+	QA: 'Qatar',
+	RO: 'Romania',
+	RU: 'Russia',
+	RW: 'Rwanda',
+	KN: 'Saint Kitts and Nevis',
+	LC: 'Saint Lucia',
+	VC: 'Saint Vincent and the Grenadines',
+	WS: 'Samoa',
+	ST: 'São Tomé and Príncipe',
+	SA: 'Saudi Arabia',
+	SN: 'Senegal',
+	RS: 'Serbia',
+	SC: 'Seychelles',
+	SL: 'Sierra Leone',
+	SG: 'Singapore',
+	SK: 'Slovakia',
+	SI: 'Slovenia',
+	SB: 'Solomon Islands',
+	ZA: 'South Africa',
+	ES: 'Spain',
+	LK: 'Sri Lanka',
+	SR: 'Suriname',
+	SE: 'Sweden',
+	CH: 'Switzerland',
+	TW: 'Taiwan',
+	TJ: 'Tajikistan',
+	TZ: 'Tanzania',
+	TH: 'Thailand',
+	TO: 'Tonga',
+	TT: 'Trinidad and Tobago',
+	TN: 'Tunisia',
+	TR: 'Turkey',
+	TM: 'Turkmenistan',
+	TC: 'Turks and Caicos Islands',
+	UG: 'Uganda',
+	UA: 'Ukraine',
+	AE: 'United Arab Emirates',
+	GB: 'United Kingdom',
+	US: 'United States',
+	UY: 'Uruguay',
+	UZ: 'Uzbekistan',
+	VU: 'Vanuatu',
+	VE: 'Venezuela',
+	VN: 'Vietnam',
+	VG: 'British Virgin Islands',
+	XK: 'Kosovo',
+	YE: 'Yemen',
+	ZM: 'Zambia',
+	ZW: 'Zimbabwe'
+};
+const languages: Record<LanguageCode, string> = {
 	en: 'English',
 	ru: 'Russian',
 	kk: 'Kazakh',
 	es: 'Spanish',
-	ja: 'Japanese'
+	ja: 'Japanese',
+	de: 'German',
+	fr: 'French',
+	it: 'Italian',
+	pt: 'Portuguese',
+	nl: 'Dutch',
+	pl: 'Polish',
+	cs: 'Czech',
+	hu: 'Hungarian',
+	ro: 'Romanian',
+	uk: 'Ukrainian',
+	tr: 'Turkish',
+	ar: 'Arabic',
+	he: 'Hebrew',
+	ko: 'Korean',
+	zh: 'Chinese',
+	th: 'Thai',
+	vi: 'Vietnamese',
+	id: 'Indonesian',
+	ms: 'Malay',
+	hi: 'Hindi',
+	sv: 'Swedish',
+	da: 'Danish',
+	nb: 'Norwegian',
+	fi: 'Finnish'
 };
-
-const settingsScreen: LocaleRootT['settings'] = {
-	system: {
-		notifications: {
-			header: 'Notifications',
-			results: {
-				denied: 'Not requested',
-				blocked: 'Disabled',
-				granted: 'Enabled',
-				limited: 'Enabled'
-			}
-		},
-		language: 'Language'
-	},
-	appearance: {
-		header: 'Appearance',
-		light: 'Light',
-		dark: 'Dark',
-		oled: 'OLED'
-	},
-	preferences: {
-		header: 'Preferences',
-		first_day: 'First Day of Week',
-		max_horizon: 'Max Horizon',
-		years_unit: 'yr',
-		day_hint_us: 'US style',
-		day_hint_iso: 'International'
-	},
-	general: {
-		header: 'System'
-	},
-	currencies: {
-		header: 'Currencies',
-		default_currency_code: 'Default Currency',
-		recalc_currency_code: 'Recalc Currency',
-		refresh_rates: 'Exchange Rates',
-		search: 'Search currencies',
-		primary: 'Primary',
-
-		// target/region
-		europe: 'Europe',
-		north_america: 'North America',
-		central_america: 'Central America',
-		south_america: 'South America',
-		caribbean: 'Caribbean',
-		central_asia: 'Central Asia',
-		south_asia: 'South Asia',
-		east_asia: 'East Asia',
-		southeast_asia: 'Southeast Asia',
-		oceania: 'Oceania',
-		africa: 'Africa',
-		cryptocurrency: 'Cryptocurrencies',
-		other: 'Other'
-	},
-	about: {
-		sources: 'Sources',
-		beta: 'Join Beta',
-		version: 'Version'
-	},
-	donations: {
-		header: 'Support Me',
-		description: 'Uha is built by a solo indie developer. Your support helps keep it alive and improving.',
-
-		// unit.type
-		patreon: 'Patreon',
-		github: 'GitHub',
-		boosty: 'Boosty'
-	},
-	unlimited: {
-		badge: 'Unlimited',
-		active: 'All features unlocked',
-		upgrade: 'Unlock all features'
-	},
-	data: {
-		header: 'Data',
-		cancel: 'Cancel',
-		data_footer: 'Restoring any backup will overwrite all existing data.',
-
-		db: {
-			backup: {
-				title: 'Backup',
-				success: 'Backup created',
-				error: 'Backup failed'
-			},
-			restore: {
-				title: 'Restore',
-				success: 'Data restored successfully',
-				error: 'Failed to restore data'
-			}
-		},
-
-		csv: {
-			export: {
-				title: 'Export to CSV',
-				success: 'Export ready',
-				error: 'Export failed'
-			},
-			import: {
-				title: 'Restore from CSV',
-				success: 'Data imported successfully',
-				error: 'Failed to import data'
-			}
-		},
-
-		icloud: {
-			sync: 'iCloud Sync',
-
-			statuses: {
-				checking: 'Checking...',
-				unavailable: 'Sign in to iCloud',
-				backing_up: 'Backing up...',
-				restoring: 'Restoring...',
-				no_backup: 'No backup yet'
-			},
-
-			backup: {
-				title: 'Backup to iCloud',
-				success: 'Backed up to iCloud',
-				error: 'iCloud backup failed'
-			},
-
-			restore: {
-				title: 'Restore from iCloud',
-				success: 'Restored from iCloud',
-				error: 'iCloud restore failed'
-			}
-		}
-	},
-	ai: {
-		header: 'AI Features',
-		footer: 'Form suggestions are free. Other AI features require Unlimited.',
-		status: 'Device Status',
-		toggle: 'On-device AI',
-		supported: 'Available',
-		not_supported: 'Not available'
-	},
-	tip_jar: {
-		header: 'Tip Jar',
-		thanks: 'Thank you for your support!',
-		error: 'Unknown error occurred while processing your tip.',
-
-		products: {
-			small_fry: 'Small Fry',
-			good_catch: 'Good Catch',
-			big_fish: 'Big Fish',
-			whale: 'Whale'
-		}
-	}
-};
-
-const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Search everywhere',
-		categories: 'Search in categories',
-		services: 'Search in services',
-		payments: 'Search in payments'
-	}
-};
-
-const transactionsScreen: LocaleRootT['transactions'] = {
-	calendar: {
-		total: 'Total',
-		no_txs: 'No transactions'
-	},
-	details: {
-		category: 'Category',
-		currency: 'Currency',
-		payment: 'Payment method',
-		notes: 'Notes',
-		notes_placeholder: 'Tap to add a comment'
-	},
-	filters: {
-		title: 'Filters',
-		clear: 'Clear',
-		search: 'Search',
-		empty: 'No filters available',
-		tabs: {
-			category: 'Category',
-			service: 'Service',
-			tender: 'Tender',
-			currency: 'Currency'
-		}
-	},
-	time_mode: {
-		future: 'Upcoming',
-		all: 'All time'
-	},
-	view_mode: {
-		subscriptions: 'Subscriptions'
-	}
-};
-
-const currenciesList: LocaleRootT['currencies'] = {
+const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Angolan Kwanza',
 	BWP: 'Botswanan Pula',
 	BIF: 'Burundian Franc',
@@ -327,6 +361,193 @@ const currenciesList: LocaleRootT['currencies'] = {
 	MVR: 'Maldivian Rufiyaa'
 };
 
+// Screens
+const settingsScreen: LocaleRootT['settings'] = {
+	system: {
+		notifications: {
+			header: 'Notifications',
+			results: {
+				denied: 'Not requested',
+				blocked: 'Disabled',
+				granted: 'Enabled',
+				limited: 'Enabled'
+			}
+		},
+		language: 'Language'
+	},
+	appearance: {
+		header: 'Appearance',
+		light: 'Light',
+		dark: 'Dark',
+		oled: 'OLED'
+	},
+	preferences: {
+		header: 'Preferences',
+		first_day: 'First Day of Week',
+		max_horizon: 'Max Horizon',
+		years_unit: 'yr',
+		day_hint_us: 'US style',
+		day_hint_iso: 'International'
+	},
+	general: {
+		header: 'System'
+	},
+	currencies: {
+		header: 'Currencies',
+		default_currency: 'Default Currency',
+		recalc_currency: 'Recalc Currency',
+		refresh_rates: 'Exchange Rates',
+		search: 'Search currencies',
+		primary: 'Primary'
+	},
+	sources: {
+		header: 'Search Sources',
+		footer: 'Inhouse results are always shown regardless of these settings.',
+		search: 'Search',
+		primary: 'Primary',
+		language: 'Language',
+		appstore: 'App Store',
+		playstore: 'Google Play',
+		web: 'Web',
+		brandfetch: 'Brandfetch',
+		logo_dev: 'logo.dev'
+	},
+	about: {
+		sources: 'Sources',
+		beta: 'Join Beta',
+		version: 'Version'
+	},
+	donations: {
+		header: 'Support Me',
+		description: 'Uha is built by a solo indie developer. Your support helps keep it alive and improving.',
+
+		// unit.type
+		patreon: 'Patreon',
+		github: 'GitHub',
+		boosty: 'Boosty'
+	},
+	unlimited: {
+		badge: 'Unlimited',
+		active: 'All features unlocked',
+		upgrade: 'Unlock all features'
+	},
+	data: {
+		header: 'Data',
+		cancel: 'Cancel',
+		data_footer: 'Restoring any backup will overwrite all existing data.',
+
+		db: {
+			backup: {
+				title: 'Backup',
+				success: 'Backup created',
+				error: 'Backup failed'
+			},
+			restore: {
+				title: 'Restore',
+				success: 'Data restored successfully',
+				error: 'Failed to restore data'
+			}
+		},
+
+		csv: {
+			export: {
+				title: 'Export to CSV',
+				success: 'Export ready',
+				error: 'Export failed'
+			},
+			import: {
+				title: 'Restore from CSV',
+				success: 'Data imported successfully',
+				error: 'Failed to import data'
+			}
+		},
+
+		icloud: {
+			sync: 'iCloud Sync',
+
+			statuses: {
+				checking: 'Checking...',
+				unavailable: 'Sign in to iCloud',
+				backing_up: 'Backing up...',
+				restoring: 'Restoring...',
+				no_backup: 'No backup yet'
+			},
+
+			backup: {
+				title: 'Backup to iCloud',
+				success: 'Backed up to iCloud',
+				error: 'iCloud backup failed'
+			},
+
+			restore: {
+				title: 'Restore from iCloud',
+				success: 'Restored from iCloud',
+				error: 'iCloud restore failed'
+			}
+		}
+	},
+	ai: {
+		header: 'AI Features',
+		footer: 'Form suggestions are free. Other AI features require Unlimited.',
+		status: 'Device Status',
+		toggle: 'On-device AI',
+		supported: 'Available',
+		not_supported: 'Not available'
+	},
+	tip_jar: {
+		header: 'Tip Jar',
+		thanks: 'Thank you for your support!',
+		error: 'Unknown error occurred while processing your tip.',
+
+		products: {
+			small_fry: 'Small Fry',
+			good_catch: 'Good Catch',
+			big_fish: 'Big Fish',
+			whale: 'Whale'
+		}
+	}
+};
+const libraryScreen: LocaleRootT['library'] = {
+	search: {
+		all: 'Search everywhere',
+		categories: 'Search in categories',
+		services: 'Search in services',
+		payments: 'Search in payments'
+	}
+};
+const transactionsScreen: LocaleRootT['transactions'] = {
+	calendar: {
+		total: 'Total',
+		no_txs: 'No transactions'
+	},
+	details: {
+		category: 'Category',
+		currency: 'Currency',
+		payment: 'Payment method',
+		notes: 'Notes',
+		notes_placeholder: 'Tap to add a comment'
+	},
+	filters: {
+		title: 'Filters',
+		clear: 'Clear',
+		search: 'Search',
+		empty: 'No filters available',
+		tabs: {
+			category: 'Category',
+			service: 'Service',
+			tender: 'Tender',
+			currency: 'Currency'
+		}
+	},
+	time_mode: {
+		future: 'Upcoming',
+		all: 'All time'
+	},
+	view_mode: {
+		subscriptions: 'Subscriptions'
+	}
+};
+
 const defaultCategories: LocaleRootT['category'] = {
 	ai: 'AI',
 	automotive: 'Automotive',
@@ -361,6 +582,12 @@ const defaultCategories: LocaleRootT['category'] = {
 };
 
 const english: LocaleRootT = {
+	tokens: {
+		regions,
+		countries,
+		currencies,
+		languages
+	},
 	ios: {
 		CFBundleDisplayName: 'Uha'
 	},
@@ -383,9 +610,7 @@ const english: LocaleRootT = {
 			title: 'Rates updated'
 		}
 	},
-	languages: i18nLanguages,
 	category: defaultCategories,
-	currencies: currenciesList,
 
 	navbar: {
 		transactions: {

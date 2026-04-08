@@ -15,6 +15,9 @@ type Params = {
 	service_name?: string;
 	service_logo?: string;
 	service_source?: string;
+	source_hint?: string;
+	store_country?: string;
+	store_language?: string;
 };
 
 type ResolvedService = {
@@ -84,9 +87,9 @@ const useAddSubscription = () => {
 					setService({
 						id: row.id,
 						name: row.title,
-						slug: row.slug,
+						slug: row.slug || '',
 						color: row.color,
-						logo_url: `https://s3.uha.app/logos/${row.slug}.webp`,
+						logo_url: (row.slug ? `https://s3.uha.app/logos/${row.slug}.webp` : row.logo_url) ?? '',
 						category_slug: row.category_slug
 					});
 					setResolving(false);
@@ -95,13 +98,15 @@ const useAddSubscription = () => {
 			}
 
 			try {
-				const details = params.service_id ? await getService(params.service_id) : null;
+				const details = params.service_id
+					? await getService(params.service_id, params.source_hint as any, params.store_country, params.store_language)
+					: null;
 				if (cancelled) return;
 
 				const name = details?.name ?? params.service_name ?? 'Unknown';
 				const slug = details?.slug ?? name.toLowerCase().replace(/\s+/g, '-');
 				const color = details?.colors?.primary ?? '#888888';
-				const categorySlug = details?.category ?? '';
+				const categorySlug = details?.category_slug ?? '';
 				const aliases = details?.alternative_names ?? [];
 				const logoUrl = details?.logo_url ?? params.service_logo ?? '';
 

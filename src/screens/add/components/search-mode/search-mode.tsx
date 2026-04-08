@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { useSettingsValue } from '@hooks';
 import { useSearch } from '@screens/add/hooks';
 
 import { ResultSection, TopHitCard, NoResults, Loader } from './components';
@@ -13,11 +14,14 @@ const SearchMode = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 	const { results, isLoading, isFilled } = useSearch();
+	const language = useSettingsValue<string>('playstore_lang');
+	const appStoreCountry = useSettingsValue<string>('appstore_country');
+	const playStoreCountry = useSettingsValue<string>('playstore_country');
 
 	const [topHit, ...restResults] = results.length ? results : [];
 	const { inHouseResults, externalResults } = restResults.reduce(
 		(acc, result) => {
-			if (result.source === 'local') {
+			if (result.source === 'inhouse') {
 				acc.inHouseResults.push(result);
 			} else {
 				acc.externalResults.push(result);
@@ -29,13 +33,24 @@ const SearchMode = () => {
 	);
 
 	const goToNewService = (result: SearchResultT) => {
+		const isInNeedFoHint = ['appstore', 'playstore', 'web'].includes(result.source);
+
+		const additionalParams = isInNeedFoHint
+			? {
+					source_hint: result.source,
+					store_country: result.source === 'appstore' ? appStoreCountry : playStoreCountry,
+					store_language: result.source === 'playstore' ? language : undefined
+				}
+			: {};
+
 		router.push({
 			pathname: '/add-subscription',
 			params: {
 				service_id: result.id,
 				service_name: result.name,
 				service_logo: result.logo_url,
-				service_source: result.source
+				service_source: result.source,
+				...additionalParams
 			}
 		});
 	};
@@ -61,6 +76,7 @@ const SearchMode = () => {
 						results={inHouseResults}
 						onPress={goToNewService}
 					/>
+
 					<ResultSection
 						label={t('crossroad.add.sections.external')}
 						results={externalResults}

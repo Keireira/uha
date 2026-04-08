@@ -3,13 +3,11 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { useSettingsValue } from '@hooks';
+import { useAccent } from '@hooks';
 
 import { H5, SmallText } from '@ui';
 import { SymbolView } from 'expo-symbols';
 import Root, { ScreenTitle, CardGlass, CardInner } from './crossroad.styles';
-
-import type { AccentT } from '@themes';
 
 const ITEMS = [
 	{
@@ -38,7 +36,7 @@ const Crossroad = () => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
-	const settingAccent = useSettingsValue<AccentT>('accent');
+	const settingAccent = useAccent();
 
 	return (
 		<>

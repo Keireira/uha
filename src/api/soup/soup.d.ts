@@ -1,9 +1,19 @@
-export type SourceT = 'local' | 'brandfetch' | 'logo.dev';
+export type SourceT = 'inhouse' | 'brandfetch' | 'logo.dev' | 'appstore' | 'playstore' | 'web';
 
 /* GET /search */
+export type SearchOptions = {
+	sources?: SourceT[];
+	app_store_country?: string;
+	playstore_country?: string;
+	language?: string;
+};
+
 export type SearchQueryT = {
 	q: string;
-	sources: 'all' | 'external' | SourceT;
+	sources: string;
+	app_store_country?: string;
+	playstore_country?: string;
+	language?: string;
 };
 
 export type SearchResultT = {
@@ -12,23 +22,29 @@ export type SearchResultT = {
 	name: string;
 	domains: string[];
 	source: SourceT;
+	bundle_id?: string;
+	category_slug?: string;
 };
 
 export type SearchResponseT = SearchResultT[];
-// export type SearchResponseT = Response<SearchResultT[]>;
 
 /* GET /service/:service_id */
+export type ServiceQueryT = {
+	source_hint?: SourceT;
+	country?: string;
+	language?: string;
+};
+
 export type ServiceResponseT = {
 	id: string;
 	name: string;
 	slug: string;
 	bundle_id: string;
-	description: string | null;
 	domains: string[];
 	alternative_names: string[];
 	tags: string[];
 	verified: boolean;
-	category: string;
+	category_slug: string;
 	colors: {
 		primary: string;
 	};

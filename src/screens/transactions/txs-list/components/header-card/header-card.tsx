@@ -10,7 +10,7 @@ import type { HeaderSectionT } from '../../txs-list.d';
 const HeaderCard = ({ date, rawDate, txs }: HeaderSectionT) => {
 	const rates = useGetFilledDateRates(rawDate);
 
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 	const recalcCurrency = useGetCurrency(recalcCurrencyCode);
 
 	const totalSum = useMemo(() => {

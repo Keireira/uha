@@ -54,7 +54,7 @@ const AnalyticsSheet = () => {
 
 	const tabs = useMemo(() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')), [clavis]);
 
-	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency_code');
+	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const {
 		data: [currency]
