@@ -137,7 +137,7 @@ INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, r
 	('TJS', 'ЅМ', 100, 2, 'tg-TJ', 'central_asia'),
 	('UZS', 'сўм', 100, 2, 'uz-UZ', 'central_asia'),
 	('INR', '₹', 100, 2, 'hi-IN', 'south_asia'),
-	('GBP', '£', 100, 2, 'en-GB', 'south_asia'),
+	('GBP', '£', 100, 2, 'en-GB', 'europe'),
 	('LKR', '₨', 100, 2, 'si-LK', 'south_asia'),
 	('NPR', '₨', 100, 2, 'ne-NP', 'south_asia'),
 	('CNH', '¥', 100, 2, 'zh-CN', 'east_asia'),

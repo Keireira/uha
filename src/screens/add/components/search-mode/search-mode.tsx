@@ -32,24 +32,27 @@ const SearchMode = () => {
 		{ inHouseResults: [], externalResults: [] } as Record<'inHouseResults' | 'externalResults', SearchResultT[]>
 	);
 
-	const goToNewService = (result: SearchResultT) => {
-		const isInNeedFoHint = ['appstore', 'playstore', 'web'].includes(result.source);
+	const goToNewService = (searchResult: SearchResultT) => {
+		const isInNeedForHint = ['appstore', 'playstore', 'web'].includes(searchResult.source);
 
-		const additionalParams = isInNeedFoHint
+		const additionalParams = isInNeedForHint
 			? {
-					source_hint: result.source,
-					store_country: result.source === 'appstore' ? appStoreCountry : playStoreCountry,
-					store_language: result.source === 'playstore' ? language : undefined
+					source_hint: searchResult.source,
+					country: searchResult.source === 'appstore' ? appStoreCountry : playStoreCountry,
+					language: searchResult.source === 'playstore' ? language : undefined
 				}
 			: {};
 
 		router.push({
 			pathname: '/add-subscription',
 			params: {
-				service_id: result.id,
-				service_name: result.name,
-				service_logo: result.logo_url,
-				service_source: result.source,
+				service_id: searchResult.id,
+				service_name: searchResult.name,
+				service_logo: searchResult.logo_url,
+				service_source: searchResult.source,
+				service_bundle_id: searchResult.bundle_id,
+				service_category_slug: searchResult.category_slug,
+				service_domains: searchResult.domains,
 				...additionalParams
 			}
 		});

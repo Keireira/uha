@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 
 import type { SearchResultT } from '../soup.d';
-import type { ITunesApp, ITunesSearchResponse } from './appstore.d';
+import type { GenreId, ITunesApp, ITunesSearchResponse } from './appstore.d';
 
 const GENRE_TO_CATEGORY: Record<string, string> = {
 	'6000': 'productivity',
@@ -30,10 +30,20 @@ const GENRE_TO_CATEGORY: Record<string, string> = {
 	'6027': 'design_and_creative'
 };
 
-const mapGenres = (genreIds?: string[]) => {
-	if (!Array.isArray(genreIds)) return;
+const mapGenresToCategory = (genreIds?: GenreId | GenreId[]) => {
+	const ids = Array.isArray(genreIds) ? genreIds : [genreIds];
 
-	return genreIds.find((g) => g in GENRE_TO_CATEGORY);
+	const categories = ids.reduce((acc, genreId) => {
+		const categorySlug = GENRE_TO_CATEGORY[genreId!];
+
+		if (categorySlug) {
+			acc.push(categorySlug);
+		}
+
+		return acc;
+	}, [] as string[]);
+
+	return categories[0];
 };
 
 const extractDomain = (url?: string) => {
@@ -53,7 +63,6 @@ const toSearchResult = (app: ITunesApp): SearchResultT => {
 	if (sellerDomain) {
 		domains.push(sellerDomain);
 	}
-
 	domains.push(app.bundleId);
 
 	return {
@@ -63,7 +72,7 @@ const toSearchResult = (app: ITunesApp): SearchResultT => {
 		domains,
 		source: 'appstore',
 		bundle_id: app.bundleId,
-		category_slug: mapGenres(app.genreIds)
+		category_slug: mapGenresToCategory(app.primaryGenreId || app.genreIds)
 	};
 };
 

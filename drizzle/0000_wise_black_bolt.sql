@@ -39,10 +39,14 @@ CREATE INDEX `currency_rates_lookup_idx` ON `currency_rates` (`target_currency_i
 CREATE UNIQUE INDEX `currency_rates_unique` ON `currency_rates` (`target_currency_id`,`date`);--> statement-breakpoint
 CREATE TABLE `services` (
 	`id` text PRIMARY KEY NOT NULL,
+	`bundle_id` text,
 	`slug` text,
 	`title` text NOT NULL,
 	`color` text NOT NULL,
 	`logo_url` text,
+	`ref_link` text,
+	`domains` text DEFAULT '[]',
+	`social_links` text DEFAULT '{}',
 	`aliases` text DEFAULT '[]' NOT NULL,
 	`category_slug` text NOT NULL,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action
@@ -110,7 +114,7 @@ CREATE TABLE `user` (
 	`appstore_country` text DEFAULT 'US' NOT NULL,
 	`playstore_country` text DEFAULT 'US' NOT NULL,
 	`playstore_lang` text DEFAULT 'en' NOT NULL,
-	`search_sources` text DEFAULT '["inhouse","appstore","playstore","web","brandfetch","logo.dev"]' NOT NULL,
+	`search_sources` text DEFAULT '["inhouse","appstore","playstore","web","brandfetch"]' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`default_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );
