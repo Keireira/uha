@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
 import db from '@db';
-import { eq, isNull } from 'drizzle-orm';
+import { and, eq, isNull, max } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { servicesTable, subscriptionsTable } from '@db/schema';
+import { servicesTable, subscriptionsTable, priceHistoryTable } from '@db/schema';
 
 import type { FilterTabT } from '../filters.d';
 import type { FilterTypeT, AppliedFilterT } from '@screens/transactions/models/types.d';
@@ -37,6 +37,16 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 		return result;
 	}, [appliedFilters]);
 
+	/* Subquery: latest price_history date per subscription */
+	const latestPriceDate = db
+		.select({
+			subscription_id: priceHistoryTable.subscription_id,
+			max_date: max(priceHistoryTable.date).as('max_date')
+		})
+		.from(priceHistoryTable)
+		.groupBy(priceHistoryTable.subscription_id)
+		.as('lpd');
+
 	/* Get all active subscriptions */
 	const { data: subscriptions } = useLiveQuery(
 		db
@@ -44,10 +54,18 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 				category_slug: subscriptionsTable.category_slug,
 				service_id: subscriptionsTable.service_id,
 				tender_id: subscriptionsTable.tender_id,
-				currency_id: subscriptionsTable.current_currency_id
+				currency_id: priceHistoryTable.currency_id
 			})
 			.from(subscriptionsTable)
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
+			.leftJoin(latestPriceDate, eq(subscriptionsTable.id, latestPriceDate.subscription_id))
+			.leftJoin(
+				priceHistoryTable,
+				and(
+					eq(priceHistoryTable.subscription_id, subscriptionsTable.id),
+					eq(priceHistoryTable.date, latestPriceDate.max_date)
+				)
+			)
 			.where(isNull(subscriptionsTable.cancellation_date))
 	);
 

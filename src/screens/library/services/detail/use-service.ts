@@ -3,8 +3,18 @@ import { first } from '@lib';
 import { useLocalSearchParams } from 'expo-router';
 
 import db from '@db';
-import { eq } from 'drizzle-orm';
-import { servicesTable, categoriesTable, subscriptionsTable, currenciesTable, tendersTable } from '@db/schema';
+import { and, eq, max } from 'drizzle-orm';
+import { servicesTable, categoriesTable, subscriptionsTable, currenciesTable, tendersTable, priceHistoryTable } from '@db/schema';
+
+/* Subquery: latest price_history date per subscription */
+const latestPriceDate = db
+	.select({
+		subscription_id: priceHistoryTable.subscription_id,
+		max_date: max(priceHistoryTable.date).as('max_date')
+	})
+	.from(priceHistoryTable)
+	.groupBy(priceHistoryTable.subscription_id)
+	.as('lpd');
 
 export const useService = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -36,7 +46,7 @@ export const useService = () => {
 				.select({
 					id: subscriptionsTable.id,
 					custom_name: subscriptionsTable.custom_name,
-					current_price: subscriptionsTable.current_price,
+					current_price: priceHistoryTable.amount,
 					billing_cycle_type: subscriptionsTable.billing_cycle_type,
 					billing_cycle_value: subscriptionsTable.billing_cycle_value,
 					currency_code: currenciesTable.id,
@@ -47,7 +57,15 @@ export const useService = () => {
 					tender_title: tendersTable.title
 				})
 				.from(subscriptionsTable)
-				.innerJoin(currenciesTable, eq(subscriptionsTable.current_currency_id, currenciesTable.id))
+				.leftJoin(latestPriceDate, eq(subscriptionsTable.id, latestPriceDate.subscription_id))
+				.leftJoin(
+					priceHistoryTable,
+					and(
+						eq(priceHistoryTable.subscription_id, subscriptionsTable.id),
+						eq(priceHistoryTable.date, latestPriceDate.max_date)
+					)
+				)
+				.leftJoin(currenciesTable, eq(priceHistoryTable.currency_id, currenciesTable.id))
 				.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 				.where(eq(subscriptionsTable.service_id, id));
 

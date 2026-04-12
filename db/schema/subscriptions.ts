@@ -2,11 +2,9 @@ import { sql } from 'drizzle-orm';
 import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import { categoriesTable } from './categories';
-import { currenciesTable } from './currencies';
 import { servicesTable } from './services';
 import { tendersTable } from './tenders';
 
-// Replace current_price with price_history
 export const subscriptionsTable = sqliteTable(
 	'subscriptions',
 	{
@@ -24,12 +22,6 @@ export const subscriptionsTable = sqliteTable(
 		billing_cycle_type: text().$type<'days' | 'weeks' | 'months' | 'years'>().default('months').notNull(),
 		billing_cycle_value: int().default(1).notNull(),
 
-		// in MINOR UNITS!!!! (100 for 1 USD, 1000 for 1000 JPY
-		current_price: int({ mode: 'number' }).notNull(),
-		current_currency_id: text()
-			.references(() => currenciesTable.id)
-			.notNull(), // e.g. 'USD' | 'RUB' | ...
-
 		first_payment_date: text()
 			.default(sql`(CURRENT_DATE)`)
 			.notNull(),
@@ -40,7 +32,6 @@ export const subscriptionsTable = sqliteTable(
 	(table) => [
 		index('subscriptions_category_slug_idx').on(table.category_slug),
 		index('subscriptions_service_id_idx').on(table.service_id),
-		index('subscriptions_current_currency_id_idx').on(table.current_currency_id),
 		index('subscriptions_tender_id_idx').on(table.tender_id)
 	]
 );

@@ -30,6 +30,11 @@ export type PreparedSubscriptionT = SubscriptionT & {
 	 * If we don't, we will use the first payment date as a fallback later
 	 */
 	latest_transaction_date: TransactionT['date'] | null;
+
+	/** Current price in minor units, resolved from the latest price_history entry */
+	current_price: number | null;
+	current_currency_id: string | null;
+
 	currency: CurrencyT['symbol'];
 	denominator: CurrencyT['denominator'];
 	slug: ServiceT['slug'];

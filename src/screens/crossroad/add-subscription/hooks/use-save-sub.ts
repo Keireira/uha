@@ -1,29 +1,63 @@
+import * as Crypto from 'expo-crypto';
+import { useRouter } from 'expo-router';
+
+import db from '@db';
+import { subscriptionsTable, priceHistoryTable } from '@db/schema';
+import { useGenerateTxs } from '@hooks/setup';
+
+import type { SubscriptionT } from '@models';
+
+type SaveParams = {
+	service_id: string;
+	category_slug: string;
+	custom_name: string | null;
+	billing_cycle_type: SubscriptionT['billing_cycle_type'];
+	billing_cycle_value: number;
+	priceMinorUnits: number;
+	currencyId: string;
+	firstPaymentDate: string;
+	tenderId: string | null;
+};
+
 const useSaveSubscriptions = () => {
-	// 1. Save service
-	// 2. Save subscription
+	const router = useRouter();
+	const generateSubscriptionTxs = useGenerateTxs();
+
+	// 1. Save subscription
+	// 2. Save initial price_history entry
 	// 3. Generate subscription txs
 	// 4. Go back
-	// const save = async () => {
-	// 	if (!isValid || !service) return;
-	// 	const subscriptionId = Crypto.randomUUID();
-	// 	const subscription = {
-	// 		id: subscriptionId,
-	// 		color,
-	// 		service_id: service.id,
-	// 		category_slug: selectedCategorySlug,
-	// 		custom_name: customName.trim() || null,
-	// 		billing_cycle_type: cycleType,
-	// 		billing_cycle_value: cycleValue,
-	// 		current_price: priceMinorUnits,
-	// 		current_currency_id: currencyId,
-	// 		first_payment_date: effectiveFirstDate,
-	// 		tender_id: tenderId || null,
-	// 		cancellation_date: null
-	// 	};
-	// 	await db.insert(subscriptionsTable).values(subscription);
-	// 	await generateSubscriptionTxs(subscription);
-	// 	router.back();
-	// };
+	const save = async (params: SaveParams) => {
+		const subscriptionId = Crypto.randomUUID();
+
+		await db.insert(priceHistoryTable).values({
+			id: Crypto.randomUUID(),
+			amount: params.priceMinorUnits,
+			date: params.firstPaymentDate,
+			currency_id: params.currencyId,
+			subscription_id: subscriptionId
+		});
+
+		const subscription: SubscriptionT = {
+			id: subscriptionId,
+			service_id: params.service_id,
+			category_slug: params.category_slug,
+			custom_name: params.custom_name,
+			billing_cycle_type: params.billing_cycle_type,
+			billing_cycle_value: params.billing_cycle_value,
+			first_payment_date: params.firstPaymentDate,
+			tender_id: params.tenderId,
+			cancellation_date: null
+		};
+
+		await db.insert(subscriptionsTable).values(subscription);
+
+		await generateSubscriptionTxs(subscription);
+
+		router.back();
+	};
+
+	return save;
 };
 
 export default useSaveSubscriptions;

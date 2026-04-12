@@ -17,7 +17,7 @@ CREATE TABLE `currencies` (
 --> statement-breakpoint
 CREATE TABLE `price_history` (
 	`id` text PRIMARY KEY NOT NULL,
-	`amount` real NOT NULL,
+	`amount` integer NOT NULL,
 	`date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`currency_id` text NOT NULL,
 	`subscription_id` text NOT NULL,
@@ -61,20 +61,16 @@ CREATE TABLE `subscriptions` (
 	`custom_name` text,
 	`billing_cycle_type` text DEFAULT 'months' NOT NULL,
 	`billing_cycle_value` integer DEFAULT 1 NOT NULL,
-	`current_price` integer NOT NULL,
-	`current_currency_id` text NOT NULL,
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`tender_id` text,
 	`cancellation_date` text,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`current_currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE INDEX `subscriptions_category_slug_idx` ON `subscriptions` (`category_slug`);--> statement-breakpoint
 CREATE INDEX `subscriptions_service_id_idx` ON `subscriptions` (`service_id`);--> statement-breakpoint
-CREATE INDEX `subscriptions_current_currency_id_idx` ON `subscriptions` (`current_currency_id`);--> statement-breakpoint
 CREATE INDEX `subscriptions_tender_id_idx` ON `subscriptions` (`tender_id`);--> statement-breakpoint
 CREATE TABLE `tenders` (
 	`id` text PRIMARY KEY NOT NULL,
