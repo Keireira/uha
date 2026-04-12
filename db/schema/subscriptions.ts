@@ -6,6 +6,7 @@ import { currenciesTable } from './currencies';
 import { servicesTable } from './services';
 import { tendersTable } from './tenders';
 
+// Replace current_price with price_history
 export const subscriptionsTable = sqliteTable(
 	'subscriptions',
 	{

@@ -1,27 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text } from '@ui';
+import { useAccent } from '@hooks';
 import { useLoadService } from './hooks';
+import useAddSubcriptionStore from './store';
 
-import { Container } from './add-subscription.styles';
+import MasterPane from './master-pane';
+import Root from './add-subscription.styles';
 
 const AddSubscriptionScreen = () => {
+	const router = useRouter();
+	const settingAccent = useAccent();
 	const insets = useSafeAreaInsets();
 	const { service, isLoading } = useLoadService();
+	const actions = useAddSubcriptionStore((state) => state.actions);
+
+	useEffect(() => {
+		if (isLoading || !service) return;
+
+		actions.init(service);
+	}, [service, isLoading]);
 
 	if (isLoading) {
 		return null;
 	}
 
 	return (
-		<Container
-			style={{ backgroundColor: service?.color }}
-			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
+		<Root
+			contentContainerStyle={{
+				paddingTop: 24,
+				paddingHorizontal: 24,
+				paddingBottom: insets.bottom + 24
+			}}
 		>
-			<Text>{service?.title}</Text>
-			<Text>{service?.category_slug}</Text>
-		</Container>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button
+					icon="xmark"
+					onPress={() => {
+						router.back();
+					}}
+					variant="plain"
+					tintColor={settingAccent}
+				/>
+			</Stack.Toolbar>
+
+			<MasterPane />
+
+			<Stack.Toolbar placement="bottom">
+				<Stack.Toolbar.Button
+					onPress={() => {
+						console.log('++');
+					}}
+					tintColor={settingAccent}
+				>
+					Create Subscription
+				</Stack.Toolbar.Button>
+			</Stack.Toolbar>
+		</Root>
 	);
 };
 

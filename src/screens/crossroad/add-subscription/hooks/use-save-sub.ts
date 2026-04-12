@@ -1,4 +1,8 @@
 const useSaveSubscriptions = () => {
+	// 1. Save service
+	// 2. Save subscription
+	// 3. Generate subscription txs
+	// 4. Go back
 	// const save = async () => {
 	// 	if (!isValid || !service) return;
 	// 	const subscriptionId = Crypto.randomUUID();

@@ -43,7 +43,13 @@ const LogoView = ({ emoji, assetId, slug, url, name, color, size = 48, children 
 	const showRemote = (link || assetId) && !imgFailed;
 
 	const content = showRemote ? (
-		<SquircleMask size={size} color={color ?? undefined} link={link} assetId={assetId} onError={() => setImgFailed(true)} />
+		<SquircleMask
+			size={size}
+			color={color ?? undefined}
+			link={link}
+			assetId={assetId}
+			onError={() => setImgFailed(true)}
+		/>
 	) : (
 		<Fallback emoji={emoji} initials={initials} size={size} color={color} />
 	);
