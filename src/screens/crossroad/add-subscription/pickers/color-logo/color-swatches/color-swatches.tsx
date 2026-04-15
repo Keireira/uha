@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { userTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import useAddSubcriptionStore from '../../../store';
+import { useNewSubStore } from '../../../hooks';
 
 import { Host, HStack, Text, ScrollView } from '@expo/ui/swift-ui';
 import {
@@ -38,8 +38,8 @@ const NOT_SELECTED = [opacity(0.8)];
 
 const ColorSwatches = () => {
 	const [presets, setPresets] = useState<string[]>([]);
-	const selectedColor = useAddSubcriptionStore((state) => state.color);
-	const setColor = useAddSubcriptionStore((state) => state.actions.setColor);
+	const selectedColor = useNewSubStore((state) => state.color);
+	const setColor = useNewSubStore((state) => state.actions.setColor);
 
 	const {
 		data: [user]

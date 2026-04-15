@@ -3,26 +3,16 @@ import { equals } from 'ramda';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 
 import { useAccent } from '@hooks';
-import useAddSubcriptionStore from '../../store';
+import { useNewSubStore } from '../../hooks';
+import { useHeaderHeight } from '@react-navigation/elements';
+
+import { View } from 'react-native';
 import SymbolGrid from './symbol-grid';
 import ColorSwatches from './color-swatches';
 import * as ImagePicker from 'expo-image-picker';
 import Root from './color-logo.styles';
-import { Host, VStack, HStack, Text, ScrollView } from '@expo/ui/swift-ui';
-import {
-	frame,
-	padding,
-	clipShape,
-	background,
-	opacity,
-	shadow,
-	font,
-	foregroundStyle,
-	bold,
-	onTapGesture
-} from '@expo/ui/swift-ui/modifiers';
 
-import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import type { NativeSyntheticEvent, TextInputFocusEventData, NativeScrollEvent } from 'react-native';
 
 type RouteParamsT = {
 	color: string;
@@ -30,13 +20,33 @@ type RouteParamsT = {
 	symbol: string;
 };
 
+const useOnViewScroll = () => {
+	const headerHeight = useHeaderHeight();
+	const [stickyPad, setStickyPad] = useState(0);
+
+	const onViewScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		const offset = e.nativeEvent.contentOffset.y;
+
+		if (offset + headerHeight > 0) {
+			setStickyPad(headerHeight);
+		} else {
+			setStickyPad(0);
+		}
+	};
+
+	return {
+		stickyPad,
+		onViewScroll
+	};
+};
+
 const ColorLogo = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
-
 	const [search, setSearch] = useState('');
-	const { actions, ...service } = useAddSubcriptionStore((state) => state);
+	const { stickyPad, onViewScroll } = useOnViewScroll();
+	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
+	const { actions, ...service } = useNewSubStore((state) => state);
 
 	const openImagePicker = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
@@ -60,13 +70,6 @@ const ColorLogo = () => {
 		});
 
 		router.back();
-	};
-
-	const handleSelectSymbol = (symbol: string) => {
-		actions.setBatch({
-			logo_url: undefined,
-			symbol: service.symbol === symbol ? undefined : symbol
-		});
 	};
 
 	const openColorPicker = () => {
@@ -104,16 +107,6 @@ const ColorLogo = () => {
 			</Stack.Toolbar>
 
 			<Stack.Toolbar placement="right">
-				<Stack.Toolbar.Menu icon="ellipsis">
-					<Stack.Toolbar.MenuAction icon="paintbrush.pointed" onPress={openColorPicker}>
-						<Stack.Toolbar.Label>Color Palette</Stack.Toolbar.Label>
-					</Stack.Toolbar.MenuAction>
-
-					<Stack.Toolbar.MenuAction icon="photo.stack" onPress={openImagePicker}>
-						<Stack.Toolbar.Label>Custom Logo</Stack.Toolbar.Label>
-					</Stack.Toolbar.MenuAction>
-				</Stack.Toolbar.Menu>
-
 				<Stack.Toolbar.Button
 					variant="done"
 					icon="checkmark"
@@ -123,30 +116,32 @@ const ColorLogo = () => {
 				/>
 			</Stack.Toolbar>
 
-			<Root>
-				<ColorSwatches />
+			<Root stickyHeaderIndices={[0]} onScroll={onViewScroll}>
+				<View style={{ paddingTop: stickyPad }}>
+					<ColorSwatches />
+				</View>
+
+				<SymbolGrid search={search} />
 			</Root>
 
-			{/* SymbolGrid тоже можно сюда как SwiftUI компонент */}
+			{/*<ColorPresets color={color} presets={presets} onSelectColor={setColor} onPresetsChange={handlePresetsChange} />*/}
 
-			{/*<Root>
-				<ColorSwatches />
-
-				{/*<ColorPresets color={color} presets={presets} onSelectColor={setColor} onPresetsChange={handlePresetsChange} />*/}
-
-			{/*<SymbolGrid selected={service.symbol} color={service.color} search={search} onSelect={handleSelectSymbol} />*/}
-			{/*</Root>*/}
+			<Stack.SearchBar
+				autoFocus
+				inputType="text"
+				autoCapitalize="none"
+				placeholder="Search"
+				hideNavigationBar={false}
+				tintColor={settingAccent}
+				onChangeText={searchBySymbols}
+			/>
 
 			<Stack.Toolbar placement="bottom">
-				<Stack.SearchBar
-					autoFocus
-					inputType="text"
-					autoCapitalize="none"
-					placeholder="Search"
-					hideNavigationBar={false}
-					tintColor={settingAccent}
-					onChangeText={searchBySymbols}
-				/>
+				<Stack.Toolbar.Button icon="photo.stack" onPress={openImagePicker} />
+				<Stack.Toolbar.Spacer />
+				<Stack.Toolbar.SearchBarSlot />
+				<Stack.Toolbar.Spacer />
+				<Stack.Toolbar.Button icon="paintbrush.fill" onPress={openColorPicker} />
 			</Stack.Toolbar>
 		</>
 	);

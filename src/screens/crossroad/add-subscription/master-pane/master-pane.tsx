@@ -2,8 +2,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-// import { useAccent } from '@hooks';
-import useAddSubcriptionStore from '../store';
+import { useNewSubStore } from '../hooks';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -21,7 +20,7 @@ const MasterPane = () => {
 	// const settingAccent = useAccent();
 
 	const { t } = useTranslation();
-	const service = useAddSubcriptionStore((state) => state);
+	const service = useNewSubStore((state) => state);
 	const {
 		data: [category]
 	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, service.category_slug)), []);

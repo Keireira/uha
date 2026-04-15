@@ -3,8 +3,7 @@ import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAccent } from '@hooks';
-import { useLoadService } from './hooks';
-import useAddSubcriptionStore from './store';
+import { useLoadService, useNewSubStore } from './hooks';
 
 import MasterPane from './master-pane';
 import Root from './add-subscription.styles';
@@ -14,7 +13,7 @@ const AddSubscriptionScreen = () => {
 	const settingAccent = useAccent();
 	const insets = useSafeAreaInsets();
 	const { service, isLoading } = useLoadService();
-	const actions = useAddSubcriptionStore((state) => state.actions);
+	const actions = useNewSubStore((state) => state.actions);
 
 	useEffect(() => {
 		if (isLoading || !service) return;

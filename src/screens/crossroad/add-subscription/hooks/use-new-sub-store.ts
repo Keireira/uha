@@ -37,7 +37,7 @@ const initialData: SubscriptionFormParamsT = {
 	symbol: undefined
 };
 
-const useAddSubcriptionStore = create<SubscriptionStoreT>((set) => ({
+const useNewSubStore = create<SubscriptionStoreT>((set) => ({
 	...initialData,
 
 	actions: {
@@ -62,4 +62,4 @@ const useAddSubcriptionStore = create<SubscriptionStoreT>((set) => ({
 	}
 }));
 
-export default useAddSubcriptionStore;
+export default useNewSubStore;
