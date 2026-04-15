@@ -1,47 +1,154 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { equals } from 'ramda';
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 
-import { Text } from '@ui';
+import { useAccent } from '@hooks';
+import useAddSubcriptionStore from '../../store';
+import SymbolGrid from './symbol-grid';
+import ColorSwatches from './color-swatches';
+import * as ImagePicker from 'expo-image-picker';
 import Root from './color-logo.styles';
+import { Host, VStack, HStack, Text, ScrollView } from '@expo/ui/swift-ui';
+import {
+	frame,
+	padding,
+	clipShape,
+	background,
+	opacity,
+	shadow,
+	font,
+	foregroundStyle,
+	bold,
+	onTapGesture
+} from '@expo/ui/swift-ui/modifiers';
 
-// const COLORS = [
-// 	'#f3a683',
-// 	'#f19066',
-// 	'#f7d794',
-// 	'#f5cd79',
-// 	'#778beb',
-// 	'#546de5',
-// 	'#e77f67',
-// 	'#e15f41',
-// 	'#cf6a87',
-// 	'#c44569',
-// 	'#786fa6',
-// 	'#574b90',
-// 	'#f8a5c2',
-// 	'#f78fb3',
-// 	'#63cdda',
-// 	'#3dc1d3',
-// 	'#ea8685',
-// 	'#e66767',
-// 	'#7B68EE',
-// 	'#1DB954',
-// 	'#E74C3C',
-// 	'#FF6B35',
-// 	'#3498DB',
-// 	'#2C3E50',
-// 	'#4CAF50',
-// 	'#FF9800',
-// 	'#9C27B0',
-// 	'#009688',
-// 	'#607D8B',
-// 	'#E91E63'
-// ];
-//
+import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+
+type RouteParamsT = {
+	color: string;
+	logo_url: string;
+	symbol: string;
+};
 
 const ColorLogo = () => {
+	const router = useRouter();
+	const settingAccent = useAccent();
+	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
+
+	const [search, setSearch] = useState('');
+	const { actions, ...service } = useAddSubcriptionStore((state) => state);
+
+	const openImagePicker = async () => {
+		const result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ['images'],
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 0.8,
+			exif: false,
+			shouldDownloadFromNetwork: true
+		});
+
+		if (result.canceled || !result.assets.length) {
+			return;
+		}
+
+		const [asset] = result.assets;
+
+		actions.setBatch({
+			logo_url: asset.uri,
+			symbol: undefined
+		});
+
+		router.back();
+	};
+
+	const handleSelectSymbol = (symbol: string) => {
+		actions.setBatch({
+			logo_url: undefined,
+			symbol: service.symbol === symbol ? undefined : symbol
+		});
+	};
+
+	const openColorPicker = () => {
+		console.log('+++');
+	};
+
+	const searchBySymbols = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+		setSearch(e.nativeEvent.text);
+	};
+
+	const handleCancelEdits = () => {
+		actions.setBatch({
+			color: initialLogoParams.color,
+			logo_url: initialLogoParams.logo_url,
+			symbol: initialLogoParams.symbol
+		});
+
+		router.back();
+	};
+
+	const finalizeEdits = () => {
+		router.back();
+	};
+
+	const currentParams = {
+		color: service.color,
+		symbol: service.symbol,
+		logo_url: service.logo_url
+	};
+
 	return (
-		<Root>
-			<Text>Color & Logo editor</Text>
-		</Root>
+		<>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button icon="xmark" onPress={handleCancelEdits} tintColor={settingAccent} />
+			</Stack.Toolbar>
+
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Menu icon="ellipsis">
+					<Stack.Toolbar.MenuAction icon="paintbrush.pointed" onPress={openColorPicker}>
+						<Stack.Toolbar.Label>Color Palette</Stack.Toolbar.Label>
+					</Stack.Toolbar.MenuAction>
+
+					<Stack.Toolbar.MenuAction icon="photo.stack" onPress={openImagePicker}>
+						<Stack.Toolbar.Label>Custom Logo</Stack.Toolbar.Label>
+					</Stack.Toolbar.MenuAction>
+				</Stack.Toolbar.Menu>
+
+				<Stack.Toolbar.Button
+					variant="done"
+					icon="checkmark"
+					onPress={finalizeEdits}
+					tintColor={settingAccent}
+					disabled={equals(initialLogoParams, currentParams)}
+				/>
+			</Stack.Toolbar>
+
+			<Root>
+				<ColorSwatches />
+			</Root>
+
+			{/* SymbolGrid тоже можно сюда как SwiftUI компонент */}
+
+			{/*<Root>
+				<ColorSwatches />
+
+				{/*<ColorPresets color={color} presets={presets} onSelectColor={setColor} onPresetsChange={handlePresetsChange} />*/}
+
+			{/*<SymbolGrid selected={service.symbol} color={service.color} search={search} onSelect={handleSelectSymbol} />*/}
+			{/*</Root>*/}
+
+			<Stack.Toolbar placement="bottom">
+				<Stack.SearchBar
+					autoFocus
+					inputType="text"
+					autoCapitalize="none"
+					placeholder="Search"
+					hideNavigationBar={false}
+					tintColor={settingAccent}
+					onChangeText={searchBySymbols}
+				/>
+			</Stack.Toolbar>
+		</>
 	);
 };
 

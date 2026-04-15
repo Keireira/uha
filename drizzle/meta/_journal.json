@@ -15,6 +15,13 @@
       "when": 1776013120078,
       "tag": "0001_needy_northstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1776017239285,
+      "tag": "0002_pale_mister_sinister",
+      "breakpoints": true
     }
   ]
 }

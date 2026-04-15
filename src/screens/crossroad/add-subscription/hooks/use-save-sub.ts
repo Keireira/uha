@@ -11,6 +11,7 @@ type SaveParams = {
 	service_id: string;
 	category_slug: string;
 	custom_name: string | null;
+	custom_emoji: string | null;
 	billing_cycle_type: SubscriptionT['billing_cycle_type'];
 	billing_cycle_value: number;
 	priceMinorUnits: number;
@@ -43,6 +44,7 @@ const useSaveSubscriptions = () => {
 			service_id: params.service_id,
 			category_slug: params.category_slug,
 			custom_name: params.custom_name,
+			custom_emoji: params.custom_emoji,
 			billing_cycle_type: params.billing_cycle_type,
 			billing_cycle_value: params.billing_cycle_value,
 			first_payment_date: params.firstPaymentDate,

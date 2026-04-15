@@ -26,5 +26,13 @@ export const userTable = sqliteTable('user', {
 	search_sources: text({ mode: 'json' })
 		.$type<SourceT[]>()
 		.default(['inhouse', 'appstore', 'playstore', 'web', 'brandfetch'])
+		.notNull(),
+	color_presets: text({ mode: 'json' })
+		.$type<string[]>()
+		.default([
+			'#f3a683', '#f19066', '#f7d794', '#f5cd79', '#778beb', '#546de5',
+			'#e77f67', '#e15f41', '#cf6a87', '#c44569', '#786fa6', '#574b90',
+			'#f8a5c2', '#f78fb3', '#63cdda', '#3dc1d3', '#ea8685', '#e66767'
+		])
 		.notNull()
 });

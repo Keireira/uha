@@ -38,6 +38,14 @@ const Layout = () => {
 					...sharedScreenConfig
 				}}
 			/>
+
+			<Stack.Screen
+				name="edit-logo-sheet"
+				options={{
+					title: 'Color & Logo',
+					...sharedScreenConfig
+				}}
+			/>
 		</Stack>
 	);
 };

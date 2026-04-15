@@ -27,6 +27,7 @@ export const subscriptionsTable = sqliteTable(
 			.notNull(),
 		tender_id: text().references(() => tendersTable.id), // uuid v4
 
+		custom_emoji: text(), // SF Symbol name, set explicitly by user
 		cancellation_date: text() // Shall be empty if not canceled
 	},
 	(table) => [

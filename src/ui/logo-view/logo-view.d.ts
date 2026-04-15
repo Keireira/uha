@@ -6,12 +6,14 @@ export type Props = React.PropsWithChildren<{
 	assetId?: number;
 	url?: string | null;
 	emoji?: string | null;
+	symbolName?: string | null;
 	color?: string | null;
 	size: number;
 }>;
 
 export type FallbackProps = {
 	emoji: Props['emoji'];
+	symbolName: Props['symbolName'];
 	initials: string;
 	size: number;
 	color: Props['color'];
