@@ -23,12 +23,12 @@ type RouteParamsT = {
 
 const ColorLogo = () => {
 	const router = useRouter();
-	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
 	const settingAccent = useAccent();
-	const searchRef = useRef<SearchBarCommands>(null);
-	const [search, setSearch] = useState('');
 	const headerHeight = useHeaderHeight();
+	const [search, setSearch] = useState('');
 	const [stickyPad, setStickyPad] = useState(0);
+	const searchRef = useRef<SearchBarCommands>(null);
+	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
 
 	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
 	const { actions, ...service } = useNewSubStore((state) => state);
@@ -82,7 +82,7 @@ const ColorLogo = () => {
 	};
 
 	const openColorPicker = () => {
-		console.log('+++');
+		router.push('/color-presets');
 	};
 
 	const searchBySymbols = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import type { StackScreenProps } from 'expo-router';
@@ -11,7 +11,6 @@ const useGetSharedConfig = () => {
 	return {
 		gestureEnabled: true,
 		presentation: 'formSheet',
-		sheetAllowedDetents: [1.0],
 		sheetLargestUndimmedDetentIndex: 'none',
 		sheetGrabberVisible: true,
 		sheetCornerRadius: -1,
@@ -24,7 +23,7 @@ const useGetSharedConfig = () => {
 };
 
 const Layout = () => {
-	const { t } = useTranslation();
+	// const { t } = useTranslation();
 	const sharedScreenConfig = useGetSharedConfig();
 
 	return (
@@ -35,6 +34,7 @@ const Layout = () => {
 				name="add-subscription"
 				options={{
 					title: 'New Subscription',
+					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>
@@ -43,8 +43,19 @@ const Layout = () => {
 				name="edit-logo-sheet"
 				options={{
 					title: 'Color & Logo',
+					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 					// gestureEnabled: false
+				}}
+			/>
+
+			<Stack.Screen
+				name="color-presets"
+				options={{
+					title: 'Color Presets',
+					sheetAllowedDetents: [0.66],
+					...sharedScreenConfig,
+					gestureEnabled: false
 				}}
 			/>
 		</Stack>
