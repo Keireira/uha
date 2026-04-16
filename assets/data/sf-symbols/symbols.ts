@@ -1,10 +1,4 @@
-import type { SFSymbol } from 'sf-symbols-typescript';
-
-export type SymbolSection = {
-	title: string;
-	icon: SFSymbol;
-	symbols: SFSymbol[];
-};
+import type { SymbolSection } from './symbols.d';
 
 export const SYMBOL_SECTIONS: SymbolSection[] = [
 	{
@@ -104,7 +98,11 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'wallet.pass',
 			'arrow.up.arrow.down',
 			'arrow.triangle.2.circlepath',
-			'lock.shield'
+			'lock.shield',
+			'bitcoinsign.circle',
+			'giftcard',
+			'signature',
+			'doc.text.magnifyingglass'
 		]
 	},
 	{
@@ -126,7 +124,11 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'shoe',
 			'eyeglasses',
 			'comb',
-			'scissors'
+			'scissors',
+			'cart.badge.plus',
+			'tag.square',
+			'purchased',
+			'truck.box'
 		]
 	},
 	{
@@ -145,7 +147,14 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'oven',
 			'refrigerator',
 			'waterbottle',
-			'cup.and.heat.waves'
+			'cup.and.heat.waves',
+			'fish',
+			'popcorn',
+			'basket',
+			'cooktop',
+			'microwave',
+			'waterbottle.fill',
+			'fork.knife.circle'
 		]
 	},
 	{
@@ -166,7 +175,12 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'location',
 			'map',
 			'parkingsign.circle',
-			'road.lanes'
+			'road.lanes',
+			'car.2',
+			'truck.box',
+			'sailboat',
+			'motorcycle',
+			'train.side.front.car'
 		]
 	},
 	{
@@ -190,7 +204,9 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'lock',
 			'wifi',
 			'powerplug',
-			'lightswitch.on'
+			'lightswitch.on',
+			'chair.lounge',
+			'door.left.hand.open'
 		]
 	},
 	{
@@ -212,7 +228,11 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'at',
 			'number',
 			'person.2',
-			'person.crop.circle'
+			'person.crop.circle',
+			'ellipsis.message',
+			'quote.bubble',
+			'envelope.badge',
+			'phone.bubble'
 		]
 	},
 	{
@@ -234,7 +254,11 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'brain',
 			'lightbulb',
 			'text.book.closed',
-			'character.book.closed'
+			'character.book.closed',
+			'abc',
+			'function',
+			'globe.desk',
+			'paperclip'
 		]
 	},
 	{
@@ -258,7 +282,9 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'bird',
 			'fish',
 			'ant',
-			'ladybug'
+			'ladybug',
+			'camera.macro',
+			'carrot'
 		]
 	},
 	{
@@ -285,6 +311,159 @@ export const SYMBOL_SECTIONS: SymbolSection[] = [
 			'wrench.and.screwdriver',
 			'hammer',
 			'paintbrush'
+		]
+	},
+	{
+		title: 'Travel',
+		icon: 'airplane.departure',
+		symbols: [
+			'airplane.departure',
+			'airplane.arrival',
+			'suitcase',
+			'suitcase.rolling',
+			'beach.umbrella',
+			'tent',
+			'map.circle',
+			'location.north.line',
+			'binoculars',
+			'camera.on.rectangle',
+			'globe.americas',
+			'globe.europe.africa',
+			'globe.asia.australia',
+			'signpost.right',
+			'mappin.and.ellipse',
+			'figure.hiking',
+			'fuelpump.circle',
+			'backpack',
+			'ferry'
+		]
+	},
+	{
+		title: 'Weather',
+		icon: 'cloud.sun',
+		symbols: [
+			'sun.max',
+			'sun.min',
+			'sunrise',
+			'sunset',
+			'cloud',
+			'cloud.sun',
+			'cloud.moon',
+			'cloud.rain',
+			'cloud.heavyrain',
+			'cloud.drizzle',
+			'cloud.snow',
+			'cloud.bolt',
+			'cloud.bolt.rain',
+			'cloud.fog',
+			'cloud.hail',
+			'snowflake',
+			'wind',
+			'tornado',
+			'hurricane',
+			'thermometer.sun'
+		]
+	},
+	{
+		title: 'Games',
+		icon: 'gamecontroller',
+		symbols: [
+			'gamecontroller',
+			'formfitting.gamecontroller',
+			'dice',
+			'suit.spade',
+			'suit.heart',
+			'suit.diamond',
+			'suit.club',
+			'puzzlepiece',
+			'checkerboard.rectangle',
+			'trophy',
+			'medal',
+			'crown',
+			'rosette',
+			'flag.checkered',
+			'target',
+			'figure.bowling',
+			'figure.archery',
+			'arcade.stick',
+			'rectangle.portrait.and.arrow.right'
+		]
+	},
+	{
+		title: 'Work & Office',
+		icon: 'briefcase',
+		symbols: [
+			'briefcase',
+			'case',
+			'doc',
+			'doc.text',
+			'doc.on.doc',
+			'folder',
+			'folder.badge.plus',
+			'tray',
+			'paperclip',
+			'pencil.and.ruler',
+			'chart.bar.doc.horizontal',
+			'envelope.open',
+			'calendar.badge.clock',
+			'person.crop.rectangle',
+			'rectangle.stack',
+			'text.document',
+			'paperplane',
+			'signature',
+			'scale.3d'
+		]
+	},
+	{
+		title: 'Tools & DIY',
+		icon: 'hammer',
+		symbols: [
+			'hammer',
+			'wrench',
+			'wrench.and.screwdriver',
+			'screwdriver',
+			'paintbrush',
+			'paintpalette',
+			'scissors',
+			'ruler',
+			'level',
+			'pencil.tip',
+			'eyedropper',
+			'hifispeaker.and.homepod',
+			'gearshape',
+			'gearshape.2',
+			'key.horizontal',
+			'wand.and.stars',
+			'lasso',
+			'pencil.and.outline',
+			'paintbrush.pointed',
+			'bolt.fill'
+		]
+	},
+	{
+		title: 'Pets & Animals',
+		icon: 'pawprint',
+		symbols: [
+			'pawprint',
+			'pawprint.circle',
+			'dog',
+			'cat',
+			'bird',
+			'fish',
+			'tortoise',
+			'hare',
+			'ant',
+			'ladybug',
+			'lizard',
+			'bird.fill',
+			'fish.fill',
+			'dog.fill',
+			'cat.fill',
+			'tortoise.fill',
+			'hare.fill',
+			'ant.fill',
+			'ladybug.fill',
+			'pawprint.fill'
 		]
 	}
 ];

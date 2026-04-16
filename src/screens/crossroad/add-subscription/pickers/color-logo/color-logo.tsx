@@ -72,13 +72,13 @@ const ColorLogo = () => {
 			searchRef.current?.cancelSearch();
 		}
 
-		const offset = e.nativeEvent.contentOffset.y;
+		// const offset = e.nativeEvent.contentOffset.y;
 
-		if (offset + headerHeight > 0) {
-			setStickyPad(headerHeight);
-		} else {
-			setStickyPad(0);
-		}
+		// if (offset + headerHeight > 0) {
+		// 	setStickyPad(headerHeight);
+		// } else {
+		// 	setStickyPad(0);
+		// }
 	};
 
 	const openColorPicker = () => {
@@ -128,12 +128,12 @@ const ColorLogo = () => {
 			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
 				showsVerticalScrollIndicator={false}
-				stickyHeaderIndices={[0]}
+				// stickyHeaderIndices={[0]}
 				onScroll={onViewScroll}
 			>
-				<View style={{ paddingTop: stickyPad }}>
+				{/*<View style={{ paddingTop: stickyPad }}>
 					<ColorSwatches />
-				</View>
+				</View>*/}
 
 				<SymbolGrid search={search} />
 			</ScrollView>

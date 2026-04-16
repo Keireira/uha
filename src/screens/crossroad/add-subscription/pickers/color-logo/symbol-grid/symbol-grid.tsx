@@ -4,13 +4,13 @@ import { splitEvery } from 'ramda';
 import { useNewSubStore } from '../../../hooks';
 import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { SYMBOL_SECTIONS } from '@elements/sf-symbols';
+import { SYMBOL_SECTIONS } from '@assets/data';
 
 import { Host, VStack, HStack, Grid, Image, Text } from '@expo/ui/swift-ui';
 import { font, frame, padding, clipShape, background, glassEffect, onTapGesture } from '@expo/ui/swift-ui/modifiers';
 
 import type { Props } from './symbol-grid.d';
-import type { SymbolSection } from '@elements/sf-symbols';
+import type { SymbolSection } from '@assets/data';
 
 const COLUMNS = 5;
 const GRID_GAP = 10;

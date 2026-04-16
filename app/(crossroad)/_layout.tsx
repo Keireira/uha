@@ -53,9 +53,8 @@ const Layout = () => {
 				name="color-presets"
 				options={{
 					title: 'Color Presets',
-					sheetAllowedDetents: [0.66],
-					...sharedScreenConfig,
-					gestureEnabled: false
+					sheetAllowedDetents: [0.8],
+					...sharedScreenConfig
 				}}
 			/>
 		</Stack>
