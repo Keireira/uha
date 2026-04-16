@@ -44,6 +44,7 @@ const Layout = () => {
 				options={{
 					title: 'Color & Logo',
 					...sharedScreenConfig
+					// gestureEnabled: false
 				}}
 			/>
 		</Stack>

@@ -1,41 +1,50 @@
-import React, { useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import React from 'react';
+import { splitEvery } from 'ramda';
 
 import { useNewSubStore } from '../../../hooks';
+import { useWindowDimensions } from 'react-native';
+import { useTheme } from 'styled-components/native';
 import { SYMBOL_SECTIONS } from '@elements/sf-symbols';
 
 import { Host, VStack, HStack, Grid, Image, Text } from '@expo/ui/swift-ui';
-import {
-	frame,
-	font,
-	padding,
-	clipShape,
-	background,
-	foregroundStyle,
-	glassEffect,
-	opacity,
-	onTapGesture
-} from '@expo/ui/swift-ui/modifiers';
+import { font, frame, padding, clipShape, background, glassEffect, onTapGesture } from '@expo/ui/swift-ui/modifiers';
 
 import type { Props } from './symbol-grid.d';
+import type { SymbolSection } from '@elements/sf-symbols';
 
 const COLUMNS = 5;
 const GRID_GAP = 10;
 const HORIZONTAL_PADDING = 20;
 
-const chunk = <T,>(arr: T[], size: number): T[][] => {
-	const result: T[][] = [];
-	for (let i = 0; i < arr.length; i += size) {
-		result.push(arr.slice(i, i + size));
+const filterSections = (query: string) => {
+	if (!query) {
+		return SYMBOL_SECTIONS.map((section) => ({
+			icon: section.icon,
+			title: section.title,
+			symbols: section.symbols
+		}));
 	}
-	return result;
+
+	const lower = query.toLowerCase();
+	const filtered: SymbolSection[] = [];
+
+	for (const section of SYMBOL_SECTIONS) {
+		const symbols = section.symbols.filter((sym) => sym.toLowerCase().includes(lower));
+
+		if (symbols.length) {
+			filtered.push({ title: section.title, icon: section.icon, symbols });
+		}
+	}
+
+	return filtered;
 };
 
 const SymbolGrid = ({ search }: Props) => {
 	const theme = useTheme();
 	const { width: screenWidth } = useWindowDimensions();
 	const { actions, ...service } = useNewSubStore((state) => state);
+
+	const sections = filterSections(search.trim());
 	const cellSize = Math.floor((screenWidth - HORIZONTAL_PADDING * 2 - GRID_GAP * (COLUMNS - 1)) / COLUMNS);
 
 	const handleSelectSymbol = (symbol: string) => {
@@ -45,70 +54,48 @@ const SymbolGrid = ({ search }: Props) => {
 		});
 	};
 
-	const sections = useMemo(() => {
-		if (!search.trim()) {
-			return SYMBOL_SECTIONS.map((s) => ({ title: s.title, icon: s.icon, symbols: s.symbols }));
-		}
-
-		const q = search.toLowerCase();
-		return SYMBOL_SECTIONS.map((s) => ({
-			title: s.title,
-			icon: s.icon,
-			symbols: s.symbols.filter((sym) => sym.toLowerCase().includes(q))
-		})).filter((s) => s.symbols.length > 0);
-	}, [search]);
+	const SELECTED = [
+		background(service.color, { shape: 'circle' }),
+		glassEffect({
+			glass: { variant: 'clear', tint: service.color },
+			shape: 'circle'
+		})
+	];
+	const NOT_SELECTED = [background(theme.surface.secondary, { shape: 'circle' })];
 
 	return (
 		<Host matchContents>
 			<VStack alignment="leading" spacing={8} modifiers={[padding({ horizontal: HORIZONTAL_PADDING, bottom: 24 })]}>
 				{sections.map((section) => (
 					<VStack key={section.title} alignment="leading" spacing={8}>
-						<HStack
-							spacing={8}
-							modifiers={[
-								padding({ vertical: 8, horizontal: 12 }),
-								background(theme.surface.default, { type: 'roundedRectangle', cornerRadius: 12 }),
-								clipShape('roundedRectangle', 12)
-							]}
-						>
+						<HStack spacing={8} modifiers={[padding({ vertical: 8 })]}>
 							<Image systemName={section.icon} size={16} color={theme.text.secondary} />
-							<Text modifiers={[font({ size: 15, weight: 'semibold' }), foregroundStyle(theme.text.primary)]}>
-								{section.title}
-							</Text>
+
+							<Text modifiers={[font({ family: 'Nunito', size: 18, weight: 'semibold' })]}>{section.title}</Text>
 						</HStack>
 
 						<Grid horizontalSpacing={GRID_GAP} verticalSpacing={GRID_GAP}>
-							{chunk(section.symbols, COLUMNS).map((row, i) => (
-								<Grid.Row key={i}>
+							{splitEvery(COLUMNS, section.symbols).map((row) => (
+								<Grid.Row key={row[0]}>
 									{row.map((symbol) => {
 										const isSelected = service.symbol === symbol;
+										const modifiers = isSelected ? SELECTED : NOT_SELECTED;
 
 										return (
 											<Image
 												key={symbol}
 												systemName={symbol}
 												size={22}
-												color={isSelected ? '#fff' : theme.text.secondary}
+												color={isSelected ? theme.static.pure_white : theme.text.secondary}
 												modifiers={[
 													frame({ width: cellSize, height: cellSize }),
-													background(isSelected ? service.color : theme.surface.secondary, { type: 'circle' }),
 													clipShape('circle'),
-													isSelected &&
-														glassEffect({
-															glass: { variant: 'clear', tint: service.color },
-															shape: 'circle'
-														}),
+													...modifiers,
 													onTapGesture(() => handleSelectSymbol(symbol))
-												].filter(Boolean)}
+												]}
 											/>
 										);
 									})}
-									{row.length < COLUMNS &&
-										Array.from({ length: COLUMNS - row.length }).map((_, j) => (
-											<Text key={`pad-${j}`} modifiers={[frame({ width: cellSize, height: cellSize }), opacity(0)]}>
-												{' '}
-											</Text>
-										))}
 								</Grid.Row>
 							))}
 						</Grid>

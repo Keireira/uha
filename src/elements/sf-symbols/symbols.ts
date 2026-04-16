@@ -1,7 +1,9 @@
+import type { SFSymbol } from 'sf-symbols-typescript';
+
 export type SymbolSection = {
 	title: string;
-	icon: string;
-	symbols: string[];
+	icon: SFSymbol;
+	symbols: SFSymbol[];
 };
 
 export const SYMBOL_SECTIONS: SymbolSection[] = [

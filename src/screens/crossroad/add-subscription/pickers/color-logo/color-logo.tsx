@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { equals } from 'ramda';
-import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
+import { Stack, useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 
 import { useAccent } from '@hooks';
 import { useNewSubStore } from '../../hooks';
 import { useHeaderHeight } from '@react-navigation/elements';
 
-import { View } from 'react-native';
 import SymbolGrid from './symbol-grid';
 import ColorSwatches from './color-swatches';
+import { View, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import Root from './color-logo.styles';
 
+import type { SearchBarCommands } from 'react-native-screens';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { NativeSyntheticEvent, TextInputFocusEventData, NativeScrollEvent } from 'react-native';
 
 type RouteParamsT = {
@@ -20,33 +21,27 @@ type RouteParamsT = {
 	symbol: string;
 };
 
-const useOnViewScroll = () => {
+const ColorLogo = () => {
+	const router = useRouter();
+	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
+	const settingAccent = useAccent();
+	const searchRef = useRef<SearchBarCommands>(null);
+	const [search, setSearch] = useState('');
 	const headerHeight = useHeaderHeight();
 	const [stickyPad, setStickyPad] = useState(0);
 
-	const onViewScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-		const offset = e.nativeEvent.contentOffset.y;
-
-		if (offset + headerHeight > 0) {
-			setStickyPad(headerHeight);
-		} else {
-			setStickyPad(0);
-		}
-	};
-
-	return {
-		stickyPad,
-		onViewScroll
-	};
-};
-
-const ColorLogo = () => {
-	const router = useRouter();
-	const settingAccent = useAccent();
-	const [search, setSearch] = useState('');
-	const { stickyPad, onViewScroll } = useOnViewScroll();
 	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
 	const { actions, ...service } = useNewSubStore((state) => state);
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+			if (e.data.closing) return;
+
+			searchRef.current?.focus();
+		});
+
+		return () => unsubscribe();
+	}, [navigation]);
 
 	const openImagePicker = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
@@ -70,6 +65,20 @@ const ColorLogo = () => {
 		});
 
 		router.back();
+	};
+
+	const onViewScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		if (searchRef.current && !search) {
+			searchRef.current?.cancelSearch();
+		}
+
+		const offset = e.nativeEvent.contentOffset.y;
+
+		if (offset + headerHeight > 0) {
+			setStickyPad(headerHeight);
+		} else {
+			setStickyPad(0);
+		}
 	};
 
 	const openColorPicker = () => {
@@ -116,18 +125,21 @@ const ColorLogo = () => {
 				/>
 			</Stack.Toolbar>
 
-			<Root stickyHeaderIndices={[0]} onScroll={onViewScroll}>
+			<ScrollView
+				contentInsetAdjustmentBehavior="automatic"
+				showsVerticalScrollIndicator={false}
+				stickyHeaderIndices={[0]}
+				onScroll={onViewScroll}
+			>
 				<View style={{ paddingTop: stickyPad }}>
 					<ColorSwatches />
 				</View>
 
 				<SymbolGrid search={search} />
-			</Root>
-
-			{/*<ColorPresets color={color} presets={presets} onSelectColor={setColor} onPresetsChange={handlePresetsChange} />*/}
+			</ScrollView>
 
 			<Stack.SearchBar
-				autoFocus
+				ref={searchRef}
 				inputType="text"
 				autoCapitalize="none"
 				placeholder="Search"

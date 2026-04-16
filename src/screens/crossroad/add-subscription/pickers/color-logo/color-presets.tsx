@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 import { SymbolView } from 'expo-symbols';
 import { useTheme } from 'styled-components/native';
 import styled from 'styled-components/native';
