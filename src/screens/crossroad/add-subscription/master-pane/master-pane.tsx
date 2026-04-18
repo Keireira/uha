@@ -9,9 +9,9 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useDraftStore } from '../hooks';
 
-import { H3 } from '@ui';
+import { H3, TextField } from '@ui';
 import LogoRow from './logo-row';
-import Root from './master-pane.styles';
+import Root, { TitleField } from './master-pane.styles';
 
 const MasterPane = () => {
 	const { t } = useTranslation();
@@ -20,7 +20,8 @@ const MasterPane = () => {
 		useShallow((state) => ({
 			title: state.title,
 			category_slug: state.category_slug,
-			logoSnapshot: state.logoSnapshot
+			logoSnapshot: state.logoSnapshot,
+			setTitle: state.actions.setTitle
 		}))
 	);
 
@@ -32,7 +33,16 @@ const MasterPane = () => {
 		<Root>
 			<LogoRow />
 
-			<H3>{draft.title}</H3>
+			<TitleField>
+				<TextField
+					defaultValue={draft.title}
+					onValueChange={draft.setTitle}
+					placeholder="Service name"
+					align="center"
+					fontSize={22}
+					fontWeight="bold"
+				/>
+			</TitleField>
 
 			<H3>
 				<H3>10.99</H3>

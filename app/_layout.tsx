@@ -91,7 +91,15 @@ const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
 
 	const [fontsLoaded] = useFonts({
-		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
+		Nunito: require('@assets/fonts/Nunito/static/Nunito-Regular.ttf'),
+		'Nunito-UltraLight': require('@assets/fonts/Nunito/static/Nunito-UltraLight.ttf'),
+		'Nunito-Thin': require('@assets/fonts/Nunito/static/Nunito-Thin.ttf'),
+		'Nunito-Light': require('@assets/fonts/Nunito/static/Nunito-Light.ttf'),
+		'Nunito-Medium': require('@assets/fonts/Nunito/static/Nunito-Medium.ttf'),
+		'Nunito-SemiBold': require('@assets/fonts/Nunito/static/Nunito-SemiBold.ttf'),
+		'Nunito-Bold': require('@assets/fonts/Nunito/static/Nunito-Bold.ttf'),
+		'Nunito-Heavy': require('@assets/fonts/Nunito/static/Nunito-Heavy.ttf'),
+		'Nunito-Black': require('@assets/fonts/Nunito/static/Nunito-Black.ttf')
 	});
 
 	const navigation = useRootNavigationState();

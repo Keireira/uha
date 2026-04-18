@@ -5,7 +5,7 @@ type TextProps = {
 	$color?: string;
 	$align?: 'left' | 'center' | 'right';
 	$transform?: 'capitalize' | 'uppercase' | 'lowercase';
-	$weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+	$weight?: 200 | 250 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 };
 
 export const BaseText = styled.Text`

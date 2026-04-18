@@ -1,0 +1,14 @@
+diff --git a/ios/Modifiers/FontModifier.swift b/ios/Modifiers/FontModifier.swift
+index 66a89c07faa63931d77f871508107b3b8e23d9c9..2c5eb91fdd4204f05014b62c06c688a626371f10 100644
+--- a/ios/Modifiers/FontModifier.swift
++++ b/ios/Modifiers/FontModifier.swift
+@@ -53,7 +53,8 @@ internal struct FontModifier: ViewModifier, Record {
+ 
+   func body(content: Content) -> some View {
+     if let family = family {
+-      content.font(Font.custom(family, size: size ?? 17))
++      let base = Font.custom(family, size: size ?? 17)
++      content.font(weight != nil ? base.weight(weight!.toSwiftUI()) : base)
+     } else {
+       content.font(.system(
+         size: size ?? 17,
