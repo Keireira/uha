@@ -92,7 +92,9 @@ export const searchAppStore = async (query: string, country: string = 'US'): Pro
 		const result = data.results.reduce((acc, item) => {
 			if (!item.bundleId) return acc;
 
-			return [...acc, toSearchResult(item)];
+			acc.push(toSearchResult(item));
+
+			return acc;
 		}, [] as SearchResultT[]);
 
 		return result;

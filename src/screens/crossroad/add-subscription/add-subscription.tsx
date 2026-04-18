@@ -13,14 +13,16 @@ const AddSubscriptionScreen = () => {
 	const settingAccent = useAccent();
 	const insets = useSafeAreaInsets();
 	const { service, isLoading } = useLoadService();
-	const actions = useNewSubStore((state) => state.actions);
+	const initSubscription = useNewSubStore((state) => state.actions.init);
 
 	useEffect(() => {
 		if (isLoading || !service) return;
 
-		actions.init(service);
-		// actions.setDefaultLogo({ title: service.title, color: service.color, logo_url: service.logo_url });
-	}, [service, isLoading]);
+		initSubscription({
+			...service,
+			color: service.color || settingAccent
+		});
+	}, [initSubscription, service, settingAccent, isLoading]);
 
 	if (isLoading) {
 		return null;

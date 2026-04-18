@@ -1,22 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { equals } from 'ramda';
 import { Stack, useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 
 import { useAccent } from '@hooks';
 import { useNewSubStore } from '../../hooks';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useShallow } from 'zustand/react/shallow';
 
-import SymbolGrid from './symbol-grid';
-import ColorSwatches from './color-swatches';
-import { View, ScrollView } from 'react-native';
+import SymbolGrid from './symbols-grid';
+import { ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import type { SearchBarCommands } from 'react-native-screens';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { NativeSyntheticEvent, TextInputFocusEventData, NativeScrollEvent } from 'react-native';
+import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 type RouteParamsT = {
-	color: string;
 	logo_url: string;
 	symbol: string;
 };
@@ -24,14 +21,18 @@ type RouteParamsT = {
 const ColorLogo = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const headerHeight = useHeaderHeight();
 	const [search, setSearch] = useState('');
-	const [stickyPad, setStickyPad] = useState(0);
 	const searchRef = useRef<SearchBarCommands>(null);
 	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
 
 	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
-	const { actions, ...service } = useNewSubStore((state) => state);
+	const service = useNewSubStore(
+		useShallow((state) => ({
+			symbol: state.symbol,
+			logo_url: state.logo_url,
+			setBatch: state.actions.setBatch
+		}))
+	);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('transitionEnd', (e) => {
@@ -40,10 +41,10 @@ const ColorLogo = () => {
 			searchRef.current?.focus();
 		});
 
-		return () => unsubscribe();
+		return unsubscribe;
 	}, [navigation]);
 
-	const openImagePicker = async () => {
+	const openImagePickerHd = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ['images'],
 			allowsEditing: true,
@@ -59,7 +60,7 @@ const ColorLogo = () => {
 
 		const [asset] = result.assets;
 
-		actions.setBatch({
+		service.setBatch({
 			logo_url: asset.uri,
 			symbol: undefined
 		});
@@ -67,31 +68,22 @@ const ColorLogo = () => {
 		router.back();
 	};
 
-	const onViewScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-		if (searchRef.current && !search) {
-			searchRef.current?.cancelSearch();
-		}
+	const cancelSearchHd = () => {
+		if (search) return;
 
-		// const offset = e.nativeEvent.contentOffset.y;
-
-		// if (offset + headerHeight > 0) {
-		// 	setStickyPad(headerHeight);
-		// } else {
-		// 	setStickyPad(0);
-		// }
+		searchRef.current?.cancelSearch();
 	};
 
-	const openColorPicker = () => {
+	const openColorPickerHd = () => {
 		router.push('/color-presets');
 	};
 
-	const searchBySymbols = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+	const changeSearchHd = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
 		setSearch(e.nativeEvent.text);
 	};
 
-	const handleCancelEdits = () => {
-		actions.setBatch({
-			color: initialLogoParams.color,
+	const cancelEditsHd = () => {
+		service.setBatch({
 			logo_url: initialLogoParams.logo_url,
 			symbol: initialLogoParams.symbol
 		});
@@ -99,42 +91,33 @@ const ColorLogo = () => {
 		router.back();
 	};
 
-	const finalizeEdits = () => {
+	const finalizeEditsHd = () => {
 		router.back();
 	};
 
-	const currentParams = {
-		color: service.color,
-		symbol: service.symbol,
-		logo_url: service.logo_url
-	};
+	const hasChanges = service.symbol !== initialLogoParams.symbol || service.logo_url !== initialLogoParams.logo_url;
 
 	return (
 		<>
 			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button icon="xmark" onPress={handleCancelEdits} tintColor={settingAccent} />
+				<Stack.Toolbar.Button icon="xmark" onPress={cancelEditsHd} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button
 					variant="done"
 					icon="checkmark"
-					onPress={finalizeEdits}
+					disabled={!hasChanges}
+					onPress={finalizeEditsHd}
 					tintColor={settingAccent}
-					disabled={equals(initialLogoParams, currentParams)}
 				/>
 			</Stack.Toolbar>
 
 			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
 				showsVerticalScrollIndicator={false}
-				// stickyHeaderIndices={[0]}
-				onScroll={onViewScroll}
+				onScrollBeginDrag={cancelSearchHd}
 			>
-				{/*<View style={{ paddingTop: stickyPad }}>
-					<ColorSwatches />
-				</View>*/}
-
 				<SymbolGrid search={search} />
 			</ScrollView>
 
@@ -145,15 +128,15 @@ const ColorLogo = () => {
 				placeholder="Search"
 				hideNavigationBar={false}
 				tintColor={settingAccent}
-				onChangeText={searchBySymbols}
+				onChangeText={changeSearchHd}
 			/>
 
 			<Stack.Toolbar placement="bottom">
-				<Stack.Toolbar.Button icon="photo.stack" onPress={openImagePicker} />
+				<Stack.Toolbar.Button icon="photo.stack" onPress={openImagePickerHd} />
 				<Stack.Toolbar.Spacer />
 				<Stack.Toolbar.SearchBarSlot />
 				<Stack.Toolbar.Spacer />
-				<Stack.Toolbar.Button icon="paintbrush.fill" onPress={openColorPicker} />
+				<Stack.Toolbar.Button icon="paintbrush.fill" onPress={openColorPickerHd} />
 			</Stack.Toolbar>
 		</>
 	);

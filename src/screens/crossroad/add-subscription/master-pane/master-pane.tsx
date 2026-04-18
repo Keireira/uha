@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { useNewSubStore } from '../hooks';
+import { useShallow } from 'zustand/react/shallow';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -20,7 +21,16 @@ const MasterPane = () => {
 	// const settingAccent = useAccent();
 
 	const { t } = useTranslation();
-	const service = useNewSubStore((state) => state);
+	const service = useNewSubStore(
+		useShallow((state) => ({
+			slug: state.slug,
+			title: state.title,
+			color: state.color,
+			symbol: state.symbol,
+			logo_url: state.logo_url,
+			category_slug: state.category_slug
+		}))
+	);
 	const {
 		data: [category]
 	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, service.category_slug)), []);

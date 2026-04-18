@@ -36,6 +36,7 @@ const SELECTED = [
 ];
 const NOT_SELECTED = [opacity(0.8)];
 
+// Currently not in use
 const ColorSwatches = () => {
 	const [presets, setPresets] = useState<string[]>([]);
 	const selectedColor = useNewSubStore((state) => state.color);
