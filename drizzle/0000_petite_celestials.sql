@@ -63,6 +63,7 @@ CREATE TABLE `subscriptions` (
 	`billing_cycle_value` integer DEFAULT 1 NOT NULL,
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`tender_id` text,
+	`custom_emoji` text,
 	`cancellation_date` text,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
@@ -111,6 +112,7 @@ CREATE TABLE `user` (
 	`playstore_country` text DEFAULT 'US' NOT NULL,
 	`playstore_lang` text DEFAULT 'en' NOT NULL,
 	`search_sources` text DEFAULT '["inhouse","appstore","playstore","web","brandfetch"]' NOT NULL,
+	`color_presets` text DEFAULT '["#F26D6D","#F28865","#F2A856","#F2C94C","#D9CE4A","#A6C957","#6DB865","#4FB093","#4AB8B3","#5BC0D8","#5AA9E6","#6B8CEA","#7A7EE8","#9B7AE5","#B573DB","#D66FC9","#E66BA5","#ED6882"]' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`default_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );

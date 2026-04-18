@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAccent } from '@hooks';
+import { useAccent, useSettingsValue } from '@hooks';
 import { useLoadService, useDraftStore } from './hooks';
 
 import MasterPane from './master-pane';
@@ -13,6 +13,7 @@ const AddSubscriptionScreen = () => {
 	const settingAccent = useAccent();
 	const insets = useSafeAreaInsets();
 	const { service, isLoading } = useLoadService();
+	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
 
 	useEffect(() => {
@@ -20,9 +21,10 @@ const AddSubscriptionScreen = () => {
 
 		initSubscription({
 			...service,
+			currency: defaultCurrency,
 			color: service.color || settingAccent
 		});
-	}, [initSubscription, service, settingAccent, isLoading]);
+	}, [initSubscription, service, settingAccent, defaultCurrency, isLoading]);
 
 	if (isLoading) {
 		return null;

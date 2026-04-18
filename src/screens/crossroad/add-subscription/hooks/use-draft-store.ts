@@ -4,6 +4,7 @@ import type { ServiceT } from '@models';
 
 type SubscriptionDraftT = ServiceT & {
 	symbol?: string;
+	currency?: string;
 };
 
 type LogoSnapshotT = {
@@ -18,7 +19,7 @@ export type SubscriptionStoreT = SubscriptionDraftT & {
 };
 
 type ActionsT = {
-	init: (data: Partial<ServiceT>) => void;
+	init: (data: Partial<SubscriptionDraftT>) => void;
 	patch: (data: Partial<SubscriptionDraftT>) => void;
 
 	setTitle: (title: string) => void;
@@ -26,6 +27,7 @@ type ActionsT = {
 	setColor: (color: string) => void;
 	setLogoUrl: (logo_url: string) => void;
 	setSymbol: (symbol?: string) => void;
+	setCurrency: (currency: string) => void;
 
 	resetLogo: () => void;
 	reset: () => void;
@@ -43,7 +45,8 @@ const initialDraft: SubscriptionDraftT = {
 	social_links: {},
 	aliases: [],
 	category_slug: '',
-	symbol: undefined
+	symbol: undefined,
+	currency: undefined
 };
 
 const initialSnapshot: LogoSnapshotT = {
@@ -77,6 +80,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 		setColor: (color) => set({ color }),
 		setLogoUrl: (logo_url) => set({ logo_url }),
 		setSymbol: (symbol) => set({ symbol }),
+		setCurrency: (currency) => set({ currency }),
 
 		resetLogo: () => {
 			set((state) => ({

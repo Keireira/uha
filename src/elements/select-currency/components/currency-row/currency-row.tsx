@@ -1,35 +1,25 @@
 import React from 'react';
-import * as Haptics from 'expo-haptics';
 
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useSettingsValue, useAccent, setSettingsValue, useFeatureGate } from '@hooks';
+import { useParams } from '../../hooks';
+import { useAccent, useFeatureGate } from '@hooks';
 
 import Root, { Title, Code, Separator } from './currency-row.styles';
 
 import type { Props } from './currency-row.d';
-import type { SearchParamsT } from '../../select-currency.d';
 
 const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
-	const router = useRouter();
 	const settingAccent = useAccent();
 	const openFeatureGate = useFeatureGate();
 
-	const { target } = useLocalSearchParams<SearchParamsT>();
-	const currentValue = useSettingsValue<string>(target);
+	const [currentValue, action] = useParams();
 
 	const onSelectHd = () => {
-		if (!target) return;
-
-		const action = () => {
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			setSettingsValue(target, code);
-			router.back();
-		};
+		if (typeof action !== 'function') return;
 
 		if (isForbidden) {
-			openFeatureGate(action);
+			openFeatureGate(() => action(code));
 		} else {
-			action();
+			action(code);
 		}
 	};
 

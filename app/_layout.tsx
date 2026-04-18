@@ -66,7 +66,17 @@ const LoadFinalStage = () => {
 							<Stack.Screen
 								name="(tabs)"
 								options={{
-									headerShown: false
+									headerShown: false,
+									presentation: 'formSheet',
+									animation: 'slide_from_bottom'
+								}}
+							/>
+
+							<Stack.Screen
+								name="(pickers)"
+								options={{
+									presentation: 'formSheet',
+									animation: 'slide_from_bottom'
 								}}
 							/>
 

@@ -1,5 +1,5 @@
 export type SearchParamsT = {
-	target: 'default_currency' | 'recalc_currency';
+	target: 'settings_default_currency' | 'settings_recalc_currency' | 'add_subscription_currency';
 };
 
 export type CurrencyItem = {

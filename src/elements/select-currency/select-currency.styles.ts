@@ -9,10 +9,6 @@ export const SectionHeaderText = styled(SmallText)`
 	padding: 16px 6px 6px;
 `;
 
-export const VerticalSpacer = styled.View<{ $height: number }>`
-	height: ${({ $height }) => $height}px;
-`;
-
 export const Content = styled.View`
 	flex: 1;
 	flex-direction: column;

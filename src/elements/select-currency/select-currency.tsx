@@ -1,15 +1,12 @@
 import React from 'react';
-
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { useCurrencies } from './hooks';
 import { useEntitlement } from '@hooks';
 import { isHeaderSection } from './utils';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 import { FlashList } from '@shopify/flash-list';
-import { View, useWindowDimensions } from 'react-native';
 import { Header, SearchBar, CurrencyRow, NoFilters } from './components';
-import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-currency.styles';
+import Root, { Content, SectionHeaderText } from './select-currency.styles';
 
 import type { RowItem } from './select-currency.d';
 import type { ListRenderItemInfo } from '@shopify/flash-list';
@@ -27,8 +24,7 @@ const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 };
 
 const SelectCurrencyScreen = () => {
-	const insets = useSafeAreaInsets();
-	const dimensions = useWindowDimensions();
+	const headerHeight = useHeaderHeight();
 	const { tier } = useEntitlement();
 	const { sections, freeCurrencies, setSearchQuery } = useCurrencies();
 
@@ -38,23 +34,24 @@ const SelectCurrencyScreen = () => {
 				<Header />
 
 				<Content>
-					<View style={{ height: dimensions.height + 64 }}>
-						<FlashList
-							contentContainerStyle={{ gap: 16 }}
-							data={sections}
-							renderItem={renderRowItem}
-							keyboardShouldPersistTaps="handled"
-							extraData={{
-								freeCurrencies,
-								isAllowed: tier.allCurrencies
-							}}
-							ListEmptyComponent={NoFilters}
-							showsVerticalScrollIndicator={false}
-							getItemType={(item) => item.type}
-							keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}
-							ListFooterComponent={<VerticalSpacer $height={insets.bottom} />}
-						/>
-					</View>
+					<FlashList
+						contentContainerStyle={{
+							paddingTop: headerHeight,
+							paddingBottom: 84,
+							gap: 16
+						}}
+						data={sections}
+						renderItem={renderRowItem}
+						keyboardShouldPersistTaps="handled"
+						extraData={{
+							freeCurrencies,
+							isAllowed: tier.allCurrencies
+						}}
+						ListEmptyComponent={NoFilters}
+						showsVerticalScrollIndicator={false}
+						getItemType={(item) => item.type}
+						keyExtractor={(item) => (isHeaderSection(item) ? `s-${item.title}` : item.item.key)}
+					/>
 				</Content>
 			</Root>
 

@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1776013118125,
-      "tag": "0000_white_skullbuster",
+      "when": 1776548443563,
+      "tag": "0000_petite_celestials",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1776013120078,
-      "tag": "0001_needy_northstar",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1776017239285,
-      "tag": "0002_pale_mister_sinister",
+      "when": 1776548446279,
+      "tag": "0001_secret_blade",
       "breakpoints": true
     }
   ]
