@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Stack, useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 
 import { useAccent } from '@hooks';
-import { useNewSubStore } from '../../hooks';
+import { useDraftStore } from '../../hooks';
 import { useShallow } from 'zustand/react/shallow';
 
 import SymbolGrid from './symbols-grid';
@@ -26,11 +26,11 @@ const ColorLogo = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
 
 	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
-	const service = useNewSubStore(
+	const draft = useDraftStore(
 		useShallow((state) => ({
 			symbol: state.symbol,
 			logo_url: state.logo_url,
-			setBatch: state.actions.setBatch
+			patch: state.actions.patch
 		}))
 	);
 
@@ -60,7 +60,7 @@ const ColorLogo = () => {
 
 		const [asset] = result.assets;
 
-		service.setBatch({
+		draft.patch({
 			logo_url: asset.uri,
 			symbol: undefined
 		});
@@ -83,7 +83,7 @@ const ColorLogo = () => {
 	};
 
 	const cancelEditsHd = () => {
-		service.setBatch({
+		draft.patch({
 			logo_url: initialLogoParams.logo_url,
 			symbol: initialLogoParams.symbol
 		});
@@ -95,7 +95,7 @@ const ColorLogo = () => {
 		router.back();
 	};
 
-	const hasChanges = service.symbol !== initialLogoParams.symbol || service.logo_url !== initialLogoParams.logo_url;
+	const hasChanges = draft.symbol !== initialLogoParams.symbol || draft.logo_url !== initialLogoParams.logo_url;
 
 	return (
 		<>

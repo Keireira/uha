@@ -7,10 +7,10 @@ import { userTable } from '@db/schema';
 
 import { useAccent } from '@hooks';
 import useStyles from './use-styles';
-import { useNewSubStore } from '../../../hooks';
+import { useDraftStore } from '../../hooks';
 
-import Root, { CardGlass, CardInner } from './color-presets.styles';
 import ColorPicker, { Panel1, Swatches, HueSlider, InputWidget } from 'reanimated-color-picker';
+import Root, { CardGlass, CardInner } from './color-presets.styles';
 
 import type { ColorFormatsObject } from 'reanimated-color-picker';
 
@@ -19,14 +19,16 @@ const USER_ID = '00000000-0000-0000-0000-000000000000';
 const ColorPresets = () => {
 	const router = useRouter();
 	const styles = useStyles();
-	const settingAccent = useAccent();
-	const { actions, ...service } = useNewSubStore((state) => state);
+	const accent = useAccent();
+
+	const initialColor = useDraftStore((state) => state.color);
+	const setColor = useDraftStore((state) => state.actions.setColor);
 
 	const [presets, setPresets] = useState<string[]>([]);
-	const [pickerHex, setLocalHex] = useState(service.color || '#778beb');
+	const [pickerHex, setPickerHex] = useState(initialColor);
 
 	useEffect(() => {
-		const execute = async () => {
+		const loadPresets = async () => {
 			const [user] = await db.select().from(userTable).where(eq(userTable.id, USER_ID)).execute();
 
 			if (user) {
@@ -34,34 +36,34 @@ const ColorPresets = () => {
 			}
 		};
 
-		execute();
+		loadPresets();
 	}, []);
 
-	const updateLocalColor = (color: ColorFormatsObject) => {
-		setLocalHex(color.hex);
+	const handleColorChange = (color: ColorFormatsObject) => {
+		setPickerHex(color.hex);
 	};
 
 	const confirm = () => {
-		actions.setColor(pickerHex);
+		setColor(pickerHex);
 		router.back();
 	};
 
-	const back = () => router.back();
+	const cancel = () => router.back();
 
 	return (
 		<>
 			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button icon="xmark" onPress={back} tintColor={settingAccent} />
+				<Stack.Toolbar.Button icon="xmark" onPress={cancel} tintColor={accent} />
 			</Stack.Toolbar>
 
 			<Stack.Toolbar placement="right">
-				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={confirm} tintColor={settingAccent} />
+				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={confirm} tintColor={accent} />
 			</Stack.Toolbar>
 
 			<Root>
 				<ColorPicker
-					value={service.color}
-					onCompleteJS={updateLocalColor}
+					value={initialColor}
+					onCompleteJS={handleColorChange}
 					thumbSize={28}
 					thumbShape="ring"
 					boundedThumb
@@ -70,7 +72,6 @@ const ColorPresets = () => {
 					<CardGlass>
 						<CardInner>
 							<Panel1 style={styles.panel} thumbSize={30} thumbInnerStyle={styles.panelThumbInner} />
-
 							<HueSlider
 								style={styles.slider}
 								sliderThickness={32}

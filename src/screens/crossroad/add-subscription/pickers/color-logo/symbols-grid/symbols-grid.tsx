@@ -3,7 +3,7 @@ import React from 'react';
 import { splitEvery } from 'ramda';
 import { lighten } from '@lib/colors';
 
-import { useNewSubStore } from '../../../hooks';
+import { useDraftStore } from '../../../hooks';
 import { useFilter, useModifiers } from './hooks';
 import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
@@ -17,11 +17,11 @@ import type { Props } from './symbols-grid.d';
 
 const SymbolGrid = ({ search }: Props) => {
 	const theme = useTheme();
-	const service = useNewSubStore(
+	const service = useDraftStore(
 		useShallow((state) => ({
 			color: state.color,
 			symbol: state.symbol,
-			setBatch: state.actions.setBatch
+			patch: state.actions.patch
 		}))
 	);
 
@@ -29,7 +29,7 @@ const SymbolGrid = ({ search }: Props) => {
 	const sections = useFilter(search);
 
 	const handleSelectSymbol = (symbol: string) => {
-		service.setBatch({
+		service.patch({
 			logo_url: undefined,
 			symbol: service.symbol === symbol ? undefined : symbol
 		});

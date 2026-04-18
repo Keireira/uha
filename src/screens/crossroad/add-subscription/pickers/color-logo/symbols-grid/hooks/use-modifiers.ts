@@ -1,4 +1,4 @@
-import { useNewSubStore } from '../../../../hooks';
+import { useDraftStore } from '../../../../hooks';
 import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
@@ -8,7 +8,7 @@ import { frame, clipShape, background, glassEffect } from '@expo/ui/swift-ui/mod
 
 const useModifiers = () => {
 	const theme = useTheme();
-	const serviceColor = useNewSubStore((state) => state.color);
+	const serviceColor = useDraftStore((state) => state.color);
 
 	const { width: screenWidth } = useWindowDimensions();
 	const cellSize = Math.floor((screenWidth - HORIZONTAL_PADDING * 2 - GRID_GAP * (COLUMNS - 1)) / COLUMNS);

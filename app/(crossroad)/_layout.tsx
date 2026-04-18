@@ -45,7 +45,6 @@ const Layout = () => {
 					title: 'Color & Logo',
 					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
-					// gestureEnabled: false
 				}}
 			/>
 

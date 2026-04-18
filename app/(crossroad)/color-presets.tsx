@@ -1,3 +1,3 @@
-import ColorPresets from '@screens/crossroad/add-subscription/pickers/color-logo/color-presets';
+import { ColorPresets } from '@screens/crossroad/add-subscription/pickers';
 
 export default ColorPresets;

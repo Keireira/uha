@@ -1,3 +1,3 @@
-import ColorLogoPicker from '@screens/crossroad/add-subscription/pickers/color-logo';
+import { ColorLogo } from '@screens/crossroad/add-subscription/pickers';
 
-export default ColorLogoPicker;
+export default ColorLogo;
