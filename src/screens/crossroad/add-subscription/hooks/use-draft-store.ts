@@ -4,6 +4,8 @@ import type { ServiceT } from '@models';
 
 type SubscriptionDraftT = ServiceT & {
 	symbol?: string;
+
+	price?: number;
 	currency?: string;
 };
 
@@ -27,6 +29,8 @@ type ActionsT = {
 	setColor: (color: string) => void;
 	setLogoUrl: (logo_url: string) => void;
 	setSymbol: (symbol?: string) => void;
+
+	setPrice: (price: number) => void;
 	setCurrency: (currency: string) => void;
 
 	resetLogo: () => void;
@@ -46,6 +50,8 @@ const initialDraft: SubscriptionDraftT = {
 	aliases: [],
 	category_slug: '',
 	symbol: undefined,
+
+	price: undefined,
 	currency: undefined
 };
 
@@ -80,6 +86,8 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 		setColor: (color) => set({ color }),
 		setLogoUrl: (logo_url) => set({ logo_url }),
 		setSymbol: (symbol) => set({ symbol }),
+
+		setPrice: (price) => set({ price }),
 		setCurrency: (currency) => set({ currency }),
 
 		resetLogo: () => {

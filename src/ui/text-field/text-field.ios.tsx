@@ -13,12 +13,13 @@ const TextFieldIOS = ({
 	fontWeight = 'regular',
 	modifiers = [],
 	style,
+	matchContents = true,
 	...restProps
 }: Props) => {
 	const theme = useTheme();
 
 	return (
-		<Host matchContents style={style}>
+		<Host matchContents={matchContents} style={style}>
 			<ExpoTextField
 				modifiers={[
 					font({ family: 'Nunito', size: fontSize, weight: fontWeight }),

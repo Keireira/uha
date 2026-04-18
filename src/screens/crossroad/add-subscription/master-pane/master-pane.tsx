@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -12,11 +11,10 @@ import { useDraftStore } from '../hooks';
 
 import LogoRow from './logo-row';
 import { H3, TextField } from '@ui';
-import { Pressable } from 'react-native';
+import PriceRow from './price-row';
 import Root, { TitleField } from './master-pane.styles';
 
 const MasterPane = () => {
-	const router = useRouter();
 	const { t } = useTranslation();
 
 	const draft = useDraftStore(
@@ -31,15 +29,6 @@ const MasterPane = () => {
 	const {
 		data: [category]
 	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)), []);
-
-	const showCurrencyPicker = () => {
-		router.push({
-			pathname: `/(pickers)/select-currency`,
-			params: {
-				target: 'add_subscription_currency'
-			}
-		});
-	};
 
 	return (
 		<Root>
@@ -56,12 +45,7 @@ const MasterPane = () => {
 				/>
 			</TitleField>
 
-			<H3>
-				<H3>10.99</H3>
-				<Pressable onPress={showCurrencyPicker}>
-					<H3>USD</H3>
-				</Pressable>
-			</H3>
+			<PriceRow />
 
 			<H3>First Payment Date</H3>
 			<H3>Billing Cycle</H3>
