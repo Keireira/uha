@@ -3,17 +3,21 @@ import { first } from '@lib';
 import { useLocalSearchParams } from 'expo-router';
 
 import db from '@db';
-import { and, eq, max } from 'drizzle-orm';
-import { servicesTable, categoriesTable, subscriptionsTable, currenciesTable, tendersTable, priceHistoryTable } from '@db/schema';
+import { and, eq, inArray, max } from 'drizzle-orm';
+import { servicesTable, categoriesTable, subscriptionsTable, currenciesTable, tendersTable, timelineEventsTable } from '@db/schema';
 
-/* Subquery: latest price_history date per subscription */
+/** Event types that carry a price — used to derive the subscription's current price. */
+const PRICED_EVENT_TYPES = ['first_payment', 'price_up', 'price_down'] as const;
+
+/* Subquery: latest priced-event date per subscription (first_payment, price_up, price_down) */
 const latestPriceDate = db
 	.select({
-		subscription_id: priceHistoryTable.subscription_id,
-		max_date: max(priceHistoryTable.date).as('max_date')
+		subscription_id: timelineEventsTable.subscription_id,
+		max_date: max(timelineEventsTable.date).as('max_date')
 	})
-	.from(priceHistoryTable)
-	.groupBy(priceHistoryTable.subscription_id)
+	.from(timelineEventsTable)
+	.where(inArray(timelineEventsTable.type, PRICED_EVENT_TYPES))
+	.groupBy(timelineEventsTable.subscription_id)
 	.as('lpd');
 
 export const useService = () => {
@@ -46,7 +50,7 @@ export const useService = () => {
 				.select({
 					id: subscriptionsTable.id,
 					custom_name: subscriptionsTable.custom_name,
-					current_price: priceHistoryTable.amount,
+					current_price: timelineEventsTable.amount,
 					billing_cycle_type: subscriptionsTable.billing_cycle_type,
 					billing_cycle_value: subscriptionsTable.billing_cycle_value,
 					currency_code: currenciesTable.id,
@@ -59,13 +63,14 @@ export const useService = () => {
 				.from(subscriptionsTable)
 				.leftJoin(latestPriceDate, eq(subscriptionsTable.id, latestPriceDate.subscription_id))
 				.leftJoin(
-					priceHistoryTable,
+					timelineEventsTable,
 					and(
-						eq(priceHistoryTable.subscription_id, subscriptionsTable.id),
-						eq(priceHistoryTable.date, latestPriceDate.max_date)
+						eq(timelineEventsTable.subscription_id, subscriptionsTable.id),
+						eq(timelineEventsTable.date, latestPriceDate.max_date),
+						inArray(timelineEventsTable.type, PRICED_EVENT_TYPES)
 					)
 				)
-				.leftJoin(currenciesTable, eq(priceHistoryTable.currency_id, currenciesTable.id))
+				.leftJoin(currenciesTable, eq(timelineEventsTable.currency_id, currenciesTable.id))
 				.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 				.where(eq(subscriptionsTable.service_id, id));
 

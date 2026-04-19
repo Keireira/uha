@@ -1,6 +1,6 @@
 export * from './categories';
 export * from './currencies';
-export * from './price_history';
+export * from './timeline-events';
 export * from './rates';
 export * from './services';
 export * from './subscriptions';

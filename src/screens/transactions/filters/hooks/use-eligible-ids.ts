@@ -1,12 +1,15 @@
 import { useMemo } from 'react';
 
 import db from '@db';
-import { and, eq, isNull, max } from 'drizzle-orm';
+import { and, eq, inArray, isNull, max } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { servicesTable, subscriptionsTable, priceHistoryTable } from '@db/schema';
+import { servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
 
 import type { FilterTabT } from '../filters.d';
 import type { FilterTypeT, AppliedFilterT } from '@screens/transactions/models/types.d';
+
+/** Event types that carry a price — used to derive the subscription's current price. */
+const PRICED_EVENT_TYPES = ['first_payment', 'price_up', 'price_down'] as const;
 
 const noFilters = (filters: string[]) => !filters.length;
 
@@ -37,14 +40,15 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 		return result;
 	}, [appliedFilters]);
 
-	/* Subquery: latest price_history date per subscription */
+	/* Subquery: latest priced-event date per subscription (first_payment, price_up, price_down) */
 	const latestPriceDate = db
 		.select({
-			subscription_id: priceHistoryTable.subscription_id,
-			max_date: max(priceHistoryTable.date).as('max_date')
+			subscription_id: timelineEventsTable.subscription_id,
+			max_date: max(timelineEventsTable.date).as('max_date')
 		})
-		.from(priceHistoryTable)
-		.groupBy(priceHistoryTable.subscription_id)
+		.from(timelineEventsTable)
+		.where(inArray(timelineEventsTable.type, PRICED_EVENT_TYPES))
+		.groupBy(timelineEventsTable.subscription_id)
 		.as('lpd');
 
 	/* Get all active subscriptions */
@@ -54,16 +58,17 @@ const useEligibleIds = (appliedFilters: AppliedFilterT[]) => {
 				category_slug: subscriptionsTable.category_slug,
 				service_id: subscriptionsTable.service_id,
 				tender_id: subscriptionsTable.tender_id,
-				currency_id: priceHistoryTable.currency_id
+				currency_id: timelineEventsTable.currency_id
 			})
 			.from(subscriptionsTable)
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
 			.leftJoin(latestPriceDate, eq(subscriptionsTable.id, latestPriceDate.subscription_id))
 			.leftJoin(
-				priceHistoryTable,
+				timelineEventsTable,
 				and(
-					eq(priceHistoryTable.subscription_id, subscriptionsTable.id),
-					eq(priceHistoryTable.date, latestPriceDate.max_date)
+					eq(timelineEventsTable.subscription_id, subscriptionsTable.id),
+					eq(timelineEventsTable.date, latestPriceDate.max_date),
+					inArray(timelineEventsTable.type, PRICED_EVENT_TYPES)
 				)
 			)
 			.where(isNull(subscriptionsTable.cancellation_date))

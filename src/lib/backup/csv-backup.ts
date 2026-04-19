@@ -19,7 +19,7 @@ const TABLES = [
 	'tenders',
 	'services',
 	'subscriptions',
-	'price_history',
+	'timeline_events',
 	'currency_rates',
 	'transactions',
 	'user'

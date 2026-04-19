@@ -7,6 +7,7 @@ export type PreparedDbTxT = {
 	denominator: CurrencyT['denominator'];
 	price: TransactionT['amount'];
 	slug: ServiceT['slug'];
+	logo_url: ServiceT['logo_url'];
 	title: ServiceT['title'];
 	customName: SubscriptionT['custom_name'];
 	emoji: CategoryT['emoji'];
@@ -31,13 +32,14 @@ export type PreparedSubscriptionT = SubscriptionT & {
 	 */
 	latest_transaction_date: TransactionT['date'] | null;
 
-	/** Current price in minor units, resolved from the latest price_history entry */
+	/** Current price in minor units, resolved from the latest priced timeline event */
 	current_price: number | null;
 	current_currency_id: string | null;
 
 	currency: CurrencyT['symbol'];
 	denominator: CurrencyT['denominator'];
 	slug: ServiceT['slug'];
+	logo_url: ServiceT['logo_url'];
 	title: ServiceT['title'];
 	emoji: CategoryT['emoji'];
 	color: ServiceT['color'];

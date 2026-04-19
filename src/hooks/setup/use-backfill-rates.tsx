@@ -3,7 +3,7 @@ import { splitEvery } from 'ramda';
 import * as Crypto from 'expo-crypto';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
-import { lightFormat, startOfTomorrow } from 'date-fns';
+import { lightFormat, startOfToday, startOfTomorrow } from 'date-fns';
 
 import { withRetry } from '@lib';
 import { getHistoryRates } from '@api/sharkie';
@@ -12,6 +12,15 @@ import db, { silentDb, uhaDb } from '@db';
 import { lt, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { currencyRatesTable, transactionsTable } from '@db/schema';
+
+/**
+ * Today's rate acts as the baseline `lastKnownRates` used by summaries and
+ * `useGetFilledDateRates` whenever a tx falls outside the per-month range
+ * (e.g. scheduled future billings). Without it a fresh user with only
+ * future-dated subscriptions ends up with an empty `currency_rates` table,
+ * collapsing every conversion to 1:1 (`$25` → `25 ₸`).
+ */
+const todayStr = () => lightFormat(startOfToday(), 'yyyy-MM-dd');
 
 const getMissingDates = () => {
 	const txs = db
@@ -26,6 +35,12 @@ const getMissingDates = () => {
 	const dates = new Set<string>();
 	const existingDatesDb = db.select({ date: currencyRatesTable.date }).from(currencyRatesTable).all();
 	const existingDates = new Set(existingDatesDb.map((r) => r.date));
+
+	// Always guarantee today's rate exists — see `todayStr` comment above.
+	const today = todayStr();
+	if (!existingDates.has(today)) {
+		dates.add(today);
+	}
 
 	for (const tx of txs) {
 		const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
@@ -117,15 +132,26 @@ const useBackfillRates = () => {
 	const existingDates = new Set(existingDatesDb.map((r) => r.date));
 
 	const newDates: string[] = [];
+	const seen = new Set<string>();
+
+	// Always include today — otherwise a user with only future-dated txs
+	// (or no txs at all on a fresh install) would never trigger the
+	// effect, and the rates table would stay empty.
+	const today = todayStr();
+	if (!existingDates.has(today)) {
+		newDates.push(today);
+		seen.add(today);
+	}
 
 	for (const tx of txs) {
 		const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
 
-		if (existingDates.has(formattedDate)) {
+		if (existingDates.has(formattedDate) || seen.has(formattedDate)) {
 			continue;
 		}
 
 		newDates.push(formattedDate);
+		seen.add(formattedDate);
 	}
 
 	useEffect(() => {

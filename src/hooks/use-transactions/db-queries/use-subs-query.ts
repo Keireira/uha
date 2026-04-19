@@ -1,6 +1,6 @@
 import { useLensesStore } from '@screens/transactions/models';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { getTableColumns, and, eq, max } from 'drizzle-orm';
+import { getTableColumns, and, eq, inArray, max } from 'drizzle-orm';
 
 import {
 	tendersTable,
@@ -9,21 +9,25 @@ import {
 	categoriesTable,
 	transactionsTable,
 	subscriptionsTable,
-	priceHistoryTable
+	timelineEventsTable
 } from '@db/schema';
 import db from '@db';
 import { buildWhereConditions } from './utils';
 
 import type { PreparedSubscriptionT } from '../types.d';
 
-/* Subquery: latest price_history date per subscription */
+/** Event types that carry a price, used to derive the subscription's current price. */
+const PRICED_EVENT_TYPES = ['first_payment', 'price_up', 'price_down'] as const;
+
+/* Subquery: latest priced-event date per subscription (first_payment, price_up, price_down) */
 const latestPriceDate = db
 	.select({
-		subscription_id: priceHistoryTable.subscription_id,
-		max_date: max(priceHistoryTable.date).as('max_date')
+		subscription_id: timelineEventsTable.subscription_id,
+		max_date: max(timelineEventsTable.date).as('max_date')
 	})
-	.from(priceHistoryTable)
-	.groupBy(priceHistoryTable.subscription_id)
+	.from(timelineEventsTable)
+	.where(inArray(timelineEventsTable.type, PRICED_EVENT_TYPES))
+	.groupBy(timelineEventsTable.subscription_id)
 	.as('lpd');
 
 /* Get all subscriptions with their latest transaction date and keys for filtering */
@@ -37,9 +41,9 @@ const useSubscriptionsQuery = () => {
 				/* Find a latest transaction in aggregation (thx, groupBy), so we don't have to calc it manually */
 				latest_transaction_date: max(transactionsTable.date),
 
-				/* Current price from latest price_history entry, converted to minor units */
-				current_price: priceHistoryTable.amount,
-				current_currency_id: priceHistoryTable.currency_id,
+				/* Current price resolved from the latest priced timeline event */
+				current_price: timelineEventsTable.amount,
+				current_currency_id: timelineEventsTable.currency_id,
 
 				/* Joined fields, so we can filter data later, AND include them in PreparedDbTxT-like object,
 				 * since we don't have access to tables' joins in that live-generation
@@ -47,6 +51,7 @@ const useSubscriptionsQuery = () => {
 				currency: currenciesTable.symbol,
 				denominator: currenciesTable.denominator,
 				slug: servicesTable.slug,
+				logo_url: servicesTable.logo_url,
 				title: servicesTable.title,
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
@@ -58,13 +63,14 @@ const useSubscriptionsQuery = () => {
 			.from(subscriptionsTable)
 			.leftJoin(latestPriceDate, eq(subscriptionsTable.id, latestPriceDate.subscription_id))
 			.leftJoin(
-				priceHistoryTable,
+				timelineEventsTable,
 				and(
-					eq(priceHistoryTable.subscription_id, subscriptionsTable.id),
-					eq(priceHistoryTable.date, latestPriceDate.max_date)
+					eq(timelineEventsTable.subscription_id, subscriptionsTable.id),
+					eq(timelineEventsTable.date, latestPriceDate.max_date),
+					inArray(timelineEventsTable.type, PRICED_EVENT_TYPES)
 				)
 			)
-			.leftJoin(currenciesTable, eq(priceHistoryTable.currency_id, currenciesTable.id))
+			.leftJoin(currenciesTable, eq(timelineEventsTable.currency_id, currenciesTable.id))
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
 			.innerJoin(categoriesTable, eq(servicesTable.category_slug, categoriesTable.slug))
 			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))

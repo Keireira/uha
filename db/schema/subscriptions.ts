@@ -28,7 +28,14 @@ export const subscriptionsTable = sqliteTable(
 		tender_id: text().references(() => tendersTable.id), // uuid v4
 
 		custom_emoji: text(), // SF Symbol name, set explicitly by user
-		cancellation_date: text() // Shall be empty if not canceled
+		cancellation_date: text(), // Shall be empty if not canceled
+
+		notes: text(), // user notes, multiline
+
+		// notifications
+		notify_enabled: int({ mode: 'boolean' }).default(false).notNull(),
+		// JSON array of integers — days before the next payment to send a reminder, e.g. [0, 1, 3]
+		notify_days_before: text().default('[1]').notNull()
 	},
 	(table) => [
 		index('subscriptions_category_slug_idx').on(table.category_slug),

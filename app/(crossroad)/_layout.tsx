@@ -56,6 +56,24 @@ const Layout = () => {
 					...sharedScreenConfig
 				}}
 			/>
+
+			<Stack.Screen
+				name="add-category"
+				options={{
+					title: 'New Category',
+					sheetAllowedDetents: [1.0],
+					...sharedScreenConfig
+				}}
+			/>
+
+			<Stack.Screen
+				name="add-payment"
+				options={{
+					title: 'New Payment Method',
+					sheetAllowedDetents: [1.0],
+					...sharedScreenConfig
+				}}
+			/>
 		</Stack>
 	);
 };
