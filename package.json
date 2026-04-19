@@ -1,6 +1,6 @@
 {
   "name": "uha",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "private": true,
   "keywords": [
     "subscriptions tracker"
@@ -26,7 +26,6 @@
   "dependencies": {
     "@config-plugins/apple-settings": "^7.0.0",
     "@expo/ui": "55.0.11",
-    "@howincodes/expo-dynamic-app-icon": "^3.0.2",
     "@nozbe/microfuzz": "^1.0.0",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/bottom-tabs": "^7.4.0",

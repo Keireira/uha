@@ -2,12 +2,13 @@
   "expo": {
     "slug": "uha",
     "name": "Uha",
-    "version": "1.20.0",
+    "version": "1.21.0",
     "orientation": "portrait",
-    "icon": "./assets/images/ios-light.png",
+    "icon": "./assets/images/default.png",
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "icon": "./assets/images/uha.icon",
       "appleTeamId": "WU9ZX7QZRL",
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
@@ -21,11 +22,47 @@
         "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
-        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments"
-      },
-      "icon": {
-        "dark": "./assets/images/ios-dark.png",
-        "light": "./assets/images/ios-light.png"
+        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments",
+        "CFBundleIcons": {
+          "CFBundleAlternateIcons": {
+            "enby": {
+              "CFBundleIconFiles": ["enby"],
+              "UIPrerenderedIcon": false
+            },
+            "trans": {
+              "CFBundleIconFiles": ["trans"],
+              "UIPrerenderedIcon": false
+            },
+            "lesbi": {
+              "CFBundleIconFiles": ["lesbi"],
+              "UIPrerenderedIcon": false
+            },
+            "pan": {
+              "CFBundleIconFiles": ["pan"],
+              "UIPrerenderedIcon": false
+            }
+          }
+        },
+        "CFBundleIcons~ipad": {
+          "CFBundleAlternateIcons": {
+            "enby": {
+              "CFBundleIconFiles": ["enby"],
+              "UIPrerenderedIcon": false
+            },
+            "trans": {
+              "CFBundleIconFiles": ["trans"],
+              "UIPrerenderedIcon": false
+            },
+            "lesbi": {
+              "CFBundleIconFiles": ["lesbi"],
+              "UIPrerenderedIcon": false
+            },
+            "pan": {
+              "CFBundleIconFiles": ["pan"],
+              "UIPrerenderedIcon": false
+            }
+          }
+        }
       }
     },
     "locales": {
@@ -62,33 +99,12 @@
         }
       ],
       [
-        "@howincodes/expo-dynamic-app-icon",
-        {
-          "enby": {
-            "ios": "./assets/images/enby-icon.png",
-            "android": "./assets/images/enby-icon.png"
-          },
-          "lesbi": {
-            "ios": "./assets/images/lesbi-icon.png",
-            "android": "./assets/images/lesbi-icon.png"
-          },
-          "pan": {
-            "ios": "./assets/images/pan-icon.png",
-            "android": "./assets/images/pan-icon.png"
-          },
-          "trans": {
-            "ios": "./assets/images/trans-icon.png",
-            "android": "./assets/images/trans-icon.png"
-          }
-        }
-      ],
-      [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/fish.png",
+          "imageWidth": 256,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#2A0B11"
         }
       ],
       [
@@ -108,7 +124,8 @@
       "expo-image",
       "expo-sharing",
       "expo-secure-store",
-      "expo-sqlite"
+      "expo-sqlite",
+      "./plugins/with-alt-icons"
     ],
     "experiments": {
       "typedRoutes": true
