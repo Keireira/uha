@@ -5,29 +5,15 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1776548443563,
-      "tag": "0000_petite_celestials",
+      "when": 1776725141747,
+      "tag": "0000_lyrical_vector",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1776548446279,
-      "tag": "0001_secret_blade",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1776586158912,
-      "tag": "0002_add_subscription_notes_and_notifications",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1776586300000,
-      "tag": "0003_timeline_events",
+      "when": 1776725144611,
+      "tag": "0001_needy_clea",
       "breakpoints": true
     }
   ]

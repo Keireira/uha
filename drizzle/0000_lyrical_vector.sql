@@ -15,18 +15,21 @@ CREATE TABLE `currencies` (
 	`region` text NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `price_history` (
+CREATE TABLE `timeline_events` (
 	`id` text PRIMARY KEY NOT NULL,
-	`amount` integer NOT NULL,
-	`date` text DEFAULT (CURRENT_DATE) NOT NULL,
-	`currency_id` text NOT NULL,
 	`subscription_id` text NOT NULL,
-	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE no action
+	`type` text NOT NULL,
+	`date` text DEFAULT (CURRENT_DATE) NOT NULL,
+	`amount` integer,
+	`currency_id` text,
+	`duration_type` text,
+	`duration_value` integer,
+	`reason` text,
+	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE INDEX `price_history_subscription_id_idx` ON `price_history` (`subscription_id`,`date`);--> statement-breakpoint
-CREATE UNIQUE INDEX `price_history_unique` ON `price_history` (`subscription_id`,`date`);--> statement-breakpoint
+CREATE INDEX `timeline_events_subscription_id_idx` ON `timeline_events` (`subscription_id`,`date`);--> statement-breakpoint
 CREATE TABLE `currency_rates` (
 	`id` text PRIMARY KEY NOT NULL,
 	`target_currency_id` text NOT NULL,
@@ -65,6 +68,9 @@ CREATE TABLE `subscriptions` (
 	`tender_id` text,
 	`custom_emoji` text,
 	`cancellation_date` text,
+	`notes` text,
+	`notify_enabled` integer DEFAULT false NOT NULL,
+	`notify_days_before` text DEFAULT '[1]' NOT NULL,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action

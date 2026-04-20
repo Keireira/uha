@@ -36,16 +36,27 @@ const { generateImageAsync } = require('@expo/image-utils');
 
 const SRC_DIR = 'assets/alt-icons';
 
-/** Variants to synthesize from each un-suffixed source PNG. */
+/**
+ * Variants to synthesize from each un-suffixed source PNG, using Apple's
+ * size-in-filename convention. Explicit sizes are what the App Store validator
+ * actually checks for — iOS auto-suffix resolution (`@2x`, `~ipad`, etc.) covers
+ * most cases but leaves iPad Pro 12.9″ (167×167) without a standard modifier,
+ * and the validator also does not reliably match `~ipad@2x` / `@2x~ipad` combos
+ * for the 152×152 iPad slot.
+ */
 const VARIANTS = [
-	{ suffix: '@2x', size: 120 }, // iPhone
-	{ suffix: '@3x', size: 180 }, // iPhone
-	{ suffix: '~ipad', size: 76 }, // iPad
-	{ suffix: '~ipad@2x', size: 152 } // iPad
+	{ suffix: '60x60@2x', size: 120 }, // iPhone @2x
+	{ suffix: '60x60@3x', size: 180 }, // iPhone @3x
+	{ suffix: '76x76', size: 76 }, // iPad @1x
+	{ suffix: '76x76@2x', size: 152 }, // iPad @2x
+	{ suffix: '83.5x83.5@2x', size: 167 } // iPad Pro 12.9″.
 ];
 
-/** Matches anything that already encodes a scale or idiom. */
-const PRE_RENDERED_RE = /(@\dx|~ipad|~iphone)(?=\.png$)/i;
+/**
+ * Matches anything that already encodes a scale, size-token or idiom —
+ * such files are treated as pre-rendered and copied through as-is.
+ */
+const PRE_RENDERED_RE = /(@\dx|~ipad|~iphone|\d+x\d+)(?=(@\dx)?\.png$)/i;
 
 const listPngs = (dir) => {
 	if (!fs.existsSync(dir)) return [];
@@ -105,9 +116,7 @@ const withCopyAltIconPngs = (config) =>
 
 			const sources = listPngs(srcRoot);
 			if (sources.length === 0) {
-				console.warn(
-					`[with-alt-icons] no PNGs found in ${SRC_DIR}/ — alternate icons will fail at runtime`
-				);
+				console.warn(`[with-alt-icons] no PNGs found in ${SRC_DIR}/ — alternate icons will fail at runtime`);
 				config._altIconFiles = [];
 				return config;
 			}

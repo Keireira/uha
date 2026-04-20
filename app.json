@@ -26,19 +26,19 @@
         "CFBundleIcons": {
           "CFBundleAlternateIcons": {
             "enby": {
-              "CFBundleIconFiles": ["enby"],
+              "CFBundleIconFiles": ["enby60x60"],
               "UIPrerenderedIcon": false
             },
             "trans": {
-              "CFBundleIconFiles": ["trans"],
+              "CFBundleIconFiles": ["trans60x60"],
               "UIPrerenderedIcon": false
             },
             "lesbi": {
-              "CFBundleIconFiles": ["lesbi"],
+              "CFBundleIconFiles": ["lesbi60x60"],
               "UIPrerenderedIcon": false
             },
             "pan": {
-              "CFBundleIconFiles": ["pan"],
+              "CFBundleIconFiles": ["pan60x60"],
               "UIPrerenderedIcon": false
             }
           }
@@ -46,19 +46,19 @@
         "CFBundleIcons~ipad": {
           "CFBundleAlternateIcons": {
             "enby": {
-              "CFBundleIconFiles": ["enby"],
+              "CFBundleIconFiles": ["enby60x60", "enby76x76", "enby83.5x83.5"],
               "UIPrerenderedIcon": false
             },
             "trans": {
-              "CFBundleIconFiles": ["trans"],
+              "CFBundleIconFiles": ["trans60x60", "trans76x76", "trans83.5x83.5"],
               "UIPrerenderedIcon": false
             },
             "lesbi": {
-              "CFBundleIconFiles": ["lesbi"],
+              "CFBundleIconFiles": ["lesbi60x60", "lesbi76x76", "lesbi83.5x83.5"],
               "UIPrerenderedIcon": false
             },
             "pan": {
-              "CFBundleIconFiles": ["pan"],
+              "CFBundleIconFiles": ["pan60x60", "pan76x76", "pan83.5x83.5"],
               "UIPrerenderedIcon": false
             }
           }
