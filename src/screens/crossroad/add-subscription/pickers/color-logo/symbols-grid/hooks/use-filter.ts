@@ -24,7 +24,7 @@ const FLAT_SYMBOLS: FlatSymbol[] = SYMBOL_SECTIONS.flatMap((section) => {
 const getText = (item: FlatSymbol) => [item.symbol];
 const mapResultItem = ({ item }: { item: FlatSymbol }) => item;
 
-const useFilter = (query: string) => {
+const useFilter = (query: string = '') => {
 	const trimmed = query.trim();
 
 	const matches = useFuzzySearchList({

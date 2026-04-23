@@ -54,7 +54,10 @@ const AddSubscriptionScreen = () => {
 	);
 
 	const { data: currencyRows } = useLiveQuery(
-		db.select().from(currenciesTable).where(eq(currenciesTable.id, draft.currency ?? '')),
+		db
+			.select()
+			.from(currenciesTable)
+			.where(eq(currenciesTable.id, draft.currency ?? '')),
 		[draft.currency]
 	);
 	const currency = currencyRows?.[0];
@@ -62,12 +65,7 @@ const AddSubscriptionScreen = () => {
 	const errors = useMemo(() => timelineErrors(draft.timeline), [draft.timeline]);
 	const hasTimelineErrors = errors.length > 0;
 	const hasPrice = typeof draft.price === 'number' && draft.price > 0;
-	const canSave =
-		!hasTimelineErrors &&
-		draft.title.trim().length > 0 &&
-		!!currency &&
-		!!draft.id &&
-		hasPrice;
+	const canSave = !hasTimelineErrors && draft.title?.trim().length > 0 && !!currency && !!draft.id && hasPrice;
 
 	const handleSave = async () => {
 		if (!canSave || !currency) return;
@@ -82,8 +80,8 @@ const AddSubscriptionScreen = () => {
 					logo_url: draft.logo_url,
 					bundle_id: draft.bundle_id,
 					ref_link: draft.ref_link,
-					domains: draft.domains,
-					social_links: draft.social_links,
+					domains: draft.domains || [],
+					social_links: draft.social_links || {},
 					aliases: draft.aliases
 				},
 				category_slug: draft.category_slug,
@@ -142,18 +140,11 @@ const AddSubscriptionScreen = () => {
 
 			<Stack.Toolbar placement="bottom">
 				{hasTimelineErrors ? (
-					<Stack.Toolbar.Button
-						onPress={autoFixTimeline}
-						tintColor={theme.semantic.error}
-					>
+					<Stack.Toolbar.Button onPress={autoFixTimeline} tintColor={theme.semantic.error}>
 						Fix timeline issues
 					</Stack.Toolbar.Button>
 				) : (
-					<Stack.Toolbar.Button
-						onPress={handleSave}
-						disabled={!canSave}
-						tintColor={settingAccent}
-					>
+					<Stack.Toolbar.Button onPress={handleSave} disabled={!canSave} tintColor={settingAccent}>
 						Create Subscription
 					</Stack.Toolbar.Button>
 				)}
