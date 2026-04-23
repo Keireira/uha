@@ -5,9 +5,7 @@ import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { SymbolView } from 'expo-symbols';
 import { useShallow } from 'zustand/react/shallow';
-import ReanimatedSwipeable, {
-	type SwipeableMethods
-} from 'react-native-gesture-handler/ReanimatedSwipeable';
+import ReanimatedSwipeable, { type SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import * as Haptics from 'expo-haptics';
 
 import { useAccent } from '@hooks';
@@ -172,8 +170,10 @@ const Timeline = () => {
 		}
 		if (event.type === 'first_payment') {
 			router.push({
-				pathname: '/(pickers)/first-payment-date',
-				params: { from: 'timeline' }
+				pathname: '/(crossroad)/first-payment-date',
+				params: {
+					from: 'timeline'
+				}
 			});
 			return;
 		}
@@ -272,12 +272,7 @@ const Timeline = () => {
 				</ErrorBanner>
 			)}
 
-			<Modal
-				visible={pickerVisible}
-				transparent
-				animationType="fade"
-				onRequestClose={closeTypePicker}
-			>
+			<Modal visible={pickerVisible} transparent animationType="fade" onRequestClose={closeTypePicker}>
 				<TypePickerBackdrop onPress={closeTypePicker}>
 					<TypePickerSheet glassEffectStyle={glassEffectStyle}>
 						<TypePickerTitle>Pick event type</TypePickerTitle>

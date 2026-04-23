@@ -1,13 +1,14 @@
 import React from 'react';
-import { Stack } from 'expo-router';
 import { useTheme } from 'styled-components/native';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 import type { StackScreenProps } from 'expo-router';
 
 const useGetSharedConfig = () => {
 	const theme = useTheme();
+	const { title } = useLocalSearchParams<{ title?: string }>();
 
-	return {
+	const config: StackScreenProps['options'] = {
 		gestureEnabled: true,
 		presentation: 'formSheet',
 		sheetLargestUndimmedDetentIndex: 'none',
@@ -18,7 +19,13 @@ const useGetSharedConfig = () => {
 		contentStyle: {
 			backgroundColor: theme.background.secondary
 		}
-	} satisfies StackScreenProps['options'];
+	};
+
+	if (title) {
+		config.title = title;
+	}
+
+	return config satisfies StackScreenProps['options'];
 };
 
 const Layout = () => {
@@ -26,20 +33,16 @@ const Layout = () => {
 
 	return (
 		<Stack>
+			{/* Every currency selection screen goes here:
+			 * - Settings/Default Currency
+			 * - Settings/Recalc Currency
+			 * - Add Subscription/Base Currency
+			 **/}
 			<Stack.Screen
 				name="select-currency"
 				options={{
 					title: 'Pick Currency',
 					sheetAllowedDetents: [1.0],
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
-				name="first-payment-date"
-				options={{
-					title: 'First Payment Date',
-					sheetAllowedDetents: 'fitToContents',
 					...sharedScreenConfig
 				}}
 			/>
@@ -66,7 +69,7 @@ const Layout = () => {
 				name="select-category"
 				options={{
 					title: 'Pick Category',
-					sheetAllowedDetents: [1.0],
+					sheetAllowedDetents: 'fitToContents',
 					...sharedScreenConfig
 				}}
 			/>

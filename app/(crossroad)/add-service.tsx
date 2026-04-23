@@ -1,3 +1,3 @@
-import AddServiceScreen from '@screens/crossroad/add-service';
+import { AddServiceScreen } from '@screens/crossroad';
 
 export default AddServiceScreen;

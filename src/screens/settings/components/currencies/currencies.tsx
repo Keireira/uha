@@ -15,7 +15,8 @@ const Currencies = () => {
 		router.push({
 			pathname: `/(pickers)/select-currency`,
 			params: {
-				target: 'settings_default_currency'
+				target: 'settings_default_currency',
+				title: t('settings.currencies.default_currency')
 			}
 		});
 	};
@@ -24,7 +25,8 @@ const Currencies = () => {
 		router.push({
 			pathname: `/(pickers)/select-currency`,
 			params: {
-				target: 'settings_recalc_currency'
+				target: 'settings_recalc_currency',
+				title: t('settings.currencies.recalc_currency')
 			}
 		});
 	};

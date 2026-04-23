@@ -34,6 +34,22 @@ eas build --platform ios
 eas submit --platform ios
 ```
 
+### Patch Package
+```sh
+# 1. Start patching process:
+pnpm patch "<PACKAGE_NAME>"
+
+# 2. Edit files in provided tmp path
+cd /Volumes/Personal/uha/node_modules/.pnpm_patches/@expo/ui@55.0.12
+zed ./
+
+# 3. Edit required files
+# ...
+# 4. Apply patch (exact string shall be provided to you at the 1st step):
+pnpm patch-commit '/Volumes/Personal/uha/node_modules/.pnpm_patches/@expo/ui@55.0.12'
+```
+
+
 ### Drizzle ORM
 
 ```sh

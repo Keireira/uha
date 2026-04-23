@@ -1,29 +1,36 @@
 import React from 'react';
-import { Stack } from 'expo-router';
-// import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 import type { StackScreenProps } from 'expo-router';
 
 const useGetSharedConfig = () => {
 	const theme = useTheme();
+	const { title } = useLocalSearchParams<{ title?: string }>();
 
-	return {
+	const config: StackScreenProps['options'] = {
 		gestureEnabled: true,
 		presentation: 'formSheet',
 		sheetLargestUndimmedDetentIndex: 'none',
 		sheetGrabberVisible: true,
 		sheetCornerRadius: -1,
 		animation: 'slide_from_bottom',
+		sheetAllowedDetents: [1.0],
 
 		contentStyle: {
 			backgroundColor: theme.background.secondary
 		}
-	} satisfies StackScreenProps['options'];
+	};
+
+	if (title) {
+		config.title = title;
+	}
+
+	console.log(config.title, title);
+	return config satisfies StackScreenProps['options'];
 };
 
 const Layout = () => {
-	// const { t } = useTranslation();
 	const sharedScreenConfig = useGetSharedConfig();
 
 	return (
@@ -34,7 +41,6 @@ const Layout = () => {
 				name="add-subscription"
 				options={{
 					title: 'New Subscription',
-					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>
@@ -43,7 +49,6 @@ const Layout = () => {
 				name="edit-logo-sheet"
 				options={{
 					title: 'Color & Logo',
-					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>
@@ -52,8 +57,17 @@ const Layout = () => {
 				name="color-presets"
 				options={{
 					title: 'Color Presets',
-					sheetAllowedDetents: [0.8],
-					...sharedScreenConfig
+					...sharedScreenConfig,
+					sheetAllowedDetents: [0.8]
+				}}
+			/>
+
+			<Stack.Screen
+				name="first-payment-date"
+				options={{
+					...sharedScreenConfig,
+					title: 'First Payment Date',
+					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
 
@@ -61,7 +75,6 @@ const Layout = () => {
 				name="add-category"
 				options={{
 					title: 'New Category',
-					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>
@@ -70,7 +83,6 @@ const Layout = () => {
 				name="add-payment"
 				options={{
 					title: 'New Payment Method',
-					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>

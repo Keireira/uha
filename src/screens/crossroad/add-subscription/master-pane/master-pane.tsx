@@ -75,15 +75,17 @@ const MasterPane = () => {
 
 	const {
 		data: [category]
-	} = useLiveQuery(
-		db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)),
-		[draft.category_slug]
-	);
+	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)), [
+		draft.category_slug
+	]);
 
 	const {
 		data: [tender]
 	} = useLiveQuery(
-		db.select().from(tendersTable).where(eq(tendersTable.id, draft.tender_id ?? '')),
+		db
+			.select()
+			.from(tendersTable)
+			.where(eq(tendersTable.id, draft.tender_id ?? '')),
 		[draft.tender_id]
 	);
 
@@ -119,7 +121,11 @@ const MasterPane = () => {
 				<FieldRow
 					label="First Payment Date"
 					preview={firstPaymentPreview}
-					onPress={() => router.push('/(pickers)/first-payment-date')}
+					onPress={() => {
+						router.push({
+							pathname: '/(crossroad)/first-payment-date'
+						});
+					}}
 				/>
 				<FieldRow
 					label="Billing Cycle"
@@ -166,11 +172,7 @@ const MasterPane = () => {
 			</FieldsGroup>
 
 			<NotesCard glassEffectStyle={glassEffectStyle}>
-				<NotesField
-					value={draft.notes}
-					onChangeText={draft.setNotes}
-					placeholder="Notes (optional)"
-				/>
+				<NotesField value={draft.notes} onChangeText={draft.setNotes} placeholder="Notes (optional)" />
 			</NotesCard>
 
 			<Timeline />
