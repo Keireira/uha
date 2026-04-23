@@ -24,7 +24,8 @@ const TrialDurationScreen = () => {
 			contentContainerStyle={{
 				gap: 16,
 				paddingTop: 24,
-				paddingHorizontal: 24,
+				paddingHorizontal: 16,
+				justifyContent: 'center',
 				paddingBottom: Math.max(insets.bottom, 64)
 			}}
 		>
@@ -36,7 +37,6 @@ const TrialDurationScreen = () => {
 
 				<Title>Custom</Title>
 				<StepperField type={type} value={value} setValue={setTrialDuration} />
-
 				<Units />
 			</Content>
 		</Root>

@@ -48,15 +48,6 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="billing-cycle"
-				options={{
-					title: 'Billing Cycle',
-					sheetAllowedDetents: 'fitToContents',
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
 				name="select-category"
 				options={{
 					title: 'Pick Category',

@@ -71,6 +71,15 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
+				name="billing-cycle"
+				options={{
+					...sharedScreenConfig,
+					title: 'Billing Cycle',
+					sheetAllowedDetents: 'fitToContents'
+				}}
+			/>
+
+			<Stack.Screen
 				name="trial-duration"
 				options={{
 					...sharedScreenConfig,

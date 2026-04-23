@@ -121,7 +121,7 @@ const AddSubscriptionScreen = () => {
 		<Root
 			contentContainerStyle={{
 				paddingTop: 24,
-				paddingHorizontal: 24,
+				paddingHorizontal: 16,
 				paddingBottom: insets.bottom + 24
 			}}
 		>

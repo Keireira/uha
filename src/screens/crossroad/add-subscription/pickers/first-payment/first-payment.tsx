@@ -10,7 +10,8 @@ const FirstPayment = () => {
 	return (
 		<Root
 			contentContainerStyle={{
-				paddingHorizontal: 24,
+				paddingHorizontal: 16,
+				justifyContent: 'center',
 				paddingBottom: Math.max(insets.bottom, 64)
 			}}
 		>

@@ -128,7 +128,7 @@ const MasterPane = () => {
 				<FieldRow
 					label="Billing Cycle"
 					preview={cyclePreview}
-					onPress={() => router.push('/(pickers)/billing-cycle')}
+					onPress={() => router.push('/(crossroad)/billing-cycle')}
 				/>
 				<ToggleRow
 					label="With Trial"

@@ -32,10 +32,7 @@ const SelectTenderScreen = () => {
 	const selectedId = useDraftStore((state) => state.tender_id);
 	const setTenderId = useDraftStore((state) => state.actions.setTenderId);
 
-	const { data: tenders } = useLiveQuery(
-		db.select().from(tendersTable).orderBy(asc(tendersTable.title)),
-		[]
-	);
+	const { data: tenders } = useLiveQuery(db.select().from(tendersTable).orderBy(asc(tendersTable.title)), []);
 
 	const handlePress = (id: string | null) => () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

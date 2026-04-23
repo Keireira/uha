@@ -132,7 +132,7 @@ const StepperField = ({ type, value, setValue }: Props) => {
 					/>
 				</InputWrap>
 
-				<Unit>days</Unit>
+				<Unit>{type}</Unit>
 			</ValueWrap>
 
 			<GlassButton glassEffectStyle={glassEffectStyle} isInteractive={!isMaxDisabled} $disabled={isMaxDisabled}>
