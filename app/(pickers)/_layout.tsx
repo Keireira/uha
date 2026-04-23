@@ -57,15 +57,6 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="trial-duration"
-				options={{
-					title: 'Trial Duration',
-					sheetAllowedDetents: 'fitToContents',
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
 				name="select-category"
 				options={{
 					title: 'Pick Category',

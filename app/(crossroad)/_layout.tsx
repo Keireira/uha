@@ -26,7 +26,6 @@ const useGetSharedConfig = () => {
 		config.title = title;
 	}
 
-	console.log(config.title, title);
 	return config satisfies StackScreenProps['options'];
 };
 
@@ -67,6 +66,15 @@ const Layout = () => {
 				options={{
 					...sharedScreenConfig,
 					title: 'First Payment Date',
+					sheetAllowedDetents: 'fitToContents'
+				}}
+			/>
+
+			<Stack.Screen
+				name="trial-duration"
+				options={{
+					...sharedScreenConfig,
+					title: 'Trial Duration',
 					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>

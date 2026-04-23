@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { useShallow } from 'zustand/react/shallow';
 import { SymbolView } from 'expo-symbols';
 
-import { useAccent } from '@hooks';
+import { useAccent, useGlassStyle } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
 
@@ -54,8 +54,7 @@ const BillingCycleScreen = () => {
 	const router = useRouter();
 	const theme = useTheme();
 	const accent = useAccent();
-
-	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
+	const glassEffectStyle = useGlassStyle();
 
 	const { type, value, setBillingCycle } = useDraftStore(
 		useShallow((state) => ({
@@ -108,11 +107,7 @@ const BillingCycleScreen = () => {
 
 			<ValueBlock>
 				<StepperButton glassEffectStyle={glassEffectStyle}>
-					<StepperPressable
-						onPress={() => handleValueChange(value - 1)}
-						$disabled={value <= 1}
-						disabled={value <= 1}
-					>
+					<StepperPressable onPress={() => handleValueChange(value - 1)} $disabled={value <= 1} disabled={value <= 1}>
 						<SymbolView name="minus" size={20} tintColor={theme.text.primary} />
 					</StepperPressable>
 				</StepperButton>

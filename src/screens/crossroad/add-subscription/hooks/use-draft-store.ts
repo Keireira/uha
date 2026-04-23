@@ -37,10 +37,11 @@ type SubscriptionDraftT = ServiceT & {
 	billing_cycle_type: BillingCycleT;
 	billing_cycle_value: number;
 
-	tender_id: string | null;
 	with_trial: boolean;
 	trial_duration_type: BillingCycleT;
 	trial_duration_value: number;
+
+	tender_id: string | null;
 
 	notes: string;
 
@@ -89,7 +90,7 @@ type ActionsT = {
 	updateEvent: (id: string, patch: TimelineEventPatchT) => void;
 	removeEvent: (id: string) => void;
 
-	/** Align first_payment_date with the current trial: first_payment = trial.date + duration. */
+	/** Align first_payment_date with the current trial: first_payment = today + trial duration. */
 	syncFirstPaymentToTrial: () => void;
 
 	/** Repair every structural issue flagged by `timelineErrors` in one shot. */
@@ -179,10 +180,7 @@ const sortTimeline = (events: TimelineEventT[]) =>
 
 /** Compute the first-payment date that should follow a trial event. */
 const firstPaymentAfterTrial = (trial: Pick<TrialEventT, 'date' | 'duration_type' | 'duration_value'>) =>
-	format(
-		addByCycle(parseISO(trial.date), trial.duration_type, trial.duration_value),
-		'yyyy-MM-dd'
-	);
+	format(addByCycle(parseISO(trial.date), trial.duration_type, trial.duration_value), 'yyyy-MM-dd');
 
 const findTrial = (events: TimelineEventT[]): TrialEventT | undefined =>
 	events.find((e): e is TrialEventT => e.type === 'trial');
@@ -268,9 +266,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 
 				const fp = findFirstPayment(state.timeline);
 				if (fp) {
-					patch.timeline = state.timeline.map((e) =>
-						e.id === fp.id ? { ...fp, amount: price } : e
-					);
+					patch.timeline = state.timeline.map((e) => (e.id === fp.id ? { ...fp, amount: price } : e));
 				} else if (price > 0) {
 					// First time price is set — materialize a first_payment event.
 					const ev: FirstPaymentEventT = {
@@ -292,10 +288,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 
 				// Propagate currency change to any priced events in the timeline.
 				const next = state.timeline.map((e) =>
-					e.type === 'first_payment' ||
-					e.type === 'price_up' ||
-					e.type === 'price_down' ||
-					e.type === 'refund'
+					e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down' || e.type === 'refund'
 						? { ...e, currency }
 						: e
 				);
@@ -328,8 +321,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 				return patch;
 			}),
 
-		setBillingCycle: (billing_cycle_type, billing_cycle_value) =>
-			set({ billing_cycle_type, billing_cycle_value }),
+		setBillingCycle: (billing_cycle_type, billing_cycle_value) => set({ billing_cycle_type, billing_cycle_value }),
 
 		/* ─── Trial toggle: materialize / remove trial event ────── */
 		setWithTrial: (with_trial) =>
@@ -342,11 +334,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 						// Default trial so it ends exactly on first_payment_date
 						// (no overlap → no validation error out of the gate).
 						const trialStart = format(
-							subByCycle(
-								parseISO(state.first_payment_date),
-								state.trial_duration_type,
-								state.trial_duration_value
-							),
+							subByCycle(parseISO(state.first_payment_date), state.trial_duration_type, state.trial_duration_value),
 							'yyyy-MM-dd'
 						);
 						const ev: TrialEventT = {
@@ -401,9 +389,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 					replaceOrAppend(
 						state.timeline,
 						// If an event of same "singleton" type already exists, replace it.
-						newEvent.type === 'trial' ||
-							newEvent.type === 'first_payment' ||
-							newEvent.type === 'cancellation'
+						newEvent.type === 'trial' || newEvent.type === 'first_payment' || newEvent.type === 'cancellation'
 							? (e) => e.type === newEvent.type
 							: () => false,
 						newEvent
@@ -462,16 +448,22 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 		syncFirstPaymentToTrial: () =>
 			set((state) => {
 				const trial = findTrial(state.timeline);
-				if (!trial) return state;
 
-				const fpDate = firstPaymentAfterTrial(trial);
+				if (!trial) {
+					return state;
+				}
+
+				const nextFirstPaymentDate = addByCycle(new Date(), trial.duration_type, trial.duration_value);
+				const formattedDate = format(nextFirstPaymentDate, 'yyyy-MM-dd');
+
 				const nextTimeline = sortTimeline(
-					state.timeline.map((e) =>
-						e.type === 'first_payment' ? { ...e, date: fpDate } : e
-					)
+					state.timeline.map((e) => (e.type === 'first_payment' ? { ...e, date: formattedDate } : e))
 				);
 
-				return { first_payment_date: fpDate, timeline: nextTimeline };
+				return {
+					first_payment_date: formattedDate,
+					timeline: nextTimeline
+				};
 			}),
 
 		/*
@@ -499,9 +491,7 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 					const expectedFp = firstPaymentAfterTrial(trial);
 					if (expectedFp > fp.date) {
 						fpDate = expectedFp;
-						timeline = timeline.map((e) =>
-							e.id === fp.id ? { ...e, date: expectedFp } : e
-						) as TimelineEventT[];
+						timeline = timeline.map((e) => (e.id === fp.id ? { ...e, date: expectedFp } : e)) as TimelineEventT[];
 					}
 				}
 
@@ -568,5 +558,24 @@ const useDraftStore = create<SubscriptionStoreT>((set) => ({
 		}
 	}
 }));
+
+export const PERIOD_LIMITS: Record<BillingCycleT, { min: number; max: number }> = {
+	days: {
+		min: 1,
+		max: 365
+	},
+	weeks: {
+		min: 1,
+		max: 52
+	},
+	months: {
+		min: 1,
+		max: 12
+	},
+	years: {
+		min: 1,
+		max: 10
+	}
+} as const;
 
 export default useDraftStore;

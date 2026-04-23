@@ -1,15 +1,17 @@
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Header, Calendar } from './components';
-import { PickerBanner } from '@screens/crossroad/add-subscription/components';
 import Root, { Content } from './first-payment.styles';
 
 const FirstPayment = () => {
+	const insets = useSafeAreaInsets();
+
 	return (
 		<Root
 			contentContainerStyle={{
 				paddingHorizontal: 24,
-				paddingBottom: 36
+				paddingBottom: Math.max(insets.bottom, 64)
 			}}
 		>
 			<Header />
@@ -17,11 +19,6 @@ const FirstPayment = () => {
 			<Content>
 				<Calendar />
 			</Content>
-
-			<PickerBanner
-				title="Editing first payment event"
-				description="Date changes apply directly to the first payment on the timeline."
-			/>
 		</Root>
 	);
 };

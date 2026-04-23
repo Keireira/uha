@@ -2,7 +2,6 @@ import React from 'react';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
 import { useShallow } from 'zustand/react/shallow';
 
 import db from '@db';
@@ -10,6 +9,7 @@ import { eq } from 'drizzle-orm';
 import { categoriesTable, tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
+import { useGlassStyle } from '@hooks';
 import { useDraftStore } from '../hooks';
 import type { BillingCycleT } from '../hooks/use-draft-store';
 
@@ -47,10 +47,8 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 
 const MasterPane = () => {
 	const router = useRouter();
-	const theme = useTheme();
 	const { t } = useTranslation();
-
-	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
+	const glassEffectStyle = useGlassStyle();
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
@@ -142,7 +140,7 @@ const MasterPane = () => {
 					<FieldRow
 						label="Trial Duration"
 						preview={trialPreview}
-						onPress={() => router.push('/(pickers)/trial-duration')}
+						onPress={() => router.push('/(crossroad)/trial-duration')}
 						isLast
 					/>
 				)}

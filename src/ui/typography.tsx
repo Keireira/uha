@@ -8,7 +8,10 @@ type TextProps = {
 	$weight?: 200 | 250 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 };
 
-export const BaseText = styled.Text`
+export const BaseText = styled.Text.attrs({
+	allowFontScaling: true,
+	adjustsFontSizeToFit: true
+})`
 	font-family: 'Nunito';
 `;
 

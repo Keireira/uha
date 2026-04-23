@@ -1,7 +1,7 @@
 import React from 'react';
+import { format, isSameDay } from 'date-fns';
 import { Stack, useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
-import { format, startOfToday, isSameDay } from 'date-fns';
 
 import { useAccent } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
@@ -14,23 +14,20 @@ const useData = () => {
 		}))
 	);
 
-	const today = startOfToday();
-
 	return {
-		today,
 		firstPaymentDate,
 		setFirstPaymentDate,
-		isToday: isSameDay(today, firstPaymentDate)
+		isToday: isSameDay(new Date(), firstPaymentDate)
 	};
 };
 
 const Header = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const { today, setFirstPaymentDate, isToday } = useData();
+	const { setFirstPaymentDate, isToday } = useData();
 
 	const setToday = () => {
-		setFirstPaymentDate(format(today, 'yyyy-MM-dd'));
+		setFirstPaymentDate(format(new Date(), 'yyyy-MM-dd'));
 	};
 
 	const confirm = () => {

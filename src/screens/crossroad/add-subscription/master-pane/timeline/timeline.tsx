@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/react/shallow';
 import ReanimatedSwipeable, { type SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import * as Haptics from 'expo-haptics';
 
-import { useAccent } from '@hooks';
+import { useAccent, useGlassStyle } from '@hooks';
 import { useDraftStore } from '../../hooks';
 import {
 	EVENT_META,
@@ -142,8 +142,7 @@ const Timeline = () => {
 	const router = useRouter();
 	const theme = useTheme();
 	const accent = useAccent();
-
-	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
+	const glassEffectStyle = useGlassStyle();
 
 	const { events, removeEvent, setWithTrial } = useDraftStore(
 		useShallow((state) => ({
@@ -162,19 +161,11 @@ const Timeline = () => {
 		// reuse them instead of the generic edit-event sheet. The `from=timeline`
 		// flag lets those pickers render a contextual banner.
 		if (event.type === 'trial') {
-			router.push({
-				pathname: '/(pickers)/trial-duration',
-				params: { from: 'timeline' }
-			});
+			router.push('/(crossroad)/trial-duration');
 			return;
 		}
 		if (event.type === 'first_payment') {
-			router.push({
-				pathname: '/(crossroad)/first-payment-date',
-				params: {
-					from: 'timeline'
-				}
-			});
+			router.push('/(crossroad)/first-payment-date');
 			return;
 		}
 
@@ -196,7 +187,7 @@ const Timeline = () => {
 		if (type === 'trial') {
 			setWithTrial(true);
 			router.push({
-				pathname: '/(pickers)/trial-duration',
+				pathname: '/(crossroad)/trial-duration',
 				params: { from: 'timeline' }
 			});
 			return;
