@@ -68,7 +68,7 @@ const AddSubscriptionScreen = () => {
 	const canSave = !hasTimelineErrors && draft.title?.trim().length > 0 && !!currency && !!draft.id && hasPrice;
 
 	const handleSave = async () => {
-		if (!canSave || !currency) return;
+		if (!(canSave && currency)) return;
 
 		try {
 			await saveSubscription({

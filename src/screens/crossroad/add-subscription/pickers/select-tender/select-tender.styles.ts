@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { withAlpha } from '@lib/colors';
 
 export const Row = styled.Pressable`
 	flex-direction: row;
@@ -10,40 +9,6 @@ export const Row = styled.Pressable`
 
 	border-radius: 14px;
 	background-color: ${({ theme }) => theme.surface.default};
-`;
-
-export const NoneRow = styled(Row)``;
-
-export const CreateRow = styled.Pressable<{ $accent: string }>`
-	flex-direction: row;
-	align-items: center;
-	gap: 14px;
-
-	padding: 12px 16px;
-
-	border-radius: 14px;
-	background-color: ${({ $accent }) => withAlpha($accent, 0.14)};
-`;
-
-export const CreateBadge = styled.View<{ $accent: string }>`
-	width: 32px;
-	height: 32px;
-	border-radius: 16px;
-
-	align-items: center;
-	justify-content: center;
-
-	background-color: ${({ $accent }) => withAlpha($accent, 0.25)};
-`;
-
-export const CreateTitle = styled.Text<{ $accent: string }>`
-	flex: 1;
-
-	font-family: 'Nunito';
-	font-size: 16px;
-	font-weight: 600;
-
-	color: ${({ $accent }) => $accent};
 `;
 
 export const Emoji = styled.Text<{ $color: string }>`
@@ -97,6 +62,8 @@ export const Check = styled.Text`
 export default styled.ScrollView.attrs({
 	contentContainerStyle: {
 		padding: 16,
+		paddingTop: 84,
+		paddingBottom: 36,
 		gap: 6
 	}
 })`

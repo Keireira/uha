@@ -1,8 +1,7 @@
 import React from 'react';
 import * as Haptics from 'expo-haptics';
-import { useRouter } from 'expo-router';
 import { asc } from 'drizzle-orm';
-import { SymbolView } from 'expo-symbols';
+import { Stack, useRouter } from 'expo-router';
 
 import db from '@db';
 import { tendersTable } from '@db/schema';
@@ -11,19 +10,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useAccent } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
-import Root, {
-	Row,
-	Emoji,
-	Description,
-	Title,
-	Comment,
-	Check,
-	NoneRow,
-	NoneTitle,
-	CreateRow,
-	CreateBadge,
-	CreateTitle
-} from './select-tender.styles';
+import Root, { Row, Emoji, Description, Title, Comment, Check, NoneTitle } from './select-tender.styles';
 
 const SelectTenderScreen = () => {
 	const router = useRouter();
@@ -45,19 +32,36 @@ const SelectTenderScreen = () => {
 		router.push('/(crossroad)/add-payment');
 	};
 
+	const confirm = () => {
+		router.back();
+	};
+
 	return (
 		<Root showsVerticalScrollIndicator={false}>
-			<CreateRow $accent={accent} onPress={handleCreate}>
-				<CreateBadge $accent={accent}>
-					<SymbolView name="plus" size={16} tintColor={accent} />
-				</CreateBadge>
-				<CreateTitle $accent={accent}>New Payment Method</CreateTitle>
-			</CreateRow>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button
+					variant="plain"
+					icon="plus"
+					accessibilityHint="Create new payment method"
+					onPress={handleCreate}
+					tintColor={accent}
+				/>
+			</Stack.Toolbar>
 
-			<NoneRow onPress={handlePress(null)}>
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Button
+					variant="done"
+					icon="checkmark"
+					accessibilityHint="Close the picker"
+					onPress={confirm}
+					tintColor={accent}
+				/>
+			</Stack.Toolbar>
+
+			<Row onPress={handlePress(null)}>
 				<NoneTitle>None</NoneTitle>
 				{selectedId === null && <Check>✓</Check>}
-			</NoneRow>
+			</Row>
 
 			{tenders.map((tender) => {
 				const isActive = tender.id === selectedId;

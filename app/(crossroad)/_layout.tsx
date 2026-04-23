@@ -55,8 +55,8 @@ const Layout = () => {
 			<Stack.Screen
 				name="color-presets"
 				options={{
-					title: 'Color Presets',
 					...sharedScreenConfig,
+					title: 'Color Presets',
 					sheetAllowedDetents: [0.8]
 				}}
 			/>
@@ -64,8 +64,8 @@ const Layout = () => {
 			<Stack.Screen
 				name="first-payment-date"
 				options={{
-					...sharedScreenConfig,
 					title: 'First Payment Date',
+					...sharedScreenConfig,
 					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
@@ -73,8 +73,8 @@ const Layout = () => {
 			<Stack.Screen
 				name="billing-cycle"
 				options={{
-					...sharedScreenConfig,
 					title: 'Billing Cycle',
+					...sharedScreenConfig,
 					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
@@ -82,8 +82,8 @@ const Layout = () => {
 			<Stack.Screen
 				name="trial-duration"
 				options={{
-					...sharedScreenConfig,
 					title: 'Trial Duration',
+					...sharedScreenConfig,
 					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>

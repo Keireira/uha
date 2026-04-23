@@ -15,6 +15,7 @@ const useGetSharedConfig = () => {
 		sheetGrabberVisible: true,
 		sheetCornerRadius: -1,
 		animation: 'slide_from_bottom',
+		sheetAllowedDetents: [1.0],
 
 		contentStyle: {
 			backgroundColor: theme.background.secondary
@@ -42,7 +43,6 @@ const Layout = () => {
 				name="select-currency"
 				options={{
 					title: 'Pick Currency',
-					sheetAllowedDetents: [1.0],
 					...sharedScreenConfig
 				}}
 			/>
@@ -51,7 +51,6 @@ const Layout = () => {
 				name="select-category"
 				options={{
 					title: 'Pick Category',
-					sheetAllowedDetents: 'fitToContents',
 					...sharedScreenConfig
 				}}
 			/>
@@ -59,8 +58,7 @@ const Layout = () => {
 			<Stack.Screen
 				name="select-tender"
 				options={{
-					title: 'Payment Method',
-					sheetAllowedDetents: [1.0],
+					title: 'Pick Payment Method',
 					...sharedScreenConfig
 				}}
 			/>
@@ -69,8 +67,8 @@ const Layout = () => {
 				name="edit-event"
 				options={{
 					title: 'Timeline Event',
-					sheetAllowedDetents: 'fitToContents',
-					...sharedScreenConfig
+					...sharedScreenConfig,
+					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
 
@@ -78,8 +76,8 @@ const Layout = () => {
 				name="notifications"
 				options={{
 					title: 'Notifications',
-					sheetAllowedDetents: 'fitToContents',
-					...sharedScreenConfig
+					...sharedScreenConfig,
+					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
 		</Stack>
