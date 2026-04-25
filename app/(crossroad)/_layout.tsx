@@ -93,7 +93,7 @@ const Layout = () => {
 				options={{
 					title: 'Notifications',
 					...sharedScreenConfig,
-					sheetAllowedDetents: 'fitToContents'
+					sheetAllowedDetents: [0.8, 1.0]
 				}}
 			/>
 
