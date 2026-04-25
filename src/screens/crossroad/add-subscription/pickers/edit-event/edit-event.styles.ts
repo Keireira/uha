@@ -9,7 +9,6 @@ export const Section = styled.View`
 `;
 
 export const SectionLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -49,7 +48,6 @@ export const TypeHeroText = styled.View`
 `;
 
 export const TypeHeroLabel = styled.Text<{ $tone: string }>`
-	font-family: 'Nunito';
 	font-size: 17px;
 	font-weight: 700;
 
@@ -57,7 +55,6 @@ export const TypeHeroLabel = styled.Text<{ $tone: string }>`
 `;
 
 export const TypeHeroDescription = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 400;
 
@@ -91,7 +88,6 @@ export const TypeChip = styled.Pressable<{ $tone: string }>`
 `;
 
 export const TypeChipLabel = styled.Text<{ $tone: string }>`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 600;
 
@@ -123,7 +119,6 @@ export const Row = styled.View<{ $isLast?: boolean }>`
 `;
 
 export const RowLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 16px;
 	font-weight: 500;
 
@@ -141,7 +136,6 @@ export const AmountWrap = styled.View`
 `;
 
 export const CurrencyBadge = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 
@@ -163,7 +157,6 @@ export const WarningRow = styled.View`
 export const WarningText = styled.Text`
 	flex: 1;
 
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 500;
 	line-height: 17px;
@@ -176,7 +169,6 @@ export const ReasonField = styled.TextInput.attrs(({ theme }) => ({
 	multiline: true,
 	textAlignVertical: 'top' as const
 }))`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 21px;
@@ -217,7 +209,6 @@ export const StepperPressable = styled.Pressable<{ $disabled: boolean }>`
 `;
 
 export const DurationValue = styled.Text`
-	font-family: 'Nunito';
 	font-size: 34px;
 	font-weight: 700;
 
@@ -227,7 +218,6 @@ export const DurationValue = styled.Text`
 `;
 
 export const DurationUnit = styled.Text`
-	font-family: 'Nunito';
 	font-size: 17px;
 	font-weight: 500;
 
@@ -259,7 +249,6 @@ export const UnitChip = styled.Pressable<{ $active: boolean; $accent: string }>`
 `;
 
 export const UnitLabel = styled.Text<{ $active: boolean; $accent: string }>`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 600;
 
@@ -289,12 +278,10 @@ export const PrimaryButton = styled.Pressable<{ $accent: string; $disabled: bool
 	padding: 0 18px;
 	border-radius: 14px;
 
-	background-color: ${({ $accent, $disabled }) =>
-		$disabled ? withAlpha($accent, 0.35) : $accent};
+	background-color: ${({ $accent, $disabled }) => ($disabled ? withAlpha($accent, 0.35) : $accent)};
 `;
 
 export const PrimaryLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 700;
 
@@ -312,7 +299,6 @@ export const DeleteButton = styled.Pressable`
 `;
 
 export const DeleteLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 

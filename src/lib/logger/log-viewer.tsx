@@ -30,7 +30,6 @@ const Header = styled.View`
 `;
 
 const HeaderTitle = styled.Text`
-	font-family: 'Nunito';
 	font-size: 24px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.text.primary};
@@ -67,7 +66,6 @@ const Tab = styled.Pressable<{ $active?: boolean }>`
 `;
 
 const TabText = styled.Text<{ $active?: boolean }>`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 600;
 	color: ${({ theme, $active }) => ($active ? theme.text.primary : theme.text.tertiary)};

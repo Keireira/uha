@@ -3,7 +3,6 @@ import { SmallText, Text } from '@ui';
 
 /* Commentary section */
 export const NoteInput = styled.TextInput`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 22px;

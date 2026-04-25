@@ -4,7 +4,6 @@ import { withAlpha } from '@lib/colors';
 export const Label = styled.Text`
 	flex: 1;
 
-	font-family: 'Nunito';
 	font-size: 16px;
 	font-weight: 500;
 

@@ -67,7 +67,6 @@ const useStyles = () => {
 					borderColor: withAlpha(theme.border.default, 0.1),
 					color: withAlpha(theme.text.primary, 0.92),
 					fontSize: 17,
-					fontFamily: 'Nunito',
 					fontWeight: '400',
 					paddingHorizontal: 12,
 					paddingVertical: 18,

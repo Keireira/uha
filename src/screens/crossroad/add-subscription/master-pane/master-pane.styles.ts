@@ -28,7 +28,6 @@ export const NotesField = styled.TextInput.attrs(({ theme }) => ({
 	multiline: true,
 	textAlignVertical: 'top' as const
 }))`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 21px;

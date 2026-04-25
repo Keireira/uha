@@ -12,7 +12,6 @@ export const Header = styled.View`
 `;
 
 export const Title = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -22,7 +21,6 @@ export const Title = styled.Text`
 `;
 
 export const HeaderHint = styled.Text`
-	font-family: 'Nunito';
 	font-size: 12px;
 	font-weight: 500;
 
@@ -49,7 +47,6 @@ export const ErrorTextBlock = styled.View`
 `;
 
 export const ErrorLine = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 500;
 	line-height: 17px;
@@ -142,7 +139,6 @@ export const EventMeta = styled.View`
 `;
 
 export const EventLabel = styled.Text<{ $tone: string }>`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 700;
 
@@ -150,7 +146,6 @@ export const EventLabel = styled.Text<{ $tone: string }>`
 `;
 
 export const EventDate = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 500;
 
@@ -158,7 +153,6 @@ export const EventDate = styled.Text`
 `;
 
 export const EventSummary = styled.Text`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 600;
 
@@ -181,7 +175,6 @@ export const DeleteAction = styled.Pressable`
 `;
 
 export const DeleteActionLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 600;
 
@@ -215,7 +208,6 @@ export const AddPressable = styled.Pressable<{ $accent: string }>`
 `;
 
 export const AddLabel = styled.Text<{ $accent: string }>`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 600;
 
@@ -233,7 +225,6 @@ export const EmptyState = styled.View`
 `;
 
 export const EmptyText = styled.Text`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 500;
 
@@ -242,7 +233,6 @@ export const EmptyText = styled.Text`
 `;
 
 export const EmptyHint = styled.Text`
-	font-family: 'Nunito';
 	font-size: 12px;
 	font-weight: 400;
 
@@ -279,7 +269,6 @@ export const TypePickerSheet = styled(GlassView).attrs({
 `;
 
 export const TypePickerTitle = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -318,7 +307,6 @@ export const TypeChip = styled.Pressable<{ $tone: string }>`
 `;
 
 export const TypeChipLabel = styled.Text<{ $tone: string }>`
-	font-family: 'Nunito';
 	font-size: 14px;
 	font-weight: 600;
 

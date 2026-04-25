@@ -45,7 +45,6 @@ export const SectionHeader = styled.View`
 `;
 
 export const SectionTitle = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -72,7 +71,6 @@ export const EmojiField = styled.TextInput.attrs(({ theme }) => ({
 	autoCorrect: false,
 	autoCapitalize: 'none'
 }))`
-	font-family: 'Nunito';
 	font-size: 32px;
 	font-weight: 600;
 

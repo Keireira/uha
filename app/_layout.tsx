@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,7 +18,6 @@ import { useGetTheme } from '@themes';
 import { toastConfig } from '@elements';
 
 logger.install();
-
 SplashScreen.preventAutoHideAsync();
 
 setNotificationHandler({
@@ -97,24 +95,11 @@ const LoadFinalStage = () => {
 
 const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
-
-	const [fontsLoaded] = useFonts({
-		Nunito: require('@assets/fonts/Nunito/static/Nunito-Regular.ttf'),
-		'Nunito-UltraLight': require('@assets/fonts/Nunito/static/Nunito-UltraLight.ttf'),
-		'Nunito-Thin': require('@assets/fonts/Nunito/static/Nunito-Thin.ttf'),
-		'Nunito-Light': require('@assets/fonts/Nunito/static/Nunito-Light.ttf'),
-		'Nunito-Medium': require('@assets/fonts/Nunito/static/Nunito-Medium.ttf'),
-		'Nunito-SemiBold': require('@assets/fonts/Nunito/static/Nunito-SemiBold.ttf'),
-		'Nunito-Bold': require('@assets/fonts/Nunito/static/Nunito-Bold.ttf'),
-		'Nunito-Heavy': require('@assets/fonts/Nunito/static/Nunito-Heavy.ttf'),
-		'Nunito-Black': require('@assets/fonts/Nunito/static/Nunito-Black.ttf')
-	});
-
 	const navigation = useRootNavigationState();
 
 	const isAppReadyToGo = useMemo(() => {
-		return fontsLoaded && areSettingsReady && navigation?.key;
-	}, [fontsLoaded, areSettingsReady, navigation?.key]);
+		return areSettingsReady && navigation?.key;
+	}, [areSettingsReady, navigation?.key]);
 
 	if (!isAppReadyToGo) {
 		return null;

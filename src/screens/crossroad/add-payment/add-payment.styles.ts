@@ -39,7 +39,6 @@ export const SectionHeader = styled.View`
 `;
 
 export const SectionTitle = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -66,7 +65,6 @@ export const EmojiField = styled.TextInput.attrs(({ theme }) => ({
 	autoCorrect: false,
 	autoCapitalize: 'none'
 }))`
-	font-family: 'Nunito';
 	font-size: 32px;
 	font-weight: 600;
 
@@ -81,7 +79,6 @@ export const CommentField = styled.TextInput.attrs(({ theme }) => ({
 	multiline: true,
 	textAlignVertical: 'top' as const
 }))`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 400;
 
@@ -128,7 +125,6 @@ export const ToggleRow = styled.View`
 `;
 
 export const ToggleLabel = styled.Text`
-	font-family: 'Nunito';
 	font-size: 16px;
 	font-weight: 500;
 
