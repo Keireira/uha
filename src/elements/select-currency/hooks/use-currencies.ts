@@ -1,14 +1,17 @@
-import { useMemo, useState } from 'react';
+import { groupBy } from 'ramda';
+import { useState } from 'react';
 import { useLocales } from 'expo-localization';
 import { useTranslation } from 'react-i18next';
+import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { asc } from 'drizzle-orm';
 import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { FREE_CURRENCY_BASE } from '@lib/entitlement';
 
 import type { CurrencyItem, CurrencySection, RowItem } from '../select-currency.d';
+
+import { FREE_CURRENCY_BASE } from '@lib/entitlement';
 
 const REGION_ORDER = [
 	'europe',
@@ -24,9 +27,7 @@ const REGION_ORDER = [
 	'africa',
 	'cryptocurrency',
 	'other'
-];
-
-const format = (text: string) => text.toLocaleLowerCase().trim();
+] as const;
 
 type UseCurrenciesT = {
 	sections: RowItem[];
@@ -34,128 +35,110 @@ type UseCurrenciesT = {
 	setSearchQuery: (query: string) => void;
 };
 
+type FlatItem = CurrencyItem & { sectionTitle: string };
+
+const getText = (item: FlatItem) => [item.name, item.code];
+const mapResultItem = ({ item }: { item: FlatItem }) => item;
+
 const useCurrencies = (): UseCurrenciesT => {
-	const locales = useLocales();
+	const [locale] = useLocales();
 	const { t } = useTranslation();
 	const [searchQuery, setSearchQuery] = useState('');
 	const { data: currencies } = useLiveQuery(db.select().from(currenciesTable).orderBy(asc(currenciesTable.region)), []);
 
-	const freeCurrencies = useMemo(() => {
-		const localeCurrency = locales[0]?.currencyCode;
-		const primaryCodes =
-			localeCurrency && !FREE_CURRENCY_BASE.includes(localeCurrency)
-				? [...FREE_CURRENCY_BASE, localeCurrency]
-				: FREE_CURRENCY_BASE;
+	const localeCurrency = locale?.currencyCode;
+	const freeCurrencies =
+		localeCurrency && !FREE_CURRENCY_BASE.includes(localeCurrency)
+			? [...FREE_CURRENCY_BASE, localeCurrency]
+			: FREE_CURRENCY_BASE;
 
-		return primaryCodes;
-	}, [locales]);
+	const toItem = (code: string, region: string): CurrencyItem => ({
+		id: code,
+		key: `${region}-${code}`,
+		code,
+		name: t(`tokens.currencies.${code}`)
+	});
 
-	/* Prebuild sections, so no excessive calculations for filtering */
-	const rawSections = useMemo(() => {
-		/* Primary (pre-defined) */
-		const primaryItems: CurrencyItem[] = freeCurrencies.map((code) => {
-			const name = t(`tokens.currencies.${code}`);
+	/* Primary section */
+	const primaryItems = freeCurrencies.map((code) => ({
+		...toItem(code, 'primary'),
+		key: `primary-${code}`
+	}));
 
-			return {
-				id: code,
-				key: `primary-${code}`,
-				search_key: `${format(name)}_${format(code)}`,
-				code,
-				name
-			};
+	/* Group region currencies */
+	const regionGroups = groupBy((currency) => currency.region, currencies);
+
+	/* Assemble ordered sections */
+	const rawSections: CurrencySection[] = [
+		{
+			title: t('settings.currencies.primary'),
+			data: primaryItems
+		}
+	];
+
+	for (const region of REGION_ORDER) {
+		const group = regionGroups[region];
+
+		if (!group?.length) continue;
+
+		const items = group
+			.map((currency) => toItem(currency.id, currency.region))
+			.sort((a, b) => a.name.localeCompare(b.name));
+
+		rawSections.push({
+			title: t(`tokens.regions.${region}`),
+			data: items
 		});
+	}
 
-		/* Regions */
-		const regionMap = new Map<string, CurrencyItem[]>();
-
-		for (const currency of currencies) {
-			const name = t(`tokens.currencies.${currency.id}`);
-
-			const item: CurrencyItem = {
-				id: currency.id,
-				key: `${currency.region}-${currency.id}`,
-				search_key: `${format(name)}_${format(currency.id)}`,
-				code: currency.id,
-				name
-			};
-
-			const list = regionMap.get(currency.region);
-
-			if (list) {
-				list.push(item);
-			} else {
-				regionMap.set(currency.region, [item]);
-			}
-		}
-
-		/* Sort */
-		for (const items of regionMap.values()) {
-			items.sort((a, b) => a.name.localeCompare(b.name));
-		}
-
-		const sections: { title: string; data: CurrencyItem[] }[] = [
-			{ title: t('settings.currencies.primary'), data: primaryItems }
-		];
-
-		for (const region of REGION_ORDER) {
-			const items = regionMap.get(region);
-
-			if (items?.length) {
-				sections.push({
-					title: t(`tokens.regions.${region}`),
-					data: items
-				});
-			}
-		}
-
-		return sections;
-	}, [freeCurrencies, currencies, t]);
-
-	/* Filter sections */
-	const filteredSections = useMemo(() => {
-		const query = format(searchQuery);
-
-		if (!query) {
-			return rawSections;
-		}
-
-		const filtered: CurrencySection[] = [];
-
-		for (const section of rawSections) {
-			const data = section.data.filter((item) => item.search_key.includes(query));
-
-			if (data.length) {
-				filtered.push({
-					title: section.title,
-					data
-				});
-			}
-		}
-
-		return filtered;
-	}, [searchQuery, rawSections]);
-
-	/* Sections to render */
-	const sections = useMemo(() => {
-		const items: RowItem[] = [];
-
-		for (const section of filteredSections) {
-			items.push({
-				type: 'sectionHeader',
-				title: section.title
-			});
-
-			for (let i = 0; i < section.data.length; i++) {
-				items.push({
-					type: 'row',
-					item: section.data[i],
-					isLast: i === section.data.length - 1
-				});
-			}
-		}
+	/* Fuzzy search over flattened list */
+	const flatItems: FlatItem[] = rawSections.flatMap((section) => {
+		const items = section.data.map((item) => ({
+			...item,
+			sectionTitle: section.title
+		}));
 
 		return items;
-	}, [filteredSections]);
+	});
+
+	const trimmed = searchQuery.trim();
+	const matches = useFuzzySearchList({
+		list: flatItems,
+		queryText: trimmed,
+		getText,
+		mapResultItem
+	});
+
+	/* Regroup matches back into sections, preserving REGION_ORDER */
+	const filteredSections: CurrencySection[] = trimmed
+		? rawSections.reduce<CurrencySection[]>((acc, section) => {
+				const data = matches.filter((m) => m.sectionTitle === section.title);
+
+				if (data.length) {
+					acc.push({ title: section.title, data });
+				}
+
+				return acc;
+			}, [])
+		: rawSections;
+
+	/* Flatten into RowItem list */
+	const sections: RowItem[] = [];
+
+	for (const section of filteredSections) {
+		sections.push({
+			type: 'sectionHeader',
+			title: section.title
+		});
+
+		for (let i = 0; i < section.data.length; i++) {
+			sections.push({
+				type: 'row',
+				item: section.data[i],
+				isLast: i === section.data.length - 1
+			});
+		}
+	}
 
 	return {
 		sections,

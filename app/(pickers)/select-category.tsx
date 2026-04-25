@@ -1,3 +1,3 @@
-import { SelectCategory } from '@screens/crossroad/add-subscription/pickers';
+import { SelectCategoryScreen } from '@elements';
 
-export default SelectCategory;
+export default SelectCategoryScreen;

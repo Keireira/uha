@@ -642,6 +642,7 @@ const english: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'No results has been found',
 		grid: {
 			category: {
 				title: 'Category',
@@ -663,7 +664,6 @@ const english: LocaleRootT = {
 		add: {
 			header: 'Find new Service',
 			search_bar: 'Search service to add',
-			no_results: 'No services has been found',
 			search_results: 'Search Results',
 			sections: {
 				top_hit: 'Top Hit',

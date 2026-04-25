@@ -89,6 +89,15 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
+				name="notifications"
+				options={{
+					title: 'Notifications',
+					...sharedScreenConfig,
+					sheetAllowedDetents: 'fitToContents'
+				}}
+			/>
+
+			<Stack.Screen
 				name="add-category"
 				options={{
 					title: 'New Category',

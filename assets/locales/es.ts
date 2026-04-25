@@ -639,6 +639,7 @@ const spanish: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'No se encontró nada',
 		grid: {
 			category: {
 				title: 'Categoría',
@@ -660,7 +661,6 @@ const spanish: LocaleRootT = {
 		add: {
 			header: 'Buscar servicio',
 			search_bar: 'Buscar servicio',
-			no_results: 'No se encontró nada',
 			search_results: 'Resultados',
 			sections: {
 				top_hit: 'Mejor resultado',

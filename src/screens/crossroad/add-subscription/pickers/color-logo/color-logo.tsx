@@ -9,9 +9,9 @@ import SymbolGrid from './symbols-grid';
 import { ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import type { TextInputChangeEvent } from 'react-native';
 import type { SearchBarCommands } from 'react-native-screens';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 type RouteParamsT = {
 	logo_url: string;
@@ -21,11 +21,15 @@ type RouteParamsT = {
 const ColorLogo = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const [search, setSearch] = useState('');
-	const searchRef = useRef<SearchBarCommands>(null);
 	const navigation = useNavigation<NativeStackNavigationProp<Record<string, undefined>>>();
 
-	const initialLogoParams = useLocalSearchParams<RouteParamsT>();
+	const searchRef = useRef<SearchBarCommands>(null);
+	const [search, setSearch] = useState('');
+
+	/* Snapshot the initial params once — useLocalSearchParams may re-emit on focus */
+	const params = useLocalSearchParams<RouteParamsT>();
+	const [initialParams] = useState(params);
+
 	const draft = useDraftStore(
 		useShallow((state) => ({
 			symbol: state.symbol,
@@ -36,7 +40,9 @@ const ColorLogo = () => {
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('transitionEnd', (e) => {
-			if (e.data.closing) return;
+			if (e.data.closing) {
+				return;
+			}
 
 			searchRef.current?.focus();
 		});
@@ -54,23 +60,15 @@ const ColorLogo = () => {
 			shouldDownloadFromNetwork: true
 		});
 
-		if (result.canceled || !result.assets.length) {
-			return;
-		}
+		if (result.canceled || !result.assets.length) return;
 
 		const [asset] = result.assets;
-
-		draft.patch({
-			logo_url: asset.uri,
-			symbol: undefined
-		});
-
+		draft.patch({ logo_url: asset.uri, symbol: undefined });
 		router.back();
 	};
 
-	const cancelSearchHd = () => {
+	const dismissSearchIfEmptyHd = () => {
 		if (search) return;
-
 		searchRef.current?.cancelSearch();
 	};
 
@@ -78,16 +76,15 @@ const ColorLogo = () => {
 		router.push('/color-presets');
 	};
 
-	const changeSearchHd = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+	const changeSearchHd = (e: TextInputChangeEvent) => {
 		setSearch(e.nativeEvent.text);
 	};
 
 	const cancelEditsHd = () => {
 		draft.patch({
-			logo_url: initialLogoParams.logo_url,
-			symbol: initialLogoParams.symbol
+			logo_url: initialParams.logo_url,
+			symbol: initialParams.symbol
 		});
-
 		router.back();
 	};
 
@@ -95,7 +92,7 @@ const ColorLogo = () => {
 		router.back();
 	};
 
-	const hasChanges = draft.symbol !== initialLogoParams.symbol || draft.logo_url !== initialLogoParams.logo_url;
+	const hasChanges = draft.symbol !== initialParams.symbol || draft.logo_url !== initialParams.logo_url;
 
 	return (
 		<>
@@ -116,7 +113,7 @@ const ColorLogo = () => {
 			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
 				showsVerticalScrollIndicator={false}
-				onScrollBeginDrag={cancelSearchHd}
+				onScrollBeginDrag={dismissSearchIfEmptyHd}
 			>
 				<SymbolGrid search={search} />
 			</ScrollView>

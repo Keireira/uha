@@ -24,8 +24,8 @@ const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 };
 
 const SelectCurrencyScreen = () => {
-	const headerHeight = useHeaderHeight();
 	const { tier } = useEntitlement();
+	const headerHeight = useHeaderHeight();
 	const { sections, freeCurrencies, setSearchQuery } = useCurrencies();
 
 	return (

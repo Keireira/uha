@@ -5,7 +5,8 @@ import { silentDb } from '@db';
 import { eq } from 'drizzle-orm';
 import { userTable } from '@db/schema';
 
-import { serializeForDb, serializeForNS, USER_ID } from './shared';
+import { USER_ID } from '@db/constants';
+import { serializeForDb, serializeForNS } from './shared';
 
 import type { UserKey } from './shared';
 type Listener = () => void;

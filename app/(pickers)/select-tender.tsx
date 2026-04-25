@@ -1,3 +1,3 @@
-import { SelectTender } from '@screens/crossroad/add-subscription/pickers';
+import { SelectTenderScreen } from '@elements';
 
-export default SelectTender;
+export default SelectTenderScreen;

@@ -662,6 +662,7 @@ const nihongo: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: '何も見つかりませんでした',
 		grid: {
 			category: {
 				title: 'カテゴリ',
@@ -683,7 +684,6 @@ const nihongo: LocaleRootT = {
 		add: {
 			header: 'サービスを探す',
 			search_bar: 'サービスを検索',
-			no_results: '見つかりませんでした',
 			search_results: '検索結果',
 			sections: {
 				top_hit: 'ベストマッチ',

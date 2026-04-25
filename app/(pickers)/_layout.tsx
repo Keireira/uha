@@ -71,15 +71,6 @@ const Layout = () => {
 					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
-
-			<Stack.Screen
-				name="notifications"
-				options={{
-					title: 'Notifications',
-					...sharedScreenConfig,
-					sheetAllowedDetents: 'fitToContents'
-				}}
-			/>
 		</Stack>
 	);
 };

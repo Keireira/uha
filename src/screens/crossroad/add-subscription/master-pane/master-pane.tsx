@@ -150,12 +150,26 @@ const MasterPane = () => {
 				<FieldRow
 					label="Category"
 					preview={categoryPreview}
-					onPress={() => router.push('/(pickers)/select-category')}
+					onPress={() => {
+						router.push({
+							pathname: `/(pickers)/select-category`,
+							params: {
+								target: 'add_subscription_category'
+							}
+						});
+					}}
 				/>
 				<FieldRow
 					label="Payment Method"
 					preview={paymentPreview}
-					onPress={() => router.push('/(pickers)/select-tender')}
+					onPress={() => {
+						router.push({
+							pathname: `/(pickers)/select-tender`,
+							params: {
+								target: 'add_subscription_tender'
+							}
+						});
+					}}
 					isLast
 				/>
 			</FieldsGroup>
@@ -164,7 +178,7 @@ const MasterPane = () => {
 				<FieldRow
 					label="Notifications"
 					preview={notificationsPreview}
-					onPress={() => router.push('/(pickers)/notifications')}
+					onPress={() => router.push('/(crossroad)/notifications')}
 					isLast
 				/>
 			</FieldsGroup>

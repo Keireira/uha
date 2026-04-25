@@ -7,7 +7,6 @@ export type CurrencyItem = {
 	name: string;
 	code: string;
 	key: string;
-	search_key: string;
 };
 
 export type CurrencySection = {

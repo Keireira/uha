@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAccent, useGlassStyle } from '@hooks';
 import { useShallow } from 'zustand/react/shallow';
+
+import { useAccent, useGlassStyle } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import Root, { Chip, InnerChip, Label } from './units.styles';
@@ -12,7 +13,6 @@ const UNITS: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 const Units = () => {
 	const accent = useAccent();
 	const glassEffectStyle = useGlassStyle();
-
 	const { type, value, setBillingCycle } = useDraftStore(
 		useShallow((state) => ({
 			type: state.billing_cycle_type,
@@ -21,19 +21,16 @@ const Units = () => {
 		}))
 	);
 
-	const handleTypeChange = (next: BillingCycleT) => () => {
-		setBillingCycle(next, value);
-	};
-
 	return (
 		<Root>
 			{UNITS.map((unit) => {
 				const isActive = unit === type;
+				const onPressHd = () => setBillingCycle(unit, value);
 
 				return (
 					<Chip key={unit} glassEffectStyle={glassEffectStyle}>
-						<InnerChip $active={isActive} $tintColor={accent} onPress={handleTypeChange(unit)}>
-							<Label $active={isActive} $tintColor={accent}>
+						<InnerChip $isActive={isActive} $tintColor={accent} onPress={onPressHd}>
+							<Label $isActive={isActive} $tintColor={accent}>
 								{unit}
 							</Label>
 						</InnerChip>

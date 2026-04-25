@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useAccent, useGlassStyle } from '@hooks';
 import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
@@ -21,19 +22,16 @@ const Units = () => {
 		}))
 	);
 
-	const handleTypeChange = (next: BillingCycleT) => () => {
-		setTrialDuration(next, value);
-	};
-
 	return (
 		<Root>
 			{UNITS.map((unit) => {
 				const isActive = unit === type;
+				const onPressHd = () => setTrialDuration(unit, value);
 
 				return (
 					<Chip key={unit} glassEffectStyle={glassEffectStyle}>
-						<InnerChip $active={isActive} $tintColor={accent} onPress={handleTypeChange(unit)}>
-							<Label $active={isActive} $tintColor={accent}>
+						<InnerChip $isActive={isActive} $tintColor={accent} onPress={onPressHd}>
+							<Label $isActive={isActive} $tintColor={accent}>
 								{unit}
 							</Label>
 						</InnerChip>

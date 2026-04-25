@@ -9,8 +9,8 @@ type TextProps = {
 };
 
 export const BaseText = styled.Text.attrs({
-	allowFontScaling: true,
-	adjustsFontSizeToFit: true
+	// allowFontScaling: true,
+	// adjustsFontSizeToFit: true
 })`
 	font-family: 'Nunito';
 `;

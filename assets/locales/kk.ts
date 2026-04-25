@@ -639,6 +639,7 @@ const kazakh: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'Ештеңе табылмады',
 		grid: {
 			category: {
 				title: 'Санат',
@@ -660,7 +661,6 @@ const kazakh: LocaleRootT = {
 		add: {
 			header: 'Қызмет іздеу',
 			search_bar: 'Қызметті іздеу',
-			no_results: 'Ештеңе табылмады',
 			search_results: 'Іздеу нәтижелері',
 			sections: {
 				top_hit: 'Ең жақсы сәйкестік',

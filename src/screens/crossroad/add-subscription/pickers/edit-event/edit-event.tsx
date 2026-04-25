@@ -114,10 +114,7 @@ const EditEventScreen = () => {
 	const isEdit = !!existing;
 
 	// Available types for this particular add/edit — excludes self when editing.
-	const availableTypes = useMemo(
-		() => availableEventTypes(events, existing?.id),
-		[events, existing?.id]
-	);
+	const availableTypes = useMemo(() => availableEventTypes(events, existing?.id), [events, existing?.id]);
 
 	// Resolve active type: existing event's type > ?type param > undefined (show picker).
 	const activeType: EventTypeT | undefined = existing?.type ?? typeParam;
@@ -132,10 +129,7 @@ const EditEventScreen = () => {
 		// New refund — default to the most recent known price (first_payment / price_up / price_down).
 		if (typeParam === 'refund') {
 			const latestPriced = events
-				.filter(
-					(e) =>
-						e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down'
-				)
+				.filter((e) => e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down')
 				.sort((a, b) => b.date.localeCompare(a.date))[0];
 
 			if (latestPriced && 'amount' in latestPriced && latestPriced.amount > 0) {
@@ -158,8 +152,7 @@ const EditEventScreen = () => {
 
 	/* ─── Pause / cancellation state (reason) ──────── */
 	const [reason, setReason] = useState<string>(() => {
-		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing)))
-			return existing.reason ?? '';
+		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing))) return existing.reason ?? '';
 		return '';
 	});
 
@@ -172,10 +165,7 @@ const EditEventScreen = () => {
 		const isoDate = format(date, 'yyyy-MM-dd');
 		const candidates = events
 			.filter((e) => e.id !== existing?.id)
-			.filter(
-				(e) =>
-					e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down'
-			)
+			.filter((e) => e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down')
 			.filter((e) => e.date <= isoDate)
 			.sort((a, b) => b.date.localeCompare(a.date));
 
@@ -308,12 +298,7 @@ const EditEventScreen = () => {
 		setDurationValue((prev) => clampDuration(prev + delta));
 	};
 
-	const amountRowLabel =
-		activeType === 'refund'
-			? 'Refunded'
-			: activeType === 'first_payment'
-				? 'Amount'
-				: 'New price';
+	const amountRowLabel = activeType === 'refund' ? 'Refunded' : activeType === 'first_payment' ? 'Amount' : 'New price';
 
 	return (
 		<Root>
@@ -447,12 +432,7 @@ const EditEventScreen = () => {
 
 			<Actions>
 				<PrimaryButton $accent={accent} $disabled={!canSave} disabled={!canSave} onPress={handleSave}>
-					<SymbolView
-						name={isEdit ? 'checkmark' : 'plus'}
-						size={15}
-						tintColor={theme.static.white}
-						weight="bold"
-					/>
+					<SymbolView name={isEdit ? 'checkmark' : 'plus'} size={15} tintColor={theme.static.white} weight="bold" />
 					<PrimaryLabel>{isEdit ? 'Save' : 'Add event'}</PrimaryLabel>
 				</PrimaryButton>
 

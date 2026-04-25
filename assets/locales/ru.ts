@@ -637,6 +637,7 @@ const russian: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'Ничего не найдено',
 		grid: {
 			category: {
 				title: 'Категория',
@@ -658,7 +659,6 @@ const russian: LocaleRootT = {
 		add: {
 			header: 'Найти сервис',
 			search_bar: 'Поиск сервиса',
-			no_results: 'Ничего не найдено',
 			search_results: 'Результаты поиска',
 			sections: {
 				top_hit: 'Лучшее совпадение',

@@ -10,16 +10,15 @@ import type { Props } from './currency-row.d';
 const CurrencyRow = ({ code, name, isForbidden, isLast }: Props) => {
 	const settingAccent = useAccent();
 	const openFeatureGate = useFeatureGate();
-
-	const [currentValue, action] = useParams();
+	const { currentValue, commit } = useParams();
 
 	const onSelectHd = () => {
-		if (typeof action !== 'function') return;
+		if (typeof commit !== 'function') return;
 
 		if (isForbidden) {
-			openFeatureGate(() => action(code));
+			openFeatureGate(() => commit(code));
 		} else {
-			action(code);
+			commit(code);
 		}
 	};
 

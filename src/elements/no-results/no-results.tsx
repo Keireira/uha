@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import { SymbolView } from 'expo-symbols';
-import Root, { Inner, EmptyText } from './no-results.styles';
+import Root, { EmptyText } from './no-results.styles';
 
 const NoResults = () => {
 	const theme = useTheme();
@@ -11,11 +11,9 @@ const NoResults = () => {
 
 	return (
 		<Root>
-			<Inner>
-				<SymbolView name="magnifyingglass" size={42} tintColor={theme.text.secondary} />
+			<SymbolView name="magnifyingglass" size={42} tintColor={theme.text.secondary} />
 
-				<EmptyText>{t('crossroad.add.no_results')}</EmptyText>
-			</Inner>
+			<EmptyText>{t('crossroad.no_results')}</EmptyText>
 		</Root>
 	);
 };

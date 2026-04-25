@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsValue } from '@hooks';
 import { useSearch } from '@screens/add/hooks';
 
-import { ResultSection, TopHitCard, NoResults, Loader } from './components';
+import { NoResults } from '@elements';
 import { ScreenTitle } from './search-mode.styles';
+import { ResultSection, TopHitCard, Loader } from './components';
 
 import type { SearchResultT } from '@api/soup/soup.d';
 

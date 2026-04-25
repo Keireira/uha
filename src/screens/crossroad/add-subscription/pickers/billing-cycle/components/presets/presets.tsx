@@ -24,7 +24,6 @@ const PRESETS: (PresetT & { label: string })[] = [
 const Presets = () => {
 	const settingAccent = useAccent();
 	const glassEffectStyle = useGlassStyle();
-
 	const { type, value, setBillingCycle } = useDraftStore(
 		useShallow((state) => ({
 			type: state.billing_cycle_type,
@@ -33,23 +32,16 @@ const Presets = () => {
 		}))
 	);
 
-	const handlePreset = (preset: PresetT) => () => {
-		setBillingCycle(preset.type, preset.value);
-	};
-
-	const isPresetActive = (preset: PresetT) => {
-		return preset.type === type && preset.value === value;
-	};
-
 	return (
 		<Root>
 			{PRESETS.map((preset) => {
-				const isActive = isPresetActive(preset);
+				const isActive = preset.type === type && preset.value === value;
+				const onPressHd = () => setBillingCycle(preset.type, preset.value);
 
 				return (
 					<Chip key={preset.label} glassEffectStyle={glassEffectStyle}>
-						<InnerChip $active={isActive} $tintColor={settingAccent} onPress={handlePreset(preset)}>
-							<Label $active={isActive} $tintColor={settingAccent}>
+						<InnerChip $isActive={isActive} $tintColor={settingAccent} onPress={onPressHd}>
+							<Label $isActive={isActive} $tintColor={settingAccent}>
 								{preset.label}
 							</Label>
 						</InnerChip>

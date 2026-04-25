@@ -5,8 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import { Header, Presets, Units } from './components';
-import { StepperField } from '@screens/crossroad/add-subscription/components';
 import Root, { Content, Title } from './trial-duration.styles';
+import { StepperField } from '@screens/crossroad/add-subscription/components';
 
 const TrialDurationScreen = () => {
 	const insets = useSafeAreaInsets();

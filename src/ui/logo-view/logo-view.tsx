@@ -23,8 +23,10 @@ const getLink = (url?: string | null, slug?: string | null) => {
 };
 
 const Fallback = ({ symbolName, emoji, initials, size, color }: FallbackProps) => {
+	const contentSize = Math.round(size / 2);
+
 	if (symbolName) {
-		return <SymbolView name={symbolName} size={Math.round(size / 2)} tintColor={color ?? undefined} />;
+		return <SymbolView name={symbolName} size={contentSize} tintColor={color ?? undefined} />;
 	}
 
 	if (initials) {
@@ -32,10 +34,14 @@ const Fallback = ({ symbolName, emoji, initials, size, color }: FallbackProps) =
 	}
 
 	if (emoji) {
-		return <Emoji $align="center">{emoji}</Emoji>;
+		return (
+			<Emoji $align="center" $size={contentSize}>
+				{emoji}
+			</Emoji>
+		);
 	}
 
-	return <SymbolView name="questionmark" size={Math.round(size / 2)} tintColor={color ?? undefined} />;
+	return <SymbolView name="questionmark" size={contentSize} tintColor={color ?? undefined} />;
 };
 
 const LogoView = ({ emoji, symbolName, assetId, slug, url, name, color, size = 48, children }: Props) => {

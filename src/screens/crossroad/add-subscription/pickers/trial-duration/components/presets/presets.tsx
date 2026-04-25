@@ -1,7 +1,7 @@
 import React from 'react';
-import { useShallow } from 'zustand/react/shallow';
 
 import { useAccent, useGlassStyle } from '@hooks';
+import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import Root, { Chip, InnerChip, Label } from './presets.styles';
@@ -35,23 +35,16 @@ const Presets = () => {
 		}))
 	);
 
-	const handlePreset = (preset: PresetT) => () => {
-		setTrialDuration(preset.type, preset.value);
-	};
-
-	const isPresetActive = (preset: PresetT) => {
-		return preset.type === type && preset.value === value;
-	};
-
 	return (
 		<Root>
 			{PRESETS.map((preset) => {
-				const isActive = isPresetActive(preset);
+				const isActive = preset.type === type && preset.value === value;
+				const onPressHd = () => setTrialDuration(preset.type, preset.value);
 
 				return (
 					<Chip key={preset.label} glassEffectStyle={glassEffectStyle}>
-						<InnerChip $active={isActive} $tintColor={settingAccent} onPress={handlePreset(preset)}>
-							<Label $active={isActive} $tintColor={settingAccent}>
+						<InnerChip $isActive={isActive} $tintColor={settingAccent} onPress={onPressHd}>
+							<Label $isActive={isActive} $tintColor={settingAccent}>
 								{preset.label}
 							</Label>
 						</InnerChip>
