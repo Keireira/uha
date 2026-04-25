@@ -13,16 +13,11 @@ import {
 	MIN_EVENT_DATE,
 	availableEventTypes,
 	isPricedEvent,
-	isTrialEvent,
 	isPauseEvent,
 	isCancellationEvent,
 	type EventTypeT
 } from '@screens/crossroad/add-subscription/events';
-import type {
-	BillingCycleT,
-	NewTimelineEventT,
-	TimelineEventPatchT
-} from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { NewTimelineEventT, TimelineEventPatchT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
 
 import { TextField } from '@ui';
 import { Host, DatePicker } from '@expo/ui/swift-ui';
@@ -46,15 +41,6 @@ import Root, {
 	AmountWrap,
 	CurrencyBadge,
 	ReasonField,
-	DurationBlock,
-	StepperButton,
-	StepperPressable,
-	DurationValue,
-	DurationUnit,
-	UnitRow,
-	UnitChipWrap,
-	UnitChip,
-	UnitLabel,
 	Actions,
 	PrimaryButton,
 	PrimaryLabel,
@@ -65,23 +51,9 @@ import Root, {
 
 type SearchParamsT = { id?: string; type?: EventTypeT };
 
-const UNITS: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 const MIN_DURATION = 1;
 const MAX_DURATION = 365;
 const clampDuration = (n: number) => Math.max(MIN_DURATION, Math.min(MAX_DURATION, n));
-
-const unitLabel = (type: BillingCycleT, value: number) => {
-	switch (type) {
-		case 'days':
-			return value === 1 ? 'day' : 'days';
-		case 'weeks':
-			return value === 1 ? 'week' : 'weeks';
-		case 'months':
-			return value === 1 ? 'month' : 'months';
-		case 'years':
-			return value === 1 ? 'year' : 'years';
-	}
-};
 
 const parsePrice = (input: string): number | undefined => {
 	const cleaned = input.replace(/[^\d.,]/g, '').replace(',', '.');
@@ -140,16 +112,6 @@ const EditEventScreen = () => {
 		return '';
 	});
 
-	/* ─── Trial state (duration) ───────────────────── */
-	const [durationType, setDurationType] = useState<BillingCycleT>(() => {
-		if (existing && isTrialEvent(existing)) return existing.duration_type;
-		return 'days';
-	});
-	const [durationValue, setDurationValue] = useState<number>(() => {
-		if (existing && isTrialEvent(existing)) return existing.duration_value;
-		return 7;
-	});
-
 	/* ─── Pause / cancellation state (reason) ──────── */
 	const [reason, setReason] = useState<string>(() => {
 		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing))) return existing.reason ?? '';
@@ -191,17 +153,13 @@ const EditEventScreen = () => {
 	const canSave = useMemo(() => {
 		if (!activeType) return false;
 
-		if (activeType === 'trial') {
-			return durationValue >= MIN_DURATION && durationValue <= MAX_DURATION;
-		}
-
 		if (activeType === 'cancellation' || activeType === 'pause' || activeType === 'resume') {
 			return true;
 		}
 
 		const parsed = parsePrice(amountText);
 		return parsed != null && parsed > 0;
-	}, [activeType, durationValue, amountText]);
+	}, [activeType, amountText]);
 
 	/* ─── Type picker view (new event, no type chosen) ─── */
 	if (!activeType) {
@@ -248,15 +206,6 @@ const EditEventScreen = () => {
 		let payload: NewTimelineEventT;
 
 		switch (activeType) {
-			case 'trial':
-				payload = {
-					type: 'trial',
-					date: isoDate,
-					duration_type: durationType,
-					duration_value: clampDuration(durationValue)
-				};
-				break;
-
 			case 'pause':
 				payload = { type: 'pause', date: isoDate, reason: trimmedReason };
 				break;
@@ -269,7 +218,6 @@ const EditEventScreen = () => {
 				payload = { type: 'cancellation', date: isoDate, reason: trimmedReason };
 				break;
 
-			case 'first_payment':
 			case 'price_up':
 			case 'price_down':
 			case 'refund': {
@@ -292,10 +240,6 @@ const EditEventScreen = () => {
 	const handleDelete = () => {
 		if (existing) removeEvent(existing.id);
 		router.back();
-	};
-
-	const stepDuration = (delta: number) => () => {
-		setDurationValue((prev) => clampDuration(prev + delta));
 	};
 
 	const amountRowLabel = activeType === 'refund' ? 'Refunded' : activeType === 'first_payment' ? 'Amount' : 'New price';
@@ -365,54 +309,6 @@ const EditEventScreen = () => {
 							<WarningText>{priceWarning}</WarningText>
 						</WarningRow>
 					)}
-				</Section>
-			)}
-
-			{/* Trial duration */}
-			{activeType === 'trial' && (
-				<Section>
-					<SectionLabel>Duration</SectionLabel>
-					<Card>
-						<DurationBlock>
-							<StepperButton>
-								<StepperPressable
-									onPress={stepDuration(-1)}
-									$disabled={durationValue <= MIN_DURATION}
-									disabled={durationValue <= MIN_DURATION}
-								>
-									<SymbolView name="minus" size={18} tintColor={theme.text.primary} />
-								</StepperPressable>
-							</StepperButton>
-
-							<DurationValue>{durationValue}</DurationValue>
-							<DurationUnit>{unitLabel(durationType, durationValue)}</DurationUnit>
-
-							<StepperButton>
-								<StepperPressable
-									onPress={stepDuration(1)}
-									$disabled={durationValue >= MAX_DURATION}
-									disabled={durationValue >= MAX_DURATION}
-								>
-									<SymbolView name="plus" size={18} tintColor={theme.text.primary} />
-								</StepperPressable>
-							</StepperButton>
-						</DurationBlock>
-
-						<UnitRow>
-							{UNITS.map((unit) => {
-								const active = unit === durationType;
-								return (
-									<UnitChipWrap key={unit}>
-										<UnitChip $active={active} $accent={accent} onPress={() => setDurationType(unit)}>
-											<UnitLabel $active={active} $accent={accent}>
-												{unit}
-											</UnitLabel>
-										</UnitChip>
-									</UnitChipWrap>
-								);
-							})}
-						</UnitRow>
-					</Card>
 				</Section>
 			)}
 

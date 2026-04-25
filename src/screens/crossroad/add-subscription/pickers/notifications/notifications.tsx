@@ -5,7 +5,7 @@ import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { Header } from './components';
 import Root from './notifications.styles';
 import { Host, List, Section, Toggle, Text } from '@expo/ui/swift-ui';
-import { environment, listStyle, tag, font } from '@expo/ui/swift-ui/modifiers';
+import { environment, listStyle, tag } from '@expo/ui/swift-ui/modifiers';
 
 const DAY_PRESETS = [0, 1, 2, 3, 7, 14] as const;
 const TMP_LABELS = {

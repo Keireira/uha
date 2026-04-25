@@ -26,7 +26,7 @@ const BillingCycleScreen = () => {
 				paddingTop: 24,
 				paddingHorizontal: 16,
 				justifyContent: 'center',
-				paddingBottom: Math.max(insets.bottom, 64)
+				paddingBottom: insets.bottom
 			}}
 		>
 			<Header />

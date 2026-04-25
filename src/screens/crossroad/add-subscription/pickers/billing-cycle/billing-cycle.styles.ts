@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { H6 } from '@ui';
 
 export const Title = styled(H6)`
-	margin-bottom: 12px;
+	margin-bottom: 8px;
 	text-transform: uppercase;
 	color: ${({ theme }) => theme.text.tertiary};
 `;

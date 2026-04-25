@@ -7,7 +7,7 @@ import type { SearchParamsT } from '../select-tender.d';
 
 type ParamsBinding = {
 	currentValue: string | null;
-	commit: (code: string) => void;
+	commit: (code: string | null) => void;
 };
 
 const useCategoryBinding = (): ParamsBinding => {

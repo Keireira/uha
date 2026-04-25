@@ -7,7 +7,7 @@ import { LogoView } from '@ui';
 import { NoResults } from '@elements';
 import { SymbolView } from 'expo-symbols';
 import { Header, SearchBar } from './components';
-import Root, { Row, Description, Title, Comment, Check } from './select-tender.styles';
+import Root, { Row, Description, Title, Comment } from './select-tender.styles';
 
 const FALLBACK_COLOR = '#888';
 const FALLBACK_EMOJI = '•';
@@ -17,7 +17,7 @@ const SelectTenderScreen = () => {
 	const { currentValue, commit } = useParams();
 	const { tenders, hasSearch, setSearchQuery } = useFilter();
 
-	const onSelectHd = (tenderId: string) => {
+	const onSelectHd = (tenderId: string | null) => {
 		if (typeof commit !== 'function') return;
 
 		commit(tenderId);
@@ -52,11 +52,7 @@ const SelectTenderScreen = () => {
 							{withComment && <Comment>{tender.comment}</Comment>}
 						</Description>
 
-						{isActive && (
-							<Check>
-								<SymbolView name="checkmark" size={16} tintColor={settingAccent} />
-							</Check>
-						)}
+						{isActive && <SymbolView name="checkmark" size={16} weight="black" tintColor={settingAccent} />}
 					</Row>
 				);
 			})}

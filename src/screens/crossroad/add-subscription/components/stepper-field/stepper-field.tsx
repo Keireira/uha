@@ -28,12 +28,18 @@ const StepperField = ({ type, value, setValue }: Props) => {
 
 	/* Sync native field when value/type change externally (presets, unit convert) */
 	useEffect(() => {
-		const expected = formatValue(value);
-		if (expected === localValue && localType === type) return;
+		const external = formatValue(value);
+		const isValueInRange = value >= min && value <= max;
+
+		if (external === localValue && localType === type && isValueInRange) {
+			return;
+		}
+
+		const clamped = formatValue(clamp(min, max, value));
 
 		setLocalType(type);
-		setLocalValue(expected);
-		textRef.current?.setText(expected);
+		setLocalValue(clamped);
+		textRef.current?.setText(clamped);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value, type]);
 

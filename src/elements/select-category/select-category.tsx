@@ -8,7 +8,7 @@ import { LogoView } from '@ui';
 import { NoResults } from '@elements';
 import { SymbolView } from 'expo-symbols';
 import { Header, SearchBar } from './components';
-import Root, { Row, Title, Check } from './select-category.styles';
+import Root, { Row, Title } from './select-category.styles';
 
 const FALLBACK_COLOR = '#888';
 const FALLBACK_EMOJI = '•';
@@ -47,11 +47,7 @@ const SelectCategoryScreen = () => {
 							{localized}
 						</Title>
 
-						{isActive && (
-							<Check>
-								<SymbolView name="checkmark" size={16} tintColor={settingAccent} />
-							</Check>
-						)}
+						{isActive && <SymbolView name="checkmark" weight="black" size={16} tintColor={settingAccent} />}
 					</Row>
 				);
 			})}
