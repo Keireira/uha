@@ -1,13 +1,44 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { useTheme } from 'styled-components/native';
 import { SymbolView } from 'expo-symbols';
 import { useShallow } from 'zustand/react/shallow';
-import ReanimatedSwipeable, { type SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
-import * as Haptics from 'expo-haptics';
 
+import {
+	Host,
+	List,
+	Section,
+	HStack,
+	VStack,
+	ZStack,
+	Text,
+	Image,
+	Spacer,
+	Circle,
+	Rectangle,
+	Picker
+} from '@expo/ui/swift-ui';
+import {
+	listStyle,
+	listRowSeparator,
+	listRowInsets,
+	listSectionMargins,
+	frame,
+	foregroundStyle,
+	font,
+	opacity,
+	padding,
+	scrollDisabled,
+	deleteDisabled,
+	onTapGesture,
+	clipShape,
+	pickerStyle,
+	tag
+} from '@expo/ui/swift-ui/modifiers';
+
+import { withAlpha } from '@lib/colors';
 import { useAccent, useGlassStyle } from '@hooks';
 import { useDraftStore } from '../../hooks';
 import {
@@ -27,27 +58,9 @@ import Root, {
 	ErrorBanner,
 	ErrorTextBlock,
 	ErrorLine,
-	Card,
-	SwipeWrap,
-	EventRow,
-	Rail,
-	Connector,
-	NodeBubble,
-	NodeCore,
-	EventBody,
-	EventLabel,
-	EventDate,
-	EventSummary,
-	EventMeta,
-	Chevron,
-	DeleteAction,
-	DeleteActionLabel,
 	AddButton,
 	AddPressable,
 	AddLabel,
-	EmptyState,
-	EmptyText,
-	EmptyHint,
 	TypePickerBackdrop,
 	TypePickerSheet,
 	TypePickerTitle,
@@ -57,92 +70,14 @@ import Root, {
 	TypeChipLabel
 } from './timeline.styles';
 
-type EventItemProps = {
-	event: TimelineEventT;
-	isFirst: boolean;
-	isLast: boolean;
-	onPress: () => void;
-	onDelete: () => void;
-};
-
-const EventItem = ({ event, isFirst, isLast, onPress, onDelete }: EventItemProps) => {
-	const theme = useTheme();
-	const swipeRef = useRef<SwipeableMethods>(null);
-	const [isOpen, setIsOpen] = useState(false);
-
-	const meta = EVENT_META[event.type];
-	const tone = theme.accents[meta.accent];
-	const summary = eventSummary(event);
-
-	const handleDelete = () => {
-		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-		onDelete();
-	};
-
-	const handlePress = () => {
-		// If the swipeable is open (or was just opened by this tap), don't navigate —
-		// close it instead, matching iOS Mail / Messages behavior.
-		if (isOpen) {
-			swipeRef.current?.close();
-			return;
-		}
-		onPress();
-	};
-
-	const renderRightActions = useCallback(
-		() => (
-			<DeleteAction onPress={handleDelete}>
-				<SymbolView name="trash.fill" size={20} tintColor={theme.static.white} />
-				<DeleteActionLabel>Delete</DeleteActionLabel>
-			</DeleteAction>
-		),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[theme]
-	);
-
-	return (
-		<SwipeWrap>
-			<ReanimatedSwipeable
-				ref={swipeRef}
-				friction={2}
-				rightThreshold={40}
-				overshootRight={false}
-				renderRightActions={renderRightActions}
-				onSwipeableWillOpen={() => setIsOpen(true)}
-				onSwipeableWillClose={() => setIsOpen(false)}
-			>
-				<EventRow onPress={handlePress}>
-					<Rail>
-						<Connector $above={!isFirst} $below={!isLast} />
-						<NodeBubble $tone={tone}>
-							<NodeCore $tone={tone}>
-								<SymbolView name={meta.symbol} size={11} tintColor={theme.static.white} weight="bold" />
-							</NodeCore>
-						</NodeBubble>
-					</Rail>
-
-					<EventBody>
-						<EventLabel $tone={tone}>{meta.label}</EventLabel>
-						{summary ? <EventSummary>{summary}</EventSummary> : null}
-					</EventBody>
-
-					<EventMeta>
-						<EventDate>{format(parseISO(event.date), 'MMM d, yyyy')}</EventDate>
-						<Chevron>
-							<SymbolView name="chevron.right" size={12} tintColor={theme.text.tertiary} />
-						</Chevron>
-					</EventMeta>
-				</EventRow>
-			</ReanimatedSwipeable>
-		</SwipeWrap>
-	);
-};
+const styles = ['automatic', 'plain', 'inset', 'insetGrouped', 'grouped', 'sidebar'] as const;
 
 const Timeline = () => {
 	const router = useRouter();
 	const theme = useTheme();
 	const accent = useAccent();
 	const glassEffectStyle = useGlassStyle();
+	const [styleIndex, setStyleIndex] = useState(0);
 
 	const { events, removeEvent, setWithTrial } = useDraftStore(
 		useShallow((state) => ({
@@ -199,43 +134,109 @@ const Timeline = () => {
 		});
 	};
 
-	const handleDelete = (id: string) => () => {
-		removeEvent(id);
+	const handleDeleteIndices = (indices: number[]) => {
+		// SwiftUI delivers indices into the rendered events array — translate
+		// them to ids and remove from the highest first to avoid shifting.
+		const sorted = [...indices].sort((a, b) => b - a);
+		for (const i of sorted) {
+			const event = events[i];
+			if (event && event.type !== 'first_payment') removeEvent(event.id);
+		}
 	};
 
-	const hasEvents = events.length > 0;
 	const hasAnyAvailable = availableTypes.size > 0;
+	const connectorColor = withAlpha(theme.text.tertiary, 0.22);
+	// Each row has a fixed height (see ROW_HEIGHT below), so the Host's
+	// height is just rows × ROW_HEIGHT. SwiftUI List is lazy and won't render
+	// rows outside the Host's frame, which is why we need this explicit size.
+	const ROW_HEIGHT = 70;
+	const listHeight = events.length * ROW_HEIGHT;
 
 	return (
 		<Root>
 			<Header>
 				<Title>Timeline</Title>
-				{hasEvents && <HeaderHint>Swipe to delete</HeaderHint>}
+				{events.length > 1 && <HeaderHint>Swipe to delete</HeaderHint>}
 			</Header>
 
-			{hasEvents && (
-				<Card glassEffectStyle={glassEffectStyle}>
-					{events.map((event, index) => (
-						<EventItem
-							key={event.id}
-							event={event}
-							isFirst={index === 0}
-							isLast={index === events.length - 1}
-							onPress={openEditor(event)}
-							onDelete={handleDelete(event.id)}
-						/>
-					))}
-				</Card>
-			)}
+			{events.length > 0 && (
+				<Host style={{ alignSelf: 'stretch', height: listHeight }}>
+					<List modifiers={[listStyle('insetGrouped'), scrollDisabled(true), clipShape('roundedRectangle', 16)]}>
+						<Section modifiers={[listSectionMargins({ length: 0, edges: 'all' })]}>
+							<List.ForEach onDelete={handleDeleteIndices}>
+								{events.map((event, index) => {
+									const meta = EVENT_META[event.type];
+									const tone = theme.accents[meta.accent];
+									const summary = eventSummary(event);
+									const isFirst = index === 0;
+									const isLast = index === events.length - 1;
 
-			{!hasEvents && (
-				<Card glassEffectStyle={glassEffectStyle}>
-					<EmptyState>
-						<SymbolView name="point.3.connected.trianglepath.dotted" size={32} tintColor={theme.text.tertiary} />
-						<EmptyText>No events yet</EmptyText>
-						<EmptyHint>Track the subscription lifecycle</EmptyHint>
-					</EmptyState>
-				</Card>
+									return (
+										<HStack
+											key={event.id}
+											spacing={10}
+											alignment="center"
+											modifiers={[
+												frame({ height: ROW_HEIGHT }),
+												// Zero vertical row insets so adjacent cells are flush —
+												// otherwise the connector line breaks at each cell border.
+												listRowInsets({ top: 0, bottom: 0, leading: 16, trailing: 16 }),
+												listRowSeparator('hidden'),
+												deleteDisabled(event.type === 'first_payment'),
+												onTapGesture(openEditor(event))
+											]}
+										>
+											<ZStack alignment="center" modifiers={[frame({ width: 28 })]}>
+												<VStack spacing={0} modifiers={[frame({ width: 2, maxHeight: 9999 })]}>
+													<Rectangle
+														modifiers={[
+															frame({ width: 2, maxHeight: 9999 }),
+															foregroundStyle(connectorColor),
+															opacity(isFirst ? 0 : 1)
+														]}
+													/>
+													<Rectangle
+														modifiers={[
+															frame({ width: 2, maxHeight: 9999 }),
+															foregroundStyle(connectorColor),
+															opacity(isLast ? 0 : 1)
+														]}
+													/>
+												</VStack>
+
+												<Circle modifiers={[frame({ width: 28, height: 28 }), foregroundStyle(withAlpha(tone, 0.2))]} />
+												<Circle modifiers={[frame({ width: 20, height: 20 }), foregroundStyle(tone)]} />
+												<Image systemName={meta.symbol} size={11} color={theme.static.white} />
+											</ZStack>
+
+											<VStack alignment="leading" spacing={4}>
+												<Text modifiers={[font({ size: 15, weight: 'bold' }), foregroundStyle(tone)]}>
+													{meta.label}
+												</Text>
+
+												{summary ? (
+													<Text
+														modifiers={[font({ size: 15, weight: 'semibold' }), foregroundStyle(theme.text.primary)]}
+													>
+														{summary}
+													</Text>
+												) : null}
+											</VStack>
+
+											<Spacer />
+
+											<Text modifiers={[font({ size: 13, weight: 'medium' }), foregroundStyle(theme.text.tertiary)]}>
+												{format(parseISO(event.date), 'MMM d, yyyy')}
+											</Text>
+
+											<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+										</HStack>
+									);
+								})}
+							</List.ForEach>
+						</Section>
+					</List>
+				</Host>
 			)}
 
 			{hasAnyAvailable && (

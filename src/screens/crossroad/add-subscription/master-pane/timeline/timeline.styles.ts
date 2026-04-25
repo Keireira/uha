@@ -54,135 +54,6 @@ export const ErrorLine = styled.Text`
 	color: ${({ theme }) => theme.semantic.error};
 `;
 
-/* ─── Timeline rail ─────────────────────────────────────── */
-
-export const Card = styled(GlassView).attrs({
-	isInteractive: false
-})`
-	align-self: stretch;
-	overflow: hidden;
-
-	border-radius: 16px;
-`;
-
-export const SwipeWrap = styled.View`
-	overflow: hidden;
-`;
-
-export const EventRow = styled.Pressable`
-	flex-direction: row;
-	align-items: stretch;
-
-	padding: 14px 16px;
-
-	background-color: ${({ theme }) => theme.background.secondary};
-`;
-
-export const Rail = styled.View`
-	width: 28px;
-	align-items: center;
-	justify-content: center;
-
-	margin-right: 10px;
-`;
-
-export const Connector = styled.View<{ $above: boolean; $below: boolean }>`
-	position: absolute;
-	top: ${({ $above }) => ($above ? -14 : 14)}px;
-	bottom: ${({ $below }) => ($below ? -14 : 14)}px;
-	width: 2px;
-
-	background-color: ${({ theme, $above, $below }) =>
-		$above || $below ? withAlpha(theme.text.tertiary, 0.22) : 'transparent'};
-`;
-
-export const NodeBubble = styled.View<{ $tone: string }>`
-	width: 28px;
-	height: 28px;
-	border-radius: 14px;
-
-	align-items: center;
-	justify-content: center;
-
-	background-color: ${({ $tone }) => withAlpha($tone, 0.2)};
-
-	z-index: 1;
-`;
-
-export const NodeCore = styled.View<{ $tone: string }>`
-	width: 20px;
-	height: 20px;
-	border-radius: 10px;
-
-	align-items: center;
-	justify-content: center;
-
-	background-color: ${({ $tone }) => $tone};
-`;
-
-/* ─── Event content ─────────────────────────────────────── */
-
-export const EventBody = styled.View`
-	flex: 1;
-	gap: 4px;
-
-	min-height: 28px;
-	justify-content: center;
-`;
-
-export const EventMeta = styled.View`
-	flex-direction: row;
-	align-items: center;
-	gap: 4px;
-
-	margin-left: 8px;
-`;
-
-export const EventLabel = styled.Text<{ $tone: string }>`
-	font-size: 15px;
-	font-weight: 700;
-
-	color: ${({ $tone }) => $tone};
-`;
-
-export const EventDate = styled.Text`
-	font-size: 13px;
-	font-weight: 500;
-
-	color: ${({ theme }) => theme.text.tertiary};
-`;
-
-export const EventSummary = styled.Text`
-	font-size: 15px;
-	font-weight: 600;
-
-	color: ${({ theme }) => theme.text.primary};
-`;
-
-export const Chevron = styled.View`
-	align-items: center;
-	justify-content: center;
-`;
-
-/* ─── Delete action ─────────────────────────────────────── */
-
-export const DeleteAction = styled.Pressable`
-	width: 88px;
-	align-items: center;
-	justify-content: center;
-
-	background-color: ${({ theme }) => theme.semantic.error};
-`;
-
-export const DeleteActionLabel = styled.Text`
-	font-size: 14px;
-	font-weight: 600;
-
-	color: ${({ theme }) => theme.static.white};
-
-	margin-top: 4px;
-`;
-
 /* ─── Add button ────────────────────────────────────────── */
 
 export const AddButton = styled(GlassView).attrs({
@@ -212,36 +83,6 @@ export const AddLabel = styled.Text<{ $accent: string }>`
 	font-weight: 600;
 
 	color: ${({ $accent }) => $accent};
-`;
-
-/* ─── Empty state ───────────────────────────────────────── */
-
-export const EmptyState = styled.View`
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-
-	padding: 28px 20px;
-`;
-
-export const EmptyText = styled.Text`
-	font-size: 14px;
-	font-weight: 500;
-
-	text-align: center;
-	color: ${({ theme }) => theme.text.secondary};
-`;
-
-export const EmptyHint = styled.Text`
-	font-size: 12px;
-	font-weight: 400;
-
-	text-align: center;
-	color: ${({ theme }) => theme.text.tertiary};
-`;
-
-export default styled.View`
-	align-self: stretch;
 `;
 
 /* ─── Type picker sheet (inline chips) ──────────────────── */
@@ -311,4 +152,8 @@ export const TypeChipLabel = styled.Text<{ $tone: string }>`
 	font-weight: 600;
 
 	color: ${({ $tone }) => $tone};
+`;
+
+export default styled.View`
+	align-self: stretch;
 `;
