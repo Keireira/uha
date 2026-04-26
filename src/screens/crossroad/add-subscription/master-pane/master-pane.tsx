@@ -3,6 +3,7 @@ import { format, parseISO } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
+import { useTheme } from 'styled-components/native';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -15,11 +16,21 @@ import type { BillingCycleT } from '../hooks/use-draft-store';
 
 import LogoRow from './logo-row';
 import PriceRow from './price-row';
-import FieldRow from './field-row';
-import ToggleRow from './toggle-row';
 import Timeline from './timeline';
 import { TextField } from '@ui';
-import Root, { TitleField, FieldsGroup, NotesCard, NotesField } from './master-pane.styles';
+
+import { Host, List, Section, Toggle, Text, HStack, Spacer, Image } from '@expo/ui/swift-ui';
+import {
+	font,
+	foregroundStyle,
+	listStyle,
+	listSectionSpacing,
+	listSectionMargins,
+	scrollDisabled,
+	onTapGesture
+} from '@expo/ui/swift-ui/modifiers';
+
+import Root, { TitleField, NotesCard, NotesField } from './master-pane.styles';
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },
@@ -45,7 +56,11 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 	return `${value} ${value === 1 ? unit.single : unit.plural}`;
 };
 
+const ROW_HEIGHT = 44;
+const SECTION_GAP = 24;
+
 const MasterPane = () => {
+	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
 	const glassEffectStyle = useGlassStyle();
@@ -98,6 +113,12 @@ const MasterPane = () => {
 			? 'On'
 			: `${draft.notify_days_before.length} reminder${draft.notify_days_before.length === 1 ? '' : 's'}`;
 
+	const billingRows = draft.with_trial ? 4 : 3;
+	const ADDITIONAL_ROWS = 3;
+	const COMBINED_ROWS_HEIGHT = (billingRows + ADDITIONAL_ROWS) * ROW_HEIGHT;
+	const GAP_HEIGHT = 5 * SECTION_GAP;
+	const listHeight = COMBINED_ROWS_HEIGHT + GAP_HEIGHT;
+
 	return (
 		<Root>
 			<LogoRow />
@@ -115,73 +136,104 @@ const MasterPane = () => {
 
 			<PriceRow />
 
-			<FieldsGroup glassEffectStyle={glassEffectStyle}>
-				<FieldRow
-					label="First Payment Date"
-					preview={firstPaymentPreview}
-					onPress={() => {
-						router.push({
-							pathname: '/(crossroad)/first-payment-date'
-						});
-					}}
-				/>
-				<FieldRow
-					label="Billing Cycle"
-					preview={cyclePreview}
-					onPress={() => router.push('/(crossroad)/billing-cycle')}
-				/>
-				<ToggleRow
-					label="With Trial"
-					value={draft.with_trial}
-					onChange={draft.setWithTrial}
-					isLast={!draft.with_trial}
-				/>
-				{draft.with_trial && (
-					<FieldRow
-						label="Trial Duration"
-						preview={trialPreview}
-						onPress={() => router.push('/(crossroad)/trial-duration')}
-						isLast
-					/>
-				)}
-			</FieldsGroup>
+			<Host style={{ height: listHeight }}>
+				<List modifiers={[listStyle('insetGrouped'), scrollDisabled(true), listSectionSpacing(SECTION_GAP)]}>
+					<Section modifiers={[listSectionMargins({ length: 0, edges: 'top' })]}>
+						<HStack
+							spacing={6}
+							alignment="center"
+							modifiers={[onTapGesture(() => router.push('/(crossroad)/first-payment-date'))]}
+						>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>First Payment Date</Text>
 
-			<FieldsGroup glassEffectStyle={glassEffectStyle}>
-				<FieldRow
-					label="Category"
-					preview={categoryPreview}
-					onPress={() => {
-						router.push({
-							pathname: `/(pickers)/select-category`,
-							params: {
-								target: 'add_subscription_category'
-							}
-						});
-					}}
-				/>
-				<FieldRow
-					label="Payment Method"
-					preview={paymentPreview}
-					onPress={() => {
-						router.push({
-							pathname: `/(pickers)/select-tender`,
-							params: {
-								target: 'add_subscription_tender'
-							}
-						});
-					}}
-					isLast
-				/>
-			</FieldsGroup>
+							<Spacer />
 
-			<FieldsGroup glassEffectStyle={glassEffectStyle}>
-				<FieldRow
-					label="Notifications"
-					preview={notificationsPreview}
-					onPress={() => router.push('/(crossroad)/notifications')}
-					isLast
-				/>
-			</FieldsGroup>
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{firstPaymentPreview}</Text>
+
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+
+						<HStack
+							spacing={6}
+							alignment="center"
+							modifiers={[onTapGesture(() => router.push('/(crossroad)/billing-cycle'))]}
+						>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Billing Cycle</Text>
+							<Spacer />
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{cyclePreview}</Text>
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+
+						<Toggle label="With Trial" isOn={draft.with_trial} onIsOnChange={draft.setWithTrial} />
+
+						{draft.with_trial && (
+							<HStack
+								spacing={6}
+								alignment="center"
+								modifiers={[onTapGesture(() => router.push('/(crossroad)/trial-duration'))]}
+							>
+								<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Trial Duration</Text>
+								<Spacer />
+								<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{trialPreview}</Text>
+								<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+							</HStack>
+						)}
+					</Section>
+
+					<Section>
+						<HStack
+							spacing={6}
+							alignment="center"
+							modifiers={[
+								onTapGesture(() =>
+									router.push({
+										pathname: '/(pickers)/select-category',
+										params: { target: 'add_subscription_category' }
+									})
+								)
+							]}
+						>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Category</Text>
+							<Spacer />
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{categoryPreview}</Text>
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+
+						<HStack
+							spacing={6}
+							alignment="center"
+							modifiers={[
+								onTapGesture(() =>
+									router.push({
+										pathname: '/(pickers)/select-tender',
+										params: { target: 'add_subscription_tender' }
+									})
+								)
+							]}
+						>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Payment Method</Text>
+							<Spacer />
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{paymentPreview}</Text>
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+					</Section>
+
+					<Section modifiers={[listSectionMargins({ length: 0, edges: 'bottom' })]}>
+						<HStack
+							spacing={6}
+							alignment="center"
+							modifiers={[onTapGesture(() => router.push('/(crossroad)/notifications'))]}
+						>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Notifications</Text>
+							<Spacer />
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>
+								{notificationsPreview}
+							</Text>
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+					</Section>
+				</List>
+			</Host>
 
 			<NotesCard glassEffectStyle={glassEffectStyle}>
 				<NotesField value={draft.notes} onChangeText={draft.setNotes} placeholder="Notes (optional)" />

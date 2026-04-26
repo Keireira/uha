@@ -6,15 +6,15 @@ import { useTheme } from 'styled-components/native';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { EVENT_META, eventSummary, type TimelineEventT } from '@screens/crossroad/add-subscription/events';
 
-import Root from './timeline.styles';
-import { TimelineHeader, AddEventModal, AddEventButton, ErrorsBanner } from './components';
+import Root, { VView } from './timeline.styles';
+import { AddEventModal, AddEventButton, ErrorsBanner } from './components';
 import { Host, List, Section, HStack, VStack, ZStack, Text, Image, Spacer, Circle, Rectangle } from '@expo/ui/swift-ui';
 import {
 	font,
 	frame,
 	opacity,
 	listStyle,
-	clipShape,
+	lineLimit,
 	onTapGesture,
 	listRowInsets,
 	scrollDisabled,
@@ -69,11 +69,9 @@ const Timeline = () => {
 
 	return (
 		<Root>
-			<TimelineHeader />
-
-			<Host style={{ height: timeline.length * ROW_HEIGHT }}>
-				<List modifiers={[listStyle('insetGrouped'), scrollDisabled(true), clipShape('roundedRectangle', 16)]}>
-					<Section modifiers={[listSectionMargins({ length: 0, edges: 'all' })]}>
+			<Host style={{ height: timeline.length * ROW_HEIGHT + 50 }}>
+				<List modifiers={[listStyle('insetGrouped'), scrollDisabled(true)]}>
+					<Section title="Timeline" modifiers={[listSectionMargins({ length: 0, edges: 'vertical' })]}>
 						<List.ForEach onDelete={onDeleteHd}>
 							{timeline.map((event, index, arr) => {
 								const isFirst = index === 0;
@@ -134,7 +132,13 @@ const Timeline = () => {
 											</Text>
 
 											{Boolean(summary) && (
-												<Text modifiers={[font({ size: 14, weight: 'medium' }), foregroundStyle(theme.text.primary)]}>
+												<Text
+													modifiers={[
+														font({ size: 14, weight: 'medium' }),
+														foregroundStyle(theme.text.primary),
+														lineLimit(1)
+													]}
+												>
 													{summary}
 												</Text>
 											)}
@@ -158,11 +162,13 @@ const Timeline = () => {
 				</List>
 			</Host>
 
-			<AddEventButton setIsPickerVisible={setIsPickerVisible} />
+			<VView>
+				<AddEventButton setIsPickerVisible={setIsPickerVisible} />
 
-			<ErrorsBanner />
+				<ErrorsBanner />
 
-			<AddEventModal isPickerVisible={isPickerVisible} setIsPickerVisible={setIsPickerVisible} />
+				<AddEventModal isPickerVisible={isPickerVisible} setIsPickerVisible={setIsPickerVisible} />
+			</VView>
 		</Root>
 	);
 };
