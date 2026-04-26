@@ -62,6 +62,7 @@ CREATE TABLE `subscriptions` (
 	`category_slug` text NOT NULL,
 	`service_id` text NOT NULL,
 	`custom_name` text,
+	`custom_logo` text,
 	`billing_cycle_type` text DEFAULT 'months' NOT NULL,
 	`billing_cycle_value` integer DEFAULT 1 NOT NULL,
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,

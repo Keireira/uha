@@ -18,6 +18,7 @@ export const subscriptionsTable = sqliteTable(
 			.references(() => servicesTable.id)
 			.notNull(),
 		custom_name: text(),
+		custom_logo: text(),
 
 		billing_cycle_type: text().$type<'days' | 'weeks' | 'months' | 'years'>().default('months').notNull(),
 		billing_cycle_value: int().default(1).notNull(),

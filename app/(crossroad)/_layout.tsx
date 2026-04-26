@@ -40,8 +40,7 @@ const Layout = () => {
 				name="add-subscription"
 				options={{
 					title: 'New Subscription',
-					...sharedScreenConfig,
-					sheetAllowedDetents: [0.8, 1.0]
+					...sharedScreenConfig
 				}}
 			/>
 

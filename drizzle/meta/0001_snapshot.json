@@ -1,6 +1,6 @@
 {
-  "id": "b7a595df-46f1-494d-9d17-8bbea1390a15",
-  "prevId": "c928fe88-14f6-4326-965b-bbe67beeee67",
+  "id": "e40bd9c0-f825-4791-907b-6ec02a870c95",
+  "prevId": "f19ec158-ab62-4cb7-8383-ece6fd33fe2a",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -398,6 +398,13 @@
         },
         "custom_name": {
           "name": "custom_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "custom_logo": {
+          "name": "custom_logo",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

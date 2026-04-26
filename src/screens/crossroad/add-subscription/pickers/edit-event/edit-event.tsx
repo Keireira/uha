@@ -51,10 +51,6 @@ import Root, {
 
 type SearchParamsT = { id?: string; type?: EventTypeT };
 
-const MIN_DURATION = 1;
-const MAX_DURATION = 365;
-const clampDuration = (n: number) => Math.max(MIN_DURATION, Math.min(MAX_DURATION, n));
-
 const parsePrice = (input: string): number | undefined => {
 	const cleaned = input.replace(/[^\d.,]/g, '').replace(',', '.');
 	if (!cleaned) return undefined;
