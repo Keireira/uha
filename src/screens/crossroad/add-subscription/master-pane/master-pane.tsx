@@ -12,7 +12,6 @@ import { categoriesTable, tendersTable } from '@db/schema';
 
 import { useGlassStyle } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
-import type { BillingCycleT } from '../hooks/use-draft-store';
 
 import LogoRow from './logo-row';
 import Timeline from './timeline';
@@ -31,6 +30,8 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
 import { NotesCard, NotesField } from './master-pane.styles';
+
+import type { BillingCycleT } from '../hooks/use-draft-store';
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },

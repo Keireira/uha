@@ -1,6 +1,7 @@
 export * from './http-client';
 export * from './language';
 export * from './colors';
+export * from './price';
 export * from './date';
 
 export { default as first } from './first';

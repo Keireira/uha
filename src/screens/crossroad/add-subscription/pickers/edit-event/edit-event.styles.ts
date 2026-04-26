@@ -19,48 +19,6 @@ export const SectionLabel = styled.Text`
 	color: ${({ theme }) => theme.text.tertiary};
 `;
 
-/* ─── Hero / type display ──────────────────────────── */
-
-export const TypeHero = styled.View<{ $tone: string }>`
-	flex-direction: row;
-	align-items: center;
-	gap: 12px;
-
-	padding: 14px 16px;
-
-	background-color: ${({ $tone }) => withAlpha($tone, 0.14)};
-	border-radius: 16px;
-`;
-
-export const TypeHeroIcon = styled.View<{ $tone: string }>`
-	width: 36px;
-	height: 36px;
-	border-radius: 18px;
-
-	align-items: center;
-	justify-content: center;
-
-	background-color: ${({ $tone }) => $tone};
-`;
-
-export const TypeHeroText = styled.View`
-	flex: 1;
-`;
-
-export const TypeHeroLabel = styled.Text<{ $tone: string }>`
-	font-size: 17px;
-	font-weight: 700;
-
-	color: ${({ $tone }) => $tone};
-`;
-
-export const TypeHeroDescription = styled.Text`
-	font-size: 13px;
-	font-weight: 400;
-
-	color: ${({ theme }) => theme.text.secondary};
-`;
-
 /* ─── Fields card ──────────────────────────────────── */
 
 export const Card = styled(GlassView).attrs({

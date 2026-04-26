@@ -5,9 +5,9 @@ import { useTheme } from 'styled-components/native';
 import { useShallow } from 'zustand/react/shallow';
 import { SymbolView } from 'expo-symbols';
 
+import { parsePrice } from '@lib';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import {
-	EVENT_META,
 	MIN_EVENT_DATE,
 	isPricedEvent,
 	isPauseEvent,
@@ -16,18 +16,13 @@ import {
 } from '@screens/crossroad/add-subscription/events';
 
 import { TextField } from '@ui';
-import { Header } from './components';
+import { Header, Hero } from './components';
 import { Host, DatePicker } from '@expo/ui/swift-ui';
 import { datePickerStyle, keyboardType } from '@expo/ui/swift-ui/modifiers';
 
 import Root, {
 	Section,
 	SectionLabel,
-	TypeHero,
-	TypeHeroIcon,
-	TypeHeroText,
-	TypeHeroLabel,
-	TypeHeroDescription,
 	Card,
 	Row,
 	RowLabel,
@@ -39,17 +34,6 @@ import Root, {
 } from './edit-event.styles';
 
 type SearchParamsT = { id?: string; type?: EventTypeT };
-
-const parsePrice = (input: string): number | undefined => {
-	const cleaned = input.replace(/[^\d.,]/g, '').replace(',', '.');
-	if (!cleaned) return undefined;
-
-	const n = parseFloat(cleaned);
-	return Number.isFinite(n) ? n : undefined;
-};
-
-const isPricedType = (type: EventTypeT) =>
-	type === 'first_payment' || type === 'price_up' || type === 'price_down' || type === 'refund';
 
 const EditEventScreen = () => {
 	const theme = useTheme();
@@ -113,14 +97,13 @@ const EditEventScreen = () => {
 		if (activeType === 'price_up' && parsed <= priorPrice) {
 			return `New price should be higher than the previous ${priorPrice.toFixed(2)} ${currency}.`;
 		}
+
 		if (activeType === 'price_down' && parsed >= priorPrice) {
 			return `New price should be lower than the previous ${priorPrice.toFixed(2)} ${currency}.`;
 		}
+
 		return null;
 	}, [activeType, amountText, priorPrice, currency]);
-
-	const meta = EVENT_META[activeType || 'first_payment'];
-	const tone = theme.accents[meta.accent];
 
 	const amountRowLabel = activeType === 'refund' ? 'Refunded' : activeType === 'first_payment' ? 'Amount' : 'New price';
 
@@ -129,18 +112,11 @@ const EditEventScreen = () => {
 			<Header amountText={amountText} reason={reason} />
 
 			<Root>
-				<TypeHero $tone={tone}>
-					<TypeHeroIcon $tone={tone}>
-						<SymbolView name={meta.symbol} size={18} tintColor={theme.static.white} weight="bold" />
-					</TypeHeroIcon>
-					<TypeHeroText>
-						<TypeHeroLabel $tone={tone}>{meta.label}</TypeHeroLabel>
-						<TypeHeroDescription>{meta.description}</TypeHeroDescription>
-					</TypeHeroText>
-				</TypeHero>
+				<Hero activeType={activeType} />
 
 				<Section>
 					<SectionLabel>When</SectionLabel>
+
 					<Card>
 						<Row $isLast>
 							<RowLabel>Date</RowLabel>
@@ -158,7 +134,7 @@ const EditEventScreen = () => {
 				</Section>
 
 				{/* Priced events — amount + currency */}
-				{isPricedType(activeType) && (
+				{['first_payment', 'price_up', 'price_down', 'refund'].includes(activeType) && (
 					<Section>
 						<SectionLabel>Amount</SectionLabel>
 						<Card>
@@ -199,6 +175,7 @@ const EditEventScreen = () => {
 				{(activeType === 'pause' || activeType === 'cancellation') && (
 					<Section>
 						<SectionLabel>Reason (optional)</SectionLabel>
+
 						<Card>
 							<ReasonField
 								value={reason}
