@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useDraftStore } from '../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { keyboardType } from '@expo/ui/swift-ui/modifiers';
 
 import { TextButton, TextField } from '@ui';

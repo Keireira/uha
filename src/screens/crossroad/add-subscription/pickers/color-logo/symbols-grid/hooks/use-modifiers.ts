@@ -2,7 +2,7 @@ import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import { withAlpha } from '@lib/colors';
-import { useDraftStore } from '../../../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import { COLUMNS, GRID_GAP, HORIZONTAL_PADDING } from '../symbols-grid.constants';
 

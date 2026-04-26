@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 
-import { useDraftStore } from '../../../../hooks';
-import { timelineErrors } from '../../../../events';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { timelineErrors } from '@screens/crossroad/add-subscription/events';
 
 import { SymbolView } from 'expo-symbols';
 import Root, { ErrorTextBlock, ErrorLine } from './errors-banner.styles';

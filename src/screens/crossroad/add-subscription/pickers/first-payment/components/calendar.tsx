@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useLocales } from 'expo-localization';
 import { format, parseISO, addYears, endOfYear } from 'date-fns';
 
-import { useSettingsValue } from '@hooks';
 import { useShallow } from 'zustand/react/shallow';
+import { useSettingsValue, useAccent } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import { Host, DatePicker } from '@expo/ui/swift-ui';
@@ -19,6 +19,7 @@ const PICKER_MODIFIERS = [datePickerStyle('graphical')];
 
 const Calendar = () => {
 	const [locale] = useLocales();
+	const settingAccent = useAccent();
 	const maxHorizon = useSettingsValue<UserT['max_horizon']>('max_horizon');
 
 	const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
@@ -44,6 +45,7 @@ const Calendar = () => {
 				onDateChange={onDateChangeHd}
 				range={{ start: MIN_EVENT_DATE, end: maxEventDate }}
 				modifiers={PICKER_MODIFIERS}
+				tint={settingAccent}
 				locale={locale?.languageTag ?? 'en-US'}
 			/>
 		</Host>

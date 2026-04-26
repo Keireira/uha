@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDraftStore } from '../../../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import Root, { Title, Hint } from './header.styles';
 

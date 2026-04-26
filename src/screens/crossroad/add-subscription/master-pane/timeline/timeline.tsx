@@ -3,8 +3,8 @@ import { useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from 'styled-components/native';
 
-import { useDraftStore } from '../../hooks';
-import { EVENT_META, eventSummary, type TimelineEventT } from '../../events';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { EVENT_META, eventSummary, type TimelineEventT } from '@screens/crossroad/add-subscription/events';
 
 import Root from './timeline.styles';
 import { TimelineHeader, AddEventModal, AddEventButton, ErrorsBanner } from './components';

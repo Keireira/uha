@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, useRouter } from 'expo-router';
 
-import { useDraftStore } from '../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useShallow } from 'zustand/react/shallow';
 
 import db from '@db';

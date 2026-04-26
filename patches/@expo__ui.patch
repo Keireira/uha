@@ -1,8 +1,8 @@
 diff --git a/build/swift-ui/DatePicker/index.d.ts b/build/swift-ui/DatePicker/index.d.ts
-index 74df5b6e7f7ae1d976f74f4cbf355164421e01dc..f60fa64ea881482c4e32a2b3efd64988da2053c3 100644
+index 74df5b6e7f7ae1d976f74f4cbf355164421e01dc..fc499f295802c34044564cd99f3c68eaaad2241f 100644
 --- a/build/swift-ui/DatePicker/index.d.ts
 +++ b/build/swift-ui/DatePicker/index.d.ts
-@@ -26,6 +26,12 @@ export type DatePickerProps = {
+@@ -26,6 +26,13 @@ export type DatePickerProps = {
       * Callback when the date selection changes.
       */
      onDateChange?: (date: Date) => void;
@@ -12,26 +12,29 @@ index 74df5b6e7f7ae1d976f74f4cbf355164421e01dc..f60fa64ea881482c4e32a2b3efd64988
 +     * When omitted, the picker follows the user's system locale.
 +     */
 +    locale?: string;
++    tint?: string;
      /**
       * Children to use as a custom label.
       */
 diff --git a/ios/DatePickerView.swift b/ios/DatePickerView.swift
-index 5d257e69a989e23feb1d78621cf66d3fa8285931..e904fea864a8faae616e976277a027f10016c4e2 100644
+index 5d257e69a989e23feb1d78621cf66d3fa8285931..dcdfacbf2dc9f03dd68876bfeacef8fa013d4314 100644
 --- a/ios/DatePickerView.swift
 +++ b/ios/DatePickerView.swift
-@@ -21,6 +21,7 @@ internal struct DatePickerView: ExpoSwiftUI.View {
+@@ -21,6 +21,8 @@ internal struct DatePickerView: ExpoSwiftUI.View {
          date = props.selection ?? Date()
        }
        .if(props.title == nil && !hasChildren) { $0.labelsHidden() }
 +      .if(props.locale != nil) { $0.environment(\.locale, Locale(identifier: props.locale!)) }
++      .if(props.tint != nil) { $0.tint(props.tint!) }
  #endif
    }
  
-@@ -104,5 +105,6 @@ internal final class DatePickerProps: UIBaseViewProps {
+@@ -104,5 +106,7 @@ internal final class DatePickerProps: UIBaseViewProps {
    @Field var selection: Date?
    @Field var range: DateRange?
    @Field var displayedComponents: [DatePickerComponent] = [.date]
-+	@Field var locale: String?
++  @Field var locale: String?
++  @Field var tint: Color?
    var onDateChange = EventDispatcher()
  }
 diff --git a/ios/Modifiers/FontModifier.swift b/ios/Modifiers/FontModifier.swift
@@ -49,10 +52,10 @@ index 66a89c07faa63931d77f871508107b3b8e23d9c9..2c5eb91fdd4204f05014b62c06c688a6
        content.font(.system(
          size: size ?? 17,
 diff --git a/src/swift-ui/DatePicker/index.tsx b/src/swift-ui/DatePicker/index.tsx
-index 5af13962458b12d70f577eb6ebfbbc4a430a56cf..8dd7ec5d5bc9abb7df54350ec27eab207359062a 100644
+index 5af13962458b12d70f577eb6ebfbbc4a430a56cf..9b3f000faa68a15affeaa8ce535fa0923e657e22 100644
 --- a/src/swift-ui/DatePicker/index.tsx
 +++ b/src/swift-ui/DatePicker/index.tsx
-@@ -33,6 +33,12 @@ export type DatePickerProps = {
+@@ -33,6 +33,13 @@ export type DatePickerProps = {
     * Callback when the date selection changes.
     */
    onDateChange?: (date: Date) => void;
@@ -62,6 +65,7 @@ index 5af13962458b12d70f577eb6ebfbbc4a430a56cf..8dd7ec5d5bc9abb7df54350ec27eab20
 +   * When omitted, the picker follows the user's system locale.
 +   */
 +  locale?: string;
++  tint?: string;
    /**
     * Children to use as a custom label.
     */

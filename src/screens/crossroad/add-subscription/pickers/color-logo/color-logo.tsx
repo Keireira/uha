@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Stack, useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
 
 import { useAccent } from '@hooks';
-import { useDraftStore } from '../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useShallow } from 'zustand/react/shallow';
 
 import SymbolGrid from './symbols-grid';

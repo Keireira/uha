@@ -10,7 +10,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useAccent } from '@hooks';
 import { isLight } from '@lib/colors';
-import { useDraftStore } from '../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import { LogoView } from '@ui';
 import { SymbolView } from 'expo-symbols';

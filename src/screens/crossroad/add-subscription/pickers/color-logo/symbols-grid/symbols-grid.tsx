@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
 
 import { lighten } from '@lib/colors';
-import { useDraftStore } from '../../../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useFilter, useModifiers } from './hooks';
 
 import { font, padding, onTapGesture } from '@expo/ui/swift-ui/modifiers';

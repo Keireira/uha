@@ -10,7 +10,7 @@ import { categoriesTable, tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useGlassStyle } from '@hooks';
-import { useDraftStore } from '../hooks';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import type { BillingCycleT } from '../hooks/use-draft-store';
 
 import LogoRow from './logo-row';
