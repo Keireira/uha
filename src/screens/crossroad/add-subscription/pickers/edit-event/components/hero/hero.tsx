@@ -1,6 +1,7 @@
 import React from 'react';
 import { withAlpha } from '@lib/colors';
 import { useTheme } from 'styled-components/native';
+import { useEventMeta } from '@screens/crossroad/add-subscription/pickers/edit-event/hooks';
 
 import {
 	font,
@@ -10,27 +11,15 @@ import {
 	clipShape,
 	background,
 	glassEffect,
-	foregroundStyle
+	foregroundStyle,
+	listRowSeparator,
+	listRowBackground,
+	listSectionMargins,
+	listSectionSpacing
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, HStack, VStack, Image, Text, Spacer } from '@expo/ui/swift-ui';
-
-import { EVENT_META } from '@screens/crossroad/add-subscription/events';
+import { Section, HStack, VStack, Image, Text, Spacer } from '@expo/ui/swift-ui';
 
 import type { Props } from './hero.d';
-
-const useEventMeta = (activeType: Props['activeType']) => {
-	const theme = useTheme();
-
-	if (!activeType) return;
-
-	const meta = EVENT_META[activeType];
-	const tintColor = theme.accents[meta.accent];
-
-	return {
-		...meta,
-		tintColor
-	};
-};
 
 const Hero = ({ activeType }: Props) => {
 	const theme = useTheme();
@@ -41,7 +30,14 @@ const Hero = ({ activeType }: Props) => {
 	}
 
 	return (
-		<Host matchContents>
+		<Section
+			modifiers={[
+				listSectionSpacing(0),
+				listRowSeparator('hidden'),
+				listRowBackground('transparent'),
+				listSectionMargins({ length: 0, edges: 'all' })
+			]}
+		>
 			<HStack
 				spacing={16}
 				modifiers={[
@@ -77,7 +73,7 @@ const Hero = ({ activeType }: Props) => {
 
 				<Spacer />
 			</HStack>
-		</Host>
+		</Section>
 	);
 };
 

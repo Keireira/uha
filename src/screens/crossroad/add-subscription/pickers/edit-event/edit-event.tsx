@@ -1,64 +1,46 @@
-import React, { useMemo, useState } from 'react';
-import { format, parseISO } from 'date-fns';
+import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useTheme } from 'styled-components/native';
-import { useShallow } from 'zustand/react/shallow';
-import { SymbolView } from 'expo-symbols';
 
-import { parsePrice } from '@lib';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import {
-	MIN_EVENT_DATE,
-	isPricedEvent,
 	isPauseEvent,
+	isPricedEvent,
 	isCancellationEvent,
 	type EventTypeT
 } from '@screens/crossroad/add-subscription/events';
 
-import { TextField } from '@ui';
-import { Header, Hero } from './components';
-import { Host, DatePicker } from '@expo/ui/swift-ui';
-import { datePickerStyle, keyboardType } from '@expo/ui/swift-ui/modifiers';
-
-import Root, {
-	Section,
-	SectionLabel,
-	Card,
-	Row,
-	RowLabel,
-	AmountWrap,
-	CurrencyBadge,
-	ReasonField,
-	WarningRow,
-	WarningText
-} from './edit-event.styles';
+import { Host, List } from '@expo/ui/swift-ui';
+import { listStyle, scrollDismissesKeyboard } from '@expo/ui/swift-ui/modifiers';
+import { Header, Hero, WhenSection, AmountSection, ReasonSection } from './components';
 
 type SearchParamsT = { id?: string; type?: EventTypeT };
 
+const PRICED_TYPES: EventTypeT[] = ['first_payment', 'price_up', 'price_down', 'refund'];
+const CANCELLED_TYPES: EventTypeT[] = ['pause', 'cancellation'];
+
 const EditEventScreen = () => {
-	const theme = useTheme();
 	const { id, type: typeParam } = useLocalSearchParams<SearchParamsT>();
 
-	const { defaultCurrency, events } = useDraftStore(
-		useShallow((state) => ({
-			defaultCurrency: state.currency ?? 'USD',
-			events: state.timeline
-		}))
-	);
+	const events = useDraftStore((state) => state.timeline);
 
 	const existing = id ? events.find((event) => event.id === id) : undefined;
 	const activeType = existing?.type ?? typeParam;
 
-	const [date, setDate] = useState<Date>(() => (existing ? parseISO(existing.date) : new Date()));
+	const [date, setDate] = useState<Date>(() => {
+		if (existing) {
+			return new Date(existing.date);
+		}
+
+		return new Date();
+	});
 
 	const [amountText, setAmountText] = useState<string>(() => {
-		if (existing && isPricedEvent(existing)) return String(existing.amount);
+		if (existing && isPricedEvent(existing)) {
+			return String(existing.amount);
+		}
 
-		// New refund — default to the most recent known price (first_payment / price_up / price_down).
 		if (typeParam === 'refund') {
-			const latestPriced = events
-				.filter((e) => e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down')
-				.sort((a, b) => b.date.localeCompare(a.date))[0];
+			const [latestPriced] = events.filter(isPricedEvent).sort((a, b) => b.date.localeCompare(a.date));
 
 			if (latestPriced && 'amount' in latestPriced && latestPriced.amount > 0) {
 				return String(latestPriced.amount);
@@ -68,124 +50,42 @@ const EditEventScreen = () => {
 		return '';
 	});
 
-	const [reason, setReason] = useState<string>(() => {
-		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing))) return existing.reason ?? '';
+	const [cancellationReason, setCancellationReason] = useState<string>(() => {
+		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing))) {
+			return existing.reason ?? '';
+		}
+
 		return '';
 	});
 
-	const currency = existing && isPricedEvent(existing) ? existing.currency : defaultCurrency;
-
-	const priorPrice = useMemo(() => {
-		if (activeType !== 'price_up' && activeType !== 'price_down') return undefined;
-
-		const isoDate = format(date, 'yyyy-MM-dd');
-		const candidates = events
-			.filter((e) => e.id !== existing?.id)
-			.filter((e) => e.type === 'first_payment' || e.type === 'price_up' || e.type === 'price_down')
-			.filter((e) => e.date <= isoDate)
-			.sort((a, b) => b.date.localeCompare(a.date));
-
-		const prior = candidates[0];
-		return prior && 'amount' in prior ? prior.amount : undefined;
-	}, [events, existing?.id, activeType, date]);
-
-	const priceWarning = useMemo(() => {
-		if (priorPrice == null) return null;
-		const parsed = parsePrice(amountText);
-		if (parsed == null || parsed <= 0) return null;
-
-		if (activeType === 'price_up' && parsed <= priorPrice) {
-			return `New price should be higher than the previous ${priorPrice.toFixed(2)} ${currency}.`;
-		}
-
-		if (activeType === 'price_down' && parsed >= priorPrice) {
-			return `New price should be lower than the previous ${priorPrice.toFixed(2)} ${currency}.`;
-		}
-
-		return null;
-	}, [activeType, amountText, priorPrice, currency]);
-
-	const amountRowLabel = activeType === 'refund' ? 'Refunded' : activeType === 'first_payment' ? 'Amount' : 'New price';
+	const showAmount = PRICED_TYPES.includes(activeType as EventTypeT);
+	const showCancellationReason = CANCELLED_TYPES.includes(activeType as EventTypeT);
 
 	return (
 		<>
-			<Header amountText={amountText} reason={reason} />
+			<Header amountText={amountText} date={date} reason={cancellationReason} />
 
-			<Root>
-				<Hero activeType={activeType} />
+			<Host style={{ flex: 1 }}>
+				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
+					{/* Hero */}
+					<Hero activeType={activeType} />
 
-				<Section>
-					<SectionLabel>When</SectionLabel>
+					{/* When */}
+					<WhenSection date={date} setDate={setDate} />
 
-					<Card>
-						<Row $isLast>
-							<RowLabel>Date</RowLabel>
-							<Host matchContents>
-								<DatePicker
-									selection={date}
-									displayedComponents={['date']}
-									onDateChange={setDate}
-									range={{ start: MIN_EVENT_DATE }}
-									modifiers={[datePickerStyle('compact')]}
-								/>
-							</Host>
-						</Row>
-					</Card>
-				</Section>
+					{/* Amount (priced events) */}
+					{showAmount && <AmountSection date={date} amountText={amountText} setAmountText={setAmountText} />}
 
-				{/* Priced events — amount + currency */}
-				{['first_payment', 'price_up', 'price_down', 'refund'].includes(activeType) && (
-					<Section>
-						<SectionLabel>Amount</SectionLabel>
-						<Card>
-							<Row $isLast>
-								<RowLabel>{amountRowLabel}</RowLabel>
-								<AmountWrap>
-									<TextField
-										defaultValue={amountText}
-										onValueChange={setAmountText}
-										placeholder="0.00"
-										fontSize={17}
-										fontWeight="semibold"
-										align="trailing"
-										modifiers={[keyboardType('decimal-pad')]}
-										matchContents={{ vertical: true }}
-										style={{ flex: 1 }}
-									/>
-									<CurrencyBadge>{currency}</CurrencyBadge>
-								</AmountWrap>
-							</Row>
-						</Card>
-
-						{priceWarning && (
-							<WarningRow>
-								<SymbolView
-									name="exclamationmark.triangle.fill"
-									size={14}
-									tintColor={theme.accents.orange}
-									weight="semibold"
-								/>
-								<WarningText>{priceWarning}</WarningText>
-							</WarningRow>
-						)}
-					</Section>
-				)}
-
-				{/* Pause / Cancellation — reason */}
-				{(activeType === 'pause' || activeType === 'cancellation') && (
-					<Section>
-						<SectionLabel>Reason (optional)</SectionLabel>
-
-						<Card>
-							<ReasonField
-								value={reason}
-								onChangeText={setReason}
-								placeholder={activeType === 'pause' ? 'Why did you pause?' : 'Why did you cancel?'}
-							/>
-						</Card>
-					</Section>
-				)}
-			</Root>
+					{/* Reason (pause / cancellation) */}
+					{showCancellationReason && (
+						<ReasonSection
+							activeType={activeType}
+							cancellationReason={cancellationReason}
+							setCancellationReason={setCancellationReason}
+						/>
+					)}
+				</List>
+			</Host>
 		</>
 	);
 };

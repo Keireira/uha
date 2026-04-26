@@ -118,7 +118,7 @@ const Layout = () => {
 				options={{
 					title: 'Timeline Event',
 					...sharedScreenConfig,
-					sheetAllowedDetents: 'fitToContents'
+					sheetAllowedDetents: [0.6, 1.0]
 				}}
 			/>
 		</Stack>
