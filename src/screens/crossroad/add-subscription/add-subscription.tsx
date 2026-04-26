@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
 import { Stack, useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShallow } from 'zustand/react/shallow';
-import { eq } from 'drizzle-orm';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import db from '@db';
+import { eq } from 'drizzle-orm';
 import { currenciesTable } from '@db/schema';
-import { useAccent, useSettingsValue } from '@hooks';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
 import { useTheme } from 'styled-components/native';
-import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
+import { useAccent, useSettingsValue } from '@hooks';
+
 import { timelineErrors } from './events';
+import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 
 import MasterPane from './master-pane';
 import Root from './add-subscription.styles';
@@ -19,7 +20,6 @@ const AddSubscriptionScreen = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 	const theme = useTheme();
-	const insets = useSafeAreaInsets();
 	const { service, isLoading } = useLoadService();
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
@@ -118,12 +118,7 @@ const AddSubscriptionScreen = () => {
 	}
 
 	return (
-		<Root
-			contentContainerStyle={{
-				paddingTop: 24,
-				paddingBottom: insets.bottom + 24
-			}}
-		>
+		<Root>
 			<Stack.Toolbar placement="left">
 				<Stack.Toolbar.Button
 					icon="xmark"

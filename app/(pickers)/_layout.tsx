@@ -62,15 +62,6 @@ const Layout = () => {
 					...sharedScreenConfig
 				}}
 			/>
-
-			<Stack.Screen
-				name="edit-event"
-				options={{
-					title: 'Timeline Event',
-					...sharedScreenConfig,
-					sheetAllowedDetents: 'fitToContents'
-				}}
-			/>
 		</Stack>
 	);
 };

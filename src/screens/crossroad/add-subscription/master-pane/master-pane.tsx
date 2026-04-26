@@ -7,30 +7,30 @@ import { useTheme } from 'styled-components/native';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
-import { categoriesTable, tendersTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { categoriesTable, tendersTable } from '@db/schema';
 
 import { useGlassStyle } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import type { BillingCycleT } from '../hooks/use-draft-store';
 
 import LogoRow from './logo-row';
-import PriceRow from './price-row';
 import Timeline from './timeline';
-import { TextField } from '@ui';
-
-import { Host, List, Section, Toggle, Text, HStack, Spacer, Image } from '@expo/ui/swift-ui';
+import PriceRow from './price-row';
 import {
 	font,
-	foregroundStyle,
 	listStyle,
+	onTapGesture,
+	scrollTargetBehavior,
+	scrollDismissesKeyboard,
+	foregroundStyle,
 	listSectionSpacing,
-	listSectionMargins,
-	scrollDisabled,
-	onTapGesture
+	listRowBackground,
+	listRowSeparator,
+	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
-
-import Root, { TitleField, NotesCard, NotesField } from './master-pane.styles';
+import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
+import { NotesCard, NotesField } from './master-pane.styles';
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },
@@ -55,9 +55,6 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 	const unit = TRIAL_UNIT_LABELS[type];
 	return `${value} ${value === 1 ? unit.single : unit.plural}`;
 };
-
-const ROW_HEIGHT = 44;
-const SECTION_GAP = 24;
 
 const MasterPane = () => {
 	const theme = useTheme();
@@ -113,134 +110,141 @@ const MasterPane = () => {
 			? 'On'
 			: `${draft.notify_days_before.length} reminder${draft.notify_days_before.length === 1 ? '' : 's'}`;
 
-	const billingRows = draft.with_trial ? 4 : 3;
-	const ADDITIONAL_ROWS = 3;
-	const COMBINED_ROWS_HEIGHT = (billingRows + ADDITIONAL_ROWS) * ROW_HEIGHT;
-	const GAP_HEIGHT = 5 * SECTION_GAP;
-	const listHeight = COMBINED_ROWS_HEIGHT + GAP_HEIGHT;
+	const goToFPDSettings = () => {
+		router.push('/(crossroad)/first-payment-date');
+	};
+
+	const goToBillingCycleSettings = () => {
+		router.push('/(crossroad)/billing-cycle');
+	};
+
+	const goToTrialDurationSettings = () => {
+		router.push('/(crossroad)/trial-duration');
+	};
+
+	const goToCategorySelection = () => {
+		router.push({
+			pathname: '/(pickers)/select-category',
+			params: { target: 'add_subscription_category' }
+		});
+	};
+
+	const goToPaymentSelection = () => {
+		router.push({
+			pathname: '/(pickers)/select-tender',
+			params: { target: 'add_subscription_tender' }
+		});
+	};
+
+	const goToNotificationsSettings = () => {
+		router.push('/(crossroad)/notifications');
+	};
 
 	return (
-		<Root>
-			<LogoRow />
+		<Host style={{ flex: 1 }} useViewportSizeMeasurement>
+			<List
+				modifiers={[
+					listStyle('insetGrouped'),
+					scrollDismissesKeyboard('immediately'),
+					scrollTargetBehavior('viewAligned')
+				]}
+			>
+				<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+					<RNHostView matchContents>
+						<LogoRow />
+					</RNHostView>
 
-			<TitleField>
-				<TextField
-					defaultValue={draft.title}
-					onValueChange={draft.setTitle}
-					placeholder="Service name"
-					align="center"
-					fontSize={22}
-					fontWeight="bold"
-				/>
-			</TitleField>
+					<TextField
+						defaultValue={draft.title}
+						onValueChange={draft.setTitle}
+						placeholder="Service name"
+						modifiers={[
+							multilineTextAlignment('center'),
+							font({ size: 26, weight: 'bold' }),
+							foregroundStyle(theme.text.primary)
+						]}
+					/>
 
-			<PriceRow />
+					<PriceRow />
+				</Section>
 
-			<Host style={{ height: listHeight }}>
-				<List modifiers={[listStyle('insetGrouped'), scrollDisabled(true), listSectionSpacing(SECTION_GAP)]}>
-					<Section modifiers={[listSectionMargins({ length: 0, edges: 'top' })]}>
-						<HStack
-							spacing={6}
-							alignment="center"
-							modifiers={[onTapGesture(() => router.push('/(crossroad)/first-payment-date'))]}
-						>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>First Payment Date</Text>
+				{/* FPD | Billing Cycle | Trial */}
+				<Section>
+					{/* First payment date */}
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToFPDSettings)]}>
+						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>First Payment Date</Text>
 
+						<Spacer />
+
+						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{firstPaymentPreview}</Text>
+
+						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+					</HStack>
+
+					{/* Billing cycle */}
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToBillingCycleSettings)]}>
+						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Billing Cycle</Text>
+						<Spacer />
+
+						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{cyclePreview}</Text>
+						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+					</HStack>
+
+					{/* Trial block */}
+					<Toggle label="With Trial" isOn={draft.with_trial} onIsOnChange={draft.setWithTrial} />
+
+					{draft.with_trial && (
+						<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
+							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Trial Duration</Text>
 							<Spacer />
 
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{firstPaymentPreview}</Text>
-
+							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{trialPreview}</Text>
 							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 						</HStack>
+					)}
+				</Section>
 
-						<HStack
-							spacing={6}
-							alignment="center"
-							modifiers={[onTapGesture(() => router.push('/(crossroad)/billing-cycle'))]}
-						>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Billing Cycle</Text>
-							<Spacer />
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{cyclePreview}</Text>
-							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-						</HStack>
+				{/* Category | List | Payment Method */}
+				<Section>
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToCategorySelection)]}>
+						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Category</Text>
+						<Spacer />
 
-						<Toggle label="With Trial" isOn={draft.with_trial} onIsOnChange={draft.setWithTrial} />
+						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{categoryPreview}</Text>
+						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+					</HStack>
 
-						{draft.with_trial && (
-							<HStack
-								spacing={6}
-								alignment="center"
-								modifiers={[onTapGesture(() => router.push('/(crossroad)/trial-duration'))]}
-							>
-								<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Trial Duration</Text>
-								<Spacer />
-								<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{trialPreview}</Text>
-								<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-							</HStack>
-						)}
-					</Section>
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToPaymentSelection)]}>
+						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Payment Method</Text>
+						<Spacer />
 
-					<Section>
-						<HStack
-							spacing={6}
-							alignment="center"
-							modifiers={[
-								onTapGesture(() =>
-									router.push({
-										pathname: '/(pickers)/select-category',
-										params: { target: 'add_subscription_category' }
-									})
-								)
-							]}
-						>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Category</Text>
-							<Spacer />
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{categoryPreview}</Text>
-							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-						</HStack>
+						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{paymentPreview}</Text>
+						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+					</HStack>
+				</Section>
 
-						<HStack
-							spacing={6}
-							alignment="center"
-							modifiers={[
-								onTapGesture(() =>
-									router.push({
-										pathname: '/(pickers)/select-tender',
-										params: { target: 'add_subscription_tender' }
-									})
-								)
-							]}
-						>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Payment Method</Text>
-							<Spacer />
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{paymentPreview}</Text>
-							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-						</HStack>
-					</Section>
+				{/* Notifications */}
+				<Section>
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToNotificationsSettings)]}>
+						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Notifications</Text>
+						<Spacer />
 
-					<Section modifiers={[listSectionMargins({ length: 0, edges: 'bottom' })]}>
-						<HStack
-							spacing={6}
-							alignment="center"
-							modifiers={[onTapGesture(() => router.push('/(crossroad)/notifications'))]}
-						>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Notifications</Text>
-							<Spacer />
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>
-								{notificationsPreview}
-							</Text>
-							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-						</HStack>
-					</Section>
-				</List>
-			</Host>
+						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{notificationsPreview}</Text>
+						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+					</HStack>
+				</Section>
 
-			<NotesCard glassEffectStyle={glassEffectStyle}>
-				<NotesField value={draft.notes} onChangeText={draft.setNotes} placeholder="Notes (optional)" />
-			</NotesCard>
+				<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+					<RNHostView matchContents>
+						<NotesCard glassEffectStyle={glassEffectStyle}>
+							<NotesField value={draft.notes} onChangeText={draft.setNotes} placeholder="Notes (optional)" />
+						</NotesCard>
+					</RNHostView>
+				</Section>
 
-			<Timeline />
-		</Root>
+				<Timeline />
+			</List>
+		</Host>
 	);
 };
 

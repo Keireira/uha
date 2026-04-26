@@ -21,6 +21,7 @@ export default styled.View`
 
 	padding: 12px 14px;
 	margin-top: 10px;
+	margin-horizontal: 16px;
 
 	border-radius: 12px;
 	background-color: ${({ theme }) => withAlpha(theme.semantic.error, 0.12)};

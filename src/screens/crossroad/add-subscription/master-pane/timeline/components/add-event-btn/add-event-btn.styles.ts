@@ -29,4 +29,5 @@ export default styled(GlassView).attrs({
 	border-radius: 14px;
 
 	margin-top: 10px;
+	margin-horizontal: 16px;
 `;

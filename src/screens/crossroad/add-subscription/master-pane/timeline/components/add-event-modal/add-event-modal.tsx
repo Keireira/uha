@@ -6,7 +6,7 @@ import { splitEvery } from 'ramda';
 import { withAlpha } from '@lib/colors';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
-import { Host, BottomSheet, Image, Text, VStack, HStack, ScrollView } from '@expo/ui/swift-ui';
+import { BottomSheet, Image, Text, VStack, HStack, ScrollView } from '@expo/ui/swift-ui';
 import { glassEffect, padding, foregroundStyle, onTapGesture, font, textCase } from '@expo/ui/swift-ui/modifiers';
 
 import { EVENT_META, EVENT_ORDER, availableEventTypes } from '@screens/crossroad/add-subscription/events';
@@ -51,7 +51,7 @@ const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
 		}
 
 		router.push({
-			pathname: '/(pickers)/edit-event',
+			pathname: '/(crossroad)/edit-event',
 			params: {
 				type
 			}
@@ -61,65 +61,63 @@ const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
 	};
 
 	return (
-		<Host style={{ flex: 1 }}>
-			<VStack>
-				<BottomSheet isPresented={isPickerVisible} onIsPresentedChange={setIsPickerVisible} fitToContents>
-					<VStack>
-						<Text
-							modifiers={[
-								padding({ top: 32, bottom: 8 }),
-								font({ size: 14, weight: 'semibold' }),
-								foregroundStyle(theme.text.secondary),
-								textCase('uppercase')
-							]}
-						>
-							Pick event type
-						</Text>
+		<VStack>
+			<BottomSheet isPresented={isPickerVisible} onIsPresentedChange={setIsPickerVisible} fitToContents>
+				<VStack>
+					<Text
+						modifiers={[
+							padding({ top: 32, bottom: 8 }),
+							font({ size: 14, weight: 'semibold' }),
+							foregroundStyle(theme.text.secondary),
+							textCase('uppercase')
+						]}
+					>
+						Pick event type
+					</Text>
 
-						<ScrollView axes="horizontal" showsIndicators={false} modifiers={[padding({ all: 8 })]}>
-							<VStack spacing={8} modifiers={[padding({ all: 8 })]}>
-								{eventTypeRows.map((row, rowIndex) => {
-									return (
-										<HStack key={rowIndex} spacing={8} alignment="center">
-											{row.map((type) => {
-												const meta = EVENT_META[type];
-												const tone = theme.accents[meta.accent];
-												const onPressHd = () => handleTypeSelect(type);
+					<ScrollView axes="horizontal" showsIndicators={false} modifiers={[padding({ all: 8 })]}>
+						<VStack spacing={8} modifiers={[padding({ all: 8 })]}>
+							{eventTypeRows.map((row, rowIndex) => {
+								return (
+									<HStack key={rowIndex} spacing={8} alignment="center">
+										{row.map((type) => {
+											const meta = EVENT_META[type];
+											const tone = theme.accents[meta.accent];
+											const onPressHd = () => handleTypeSelect(type);
 
-												return (
-													<HStack
-														key={type}
-														spacing={8}
-														alignment="center"
-														modifiers={[
-															foregroundStyle(tone),
-															padding({ vertical: 10, horizontal: 16 }),
-															glassEffect({
-																glass: {
-																	interactive: true,
-																	variant: 'regular',
-																	tint: withAlpha(tone, 0.2)
-																},
-																shape: 'capsule'
-															}),
-															onTapGesture(onPressHd)
-														]}
-													>
-														<Image size={14} systemName={meta.symbol} color={tone} />
+											return (
+												<HStack
+													key={type}
+													spacing={8}
+													alignment="center"
+													modifiers={[
+														foregroundStyle(tone),
+														padding({ vertical: 10, horizontal: 16 }),
+														glassEffect({
+															glass: {
+																interactive: true,
+																variant: 'regular',
+																tint: withAlpha(tone, 0.2)
+															},
+															shape: 'capsule'
+														}),
+														onTapGesture(onPressHd)
+													]}
+												>
+													<Image size={14} systemName={meta.symbol} color={tone} />
 
-														<Text modifiers={[font({ size: 17 })]}>{meta.label}</Text>
-													</HStack>
-												);
-											})}
-										</HStack>
-									);
-								})}
-							</VStack>
-						</ScrollView>
-					</VStack>
-				</BottomSheet>
-			</VStack>
-		</Host>
+													<Text modifiers={[font({ size: 17 })]}>{meta.label}</Text>
+												</HStack>
+											);
+										})}
+									</HStack>
+								);
+							})}
+						</VStack>
+					</ScrollView>
+				</VStack>
+			</BottomSheet>
+		</VStack>
 	);
 };
 

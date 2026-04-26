@@ -89,15 +89,6 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="notifications"
-				options={{
-					title: 'Notifications',
-					...sharedScreenConfig,
-					sheetAllowedDetents: [0.8, 1.0]
-				}}
-			/>
-
-			<Stack.Screen
 				name="add-category"
 				options={{
 					title: 'New Category',
@@ -110,6 +101,24 @@ const Layout = () => {
 				options={{
 					title: 'New Payment Method',
 					...sharedScreenConfig
+				}}
+			/>
+
+			<Stack.Screen
+				name="notifications"
+				options={{
+					title: 'Notifications',
+					...sharedScreenConfig,
+					sheetAllowedDetents: [0.8, 1.0]
+				}}
+			/>
+
+			<Stack.Screen
+				name="edit-event"
+				options={{
+					title: 'Timeline Event',
+					...sharedScreenConfig,
+					sheetAllowedDetents: 'fitToContents'
 				}}
 			/>
 		</Stack>

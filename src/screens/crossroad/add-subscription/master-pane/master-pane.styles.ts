@@ -16,7 +16,7 @@ export const NotesField = styled.TextInput.attrs(({ theme }) => ({
 	multiline: true,
 	textAlignVertical: 'top' as const
 }))`
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: 400;
 	line-height: 21px;
 
@@ -25,21 +25,4 @@ export const NotesField = styled.TextInput.attrs(({ theme }) => ({
 	padding: 14px 16px;
 
 	color: ${({ theme }) => theme.text.primary};
-`;
-
-export const TitleField = styled.View`
-	flex: 1;
-`;
-
-export default styled.ScrollView.attrs({
-	showsVerticalScrollIndicator: false,
-	keyboardShouldPersistTaps: 'handled',
-	contentInsetAdjustmentBehavior: 'automatic',
-	keyboardDismissMode: 'on-drag',
-	contentContainerStyle: {
-		gap: 16
-	}
-})`
-	flex: 1;
-	background-color: ${({ theme }) => theme.background.default};
 `;

@@ -49,5 +49,4 @@ export default styled.View`
 	justify-content: center;
 
 	gap: 28px;
-	margin-bottom: 24px;
 `;

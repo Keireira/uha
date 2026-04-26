@@ -61,39 +61,6 @@ export const TypeHeroDescription = styled.Text`
 	color: ${({ theme }) => theme.text.secondary};
 `;
 
-/* ─── Type picker (when picking new event type) ────── */
-
-export const TypePickerGrid = styled.View`
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 8px;
-`;
-
-export const TypeChipWrap = styled(GlassView).attrs({
-	isInteractive: true
-})`
-	overflow: hidden;
-	border-radius: 20px;
-`;
-
-export const TypeChip = styled.Pressable<{ $tone: string }>`
-	flex-direction: row;
-	align-items: center;
-	gap: 6px;
-
-	padding: 10px 14px;
-
-	background-color: ${({ $tone }) => withAlpha($tone, 0.16)};
-	border-radius: 20px;
-`;
-
-export const TypeChipLabel = styled.Text<{ $tone: string }>`
-	font-size: 14px;
-	font-weight: 600;
-
-	color: ${({ $tone }) => $tone};
-`;
-
 /* ─── Fields card ──────────────────────────────────── */
 
 export const Card = styled(GlassView).attrs({
@@ -180,54 +147,6 @@ export const ReasonField = styled.TextInput.attrs(({ theme }) => ({
 	color: ${({ theme }) => theme.text.primary};
 `;
 
-/* ─── Actions ──────────────────────────────────────── */
-
-export const Actions = styled.View`
-	flex-direction: row;
-	align-items: stretch;
-	gap: 8px;
-
-	margin-top: 8px;
-`;
-
-export const PrimaryButton = styled.Pressable<{ $accent: string; $disabled: boolean }>`
-	flex: 1;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-
-	height: 44px;
-	padding: 0 18px;
-	border-radius: 14px;
-
-	background-color: ${({ $accent, $disabled }) => ($disabled ? withAlpha($accent, 0.35) : $accent)};
-`;
-
-export const PrimaryLabel = styled.Text`
-	font-size: 15px;
-	font-weight: 700;
-
-	color: ${({ theme }) => theme.static.white};
-`;
-
-export const DeleteButton = styled.Pressable`
-	width: 44px;
-	height: 44px;
-	align-items: center;
-	justify-content: center;
-
-	border-radius: 14px;
-	background-color: ${({ theme }) => withAlpha(theme.semantic.error, 0.12)};
-`;
-
-export const DeleteLabel = styled.Text`
-	font-size: 13px;
-	font-weight: 600;
-
-	color: ${({ theme }) => theme.semantic.error};
-`;
-
 /* ─── Root ─────────────────────────────────────────── */
 
 export default styled.ScrollView.attrs({
@@ -237,6 +156,7 @@ export default styled.ScrollView.attrs({
 	keyboardShouldPersistTaps: 'handled',
 	contentContainerStyle: {
 		padding: 16,
+		paddingBottom: 64,
 		gap: 20
 	}
 })`
