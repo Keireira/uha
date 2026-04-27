@@ -10,7 +10,6 @@ import { eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, tendersTable } from '@db/schema';
 
-import { useGlassStyle } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import LogoRow from './logo-row';
@@ -19,6 +18,7 @@ import PriceRow from './price-row';
 import {
 	font,
 	listStyle,
+	lineLimit,
 	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
@@ -29,7 +29,6 @@ import {
 	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
-import { NotesCard, NotesField } from './master-pane.styles';
 
 import type { BillingCycleT } from '../hooks/use-draft-store';
 
@@ -57,11 +56,14 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 	return `${value} ${value === 1 ? unit.single : unit.plural}`;
 };
 
-const MasterPane = () => {
+type Props = {
+	focusVersion: number;
+};
+
+const MasterPane = ({ focusVersion }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
-	const glassEffectStyle = useGlassStyle();
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
@@ -156,6 +158,7 @@ const MasterPane = () => {
 					</RNHostView>
 
 					<TextField
+						key={focusVersion}
 						defaultValue={draft.title}
 						onValueChange={draft.setTitle}
 						placeholder="Service name"
@@ -166,7 +169,7 @@ const MasterPane = () => {
 						]}
 					/>
 
-					<PriceRow />
+					<PriceRow focusVersion={focusVersion} />
 				</Section>
 
 				{/* FPD | Billing Cycle | Trial */}
@@ -235,12 +238,15 @@ const MasterPane = () => {
 					</HStack>
 				</Section>
 
-				<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
-					<RNHostView matchContents>
-						<NotesCard glassEffectStyle={glassEffectStyle}>
-							<NotesField value={draft.notes} onChangeText={draft.setNotes} placeholder="Notes (optional)" />
-						</NotesCard>
-					</RNHostView>
+				<Section title="Notes (optional)" modifiers={[listRowSeparator('hidden')]}>
+					<TextField
+						key={focusVersion}
+						axis="vertical"
+						defaultValue={draft.notes}
+						onValueChange={draft.setNotes}
+						placeholder="Cancel later"
+						modifiers={[font({ size: 17 }), lineLimit(4, { reservesSpace: true }), foregroundStyle(theme.text.primary)]}
+					/>
 				</Section>
 
 				<Timeline />
