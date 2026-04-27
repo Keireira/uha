@@ -549,6 +549,7 @@ export type LocaleRootT = {
 			patreon: string;
 			github: string;
 			boosty: string;
+			ko_fi: string;
 		};
 		unlimited: {
 			badge: string;

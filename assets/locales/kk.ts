@@ -422,7 +422,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		// unit.type
 		patreon: 'Patreon',
 		github: 'GitHub',
-		boosty: 'Boosty'
+		boosty: 'Boosty',
+		ko_fi: 'Ko-fi'
 	},
 	unlimited: {
 		badge: 'Unlimited',

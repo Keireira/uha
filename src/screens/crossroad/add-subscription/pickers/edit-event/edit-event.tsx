@@ -9,8 +9,15 @@ import {
 	type EventTypeT
 } from '@screens/crossroad/add-subscription/events';
 
-import { Host, List } from '@expo/ui/swift-ui';
-import { listStyle, scrollDismissesKeyboard } from '@expo/ui/swift-ui/modifiers';
+import {
+	listStyle,
+	scrollDismissesKeyboard,
+	listRowSeparator,
+	listRowBackground,
+	listSectionMargins,
+	listSectionSpacing
+} from '@expo/ui/swift-ui/modifiers';
+import { Host, List, Section } from '@expo/ui/swift-ui';
 import { Header, Hero, WhenSection, AmountSection, ReasonSection } from './components';
 
 type SearchParamsT = { id?: string; type?: EventTypeT };
@@ -20,7 +27,6 @@ const CANCELLED_TYPES: EventTypeT[] = ['pause', 'cancellation'];
 
 const EditEventScreen = () => {
 	const { id, type: typeParam } = useLocalSearchParams<SearchParamsT>();
-
 	const events = useDraftStore((state) => state.timeline);
 
 	const existing = id ? events.find((event) => event.id === id) : undefined;
@@ -50,7 +56,7 @@ const EditEventScreen = () => {
 		return '';
 	});
 
-	const [cancellationReason, setCancellationReason] = useState<string>(() => {
+	const [reason, setReason] = useState<string>(() => {
 		if (existing && (isPauseEvent(existing) || isCancellationEvent(existing))) {
 			return existing.reason ?? '';
 		}
@@ -59,30 +65,39 @@ const EditEventScreen = () => {
 	});
 
 	const showAmount = PRICED_TYPES.includes(activeType as EventTypeT);
-	const showCancellationReason = CANCELLED_TYPES.includes(activeType as EventTypeT);
+	const showReason = CANCELLED_TYPES.includes(activeType as EventTypeT);
 
 	return (
 		<>
-			<Header amountText={amountText} date={date} reason={cancellationReason} />
+			<Header amountText={amountText} date={date} reason={reason} />
 
 			<Host style={{ flex: 1 }}>
 				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
 					{/* Hero */}
-					<Hero activeType={activeType} />
+					<Section
+						modifiers={[
+							listSectionSpacing(0),
+							listRowSeparator('hidden'),
+							listRowBackground('transparent'),
+							listSectionMargins({ length: 0, edges: 'all' })
+						]}
+					>
+						<Hero activeType={activeType} />
+					</Section>
 
 					{/* When */}
-					<WhenSection date={date} setDate={setDate} />
+					<Section title="When" modifiers={[listRowSeparator('hidden'), listSectionSpacing(0)]}>
+						<WhenSection date={date} setDate={setDate} />
+					</Section>
 
 					{/* Amount (priced events) */}
 					{showAmount && <AmountSection date={date} amountText={amountText} setAmountText={setAmountText} />}
 
 					{/* Reason (pause / cancellation) */}
-					{showCancellationReason && (
-						<ReasonSection
-							activeType={activeType}
-							cancellationReason={cancellationReason}
-							setCancellationReason={setCancellationReason}
-						/>
+					{showReason && (
+						<Section title="Reason (optional)">
+							<ReasonSection activeType={activeType} reason={reason} setReason={setReason} />
+						</Section>
 					)}
 				</List>
 			</Host>

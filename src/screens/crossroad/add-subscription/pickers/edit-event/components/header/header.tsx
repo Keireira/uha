@@ -10,12 +10,7 @@ import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useActiveEvent } from '@screens/crossroad/add-subscription/pickers/edit-event/hooks';
 
 import type { NewTimelineEventT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
-
-type Props = {
-	date: Date;
-	reason: string;
-	amountText: string;
-};
+import type { Props } from './header.d';
 
 const useData = () => {
 	const activeEvent = useActiveEvent();

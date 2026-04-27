@@ -8,10 +8,10 @@ import { SymbolView } from 'expo-symbols';
 import { keyboardType } from '@expo/ui/swift-ui/modifiers';
 import Root, { GlassButton, InnerButton, ValueWrap, InputWrap, Unit } from './stepper-field.styles';
 
+import { PERIOD_LIMITS } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+
 import type { TextFieldRef } from '@ui';
 import type { Props } from './stepper-field.d';
-
-import { PERIOD_LIMITS } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
 import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
 
 const useLimits = (type: BillingCycleT) => PERIOD_LIMITS[type];
