@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import * as Haptics from 'expo-haptics';
 import { useWindowDimensions } from 'react-native';
-import { setAppIcon, getAppIcon } from '@howincodes/expo-dynamic-app-icon';
+import { setCurrent as setAltIcon, getCurrent as getAltIcon } from '@modules/alt-icon';
 
 import AnimatedStar from './animated-star';
 import Root, { Line } from './app-logo-picker.styles';
@@ -49,14 +49,21 @@ const AppLogoPicker = () => {
 	const [activeIcon, setActiveIcon] = useState<AppLogoT['key']>('DEFAULT');
 
 	useEffect(() => {
-		getAppIcon().then(setActiveIcon);
+		getAltIcon().then((name) => {
+			// `null` from the native side means the primary (.icon) is active.
+			setActiveIcon((name as AppLogoT['key']) ?? 'DEFAULT');
+		});
 	}, []);
 
 	const starPositions = getStarPositions(width);
 
 	const handleIconSelect = (key: AppLogoT['key']) => {
 		setActiveIcon(key);
-		setAppIcon(key === 'DEFAULT' ? null : key);
+
+		setAltIcon(key === 'DEFAULT' ? null : key).catch(() => {
+			// Keep UI responsive if the system rejects the change
+			// (e.g. simulator, or missing CFBundleAlternateIcons entry).
+		});
 
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};

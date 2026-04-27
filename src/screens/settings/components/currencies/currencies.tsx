@@ -13,15 +13,21 @@ const Currencies = () => {
 
 	const openDefaultPicker = () => {
 		router.push({
-			pathname: `/(tabs)/settings/select-default-currency`,
-			params: { target: 'default_currency' }
+			pathname: `/(pickers)/select-currency`,
+			params: {
+				target: 'settings_default_currency',
+				title: t('settings.currencies.default_currency')
+			}
 		});
 	};
 
 	const openRecalcPicker = () => {
 		router.push({
-			pathname: `/(tabs)/settings/select-recalc-currency`,
-			params: { target: 'recalc_currency' }
+			pathname: `/(pickers)/select-currency`,
+			params: {
+				target: 'settings_recalc_currency',
+				title: t('settings.currencies.recalc_currency')
+			}
 		});
 	};
 

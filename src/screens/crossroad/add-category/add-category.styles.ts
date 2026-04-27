@@ -1,99 +1,118 @@
 import styled from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
-import { BaseText } from '@ui';
+import { withAlpha } from '@lib/colors';
 
-export const Container = styled.ScrollView.attrs({
-	keyboardShouldPersistTaps: 'handled' as const,
-	showsVerticalScrollIndicator: false
-})`
+export const Screen = styled.View`
 	flex: 1;
+	background-color: ${({ theme }) => theme.background.secondary};
 `;
 
-export const Header = styled.View`
+export const PreviewRow = styled.View`
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
+
+	margin-bottom: 24px;
 `;
 
-export const Title = styled(BaseText)<{ $dark: boolean }>`
-	font-size: 22px;
-	font-weight: 700;
-	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
-`;
+export const PreviewBadge = styled.View<{ $color: string }>`
+	width: 88px;
+	height: 88px;
+	border-radius: 44px;
 
-export const CloseGlass = styled(GlassView)`
-	width: 48px;
-	height: 48px;
-	border-radius: 24px;
-	overflow: hidden;
-`;
-
-export const CloseInner = styled.Pressable`
-	width: 100%;
-	height: 100%;
 	align-items: center;
 	justify-content: center;
+
+	background-color: ${({ $color }) => withAlpha($color, 0.22)};
 `;
 
-export const Preview = styled.View<{ $bg: string }>`
-	align-self: center;
-	width: 128px;
-	height: 128px;
-	align-items: center;
-	justify-content: center;
-	border-radius: 38px;
-	background-color: ${({ $bg }) => $bg};
+export const PreviewEmoji = styled.Text`
+	font-size: 40px;
 `;
 
-export const PreviewEmoji = styled(BaseText)`
-	font-size: 64px;
-`;
+export const PreviewPlaceholder = styled.Text`
+	font-size: 28px;
 
-export const PreviewPlaceholder = styled(BaseText)<{ $dark: boolean }>`
-	font-size: 48px;
-	font-weight: 700;
-	opacity: 0.3;
-	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
-`;
-
-export const NameInput = styled.TextInput<{ $dark: boolean }>`
-	font-family: 'Nunito';
-	font-size: 24px;
-	font-weight: 700;
-	text-align: center;
-	padding: 0;
-	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
-	background-color: transparent;
-`;
-
-export const Main = styled.View`
-	gap: 36px;
+	color: ${({ theme }) => theme.text.tertiary};
 `;
 
 export const Section = styled.View`
+	margin-bottom: 20px;
+`;
+
+export const SectionHeader = styled.View`
+	margin-bottom: 10px;
+`;
+
+export const SectionTitle = styled.Text`
+	font-size: 13px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+
+	color: ${({ theme }) => theme.text.tertiary};
+
+	padding-horizontal: 4px;
+`;
+
+export const Card = styled(GlassView).attrs({
+	isInteractive: false
+})`
+	overflow: hidden;
+	border-radius: 14px;
+`;
+
+export const FieldPad = styled.View`
+	padding: 4px 12px;
+`;
+
+export const EmojiField = styled.TextInput.attrs(({ theme }) => ({
+	placeholderTextColor: theme.text.tertiary,
+	autoCorrect: false,
+	autoCapitalize: 'none'
+}))`
+	font-size: 32px;
+	font-weight: 600;
+
+	text-align: center;
+
+	padding: 12px;
+
+	color: ${({ theme }) => theme.text.primary};
+`;
+
+export const ColorGrid = styled.View`
+	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 10px;
 `;
 
-export const Caption = styled(BaseText)<{ $dark: boolean }>`
-	font-size: 14px;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
-	opacity: 0.8;
-`;
+export const ColorSwatchWrap = styled.Pressable<{ $active: boolean; $color: string }>`
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
 
-export const SaveButton = styled.Pressable<{ $disabled: boolean }>`
-	height: 52px;
-	border-radius: 14px;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(255, 255, 255, 0.2);
-	opacity: ${({ $disabled }) => ($disabled ? 0.35 : 1)};
+
+	background-color: ${({ $color }) => $color};
+
+	${({ $active, $color }) => ($active ? `border-width: 3px; border-color: ${withAlpha($color, 1)};` : '')}
 `;
 
-export const SaveLabel = styled(BaseText)<{ $dark: boolean }>`
-	font-size: 17px;
-	font-weight: 700;
-	color: ${({ $dark }) => ($dark ? '#333333' : '#ffffff')};
+export const ColorSwatchInner = styled.View<{ $active: boolean }>`
+	width: ${({ $active }) => ($active ? '28px' : '40px')};
+	height: ${({ $active }) => ($active ? '28px' : '40px')};
+	border-radius: ${({ $active }) => ($active ? '14px' : '20px')};
+
+	background-color: transparent;
+`;
+
+export default styled.ScrollView.attrs({
+	showsVerticalScrollIndicator: false,
+	keyboardShouldPersistTaps: 'handled',
+	keyboardDismissMode: 'on-drag',
+	contentContainerStyle: { padding: 20, paddingBottom: 32 }
+})`
+	background-color: ${({ theme }) => theme.background.secondary};
 `;

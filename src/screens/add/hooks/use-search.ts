@@ -16,11 +16,20 @@ type SearchState = {
 const DEBOUNCE_MS = 250;
 
 const SOURCE_PRIORITY: Record<SourceT, number> = {
+	// Best quality results handy-picked by me
 	inhouse: 0,
+	// Custom parser for web sources + if you hit website, I believe you want to see it's data higher
+	// (hidden when search is not a url)
 	web: 1,
+	// Great source for data. I really like it. But it has rate limit of 20 requests per minute,
+	// so I have to make itunes requests from the app
 	appstore: 2,
-	brandfetch: 3,
-	playstore: 4,
+	// Custmo parser. Lower quality than appstore but works with language codes
+	playstore: 3,
+	// Sometimes it works. Sometimes not. Backward compatibility
+	brandfetch: 4,
+	// Piece of shit with a lot of misses. Shitcode legacy.
+	// But I do remember how I used to integrate it, so I keep it because of nostalgia
 	'logo.dev': 5
 };
 

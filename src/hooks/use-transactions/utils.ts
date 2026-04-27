@@ -29,7 +29,9 @@ export const debugLogging = (maxDate: Date, preparedSubscriptions: PreparedSubsc
 
 	preparedSubscriptions.forEach((sub, index) => {
 		const name = sub.custom_name || sub.title || 'Unnamed';
-		const price = `${sub.currency}${(sub.current_price / (sub.denominator ?? 100)).toFixed(2)}`;
+		const price = sub.current_price
+			? `${sub.currency}${(sub.current_price / (sub.denominator ?? 100)).toFixed(2)}`
+			: 'N/A';
 		const cycle = `${sub.billing_cycle_value} ${sub.billing_cycle_type}`;
 
 		console.log(`\x1b[36m┌─ ${sub.emoji ?? '📋'} \x1b[1m${name} (${index + 1})\x1b[0m`);

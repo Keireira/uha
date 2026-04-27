@@ -17,7 +17,6 @@ const Container = styled.View<{ $pt: number; $pb: number }>`
 `;
 
 const Title = styled.Text`
-	font-family: 'Nunito';
 	font-size: 22px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.semantic.error};
@@ -25,7 +24,6 @@ const Title = styled.Text`
 `;
 
 const ErrorName = styled.Text`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 600;
 	color: ${({ theme }) => theme.text.primary};
@@ -41,7 +39,6 @@ const Scroll = styled.ScrollView`
 
 const Stack = styled.Text`
 	font-size: 12px;
-	font-family: 'Nunito';
 	color: ${({ theme }) => theme.text.secondary};
 	line-height: 18px;
 `;
@@ -54,7 +51,6 @@ const Button = styled.Pressable`
 `;
 
 const ButtonText = styled.Text`
-	font-family: 'Nunito';
 	font-size: 16px;
 	font-weight: 600;
 	color: ${({ theme }) => theme.text.primary};

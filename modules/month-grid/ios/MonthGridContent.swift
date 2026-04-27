@@ -1,11 +1,5 @@
 import SwiftUI
 
-// Fonts
-private enum GridFonts {
-  static let header = Font.custom("Nunito", size: 15).weight(.bold)
-  static let day = Font.custom("Nunito", size: 11).weight(.regular)
-}
-
 // Data
 struct DayData: Identifiable {
   let id: String
@@ -29,7 +23,7 @@ struct MonthGridContent: View {
     Button(action: { state.onPressMonth?() }) {
       VStack(alignment: .leading, spacing: 0) {
         Text(state.title)
-          .font(GridFonts.header)
+          .font(.system(size: 15, weight: .bold))
           .foregroundStyle(state.headerColor)
           .padding(.bottom, 4)
 
@@ -63,7 +57,7 @@ struct MonthGridContent: View {
         }
 
         Text(day.label)
-          .font(GridFonts.day)
+          .font(.system(size: 11, weight: .regular))
           .foregroundStyle(isSelected || hasTx ? state.textHighlight : state.textPrimary)
           .minimumScaleFactor(0.5)
           .lineLimit(1)

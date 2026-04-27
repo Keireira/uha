@@ -1,335 +1,152 @@
-import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Switch } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { isTextDark } from '@lib/color-utils';
-import { SymbolView } from 'expo-symbols';
-import SquircleMask from '@assets/masks/squircle.svg.tsx';
-import useAddSubscription from './use-add-subscription';
+import React, { useEffect, useMemo } from 'react';
+import { Stack, useRouter } from 'expo-router';
+import { useShallow } from 'zustand/react/shallow';
 
-import {
-	Container,
-	Header,
-	Title,
-	CloseGlass,
-	CloseInner,
-	ServicePreview,
-	ServiceName,
-	Main,
-	Section,
-	Caption,
-	Input,
-	PriceRow,
-	PriceInput,
-	CurrencyPill,
-	CurrencyText,
-	CycleRow,
-	CycleValueInput,
-	CycleOption,
-	CycleLabel,
-	CycleHint,
-	PillList,
-	Pill,
-	PillLabel,
-	TenderScroll,
-	TenderChip,
-	TenderEmoji,
-	TenderTitle,
-	TrialRow,
-	TrialLabel,
-	TrialDaysRow,
-	TrialInput,
-	TrialHint,
-	ColorDot,
-	SaveButton,
-	SaveLabel,
-	LoadingWrap
-} from './add-subscription.styles';
+import db from '@db';
+import { eq } from 'drizzle-orm';
+import { currenciesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-const COLORS = [
-	'#f3a683',
-	'#f19066',
-	'#f7d794',
-	'#f5cd79',
-	'#778beb',
-	'#546de5',
-	'#e77f67',
-	'#e15f41',
-	'#cf6a87',
-	'#c44569',
-	'#786fa6',
-	'#574b90',
-	'#f8a5c2',
-	'#f78fb3',
-	'#63cdda',
-	'#3dc1d3',
-	'#ea8685',
-	'#e66767',
-	'#7B68EE',
-	'#1DB954',
-	'#E74C3C',
-	'#FF6B35',
-	'#3498DB',
-	'#2C3E50',
-	'#4CAF50',
-	'#FF9800',
-	'#9C27B0',
-	'#009688',
-	'#607D8B',
-	'#E91E63'
-];
+import { useTheme } from 'styled-components/native';
+import { useAccent, useSettingsValue } from '@hooks';
 
-const CYCLES = [
-	{ type: 'days', label: 'Days' },
-	{ type: 'weeks', label: 'Weeks' },
-	{ type: 'months', label: 'Months' },
-	{ type: 'years', label: 'Years' }
-] as const;
+import { timelineErrors } from './events';
+import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 
-const formatCycleHint = (value: number, type: string) => {
-	if (value === 1) return `Every ${type.slice(0, -1)}`;
-	return `Every ${value} ${type}`;
-};
+import MasterPane from './master-pane';
+import Root from './add-subscription.styles';
 
 const AddSubscriptionScreen = () => {
 	const router = useRouter();
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
-	const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
+	const settingAccent = useAccent();
+	const theme = useTheme();
+	const { service, isLoading } = useLoadService();
+	const defaultCurrency = useSettingsValue<string>('default_currency');
+	const initSubscription = useDraftStore((state) => state.actions.init);
+	const resetSubscription = useDraftStore((state) => state.actions.reset);
+	const autoFixTimeline = useDraftStore((state) => state.actions.autoFixTimeline);
+	const saveSubscription = useSaveSubscriptions();
 
-	const {
-		service,
-		resolving,
-		customName,
-		setCustomName,
-		color,
-		setColor,
-		selectedCategorySlug,
-		setSelectedCategorySlug,
-		cycleType,
-		setCycleType,
-		cycleValue,
-		setCycleValue,
-		price,
-		setPrice,
-		currencyId,
-		setCurrencyId,
-		tenderId,
-		setTenderId,
-		firstDate,
-		setFirstDate,
-		trialEnabled,
-		setTrialEnabled,
-		trialDays,
-		setTrialDays,
-		effectiveFirstDate,
-		tenders,
-		currencies,
-		categories,
-		selectedCurrency,
-		isValid,
-		save
-	} = useAddSubscription();
+	const draft = useDraftStore(
+		useShallow((state) => ({
+			id: state.id,
+			title: state.title,
+			color: state.color,
+			slug: state.slug,
+			logo_url: state.logo_url,
+			bundle_id: state.bundle_id,
+			ref_link: state.ref_link,
+			domains: state.domains,
+			social_links: state.social_links,
+			aliases: state.aliases,
+			symbol: state.symbol,
+			category_slug: state.category_slug,
+			currency: state.currency,
+			price: state.price,
+			first_payment_date: state.first_payment_date,
+			billing_cycle_type: state.billing_cycle_type,
+			billing_cycle_value: state.billing_cycle_value,
+			tender_id: state.tender_id,
+			notes: state.notes,
+			notify_enabled: state.notify_enabled,
+			notify_days_before: state.notify_days_before,
+			timeline: state.timeline
+		}))
+	);
 
-	const dark = useMemo(() => isTextDark(color), [color]);
-	const iconColor = dark ? '#333333' : '#ffffff';
-	const placeholderColor = dark ? 'rgba(51,51,51,0.3)' : 'rgba(255,255,255,0.3)';
+	const { data: currencyRows } = useLiveQuery(
+		db
+			.select()
+			.from(currenciesTable)
+			.where(eq(currenciesTable.id, draft.currency ?? '')),
+		[draft.currency]
+	);
+	const currency = currencyRows?.[0];
 
-	if (resolving || !service) {
-		return (
-			<LoadingWrap>
-				<ActivityIndicator color="#999" />
-			</LoadingWrap>
-		);
+	const errors = useMemo(() => timelineErrors(draft.timeline), [draft.timeline]);
+	const hasTimelineErrors = errors.length > 0;
+	const hasPrice = typeof draft.price === 'number' && draft.price > 0;
+	const canSave = !hasTimelineErrors && draft.title?.trim().length > 0 && !!currency && !!draft.id && hasPrice;
+
+	const handleSave = async () => {
+		if (!(canSave && currency)) return;
+
+		try {
+			await saveSubscription({
+				service: {
+					id: draft.id,
+					title: draft.title,
+					color: draft.color,
+					slug: draft.slug,
+					logo_url: draft.logo_url,
+					bundle_id: draft.bundle_id,
+					ref_link: draft.ref_link,
+					domains: draft.domains || [],
+					social_links: draft.social_links || {},
+					aliases: draft.aliases
+				},
+				category_slug: draft.category_slug,
+				custom_name: draft.title,
+				custom_emoji: draft.symbol ?? null,
+				billing_cycle_type: draft.billing_cycle_type,
+				billing_cycle_value: draft.billing_cycle_value,
+				currencyId: currency.id,
+				denominator: currency.denominator,
+				firstPaymentDate: draft.first_payment_date,
+				tenderId: draft.tender_id,
+				notes: draft.notes || null,
+				notifyEnabled: draft.notify_enabled,
+				notifyDaysBefore: draft.notify_days_before,
+				timeline: draft.timeline
+			});
+		} catch (err) {
+			console.warn('[add-subscription] save failed:', err);
+		} finally {
+			resetSubscription();
+		}
+	};
+
+	useEffect(() => {
+		if (isLoading || !service) return;
+
+		initSubscription({
+			...service,
+			currency: defaultCurrency,
+			color: service.color || settingAccent
+		});
+	}, [initSubscription, service, settingAccent, defaultCurrency, isLoading]);
+
+	if (isLoading) {
+		return null;
 	}
 
-	const currencyDisplay = selectedCurrency ? `${selectedCurrency.symbol} ${selectedCurrency.id}` : currencyId;
-
 	return (
-		<Container
-			style={{ backgroundColor: color }}
-			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
-		>
-			<Header>
-				<Title $dark={dark}>New Subscription</Title>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={() => router.back()} hitSlop={10}>
-						<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
-					</CloseInner>
-				</CloseGlass>
-			</Header>
+		<Root>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button
+					icon="xmark"
+					onPress={() => {
+						router.back();
+					}}
+					variant="plain"
+					tintColor={settingAccent}
+				/>
+			</Stack.Toolbar>
 
-			{/* Service preview */}
-			<ServicePreview>
-				<SquircleMask size={80} link={service.logo_url || undefined} color={color}>
-					{!service.logo_url && <ServiceName $dark={dark}>{service.name.charAt(0)}</ServiceName>}
-				</SquircleMask>
-				<ServiceName $dark={dark}>{service.name}</ServiceName>
-			</ServicePreview>
+			<MasterPane />
 
-			<Main>
-				{/* Custom name */}
-				<Section>
-					<Caption $dark={dark}>Custom Name</Caption>
-					<Input
-						$dark={dark}
-						value={customName}
-						onChangeText={setCustomName}
-						placeholder={service.name}
-						placeholderTextColor={placeholderColor}
-					/>
-				</Section>
-
-				{/* Price + currency */}
-				<Section>
-					<Caption $dark={dark}>Price</Caption>
-					<PriceRow>
-						<PriceInput
-							$dark={dark}
-							value={price}
-							onChangeText={setPrice}
-							placeholder="0.00"
-							placeholderTextColor={placeholderColor}
-							keyboardType="decimal-pad"
-						/>
-						<CurrencyPill onPress={() => setShowCurrencyPicker(!showCurrencyPicker)}>
-							<CurrencyText $dark={dark}>{currencyDisplay}</CurrencyText>
-						</CurrencyPill>
-					</PriceRow>
-
-					{showCurrencyPicker && (
-						<PillList>
-							{currencies.map((c) => (
-								<Pill
-									key={c.id}
-									$selected={currencyId === c.id}
-									onPress={() => {
-										setCurrencyId(c.id);
-										setShowCurrencyPicker(false);
-									}}
-								>
-									<PillLabel $dark={dark} $selected={currencyId === c.id}>
-										{c.symbol} {c.id}
-									</PillLabel>
-								</Pill>
-							))}
-						</PillList>
-					)}
-				</Section>
-
-				{/* Billing cycle: every N days/weeks/months/years */}
-				<Section>
-					<Caption $dark={dark}>Billing Cycle</Caption>
-					<CycleRow>
-						<CycleValueInput
-							$dark={dark}
-							value={String(cycleValue)}
-							onChangeText={(t) => {
-								const n = parseInt(t, 10);
-								setCycleValue(isNaN(n) || n < 1 ? 1 : n);
-							}}
-							keyboardType="number-pad"
-							maxLength={3}
-						/>
-						{CYCLES.map((c) => (
-							<CycleOption key={c.type} $selected={cycleType === c.type} onPress={() => setCycleType(c.type)}>
-								<CycleLabel $dark={dark} $selected={cycleType === c.type}>
-									{c.label}
-								</CycleLabel>
-							</CycleOption>
-						))}
-					</CycleRow>
-					<CycleHint $dark={dark}>{formatCycleHint(cycleValue, cycleType)}</CycleHint>
-				</Section>
-
-				{/* First payment date */}
-				<Section>
-					<Caption $dark={dark}>First Payment</Caption>
-					<Input
-						$dark={dark}
-						value={firstDate}
-						onChangeText={setFirstDate}
-						placeholder="YYYY-MM-DD"
-						placeholderTextColor={placeholderColor}
-						keyboardType="numbers-and-punctuation"
-					/>
-				</Section>
-
-				{/* Trial */}
-				<Section>
-					<TrialRow>
-						<TrialLabel $dark={dark}>Free Trial</TrialLabel>
-						<Switch value={trialEnabled} onValueChange={setTrialEnabled} />
-					</TrialRow>
-					{trialEnabled && (
-						<TrialDaysRow>
-							<TrialInput
-								$dark={dark}
-								value={trialDays}
-								onChangeText={setTrialDays}
-								keyboardType="number-pad"
-								maxLength={3}
-							/>
-							<TrialHint $dark={dark}>days free, first charge on {effectiveFirstDate}</TrialHint>
-						</TrialDaysRow>
-					)}
-				</Section>
-
-				{/* Category */}
-				<Section>
-					<Caption $dark={dark}>Category</Caption>
-					<TenderScroll>
-						{categories.map((category) => (
-							<TenderChip
-								key={category.slug}
-								$selected={selectedCategorySlug === category.slug}
-								onPress={() => setSelectedCategorySlug(category.slug)}
-							>
-								<TenderTitle $dark={dark} $selected>
-									{category.title || t(`category.${category.slug}`)}
-								</TenderTitle>
-							</TenderChip>
-						))}
-					</TenderScroll>
-				</Section>
-
-				{/* Payment method (horizontal scroll) */}
-				{tenders.length > 0 && (
-					<Section>
-						<Caption $dark={dark}>Payment Method</Caption>
-						<TenderScroll>
-							{tenders.map((t) => (
-								<TenderChip
-									key={t.id}
-									$selected={tenderId === t.id}
-									onPress={() => setTenderId(tenderId === t.id ? '' : t.id)}
-								>
-									<TenderEmoji>{t.emoji}</TenderEmoji>
-									<TenderTitle $dark={dark} $selected={tenderId === t.id}>
-										{t.title}
-									</TenderTitle>
-								</TenderChip>
-							))}
-						</TenderScroll>
-					</Section>
+			<Stack.Toolbar placement="bottom">
+				{hasTimelineErrors ? (
+					<Stack.Toolbar.Button onPress={autoFixTimeline} tintColor={theme.semantic.error}>
+						Fix timeline issues
+					</Stack.Toolbar.Button>
+				) : (
+					<Stack.Toolbar.Button onPress={handleSave} disabled={!canSave} tintColor={settingAccent}>
+						Create Subscription
+					</Stack.Toolbar.Button>
 				)}
-
-				{/* Custom color */}
-				<Section>
-					<Caption $dark={dark}>Color</Caption>
-					<TenderScroll>
-						{COLORS.map((c) => (
-							<ColorDot key={c} $color={c} $selected={color === c} onPress={() => setColor(c)} />
-						))}
-					</TenderScroll>
-				</Section>
-			</Main>
-
-			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-				<SaveLabel $dark={dark}>Subscribe</SaveLabel>
-			</SaveButton>
-		</Container>
+			</Stack.Toolbar>
+		</Root>
 	);
 };
 

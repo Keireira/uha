@@ -22,19 +22,29 @@ const getLink = (url?: string | null, slug?: string | null) => {
 	return;
 };
 
-const Fallback = ({ emoji, initials, size, color }: FallbackProps) => {
+const Fallback = ({ symbolName, emoji, initials, size, color }: FallbackProps) => {
+	const contentSize = Math.round(size / 2);
+
+	if (symbolName) {
+		return <SymbolView name={symbolName} size={contentSize} tintColor={color ?? undefined} />;
+	}
+
 	if (initials) {
 		return <H3 $align="center">{initials}</H3>;
 	}
 
 	if (emoji) {
-		return <Emoji $align="center">{emoji}</Emoji>;
+		return (
+			<Emoji $align="center" $size={contentSize}>
+				{emoji}
+			</Emoji>
+		);
 	}
 
-	return <SymbolView name="questionmark" size={Math.round(size / 2)} tintColor={color ?? undefined} />;
+	return <SymbolView name="questionmark" size={contentSize} tintColor={color ?? undefined} />;
 };
 
-const LogoView = ({ emoji, assetId, slug, url, name, color, size = 48, children }: Props) => {
+const LogoView = ({ emoji, symbolName, assetId, slug, url, name, color, size = 48, children }: Props) => {
 	const theme = useTheme();
 	const initials = useInitials(name);
 	const [imgFailed, setImgFailed] = useState(false);
@@ -43,9 +53,15 @@ const LogoView = ({ emoji, assetId, slug, url, name, color, size = 48, children 
 	const showRemote = (link || assetId) && !imgFailed;
 
 	const content = showRemote ? (
-		<SquircleMask size={size} color={color ?? undefined} link={link} assetId={assetId} onError={() => setImgFailed(true)} />
+		<SquircleMask
+			size={size}
+			color={color ?? undefined}
+			link={link}
+			assetId={assetId}
+			onError={() => setImgFailed(true)}
+		/>
 	) : (
-		<Fallback emoji={emoji} initials={initials} size={size} color={color} />
+		<Fallback symbolName={symbolName} emoji={emoji} initials={initials} size={size} color={color} />
 	);
 
 	return (

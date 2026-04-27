@@ -148,9 +148,11 @@ public class CloudBackupModule: Module {
 
 	private func replaceFile(at url: URL, with data: Data) throws {
 		let fm = FileManager.default
+
 		if fm.fileExists(atPath: url.path) {
 			try fm.removeItem(at: url)
 		}
+
 		try data.write(to: url)
 	}
 

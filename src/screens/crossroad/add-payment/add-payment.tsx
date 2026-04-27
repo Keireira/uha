@@ -1,114 +1,154 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Switch } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Stack } from 'expo-router';
 
-import { SymbolView } from 'expo-symbols';
-import { EmojiPicker, ColorPicker } from '@elements';
-import { colorMix, isTextDark } from '@lib/color-utils';
+import { TextField } from '@ui';
+import { useAccent } from '@hooks';
+
 import useAddPayment from './use-add-payment';
-import {
-	Container,
-	Header,
-	Title,
-	CloseGlass,
-	CloseInner,
-	Preview,
+import Root, {
+	PreviewRow,
+	PreviewBadge,
 	PreviewEmoji,
 	PreviewPlaceholder,
-	NameInput,
-	Main,
 	Section,
-	Caption,
-	SwitchRow,
-	SwitchLabel,
-	CommentInput,
-	SaveButton,
-	SaveLabel
+	SectionHeader,
+	SectionTitle,
+	Card,
+	FieldPad,
+	EmojiField,
+	CommentField,
+	ColorGrid,
+	ColorSwatchWrap,
+	ColorSwatchInner,
+	ToggleRow,
+	ToggleLabel
 } from './add-payment.styles';
 
-const AddPaymentScreen = () => {
-	const theme = useTheme();
-	const router = useRouter();
-	const insets = useSafeAreaInsets();
-	const { title, setTitle, emoji, setEmoji, color, setColor, isCard, setIsCard, comment, setComment, isValid, save } =
-		useAddPayment();
+const COLOR_PALETTE = [
+	'#1A1F71',
+	'#1A8F71',
+	'#007F73',
+	'#000000',
+	'#4285F4',
+	'#2C3E50',
+	'#F7931A',
+	'#E74C3C',
+	'#8B3FFD',
+	'#FFDD2D',
+	'#00BFFF',
+	'#07C160',
+	'#635BFF',
+	'#3B7BBF',
+	'#FF6B35',
+	'#9C27B0'
+];
 
-	const dark = useMemo(() => isTextDark(color), [color]);
-	const previewBg = useMemo(() => colorMix(color, theme.background.default, 0.5), [color, theme.background.default]);
-	const iconColor = dark ? '#333333' : '#ffffff';
+const AddPaymentScreen = () => {
+	const accent = useAccent();
+	const {
+		title,
+		setTitle,
+		emoji,
+		setEmoji,
+		color,
+		setColor,
+		isCard,
+		setIsCard,
+		comment,
+		setComment,
+		isValid,
+		save
+	} = useAddPayment();
 
 	return (
-		<Container
-			style={{ backgroundColor: color }}
-			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
-		>
-			<Header>
-				<Title $dark={dark}>New Payment</Title>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={() => router.back()} hitSlop={10}>
-						<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
-					</CloseInner>
-				</CloseGlass>
-			</Header>
+		<>
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Button
+					variant="done"
+					icon="checkmark"
+					onPress={save}
+					tintColor={accent}
+					disabled={!isValid}
+				/>
+			</Stack.Toolbar>
 
-			<Preview $bg={previewBg}>
-				{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder $dark={dark}>?</PreviewPlaceholder>}
-			</Preview>
+			<Root>
+				<PreviewRow>
+					<PreviewBadge $color={color}>
+						{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder>?</PreviewPlaceholder>}
+					</PreviewBadge>
+				</PreviewRow>
 
-			<NameInput
-				$dark={dark}
-				value={title}
-				onChangeText={setTitle}
-				placeholder="Payment name"
-				placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
-				autoFocus
-			/>
-
-			<Main>
 				<Section>
-					<Caption $dark={dark}>Logo Emoji</Caption>
-					<EmojiPicker color={color} selected={emoji} onSelect={setEmoji} />
+					<SectionHeader>
+						<SectionTitle>Name</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<FieldPad>
+							<TextField
+								defaultValue={title}
+								onValueChange={setTitle}
+								placeholder="e.g. My Visa"
+								fontSize={17}
+							/>
+						</FieldPad>
+					</Card>
 				</Section>
 
 				<Section>
-					<Caption $dark={dark}>Support Color</Caption>
-					<ColorPicker value={color} onSelect={setColor} />
+					<SectionHeader>
+						<SectionTitle>Emoji</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<EmojiField value={emoji} onChangeText={setEmoji} placeholder="💳" maxLength={4} />
+					</Card>
 				</Section>
 
 				<Section>
-					<Caption $dark={dark}>Type</Caption>
-					<SwitchRow>
-						<SwitchLabel $dark={dark}>Card</SwitchLabel>
-						<Switch
-							value={isCard}
-							onValueChange={setIsCard}
-							trackColor={{
-								false: 'rgba(255,255,255,0.15)',
-								true: 'rgba(255,255,255,0.4)'
-							}}
-							thumbColor="#ffffff"
+					<SectionHeader>
+						<SectionTitle>Color</SectionTitle>
+					</SectionHeader>
+					<ColorGrid>
+						{COLOR_PALETTE.map((preset) => (
+							<ColorSwatchWrap
+								key={preset}
+								$color={preset}
+								$active={preset === color}
+								onPress={() => setColor(preset)}
+							>
+								<ColorSwatchInner $active={preset === color} />
+							</ColorSwatchWrap>
+						))}
+					</ColorGrid>
+				</Section>
+
+				<Section>
+					<SectionHeader>
+						<SectionTitle>Type</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<ToggleRow>
+							<ToggleLabel>Card</ToggleLabel>
+							<Switch value={isCard} onValueChange={setIsCard} />
+						</ToggleRow>
+					</Card>
+				</Section>
+
+				<Section>
+					<SectionHeader>
+						<SectionTitle>Comment (optional)</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<CommentField
+							value={comment}
+							onChangeText={setComment}
+							placeholder="Last 4 digits, bank name, etc."
 						/>
-					</SwitchRow>
+					</Card>
 				</Section>
-
-				<Section>
-					<Caption $dark={dark}>Comment</Caption>
-					<CommentInput
-						$dark={dark}
-						value={comment}
-						onChangeText={setComment}
-						placeholder="*1234"
-						placeholderTextColor={dark ? 'rgba(51,51,51,0.3)' : 'rgba(255,255,255,0.3)'}
-					/>
-				</Section>
-			</Main>
-
-			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-				<SaveLabel $dark={dark}>Create</SaveLabel>
-			</SaveButton>
-		</Container>
+			</Root>
+		</>
 	);
 };
 

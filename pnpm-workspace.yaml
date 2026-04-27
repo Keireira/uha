@@ -1,0 +1,2 @@
+patchedDependencies:
+  "@expo/ui": patches/@expo__ui.patch

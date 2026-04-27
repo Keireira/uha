@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { startOfMonth } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
 import { useAccent } from '@hooks';
@@ -23,7 +22,6 @@ const TabLayout = () => {
 			{
 				tabIndex: 0,
 				actions: [
-					// { id: 'go_to_today', title: t('navbar.transactions.go_to_today'), icon: 'calendar.badge.clock' },
 					{ id: 'view_list', title: t('navbar.transactions.view_list'), icon: 'list.bullet' },
 					{ id: 'view_calendar', title: t('navbar.transactions.view_calendar'), icon: 'calendar' },
 					{
@@ -60,11 +58,6 @@ const TabLayout = () => {
 
 		const sub = TabContextMenu.addListener('onAction', (e: TabContextMenuActionEvent) => {
 			switch (e.actionId) {
-				case 'go_to_today': {
-					setActiveMonth(startOfMonth(new Date()));
-					break;
-				}
-
 				case 'view_list': {
 					router.setParams({ tx_view_mode: 'list' });
 					break;

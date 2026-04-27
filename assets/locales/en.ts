@@ -268,7 +268,6 @@ const currencies: Record<CurrencyCode, string> = {
 	GBP: 'British Pound',
 	GEL: 'Georgian Lari',
 	GIP: 'Gibraltar Pound',
-	HRK: 'Croatian Kuna',
 	HUF: 'Hungarian Forint',
 	ILS: 'Israeli Shekel',
 	ISK: 'Icelandic Króna',
@@ -306,7 +305,6 @@ const currencies: Record<CurrencyCode, string> = {
 	BBD: 'Barbadian Dollar',
 	BMD: 'Bermudan Dollar',
 	BSD: 'Bahamian Dollar',
-	CUC: 'Cuban Convertible Peso',
 	CUP: 'Cuban Peso',
 	DOP: 'Dominican Peso',
 	HTG: 'Haitian Gourde',
@@ -424,7 +422,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		// unit.type
 		patreon: 'Patreon',
 		github: 'GitHub',
-		boosty: 'Boosty'
+		boosty: 'Boosty',
+		ko_fi: 'Ko-fi'
 	},
 	unlimited: {
 		badge: 'Unlimited',
@@ -644,6 +643,7 @@ const english: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'No results has been found',
 		grid: {
 			category: {
 				title: 'Category',
@@ -665,7 +665,6 @@ const english: LocaleRootT = {
 		add: {
 			header: 'Find new Service',
 			search_bar: 'Search service to add',
-			no_results: 'No services has been found',
 			search_results: 'Search Results',
 			sections: {
 				top_hit: 'Top Hit',

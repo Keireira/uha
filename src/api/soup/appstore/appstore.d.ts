@@ -54,6 +54,7 @@ export type ITunesApp = {
 	sellerUrl?: string;
 	description?: string;
 	genreIds?: GenreId[];
+	primaryGenreId?: GenreId;
 };
 
 export type ITunesSearchResponse = {

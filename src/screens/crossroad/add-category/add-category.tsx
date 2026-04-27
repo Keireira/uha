@@ -1,81 +1,120 @@
-import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
-import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react';
+import { Stack } from 'expo-router';
 
-import { SymbolView } from 'expo-symbols';
-import { EmojiPicker, ColorPicker } from '@elements';
-import { colorMix, isTextDark } from '@lib/color-utils';
+import { TextField } from '@ui';
+import { useAccent } from '@hooks';
+
 import useAddCategory from './use-add-category';
-import {
-	Container,
-	Header,
-	Title,
-	CloseGlass,
-	CloseInner,
-	Preview,
+import Root, {
+	PreviewRow,
+	PreviewBadge,
 	PreviewEmoji,
 	PreviewPlaceholder,
-	NameInput,
-	Main,
 	Section,
-	Caption,
-	SaveButton,
-	SaveLabel
+	SectionHeader,
+	SectionTitle,
+	Card,
+	FieldPad,
+	EmojiField,
+	ColorGrid,
+	ColorSwatchWrap,
+	ColorSwatchInner
 } from './add-category.styles';
 
+const COLOR_PALETTE = [
+	'#FF6B35',
+	'#E74C3C',
+	'#E91E63',
+	'#FF4081',
+	'#FF69B4',
+	'#A855F7',
+	'#9C27B0',
+	'#7B68EE',
+	'#3F51B5',
+	'#5C6BC0',
+	'#42A5F5',
+	'#2196F3',
+	'#00BCD4',
+	'#26A69A',
+	'#009688',
+	'#4CAF50',
+	'#FFD700',
+	'#FF9800',
+	'#FF5722',
+	'#8D6E63',
+	'#795548',
+	'#78909C',
+	'#607D8B',
+	'#455A64'
+];
+
 const AddCategoryScreen = () => {
-	const theme = useTheme();
-	const router = useRouter();
-	const insets = useSafeAreaInsets();
+	const accent = useAccent();
 	const { title, setTitle, emoji, setEmoji, color, setColor, isValid, save } = useAddCategory();
 
-	const dark = useMemo(() => isTextDark(color), [color]);
-	const previewBg = useMemo(() => colorMix(color, theme.background.default, 0.5), [color, theme.background.default]);
-	const iconColor = dark ? '#333333' : '#ffffff';
-
 	return (
-		<Container
-			style={{ backgroundColor: color }}
-			contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, gap: 24, paddingBottom: insets.bottom + 24 }}
-		>
-			<Header>
-				<Title $dark={dark}>New Category</Title>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={() => router.back()} hitSlop={10}>
-						<SymbolView name="xmark" size={16} weight="bold" tintColor={iconColor} />
-					</CloseInner>
-				</CloseGlass>
-			</Header>
+		<>
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Button
+					variant="done"
+					icon="checkmark"
+					onPress={save}
+					tintColor={accent}
+					disabled={!isValid}
+				/>
+			</Stack.Toolbar>
 
-			<Preview $bg={previewBg}>
-				{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder $dark={dark}>?</PreviewPlaceholder>}
-			</Preview>
+			<Root>
+				<PreviewRow>
+					<PreviewBadge $color={color}>
+						{emoji ? <PreviewEmoji>{emoji}</PreviewEmoji> : <PreviewPlaceholder>?</PreviewPlaceholder>}
+					</PreviewBadge>
+				</PreviewRow>
 
-			<NameInput
-				$dark={dark}
-				value={title}
-				onChangeText={setTitle}
-				placeholder="Category name"
-				placeholderTextColor={dark ? 'rgba(51,51,51,0.35)' : 'rgba(255,255,255,0.35)'}
-			/>
-
-			<Main>
 				<Section>
-					<Caption $dark={dark}>Logo Emoji</Caption>
-					<EmojiPicker color={color} selected={emoji} onSelect={setEmoji} />
+					<SectionHeader>
+						<SectionTitle>Name</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<FieldPad>
+							<TextField
+								defaultValue={title}
+								onValueChange={setTitle}
+								placeholder="e.g. Streaming"
+								fontSize={17}
+							/>
+						</FieldPad>
+					</Card>
 				</Section>
 
 				<Section>
-					<Caption $dark={dark}>Support Color</Caption>
-					<ColorPicker value={color} onSelect={setColor} />
+					<SectionHeader>
+						<SectionTitle>Emoji</SectionTitle>
+					</SectionHeader>
+					<Card>
+						<EmojiField value={emoji} onChangeText={setEmoji} placeholder="🎬" maxLength={4} />
+					</Card>
 				</Section>
-			</Main>
 
-			<SaveButton $disabled={!isValid} disabled={!isValid} onPress={save}>
-				<SaveLabel $dark={dark}>Create</SaveLabel>
-			</SaveButton>
-		</Container>
+				<Section>
+					<SectionHeader>
+						<SectionTitle>Color</SectionTitle>
+					</SectionHeader>
+					<ColorGrid>
+						{COLOR_PALETTE.map((preset) => (
+							<ColorSwatchWrap
+								key={preset}
+								$color={preset}
+								$active={preset === color}
+								onPress={() => setColor(preset)}
+							>
+								<ColorSwatchInner $active={preset === color} />
+							</ColorSwatchWrap>
+						))}
+					</ColorGrid>
+				</Section>
+			</Root>
+		</>
 	);
 };
 

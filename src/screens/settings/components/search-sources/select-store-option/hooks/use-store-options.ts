@@ -73,7 +73,9 @@ const filterSections = (sections: OptionSection[], query: string): OptionSection
 	return sections.reduce<OptionSection[]>((acc, section) => {
 		const data = section.data.filter((item) => item.search_key.includes(query));
 
-		if (data.length > 0) acc.push({ ...section, data });
+		if (data.length > 0) {
+			acc.push({ ...section, data });
+		}
 
 		return acc;
 	}, []);
@@ -91,7 +93,6 @@ const flattenToRows = (sections: OptionSection[]): RowItem[] =>
 
 type UseStoreOptionsT = {
 	sections: RowItem[];
-	freeCodes: string[];
 	isLangMode: boolean;
 	setSearchQuery: (value: string) => void;
 };
@@ -126,7 +127,6 @@ const useStoreOptions = (): UseStoreOptionsT => {
 
 	return {
 		sections,
-		freeCodes: isLangMode ? FREE_STORE_LANG_BASE : freeCodes,
 		isLangMode,
 		setSearchQuery
 	};

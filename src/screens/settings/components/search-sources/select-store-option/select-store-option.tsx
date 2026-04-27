@@ -1,9 +1,7 @@
 import React from 'react';
-import { useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useStoreOptions } from './hooks';
-import { useEntitlement } from '@hooks';
 import { isHeaderSection } from './utils';
 
 import { FlashList } from '@shopify/flash-list';
@@ -12,27 +10,22 @@ import { Header, SearchBar, OptionRow, NoFilters } from './components';
 import Root, { Content, VerticalSpacer, SectionHeaderText } from './select-store-option.styles';
 
 import type { ListRenderItemInfo } from '@shopify/flash-list';
-import type { SearchParamsT, RowItem } from './select-store-option.d';
+import type { RowItem } from './select-store-option.d';
 
-const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
+const renderRowItem = ({ item }: ListRenderItemInfo<RowItem>) => {
 	if (isHeaderSection(item)) {
 		return <SectionHeaderText>{item.title}</SectionHeaderText>;
 	}
 
 	const { key, ...rest } = item.item;
-	const { freeCodes, isAllowed } = extraData;
-	const isForbidden = isAllowed ? false : !freeCodes.includes(rest.code);
 
-	return <OptionRow {...rest} isLast={item.isLast} isForbidden={isForbidden} />;
+	return <OptionRow {...rest} isLast={item.isLast} />;
 };
 
 const SelectStoreOptionScreen = () => {
 	const insets = useSafeAreaInsets();
 	const dimensions = useWindowDimensions();
-	const { target } = useLocalSearchParams<SearchParamsT>();
-
-	const { tier } = useEntitlement();
-	const { sections, freeCodes, setSearchQuery } = useStoreOptions();
+	const { sections, setSearchQuery } = useStoreOptions();
 
 	return (
 		<>
@@ -47,10 +40,6 @@ const SelectStoreOptionScreen = () => {
 							renderItem={renderRowItem}
 							keyboardShouldPersistTaps="handled"
 							contentInsetAdjustmentBehavior="automatic"
-							extraData={{
-								freeCodes,
-								isAllowed: target.endsWith('_country') ? tier.allRegions : tier.allLanguages
-							}}
 							showsVerticalScrollIndicator={false}
 							getItemType={(item) => item.type}
 							ListEmptyComponent={NoFilters}

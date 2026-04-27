@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
-import { useTipJar, useEntitlement } from '@hooks';
+import { useGlassStyle, useTipJar, useEntitlement } from '@hooks';
 
 import {
 	// NeuroSetting,
@@ -23,12 +22,11 @@ import {
 import Root, { SectionWrap, SectionLabel, SectionCard, SectionFooterText, Row } from './settings.styles';
 
 const SettingsScreen = () => {
-	const theme = useTheme();
 	const { t } = useTranslation();
 
+	const glassEffectStyle = useGlassStyle();
 	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts } = useTipJar();
-	const glassEffectStyle = !theme.is_oled && theme.tint === 'dark' ? 'regular' : 'clear';
 
 	return (
 		<Root>

@@ -36,7 +36,7 @@ type ReturnT = {
 
 const useSummariesQuery = (): ReturnT => {
 	const { txViewMode } = useSearchParams();
-	const transactions = useTransactions('From useSummariesQuery');
+	const transactions = useTransactions();
 
 	const focusedDate = useTxDatesStore((s) => s.focusedDate);
 	const activeMonth = useTxDatesStore((s) => s.activeMonth);

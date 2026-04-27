@@ -22,6 +22,7 @@ const Day = ({ content, raw, txs, isSelected, iconSize, setSelectedDay }: Props)
 			<LogoContainer>
 				{txs.length > 0 && indexTx && (
 					<LogoView
+						url={indexTx.logo_url}
 						slug={indexTx.slug}
 						color={indexTx.color}
 						name={indexTx.customName || indexTx.title}

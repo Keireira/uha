@@ -268,7 +268,6 @@ const currencies: Record<CurrencyCode, string> = {
 	GBP: 'Британ фунты',
 	GEL: 'Грузия лариі',
 	GIP: 'Гибралтар фунты',
-	HRK: 'Хорватия кунасы',
 	HUF: 'Венгрия форинті',
 	ILS: 'Израиль шекелі',
 	ISK: 'Исландия кронасы',
@@ -306,7 +305,6 @@ const currencies: Record<CurrencyCode, string> = {
 	BBD: 'Барбадос доллары',
 	BMD: 'Бермуд доллары',
 	BSD: 'Багам доллары',
-	CUC: 'Куба айырбасталатын песосы',
 	CUP: 'Куба песосы',
 	DOP: 'Доминикан песосы',
 	HTG: 'Гаити гурды',
@@ -424,7 +422,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		// unit.type
 		patreon: 'Patreon',
 		github: 'GitHub',
-		boosty: 'Boosty'
+		boosty: 'Boosty',
+		ko_fi: 'Ko-fi'
 	},
 	unlimited: {
 		badge: 'Unlimited',
@@ -641,6 +640,7 @@ const kazakh: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: 'Ештеңе табылмады',
 		grid: {
 			category: {
 				title: 'Санат',
@@ -662,7 +662,6 @@ const kazakh: LocaleRootT = {
 		add: {
 			header: 'Қызмет іздеу',
 			search_bar: 'Қызметті іздеу',
-			no_results: 'Ештеңе табылмады',
 			search_results: 'Іздеу нәтижелері',
 			sections: {
 				top_hit: 'Ең жақсы сәйкестік',

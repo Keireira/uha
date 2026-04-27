@@ -7,22 +7,22 @@ import Root, { RowDivider, Info } from './row-result.styles';
 
 import type { Props } from './row-result.d';
 
-const RowResult = ({ id, logo_url, name, domains, source, onPress, isLast }: Props) => {
+const RowResult = ({ onPress, isLast, ...searchResult }: Props) => {
 	const theme = useTheme();
-	const domain = domains?.[0];
+	const domain = searchResult.domains?.[0];
 
 	const onPressHd = () => {
-		onPress({ id, logo_url, name, domains, source });
+		onPress(searchResult);
 	};
 
 	return (
 		<>
 			<Root onPress={onPressHd}>
-				<LogoView url={logo_url} name={name} size={44} />
+				<LogoView url={searchResult.logo_url} name={searchResult.name} size={44} />
 
 				<Info>
 					<Text $weight={600} numberOfLines={1}>
-						{name}
+						{searchResult.name}
 					</Text>
 
 					{domain && (
@@ -32,7 +32,7 @@ const RowResult = ({ id, logo_url, name, domains, source, onPress, isLast }: Pro
 					)}
 				</Info>
 
-				<SourceBadge source={source} />
+				<SourceBadge source={searchResult.source} />
 			</Root>
 
 			{!isLast && <RowDivider />}

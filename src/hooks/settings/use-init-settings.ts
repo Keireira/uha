@@ -6,7 +6,8 @@ import db, { silentDb } from '@db';
 import { userTable } from '@db/schema';
 import SettingsBridgeModule from '@modules/settings-bridge';
 
-import { deserialize, serializeForNS, USER_ID } from './shared';
+import { USER_ID } from '@db/constants';
+import { deserialize, serializeForNS } from './shared';
 import { cache, setSettingsValue, useSettingsValue } from './use-settings';
 
 import type { UserT } from '@models';
@@ -86,7 +87,7 @@ const useInitSettings = () => {
 		const defaults: Partial<Omit<UserT, 'id'>> = {
 			theme: 'auto',
 			oled_mode: false,
-			max_horizon: 3,
+			max_horizon: 2,
 			first_day: calendar.firstWeekday === 1 ? 'sunday' : 'monday',
 			ai_enabled: false,
 			is_unlimited: false,

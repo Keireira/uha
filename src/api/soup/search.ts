@@ -50,8 +50,6 @@ const searchService = async (query: SearchQueryT['q'], options?: SearchOptions):
 		withAppStore ? searchAppStore(query, options?.app_store_country) : null
 	]);
 
-	console.log('appStoreResults:', appStoreResults);
-
 	return appStoreResults ? deduplicate(soupResults, appStoreResults) : soupResults;
 };
 

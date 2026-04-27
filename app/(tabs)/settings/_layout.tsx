@@ -43,22 +43,6 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="select-default-currency"
-				options={{
-					title: t('settings.currencies.default_currency'),
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
-				name="select-recalc-currency"
-				options={{
-					title: t('settings.currencies.recalc_currency'),
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
 				name="pick-a-store-apple"
 				options={{
 					title: t('settings.sources.appstore'),

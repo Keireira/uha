@@ -5,11 +5,11 @@ type TextProps = {
 	$color?: string;
 	$align?: 'left' | 'center' | 'right';
 	$transform?: 'capitalize' | 'uppercase' | 'lowercase';
-	$weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+	$weight?: 200 | 250 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 };
 
 export const BaseText = styled.Text`
-	font-family: 'Nunito';
+	font-family: System default;
 `;
 
 // Header
@@ -32,7 +32,7 @@ export const H2 = styled(BaseText)<TextProps>`
 export const H3 = styled(BaseText)<TextProps>`
 	font-size: 20px;
 	color: ${({ $color, theme }) => $color || theme.text.primary};
-	font-weight: ${({ $weight }) => $weight || 700};
+	font-weight: ${({ $weight }) => $weight || 600};
 	text-align: ${({ $align }) => $align || 'left'};
 	text-transform: ${({ $transform }) => $transform || 'unset'};
 `;
@@ -40,7 +40,7 @@ export const H3 = styled(BaseText)<TextProps>`
 export const H4 = styled(BaseText)<TextProps>`
 	font-size: 18px;
 	color: ${({ $color, theme }) => $color || theme.text.primary};
-	font-weight: ${({ $weight }) => $weight || 700};
+	font-weight: ${({ $weight }) => $weight || 600};
 	text-align: ${({ $align }) => $align || 'left'};
 	text-transform: ${({ $transform }) => $transform || 'unset'};
 `;
@@ -48,7 +48,7 @@ export const H4 = styled(BaseText)<TextProps>`
 export const H5 = styled(BaseText)<TextProps>`
 	font-size: 16px;
 	color: ${({ $color, theme }) => $color || theme.text.primary};
-	font-weight: ${({ $weight }) => $weight || 700};
+	font-weight: ${({ $weight }) => $weight || 600};
 	text-align: ${({ $align }) => $align || 'left'};
 	text-transform: ${({ $transform }) => $transform || 'unset'};
 `;
@@ -56,7 +56,7 @@ export const H5 = styled(BaseText)<TextProps>`
 export const H6 = styled(BaseText)<TextProps>`
 	font-size: 14px;
 	color: ${({ $color, theme }) => $color || theme.text.primary};
-	font-weight: ${({ $weight }) => $weight || 700};
+	font-weight: ${({ $weight }) => $weight || 600};
 	text-align: ${({ $align }) => $align || 'left'};
 	text-transform: ${({ $transform }) => $transform || 'unset'};
 `;

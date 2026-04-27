@@ -7,13 +7,13 @@ import Root, { Label, GlassCard, Inner, Info, Domain } from './top-hit-card.styl
 
 import type { Props } from './top-hit-card.d';
 
-const TopHitCard = ({ id, logo_url, name, domains, source, onPress }: Props) => {
+const TopHitCard = ({ onPress, ...searchResult }: Props) => {
 	const { t } = useTranslation();
 
-	const domain = domains?.[0];
+	const domain = searchResult.domains?.[0];
 
 	const onPressHd = () => {
-		onPress({ id, logo_url, name, domains, source });
+		onPress(searchResult);
 	};
 
 	return (
@@ -22,15 +22,15 @@ const TopHitCard = ({ id, logo_url, name, domains, source, onPress }: Props) => 
 
 			<GlassCard isInteractive>
 				<Inner onPress={onPressHd}>
-					<LogoView url={logo_url} name={name} size={56} />
+					<LogoView url={searchResult.logo_url} name={searchResult.name} size={56} />
 
 					<Info>
-						<H4 numberOfLines={1}>{name}</H4>
+						<H4 numberOfLines={1}>{searchResult.name}</H4>
 
 						{domain && <Domain numberOfLines={1}>{domain}</Domain>}
 					</Info>
 
-					<SourceBadge source={source} />
+					<SourceBadge source={searchResult.source} />
 				</Inner>
 			</GlassCard>
 		</Root>

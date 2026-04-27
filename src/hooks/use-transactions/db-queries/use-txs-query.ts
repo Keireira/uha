@@ -41,6 +41,7 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 				denominator: currenciesTable.denominator,
 				price: transactionsTable.amount,
 				slug: servicesTable.slug,
+				logo_url: servicesTable.logo_url,
 				title: servicesTable.title,
 				customName: subscriptionsTable.custom_name,
 				emoji: categoriesTable.emoji,

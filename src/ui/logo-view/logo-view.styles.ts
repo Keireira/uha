@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 import { Text } from '../typography';
 
-export const Emoji = styled(Text)`
-	font-size: 24px;
+export const Emoji = styled(Text)<{ $size?: number }>`
+	font-size: ${({ $size }) => $size ?? 24}px;
 `;
 
 export default styled.View<{ $color: string }>`

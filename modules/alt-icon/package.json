@@ -1,0 +1,11 @@
+{
+  "name": "alt-icon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expo module for switching between alternate iOS app icons",
+  "license": "AGPL-3.0",
+  "main": "index.ts",
+  "platforms": [
+    "ios"
+  ]
+}

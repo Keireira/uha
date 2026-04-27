@@ -270,7 +270,6 @@ const currencies: Record<CurrencyCode, string> = {
 	GBP: '英ポンド',
 	GEL: 'ジョージア・ラリ',
 	GIP: 'ジブラルタル・ポンド',
-	HRK: 'クロアチア・クーナ',
 	HUF: 'ハンガリー・フォリント',
 	ILS: 'イスラエル・シェケル',
 	ISK: 'アイスランド・クローナ',
@@ -316,7 +315,6 @@ const currencies: Record<CurrencyCode, string> = {
 	BBD: 'バルバドス・ドル',
 	BMD: 'バミューダ・ドル',
 	BSD: 'バハマ・ドル',
-	CUC: 'キューバ兌換ペソ',
 	CUP: 'キューバ・ペソ',
 	DOP: 'ドミニカ・ペソ',
 	HTG: 'ハイチ・グールド',
@@ -447,7 +445,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		// unit.type
 		patreon: 'Patreon',
 		github: 'GitHub',
-		boosty: 'Boosty'
+		boosty: 'Boosty',
+		ko_fi: 'Ko-fi'
 	},
 	unlimited: {
 		badge: 'Unlimited',
@@ -664,6 +663,7 @@ const nihongo: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		no_results: '何も見つかりませんでした',
 		grid: {
 			category: {
 				title: 'カテゴリ',
@@ -685,7 +685,6 @@ const nihongo: LocaleRootT = {
 		add: {
 			header: 'サービスを探す',
 			search_bar: 'サービスを検索',
-			no_results: '見つかりませんでした',
 			search_results: '検索結果',
 			sections: {
 				top_hit: 'ベストマッチ',
