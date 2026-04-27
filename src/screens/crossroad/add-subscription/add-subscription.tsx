@@ -23,6 +23,7 @@ const AddSubscriptionScreen = () => {
 	const { service, isLoading } = useLoadService();
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
+	const resetSubscription = useDraftStore((state) => state.actions.reset);
 	const autoFixTimeline = useDraftStore((state) => state.actions.autoFixTimeline);
 	const saveSubscription = useSaveSubscriptions();
 
@@ -100,6 +101,8 @@ const AddSubscriptionScreen = () => {
 			});
 		} catch (err) {
 			console.warn('[add-subscription] save failed:', err);
+		} finally {
+			resetSubscription();
 		}
 	};
 

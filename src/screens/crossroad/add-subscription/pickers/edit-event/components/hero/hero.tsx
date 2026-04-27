@@ -35,8 +35,8 @@ const Hero = ({ activeType }: Props) => {
 				}),
 				glassEffect({
 					glass: {
-						interactive: false,
 						variant: 'regular',
+						interactive: false,
 						tint: withAlpha(tintColor, 0.2)
 					},
 					shape: 'roundedRectangle',

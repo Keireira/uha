@@ -1,10 +1,10 @@
 import * as Crypto from 'expo-crypto';
 import { useRouter } from 'expo-router';
-import { eq } from 'drizzle-orm';
+import { useGenerateTxs } from '@hooks/setup';
 
 import db from '@db';
+import { eq } from 'drizzle-orm';
 import { subscriptionsTable, timelineEventsTable, servicesTable } from '@db/schema';
-import { useGenerateTxs } from '@hooks/setup';
 
 import type { SubscriptionT } from '@models';
 import type { TimelineEventT } from '../events';
