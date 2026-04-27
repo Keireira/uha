@@ -29,7 +29,11 @@ const parsePrice = (input: string) => {
 	return Number.isFinite(price) ? Math.abs(price) : undefined;
 };
 
-const PriceRow = () => {
+type Props = {
+	focusVersion: number;
+};
+
+const PriceRow = ({ focusVersion }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const settingAccent = useAccent();
@@ -56,6 +60,7 @@ const PriceRow = () => {
 	return (
 		<HStack modifiers={[padding({ bottom: 18 })]}>
 			<TextField
+				key={focusVersion}
 				defaultValue={typeof price === 'number' ? String(price) : ''}
 				onValueChange={handleValueChange}
 				placeholder="0.00"

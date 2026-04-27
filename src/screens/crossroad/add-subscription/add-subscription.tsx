@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -20,6 +20,7 @@ const AddSubscriptionScreen = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 	const theme = useTheme();
+	const [focusVersion, setFocusVersion] = useState(0);
 	const { service, isLoading } = useLoadService();
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
@@ -116,6 +117,23 @@ const AddSubscriptionScreen = () => {
 		});
 	}, [initSubscription, service, settingAccent, defaultCurrency, isLoading]);
 
+	const closeSheetHd = () => {
+		/* We have SwiftUI's multiple TextFields inside a UICollectionView, and navigation
+		 * is happening while one of them is still the first responder.
+		 * And if we will try to destroy list(by closing formSheet), we got an exception
+		 * "The first responder contained inside of a deleted section or item refused to resign".
+		 * To avoid such a situation we shall call UIResponder.resignFirstResponder
+		 * But this is not a swift, so we have to force inputs lose focus in a hard way.
+		 * We can't use Keybpard.dismiss() here btw, so using key in every input at master's root,
+		 * and moving router to the bottom of the stack is our only option.
+		 */
+		setFocusVersion((v) => v + 1);
+
+		setTimeout(() => {
+			router.back();
+		}, 0);
+	};
+
 	if (isLoading) {
 		return null;
 	}
@@ -123,17 +141,10 @@ const AddSubscriptionScreen = () => {
 	return (
 		<Root>
 			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					icon="xmark"
-					onPress={() => {
-						router.back();
-					}}
-					variant="plain"
-					tintColor={settingAccent}
-				/>
+				<Stack.Toolbar.Button icon="xmark" variant="plain" onPress={closeSheetHd} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
-			<MasterPane />
+			<MasterPane focusVersion={focusVersion} />
 
 			<Stack.Toolbar placement="bottom">
 				{hasTimelineErrors ? (
