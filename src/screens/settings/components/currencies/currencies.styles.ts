@@ -10,7 +10,7 @@ export const Subtitle = styled(SmallText)`
 
 export const Code = styled(H1)`
 	margin-top: 2px;
-	font-weight: 800;
+	font-weight: 700;
 	letter-spacing: -0.5px;
 `;
 

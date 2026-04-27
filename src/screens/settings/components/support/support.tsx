@@ -9,9 +9,10 @@ import { H6, SmallText } from '@ui';
 import Root, { Pill, Inner } from './support.styles';
 
 const EXTERNAL_SUPPORT = [
-	{ type: 'github', username: 'keireira', url: 'https://github.com/sponsors/Keireira' },
+	// { type: 'github', username: 'keireira', url: 'https://github.com/sponsors/Keireira' },
 	{ type: 'boosty', username: 'keireira', url: 'https://boosty.to/keireira/donate' },
-	{ type: 'patreon', username: 'keireira_fog', url: 'https://patreon.com/keireira_fog' }
+	// { type: 'patreon', username: 'keireira_fog', url: 'https://patreon.com/keireira_fog' },
+	{ type: 'ko_fi', username: 'keireira', url: 'https://ko-fi.com/keireira' }
 ];
 
 const Support = () => {

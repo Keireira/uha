@@ -2,12 +2,13 @@
   "expo": {
     "slug": "uha",
     "name": "Uha",
-    "version": "1.19.0",
+    "version": "1.21.2",
     "orientation": "portrait",
-    "icon": "./assets/images/ios-light.png",
+    "icon": "./assets/images/default.png",
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "icon": "./assets/images/uha.icon",
       "appleTeamId": "WU9ZX7QZRL",
       "supportsTablet": true,
       "bundleIdentifier": "com.keireira.uha",
@@ -21,11 +22,47 @@
         "UIDesignRequiresCompatibility": false,
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
-        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments"
-      },
-      "icon": {
-        "dark": "./assets/images/ios-dark.png",
-        "light": "./assets/images/ios-light.png"
+        "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments",
+        "CFBundleIcons": {
+          "CFBundleAlternateIcons": {
+            "enby": {
+              "CFBundleIconFiles": ["enby60x60"],
+              "UIPrerenderedIcon": false
+            },
+            "trans": {
+              "CFBundleIconFiles": ["trans60x60"],
+              "UIPrerenderedIcon": false
+            },
+            "lesbi": {
+              "CFBundleIconFiles": ["lesbi60x60"],
+              "UIPrerenderedIcon": false
+            },
+            "pan": {
+              "CFBundleIconFiles": ["pan60x60"],
+              "UIPrerenderedIcon": false
+            }
+          }
+        },
+        "CFBundleIcons~ipad": {
+          "CFBundleAlternateIcons": {
+            "enby": {
+              "CFBundleIconFiles": ["enby60x60", "enby76x76", "enby83.5x83.5"],
+              "UIPrerenderedIcon": false
+            },
+            "trans": {
+              "CFBundleIconFiles": ["trans60x60", "trans76x76", "trans83.5x83.5"],
+              "UIPrerenderedIcon": false
+            },
+            "lesbi": {
+              "CFBundleIconFiles": ["lesbi60x60", "lesbi76x76", "lesbi83.5x83.5"],
+              "UIPrerenderedIcon": false
+            },
+            "pan": {
+              "CFBundleIconFiles": ["pan60x60", "pan76x76", "pan83.5x83.5"],
+              "UIPrerenderedIcon": false
+            }
+          }
+        }
       }
     },
     "locales": {
@@ -39,6 +76,20 @@
       "expo-font",
       "expo-router",
       "expo-dev-client",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "colors": {
+            "cropToolbarColor": "#000000"
+          },
+          "dark": {
+            "colors": {
+              "cropToolbarColor": "#000000"
+            }
+          }
+        }
+      ],
       "expo-localization",
       [
         "expo-file-system",
@@ -48,33 +99,12 @@
         }
       ],
       [
-        "@howincodes/expo-dynamic-app-icon",
-        {
-          "enby": {
-            "ios": "./assets/images/enby-icon.png",
-            "android": "./assets/images/enby-icon.png"
-          },
-          "lesbi": {
-            "ios": "./assets/images/lesbi-icon.png",
-            "android": "./assets/images/lesbi-icon.png"
-          },
-          "pan": {
-            "ios": "./assets/images/pan-icon.png",
-            "android": "./assets/images/pan-icon.png"
-          },
-          "trans": {
-            "ios": "./assets/images/trans-icon.png",
-            "android": "./assets/images/trans-icon.png"
-          }
-        }
-      ],
-      [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/fish.png",
+          "imageWidth": 256,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#2A0B11"
         }
       ],
       [
@@ -94,7 +124,8 @@
       "expo-image",
       "expo-sharing",
       "expo-secure-store",
-      "expo-sqlite"
+      "expo-sqlite",
+      "./plugins/with-alt-icons"
     ],
     "experiments": {
       "typedRoutes": true

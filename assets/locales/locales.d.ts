@@ -49,7 +49,6 @@ type CurrencyCode =
 	| 'GBP'
 	| 'GEL'
 	| 'GIP'
-	| 'HRK'
 	| 'HUF'
 	| 'ILS'
 	| 'ISK'
@@ -87,7 +86,6 @@ type CurrencyCode =
 	| 'BBD'
 	| 'BMD'
 	| 'BSD'
-	| 'CUC'
 	| 'CUP'
 	| 'DOP'
 	| 'HTG'
@@ -551,6 +549,7 @@ export type LocaleRootT = {
 			patreon: string;
 			github: string;
 			boosty: string;
+			ko_fi: string;
 		};
 		unlimited: {
 			badge: string;
@@ -634,6 +633,7 @@ export type LocaleRootT = {
 		};
 	};
 	crossroad: {
+		no_results: string;
 		grid: {
 			category: {
 				title: string;
@@ -655,7 +655,6 @@ export type LocaleRootT = {
 		add: {
 			header: string;
 			search_bar: string;
-			no_results: string;
 			search_results: string;
 			sections: {
 				top_hit: string;

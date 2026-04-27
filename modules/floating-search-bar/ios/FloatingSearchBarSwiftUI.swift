@@ -32,7 +32,7 @@ struct FloatingSearchBarContent: View {
 				.foregroundStyle(state.tintColor)
 
 			TextField(state.placeholder, text: $state.text)
-				.font(.custom("Nunito", size: 17))
+				.font(.system(size: 17))
 				.autocorrectionDisabled()
 				.textInputAutocapitalization(.never)
 				.focused($isFocused)

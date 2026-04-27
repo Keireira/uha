@@ -39,6 +39,7 @@ const TxDetailedView = () => {
 				<Merchant
 					date={date}
 					slug={transaction.slug}
+					logo_url={transaction.logo_url}
 					emoji={transaction.emoji}
 					customName={transaction.customName}
 					title={transaction.title}

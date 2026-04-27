@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,7 +18,6 @@ import { useGetTheme } from '@themes';
 import { toastConfig } from '@elements';
 
 logger.install();
-
 SplashScreen.preventAutoHideAsync();
 
 setNotificationHandler({
@@ -63,20 +61,26 @@ const LoadFinalStage = () => {
 						>
 							<Stack.Screen name="index" />
 
-							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+							<Stack.Screen
+								name="(tabs)"
+								options={{
+									headerShown: false
+								}}
+							/>
+
+							<Stack.Screen
+								name="(pickers)"
+								options={{
+									presentation: 'formSheet',
+									animation: 'slide_from_bottom'
+								}}
+							/>
 
 							<Stack.Screen
 								name="(crossroad)"
 								options={{
-									headerShown: false,
 									presentation: 'formSheet',
-									gestureEnabled: true,
-									sheetAllowedDetents: [0.7, 0.92],
-									sheetLargestUndimmedDetentIndex: 'none',
-									sheetGrabberVisible: true,
-									sheetCornerRadius: -1,
-									animation: 'slide_from_bottom',
-									contentStyle: { backgroundColor: theme.background.default }
+									animation: 'slide_from_bottom'
 								}}
 							/>
 						</Stack>
@@ -91,16 +95,11 @@ const LoadFinalStage = () => {
 
 const LoadStageTwo = () => {
 	const areSettingsReady = useInitSettings();
-
-	const [fontsLoaded] = useFonts({
-		Nunito: require('@assets/fonts/Nunito/Nunito-VariableFont_wght.ttf')
-	});
-
 	const navigation = useRootNavigationState();
 
 	const isAppReadyToGo = useMemo(() => {
-		return fontsLoaded && areSettingsReady && navigation?.key;
-	}, [fontsLoaded, areSettingsReady, navigation?.key]);
+		return areSettingsReady && navigation?.key;
+	}, [areSettingsReady, navigation?.key]);
 
 	if (!isAppReadyToGo) {
 		return null;

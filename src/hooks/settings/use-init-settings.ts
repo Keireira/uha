@@ -6,7 +6,8 @@ import db, { silentDb } from '@db';
 import { userTable } from '@db/schema';
 import SettingsBridgeModule from '@modules/settings-bridge';
 
-import { deserialize, serializeForNS, USER_ID } from './shared';
+import { USER_ID } from '@db/constants';
+import { deserialize, serializeForNS } from './shared';
 import { cache, setSettingsValue, useSettingsValue } from './use-settings';
 
 import type { UserT } from '@models';

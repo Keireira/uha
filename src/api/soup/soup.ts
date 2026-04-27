@@ -7,25 +7,9 @@ import type { ServiceResponseT, ServiceQueryT } from './soup.d';
 
 export { searchService };
 
-export const getService = (
-	serviceId: string,
-	sourceHint?: ServiceQueryT['source_hint'],
-	country?: string,
-	language?: string
-) => {
-	const queryParams: ServiceQueryT = {};
-
-	if (sourceHint) {
-		queryParams.source_hint = sourceHint;
-	}
-
-	if (country) {
-		queryParams.country = country;
-	}
-
-	if (language) {
-		queryParams.language = language;
-	}
+// serviceId has to be a valid service ID OR a valid bundle ID. Not a some random ID
+export const getService = (serviceId: string, additionalParams?: ServiceQueryT) => {
+	const queryParams: ServiceQueryT = additionalParams || {};
 
 	const request = soupApi<ServiceResponseT>(`/service/${serviceId}`, {
 		traceId: Crypto.randomUUID(),

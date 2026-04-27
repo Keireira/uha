@@ -9,4 +9,6 @@ export { default as useTipJar } from './use-tip-jar';
 export { useEntitlement, useFeatureGate } from './use-entitlement';
 
 export { default as useAccent } from './use-accent';
+export { default as useGlassStyle } from './use-glass-style';
+
 export * from './rates';

@@ -15,6 +15,7 @@ const TransactionCard = ({
 	category_title,
 	price,
 	slug,
+	logo_url,
 	customName,
 	title,
 	emoji,
@@ -37,7 +38,7 @@ const TransactionCard = ({
 	return (
 		<Root onPress={openTransactionView}>
 			<LogoSection>
-				<LogoView slug={slug} emoji={emoji} name={customName || title} size={48} color={color} />
+				<LogoView url={logo_url} slug={slug} emoji={emoji} name={customName || title} size={48} color={color} />
 			</LogoSection>
 
 			<DescSection>

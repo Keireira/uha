@@ -73,7 +73,9 @@ const filterSections = (sections: OptionSection[], query: string): OptionSection
 	return sections.reduce<OptionSection[]>((acc, section) => {
 		const data = section.data.filter((item) => item.search_key.includes(query));
 
-		if (data.length > 0) acc.push({ ...section, data });
+		if (data.length > 0) {
+			acc.push({ ...section, data });
+		}
 
 		return acc;
 	}, []);

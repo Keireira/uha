@@ -1,3 +1,3 @@
-import AddPaymentScreen from '@screens/crossroad/add-payment';
+import { AddPaymentScreen } from '@screens/crossroad';
 
 export default AddPaymentScreen;

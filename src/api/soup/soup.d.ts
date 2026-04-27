@@ -30,8 +30,11 @@ export type SearchResponseT = SearchResultT[];
 
 /* GET /service/:service_id */
 export type ServiceQueryT = {
+	// External source for exact lookup: appstore, playstore, or web only.
 	source_hint?: SourceT;
+	// Country code, works with source_hint=appstore|playstore (default: US)
 	country?: string;
+	// Language code for results from store. Works with source_hint=playstore (default: en)
 	language?: string;
 };
 

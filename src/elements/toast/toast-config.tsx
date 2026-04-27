@@ -24,14 +24,12 @@ const TextWrapper = styled.View`
 `;
 
 const Title = styled.Text`
-	font-family: 'Nunito';
 	font-size: 15px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.text.primary};
 `;
 
 const Description = styled.Text`
-	font-family: 'Nunito';
 	font-size: 13px;
 	font-weight: 400;
 	color: ${({ theme }) => theme.text.secondary};

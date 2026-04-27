@@ -3,7 +3,6 @@ import { TextInput } from 'react-native';
 
 export const SearchInput = styled(TextInput)`
 	flex: 1;
-	font-family: 'Nunito';
 	font-size: 15px;
 	color: ${({ theme }) => theme.text.primary};
 	padding: 12px;

@@ -10,14 +10,14 @@ import Root, { Info, Name, DateRow, DateText } from './merchant.styles';
 
 import type { Props } from './merchant.d';
 
-const Merchant = ({ date, slug, emoji, customName, title, color }: Props) => {
+const Merchant = ({ date, slug, logo_url, emoji, customName, title, color }: Props) => {
 	const theme = useTheme();
 	const dateLabel = useDateLabel(date);
 	const isInFuture = isAfterToday(date);
 
 	return (
 		<Root>
-			<LogoView name={customName || title} slug={slug} color={color} emoji={emoji} size={56} />
+			<LogoView name={customName || title} url={logo_url} slug={slug} color={color} emoji={emoji} size={56} />
 
 			<Info>
 				<Name numberOfLines={1} ellipsizeMode="tail">
