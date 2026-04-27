@@ -238,7 +238,7 @@ const MasterPane = ({ focusVersion }: Props) => {
 					</HStack>
 				</Section>
 
-				<Section title="Notes (optional)" modifiers={[listRowSeparator('hidden')]}>
+				<Section title="Notes" modifiers={[listRowSeparator('hidden')]}>
 					<TextField
 						key={focusVersion}
 						axis="vertical"

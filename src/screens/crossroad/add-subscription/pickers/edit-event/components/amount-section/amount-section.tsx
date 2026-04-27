@@ -67,7 +67,7 @@ const useGetPriceWarning = (currencyCode = '') => {
 	]);
 
 	const getPriceWarning = (activeEvent: ActiveEvent, amountText: string, priorPrice?: number) => {
-		if (!priorPrice) return;
+		if (!(priorPrice && currency)) return;
 
 		const parsed = parsePrice(amountText);
 		if (!parsed) return;
