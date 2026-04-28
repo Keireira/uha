@@ -65,6 +65,8 @@ CREATE TABLE `subscriptions` (
 	`custom_logo` text,
 	`billing_cycle_type` text DEFAULT 'months' NOT NULL,
 	`billing_cycle_value` integer DEFAULT 1 NOT NULL,
+	`trial_value` integer DEFAULT 1 NOT NULL,
+	`trial_type` text DEFAULT 'weeks' NOT NULL,
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`tender_id` text,
 	`custom_symbol` text,

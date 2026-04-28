@@ -50,7 +50,7 @@ const getPriorPrice = (activeEvent: ActiveEvent, date?: Date) => {
 		})
 		.sort((a, b) => b.date.localeCompare(a.date));
 
-	if (prior && 'amount' in prior) {
+	if (prior && 'amount' in prior && typeof prior.amount === 'number') {
 		return prior.amount;
 	}
 

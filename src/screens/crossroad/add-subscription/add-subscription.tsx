@@ -10,17 +10,29 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useTheme } from 'styled-components/native';
 import { useAccent, useSettingsValue } from '@hooks';
 
-import { timelineErrors } from './events';
+import { selectCurrencyId, selectCurrentAmount, timelineErrors } from './events';
 import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 
 import MasterPane from './master-pane';
 import Root from './add-subscription.styles';
 
+import type { CurrencyT } from '@models';
+
 const AddSubscriptionScreen = () => {
+	/* We have SwiftUI's multiple TextFields inside a UICollectionView, and navigation
+	 * is happening while one of them is still the first responder.
+	 * And if we will try to destroy list(by closing formSheet), we got an exception
+	 * "The first responder contained inside of a deleted section or item refused to resign".
+	 * To avoid such a situation we shall call UIResponder.resignFirstResponder
+	 * But this is not a swift, so we have to force inputs lose focus in a hard way.
+	 * We can't use Keybpard.dismiss() here btw, so using key in every input at master's root,
+	 * and moving router to the bottom of the stack is our only option.
+	 */
+	const [focusVersion, setFocusVersion] = useState(0);
+
 	const router = useRouter();
 	const settingAccent = useAccent();
 	const theme = useTheme();
-	const [focusVersion, setFocusVersion] = useState(0);
 	const { service, isLoading } = useLoadService();
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
@@ -30,21 +42,9 @@ const AddSubscriptionScreen = () => {
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
-			id: state.id,
-			title: state.title,
-			color: state.color,
-			slug: state.slug,
-			logo_url: state.logo_url,
-			bundle_id: state.bundle_id,
-			ref_link: state.ref_link,
-			domains: state.domains,
-			social_links: state.social_links,
-			aliases: state.aliases,
-			symbol: state.symbol,
+			logo: state.logo,
+			custom_name: state.custom_name,
 			category_slug: state.category_slug,
-			currency: state.currency,
-			price: state.price,
-			first_payment_date: state.first_payment_date,
 			billing_cycle_type: state.billing_cycle_type,
 			billing_cycle_value: state.billing_cycle_value,
 			tender_id: state.tender_id,
@@ -54,79 +54,61 @@ const AddSubscriptionScreen = () => {
 			timeline: state.timeline
 		}))
 	);
+	const currencyId = selectCurrencyId(draft.timeline);
+	const amount = selectCurrentAmount(draft.timeline);
 
 	const { data: currencyRows } = useLiveQuery(
 		db
 			.select()
 			.from(currenciesTable)
-			.where(eq(currenciesTable.id, draft.currency ?? '')),
-		[draft.currency]
+			.where(eq(currenciesTable.id, currencyId ?? '')),
+		[currencyId]
 	);
 	const currency = currencyRows?.[0];
 
 	const errors = useMemo(() => timelineErrors(draft.timeline), [draft.timeline]);
 	const hasTimelineErrors = errors.length > 0;
-	const hasPrice = typeof draft.price === 'number' && draft.price > 0;
-	const canSave = !hasTimelineErrors && draft.title?.trim().length > 0 && !!currency && !!draft.id && hasPrice;
+	const hasPrice = typeof amount === 'number' && amount > 0;
+	const canSave = !hasTimelineErrors && draft.custom_name.trim().length > 0 && !!currency && !!service?.id && hasPrice;
 
 	const handleSave = async () => {
-		if (!(canSave && currency)) return;
+		if (!(canSave && currency && service)) return;
 
 		try {
 			await saveSubscription({
 				service: {
-					id: draft.id,
-					title: draft.title,
-					color: draft.color,
-					slug: draft.slug,
-					logo_url: draft.logo_url,
-					bundle_id: draft.bundle_id,
-					ref_link: draft.ref_link,
-					domains: draft.domains || [],
-					social_links: draft.social_links || {},
-					aliases: draft.aliases
+					...service,
+					color: service.color || settingAccent,
+					category_slug: service.category_slug || draft.category_slug
 				},
-				category_slug: draft.category_slug,
-				custom_name: draft.title,
-				custom_symbol: draft.symbol ?? null,
-				billing_cycle_type: draft.billing_cycle_type,
-				billing_cycle_value: draft.billing_cycle_value,
-				currencyId: currency.id,
-				denominator: currency.denominator,
-				firstPaymentDate: draft.first_payment_date,
-				tenderId: draft.tender_id,
-				notes: draft.notes || null,
-				notifyEnabled: draft.notify_enabled,
-				notifyDaysBefore: draft.notify_days_before,
-				timeline: draft.timeline
+				draft
 			});
+			setFocusVersion((v) => v + 1);
+
+			setTimeout(() => {
+				resetSubscription();
+				router.back();
+			}, 0);
 		} catch (err) {
 			console.warn('[add-subscription] save failed:', err);
-		} finally {
-			resetSubscription();
 		}
 	};
 
 	useEffect(() => {
 		if (isLoading || !service) return;
 
-		initSubscription({
-			...service,
-			currency: defaultCurrency,
-			color: service.color || settingAccent
-		});
+		initSubscription(
+			{
+				...service,
+				color: service.color || settingAccent
+			},
+			{
+				currency_id: defaultCurrency as CurrencyT['id']
+			}
+		);
 	}, [initSubscription, service, settingAccent, defaultCurrency, isLoading]);
 
 	const closeSheetHd = () => {
-		/* We have SwiftUI's multiple TextFields inside a UICollectionView, and navigation
-		 * is happening while one of them is still the first responder.
-		 * And if we will try to destroy list(by closing formSheet), we got an exception
-		 * "The first responder contained inside of a deleted section or item refused to resign".
-		 * To avoid such a situation we shall call UIResponder.resignFirstResponder
-		 * But this is not a swift, so we have to force inputs lose focus in a hard way.
-		 * We can't use Keybpard.dismiss() here btw, so using key in every input at master's root,
-		 * and moving router to the bottom of the stack is our only option.
-		 */
 		setFocusVersion((v) => v + 1);
 
 		setTimeout(() => {

@@ -1,4 +1,4 @@
-import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 export type Props = {
 	type: BillingCycleT;

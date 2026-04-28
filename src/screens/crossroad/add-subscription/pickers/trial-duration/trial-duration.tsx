@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { selectTrialDuration } from '@screens/crossroad/add-subscription/events';
 
 import { Header, Presets, Units } from './components';
 import Root, { Content, Title } from './trial-duration.styles';
@@ -11,13 +12,13 @@ import { StepperField } from '@screens/crossroad/add-subscription/components';
 const TrialDurationScreen = () => {
 	const insets = useSafeAreaInsets();
 
-	const { type, value, setTrialDuration } = useDraftStore(
-		useShallow((state) => ({
-			type: state.trial_duration_type,
-			value: state.trial_duration_value,
-			setTrialDuration: state.actions.setTrialDuration
-		}))
-	);
+		const { type, value, setTrialDuration } = useDraftStore(
+			useShallow((state) => ({
+				type: selectTrialDuration(state.timeline)?.duration_type ?? 'days',
+				value: selectTrialDuration(state.timeline)?.duration_value ?? 7,
+				setTrialDuration: state.actions.setTrialDuration
+			}))
+		);
 
 	return (
 		<Root

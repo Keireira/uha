@@ -60,7 +60,7 @@ export const createFirstPaymentEvent = ({
 	idFactory,
 	date,
 	currency_id,
-	amount = 0
+		amount = null
 }: EnsureFirstPaymentParamsT): FirstPaymentEventT => {
 	return {
 		id: idFactory(),
@@ -77,7 +77,7 @@ export const createSubscriptionDraft = (
 		idFactory,
 		currency_id,
 		first_payment_date = today(),
-		amount = 0,
+			amount = null,
 		billing_cycle_type = 'months',
 		billing_cycle_value = 1
 	}: DraftInitT
@@ -239,7 +239,25 @@ export const setFirstPaymentDate = (draft: SubscriptionDraftT, date: ISODateStri
 	const firstPayment = selectFirstPaymentEvent(draft.timeline);
 	if (!firstPayment) return draft;
 
-	return updateEvent(draft, firstPayment.id, { date });
+	return {
+		...draft,
+		timeline: sortTimeline(
+			draft.timeline.map((event) => {
+				if (isFirstPaymentEvent(event)) {
+					return { ...event, date };
+				}
+
+				if (isTrialEvent(event)) {
+					return {
+						...event,
+						date: selectDefaultTrialStartDate(date, event.duration_type, event.duration_value)
+					};
+				}
+
+				return event;
+			})
+		)
+	};
 };
 
 export const setFirstPaymentAmount = (draft: SubscriptionDraftT, amount: MajorAmountT): SubscriptionDraftT => {
@@ -293,8 +311,10 @@ export const setTrialDuration = (
 ): SubscriptionDraftT => {
 	const trial = selectTrialEvent(draft.timeline);
 	if (!trial) return draft;
+	const firstPayment = selectFirstPaymentEvent(draft.timeline);
 
 	return updateEvent(draft, trial.id, {
+		date: firstPayment ? selectDefaultTrialStartDate(firstPayment.date, duration_type, duration_value) : trial.date,
 		duration_type,
 		duration_value
 	});
@@ -324,11 +344,8 @@ export const autoFixTimeline = (draft: SubscriptionDraftT, params: AutoFixTimeli
 	let firstPaymentDate = firstPayment?.date;
 
 	if (firstPayment && trial) {
-		const trialEnd = selectTrialEndDate(trial);
-		if (trialEnd > firstPayment.date) {
-			firstPaymentDate = trialEnd;
-			timeline = timeline.map((event) => (isFirstPaymentEvent(event) ? { ...event, date: trialEnd } : event));
-		}
+		const trialStartDate = selectDefaultTrialStartDate(firstPayment.date, trial.duration_type, trial.duration_value);
+		timeline = timeline.map((event) => (isTrialEvent(event) ? { ...event, date: trialStartDate } : event));
 	}
 
 	if (firstPaymentDate) {

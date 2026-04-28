@@ -1,14 +1,12 @@
 import type { AccentT } from '@themes';
 import type { SFSymbol } from 'expo-symbols';
 import type { ServiceT, SubscriptionT, CurrencyT, CategoryT, TenderT } from '@models';
-import { set } from 'ramda';
 
 /* TypeScript trick for preserving discriminated union shapes. */
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
-type DistributivePartial<T> = T extends unknown ? Partial<T> : never;
 type DistributivePartialOmit<T, K extends PropertyKey> = T extends unknown ? Partial<Omit<T, K>> : never;
 
-export type MajorAmountT = number;
+export type MajorAmountT = number | null;
 export type ISODateStringT = string;
 export type BillingCycleT = SubscriptionT['billing_cycle_type'];
 
@@ -33,7 +31,7 @@ type EventBaseT = {
 
 export type FirstPaymentEventT = EventBaseT & {
 	type: 'first_payment';
-	amount: MajorAmountT; // In major units. Convert to minor on save (amount * denominator)
+	amount: MajorAmountT; // In major units. Empty draft value is null; convert to minor on save.
 	currency_id: CurrencyT['id']; // USD
 };
 
@@ -45,13 +43,13 @@ export type TrialEventT = EventBaseT & {
 
 export type PriceUpEventT = EventBaseT & {
 	type: 'price_up';
-	amount: MajorAmountT; // In major units. Convert to minor on save (amount * denominator)
+	amount: MajorAmountT; // In major units. Empty draft value is null; convert to minor on save.
 	currency_id: CurrencyT['id']; // USD
 };
 
 export type PriceDownEventT = EventBaseT & {
 	type: 'price_down';
-	amount: MajorAmountT; // In major units. Convert to minor on save (amount * denominator)
+	amount: MajorAmountT; // In major units. Empty draft value is null; convert to minor on save.
 	currency_id: CurrencyT['id']; // USD
 };
 
@@ -66,7 +64,7 @@ export type ResumeEventT = EventBaseT & {
 
 export type RefundEventT = EventBaseT & {
 	type: 'refund';
-	amount: MajorAmountT; // In major units. Convert to minor on save (amount * denominator)
+	amount: MajorAmountT; // In major units. Empty draft value is null; convert to minor on save.
 	currency_id: CurrencyT['id']; // USD
 };
 
@@ -130,8 +128,17 @@ export type SubscriptionDraftT = {
 	timeline: TimelineEventT[];
 };
 
+export type SubscriptionDraftInitT = {
+	currency_id: CurrencyT['id'];
+	first_payment_date?: ISODateStringT;
+	amount?: MajorAmountT;
+	billing_cycle_type?: BillingCycleT;
+	billing_cycle_value?: number;
+	draft?: Partial<SubscriptionDraftT>;
+};
+
 export type SubscriptionDraftActionsT = {
-	init: (service: ServiceT, draft?: Partial<SubscriptionDraftT>) => void;
+	init: (service: ServiceT, params: SubscriptionDraftInitT) => void;
 	patch: (draft: Partial<SubscriptionDraftT>) => void;
 	reset: () => void;
 
@@ -164,22 +171,24 @@ export type SubscriptionDraftActionsT = {
 };
 
 export type SubscriptionDraftStoreT = SubscriptionDraftT & {
+	logoSnapshot: LogoDraftT;
+	default_currency_id: CurrencyT['id'];
 	actions: SubscriptionDraftActionsT;
 };
 
 export type DraftToSaveT = {
 	service_id: ServiceT['id'];
 	category_slug: CategoryT['slug'];
-	custom_name: string;
-	custom_symbol: LogoDraftT['symbol'];
-	custom_logo: LogoDraftT['image_uri'];
+	custom_name: string | null;
+	custom_symbol: LogoDraftT['symbol'] | null;
+	custom_logo: LogoDraftT['image_uri'] | null;
 	billing_cycle_type: SubscriptionT['billing_cycle_type'];
 	billing_cycle_value: SubscriptionT['billing_cycle_value'];
 	trial_type: TrialEventT['duration_type'];
 	trial_value: TrialEventT['duration_value'];
 	first_payment_date: FirstPaymentEventT['date'];
 	tender_id: TenderT['id'] | null;
-	cancellation_date: CancellationEventT['date'];
+	cancellation_date: CancellationEventT['date'] | null;
 	notify_enabled: SubscriptionT['notify_enabled'];
 	notify_days_before: SubscriptionT['notify_days_before'];
 	notes: SubscriptionT['notes'];

@@ -28,15 +28,15 @@ const useEventTypes = () => {
 };
 
 const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
-	const theme = useTheme();
-	const router = useRouter();
+		const theme = useTheme();
+		const router = useRouter();
 
-	const eventTypeRows = useEventTypes();
-	const setWithTrial = useDraftStore((state) => state.actions.setWithTrial);
+		const eventTypeRows = useEventTypes();
+		const enableTrial = useDraftStore((state) => state.actions.enableTrial);
 
-	const handleTypeSelect = (type: EventTypeT) => {
-		if (type === 'trial') {
-			setWithTrial(true);
+		const handleTypeSelect = (type: EventTypeT) => {
+			if (type === 'trial') {
+				enableTrial();
 
 			router.push({
 				pathname: '/(crossroad)/trial-duration',

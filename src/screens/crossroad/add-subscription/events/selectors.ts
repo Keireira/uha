@@ -166,3 +166,27 @@ export const selectDraftFirstPayment = (draft: SubscriptionDraftT): FirstPayment
 export const selectDraftCurrencyId = (draft: SubscriptionDraftT): CurrencyT['id'] | undefined => {
 	return selectCurrencyId(draft.timeline);
 };
+
+export const eventSummary = (event: TimelineEventT): string => {
+	switch (event.type) {
+		case 'trial':
+			return `${event.duration_value} ${event.duration_type}`;
+
+		case 'first_payment':
+		case 'price_up':
+		case 'price_down':
+			if (event.amount === null) return '';
+			return `${event.amount} ${event.currency_id}`;
+
+		case 'refund':
+			if (event.amount === null) return '';
+			return `-${event.amount} ${event.currency_id}`;
+
+		case 'pause':
+		case 'cancellation':
+			return event.reason.trim();
+
+		case 'resume':
+			return '';
+	}
+};

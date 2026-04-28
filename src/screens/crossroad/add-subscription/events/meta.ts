@@ -3,6 +3,7 @@ import type {
 	EventMetaMapT,
 	PricedEventsT,
 	ReasonEventsT,
+	BillingCycleT,
 	RequiredEventTypeT,
 	RemovableEventTypeT
 } from './events.d';
@@ -119,3 +120,22 @@ export const EVENT_REASON_PLACEHOLDERS = {
 } satisfies Record<ReasonEventsT['type'], string>;
 
 export const TIMELINE_DIRECT_EDIT_EVENT_TYPES = ['trial', 'first_payment'] as const satisfies readonly EventTypeT[];
+
+export const PERIOD_LIMITS: Record<BillingCycleT, { min: number; max: number }> = {
+	days: {
+		min: 1,
+		max: 365
+	},
+	weeks: {
+		min: 1,
+		max: 52
+	},
+	months: {
+		min: 1,
+		max: 12
+	},
+	years: {
+		min: 1,
+		max: 10
+	}
+} as const;

@@ -9,7 +9,7 @@ type TextProps = {
 };
 
 export const BaseText = styled.Text`
-	font-family: System default;
+	font-family: ui-rounded;
 `;
 
 // Header

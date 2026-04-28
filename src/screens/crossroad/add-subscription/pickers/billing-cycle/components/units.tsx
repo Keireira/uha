@@ -11,7 +11,7 @@ import { withAlpha } from '@lib/colors';
 import { Host, ScrollView, HStack, Text } from '@expo/ui/swift-ui';
 import { glassEffect, padding, foregroundStyle, onTapGesture, font } from '@expo/ui/swift-ui/modifiers';
 
-import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 const UNITS: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 

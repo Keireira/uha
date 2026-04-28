@@ -6,12 +6,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAccent } from '@hooks';
 import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { selectTrialDuration } from '@screens/crossroad/add-subscription/events';
 
 import { withAlpha } from '@lib/colors';
 import { Host, ScrollView, HStack, Text } from '@expo/ui/swift-ui';
 import { glassEffect, padding, foregroundStyle, onTapGesture, font } from '@expo/ui/swift-ui/modifiers';
 
-import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 type PresetT = {
 	type: BillingCycleT;
@@ -31,13 +32,13 @@ const PRESETS: (PresetT & { label: string })[] = [
 const Presets = () => {
 	const settingAccent = useAccent();
 
-	const { type, value, setTrialDuration } = useDraftStore(
-		useShallow((state) => ({
-			type: state.trial_duration_type,
-			value: state.trial_duration_value,
-			setTrialDuration: state.actions.setTrialDuration
-		}))
-	);
+		const { type, value, setTrialDuration } = useDraftStore(
+			useShallow((state) => ({
+				type: selectTrialDuration(state.timeline)?.duration_type ?? 'days',
+				value: selectTrialDuration(state.timeline)?.duration_value ?? 7,
+				setTrialDuration: state.actions.setTrialDuration
+			}))
+		);
 
 	return (
 		<MaskedView

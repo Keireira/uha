@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { useAccent } from '@hooks';
 import { withAlpha } from '@lib/colors';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { selectCurrencyId, selectCurrentAmount } from '@screens/crossroad/add-subscription/events';
 import {
 	font,
 	padding,
@@ -38,14 +39,15 @@ const PriceRow = ({ focusVersion }: Props) => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 
-	const price = useDraftStore((state) => state.price);
-	const currency = useDraftStore((state) => state.currency);
-	const setPrice = useDraftStore((state) => state.actions.setPrice);
+	const timeline = useDraftStore((state) => state.timeline);
+	const currency = selectCurrencyId(timeline);
+	const price = selectCurrentAmount(timeline);
+	const setPrice = useDraftStore((state) => state.actions.setFirstPaymentAmount);
 
 	const handleValueChange = (text: string) => {
 		const parsed = parsePrice(text);
 
-		setPrice(parsed ?? 0);
+		setPrice(parsed ?? null);
 	};
 
 	const showCurrencyPicker = () => {
@@ -59,9 +61,9 @@ const PriceRow = ({ focusVersion }: Props) => {
 
 	return (
 		<HStack modifiers={[padding({ bottom: 18 })]}>
-			<TextField
-				key={focusVersion}
-				defaultValue={typeof price === 'number' ? String(price) : ''}
+				<TextField
+					key={focusVersion}
+					defaultValue={typeof price === 'number' ? String(price) : ''}
 				onValueChange={handleValueChange}
 				placeholder="0.00"
 				modifiers={[

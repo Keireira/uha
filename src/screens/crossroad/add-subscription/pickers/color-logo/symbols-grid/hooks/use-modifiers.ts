@@ -1,6 +1,7 @@
 import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
+import { useAccent } from '@hooks';
 import { withAlpha } from '@lib/colors';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
@@ -10,8 +11,9 @@ import { frame, clipShape, background, glassEffect } from '@expo/ui/swift-ui/mod
 
 const useModifiers = () => {
 	const theme = useTheme();
+	const settingAccent = useAccent();
 	const { width: screenWidth } = useWindowDimensions();
-	const draftColor = useDraftStore((state) => state.color);
+	const draftColor = useDraftStore((state) => state.logo.color ?? settingAccent);
 
 	const cellSize = Math.floor((screenWidth - HORIZONTAL_PADDING * 2 - GRID_GAP * (COLUMNS - 1)) / COLUMNS);
 

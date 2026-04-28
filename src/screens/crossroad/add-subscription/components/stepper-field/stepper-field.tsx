@@ -12,7 +12,7 @@ import { PERIOD_LIMITS } from '@screens/crossroad/add-subscription/hooks/use-dra
 
 import type { TextFieldRef } from '@ui';
 import type { Props } from './stepper-field.d';
-import type { BillingCycleT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 const useLimits = (type: BillingCycleT) => PERIOD_LIMITS[type];
 const formatValue = (value: number) => (value ? String(value) : '');

@@ -11,6 +11,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, tendersTable } from '@db/schema';
 
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { selectFirstPaymentDate, selectHasTrial, selectTrialDuration } from '@screens/crossroad/add-subscription/events';
 
 import LogoRow from './logo-row';
 import Timeline from './timeline';
@@ -30,7 +31,7 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
 
-import type { BillingCycleT } from '../hooks/use-draft-store';
+import type { BillingCycleT } from '../events';
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },
@@ -67,21 +68,18 @@ const MasterPane = ({ focusVersion }: Props) => {
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
-			title: state.title,
+			custom_name: state.custom_name,
 			category_slug: state.category_slug,
-			logoSnapshot: state.logoSnapshot,
-			first_payment_date: state.first_payment_date,
 			billing_cycle_type: state.billing_cycle_type,
 			billing_cycle_value: state.billing_cycle_value,
-			with_trial: state.with_trial,
-			trial_duration_type: state.trial_duration_type,
-			trial_duration_value: state.trial_duration_value,
 			tender_id: state.tender_id,
 			notes: state.notes,
 			notify_enabled: state.notify_enabled,
 			notify_days_before: state.notify_days_before,
-			setTitle: state.actions.setTitle,
-			setWithTrial: state.actions.setWithTrial,
+			timeline: state.timeline,
+			setTitle: state.actions.setSubscriptionTitle,
+			enableTrial: state.actions.enableTrial,
+			disableTrial: state.actions.disableTrial,
 			setNotes: state.actions.setNotes
 		}))
 	);
@@ -102,9 +100,12 @@ const MasterPane = ({ focusVersion }: Props) => {
 		[draft.tender_id]
 	);
 
-	const firstPaymentPreview = format(parseISO(draft.first_payment_date), 'MMM d, yyyy');
+	const firstPaymentDate = selectFirstPaymentDate(draft.timeline) ?? format(new Date(), 'yyyy-MM-dd');
+	const trialDuration = selectTrialDuration(draft.timeline) ?? { duration_type: 'days' as const, duration_value: 7 };
+	const hasTrial = selectHasTrial(draft.timeline);
+	const firstPaymentPreview = format(parseISO(firstPaymentDate), 'MMM d, yyyy');
 	const cyclePreview = formatCycle(draft.billing_cycle_type, draft.billing_cycle_value);
-	const trialPreview = formatTrial(draft.trial_duration_type, draft.trial_duration_value);
+	const trialPreview = formatTrial(trialDuration.duration_type, trialDuration.duration_value);
 	const categoryPreview = category?.title ?? (draft.category_slug ? t(`category.${draft.category_slug}`) : 'None');
 	const paymentPreview = tender?.title ?? 'None';
 	const notificationsPreview = !draft.notify_enabled
@@ -143,6 +144,14 @@ const MasterPane = ({ focusVersion }: Props) => {
 		router.push('/(crossroad)/notifications');
 	};
 
+	const setTrialEnabled = (enabled: boolean) => {
+		if (enabled) {
+			draft.enableTrial();
+		} else {
+			draft.disableTrial();
+		}
+	};
+
 	return (
 		<Host style={{ flex: 1 }} useViewportSizeMeasurement>
 			<List
@@ -159,7 +168,7 @@ const MasterPane = ({ focusVersion }: Props) => {
 
 					<TextField
 						key={focusVersion}
-						defaultValue={draft.title}
+						defaultValue={draft.custom_name}
 						onValueChange={draft.setTitle}
 						placeholder="Service name"
 						modifiers={[
@@ -195,9 +204,9 @@ const MasterPane = ({ focusVersion }: Props) => {
 					</HStack>
 
 					{/* Trial block */}
-					<Toggle label="With Trial" isOn={draft.with_trial} onIsOnChange={draft.setWithTrial} />
+					<Toggle label="With Trial" isOn={hasTrial} onIsOnChange={setTrialEnabled} />
 
-					{draft.with_trial && (
+					{hasTrial && (
 						<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
 							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Trial Duration</Text>
 							<Spacer />

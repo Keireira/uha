@@ -1,5 +1,3 @@
-import { parseISO } from 'date-fns';
-
 import { EVENT_ORDER, SINGLETON_EVENT_TYPES } from './meta';
 import {
 	isBillingPriceEvent,
@@ -10,14 +8,19 @@ import {
 	isSingletonEventType,
 	isTrialEvent
 } from './guards';
-import { selectCurrentPriceEvent, selectFirstPaymentEvent, selectTrialEndDate, sortTimeline } from './selectors';
+import {
+	selectCurrentPriceEvent,
+	selectDefaultTrialStartDate,
+	selectFirstPaymentEvent,
+	sortTimeline
+} from './selectors';
 
 import type { EventTypeT, ISODateStringT, TimelineEventT } from './events.d';
 
 export type TimelineIssueCodeT =
 	| 'missing_first_payment'
 	| 'duplicate_singleton_event'
-	| 'trial_overlaps_first_payment'
+	| 'trial_date_not_synced'
 	| 'resume_without_pause'
 	| 'cancellation_before_first_payment'
 	| 'event_before_first_payment';
@@ -25,7 +28,7 @@ export type TimelineIssueCodeT =
 export type TimelineIssueFixT =
 	| 'create_first_payment'
 	| 'remove_duplicate'
-	| 'move_first_payment_to_trial_end'
+	| 'sync_trial_to_first_payment'
 	| 'remove_dangling_resume'
 	| 'move_event_to_first_payment';
 
@@ -163,11 +166,15 @@ export const timelineIssues = (timeline: TimelineEventT[]): TimelineIssueT[] => 
 	}
 
 	const trial = sortedTimeline.find(isTrialEvent);
-	if (trial && firstPayment && parseISO(selectTrialEndDate(trial)) > parseISO(firstPayment.date)) {
+	if (
+		trial &&
+		firstPayment &&
+		trial.date !== selectDefaultTrialStartDate(firstPayment.date, trial.duration_type, trial.duration_value)
+	) {
 		issues.push({
-			code: 'trial_overlaps_first_payment',
-			message: 'Trial must end on or before the first payment date.',
-			fix: 'move_first_payment_to_trial_end',
+			code: 'trial_date_not_synced',
+			message: 'Trial start date must match the first payment date and trial duration.',
+			fix: 'sync_trial_to_first_payment',
 			eventType: trial.type,
 			eventId: trial.id,
 			relatedEventId: firstPayment.id
@@ -240,7 +247,7 @@ export const getPriceChangeWarning = (
 		date
 	);
 
-	if (!prior) return undefined;
+	if (!(prior && typeof prior.amount === 'number')) return undefined;
 
 	if (type === 'price_up' && amount <= prior.amount) {
 		return {
