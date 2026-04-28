@@ -133,12 +133,14 @@ const Timeline = () => {
 
 								{/* Info + Desc block */}
 								<VStack alignment="leading" spacing={4}>
-									<Text modifiers={[font({ size: 16, weight: 'semibold' }), foregroundStyle(tone)]}>{meta.label}</Text>
+									<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'semibold' }), foregroundStyle(tone)]}>
+										{meta.label}
+									</Text>
 
 									{Boolean(summary) && (
 										<Text
 											modifiers={[
-												font({ size: 14, weight: 'medium' }),
+												font({ design: 'rounded', size: 14, weight: 'medium' }),
 												foregroundStyle(theme.text.primary),
 												lineLimit(1)
 											]}
@@ -152,7 +154,12 @@ const Timeline = () => {
 
 								{/* Date block */}
 								<HStack spacing={4}>
-									<Text modifiers={[font({ size: 14, weight: 'medium' }), foregroundStyle(theme.text.secondary)]}>
+									<Text
+										modifiers={[
+											font({ design: 'rounded', size: 14, weight: 'medium' }),
+											foregroundStyle(theme.text.secondary)
+										]}
+									>
 										{format(parseISO(event.date), 'MMM d, yyyy')}
 									</Text>
 

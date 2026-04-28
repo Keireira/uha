@@ -11,7 +11,11 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, tendersTable } from '@db/schema';
 
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
-import { selectFirstPaymentDate, selectHasTrial, selectTrialDuration } from '@screens/crossroad/add-subscription/events';
+import {
+	selectFirstPaymentDate,
+	selectHasTrial,
+	selectTrialDuration
+} from '@screens/crossroad/add-subscription/events';
 
 import LogoRow from './logo-row';
 import Timeline from './timeline';
@@ -173,7 +177,7 @@ const MasterPane = ({ focusVersion }: Props) => {
 						placeholder="Service name"
 						modifiers={[
 							multilineTextAlignment('center'),
-							font({ size: 26, weight: 'bold' }),
+							font({ design: 'rounded', size: 26, weight: 'bold' }),
 							foregroundStyle(theme.text.primary)
 						]}
 					/>
@@ -185,21 +189,25 @@ const MasterPane = ({ focusVersion }: Props) => {
 				<Section>
 					{/* First payment date */}
 					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToFPDSettings)]}>
-						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>First Payment Date</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>First Payment Date</Text>
 
 						<Spacer />
 
-						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{firstPaymentPreview}</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+							{firstPaymentPreview}
+						</Text>
 
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
 
 					{/* Billing cycle */}
 					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToBillingCycleSettings)]}>
-						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Billing Cycle</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Billing Cycle</Text>
 						<Spacer />
 
-						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{cyclePreview}</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+							{cyclePreview}
+						</Text>
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
 
@@ -208,10 +216,12 @@ const MasterPane = ({ focusVersion }: Props) => {
 
 					{hasTrial && (
 						<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
-							<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Trial Duration</Text>
+							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Trial Duration</Text>
 							<Spacer />
 
-							<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{trialPreview}</Text>
+							<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+								{trialPreview}
+							</Text>
 							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 						</HStack>
 					)}
@@ -220,18 +230,22 @@ const MasterPane = ({ focusVersion }: Props) => {
 				{/* Category | List | Payment Method */}
 				<Section>
 					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToCategorySelection)]}>
-						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Category</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Category</Text>
 						<Spacer />
 
-						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{categoryPreview}</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+							{categoryPreview}
+						</Text>
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
 
 					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToPaymentSelection)]}>
-						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Payment Method</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Payment Method</Text>
 						<Spacer />
 
-						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{paymentPreview}</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+							{paymentPreview}
+						</Text>
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
 				</Section>
@@ -239,10 +253,12 @@ const MasterPane = ({ focusVersion }: Props) => {
 				{/* Notifications */}
 				<Section>
 					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToNotificationsSettings)]}>
-						<Text modifiers={[font({ size: 16, weight: 'medium' })]}>Notifications</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Notifications</Text>
 						<Spacer />
 
-						<Text modifiers={[font({ size: 15 }), foregroundStyle(theme.text.secondary)]}>{notificationsPreview}</Text>
+						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+							{notificationsPreview}
+						</Text>
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
 				</Section>
@@ -254,7 +270,11 @@ const MasterPane = ({ focusVersion }: Props) => {
 						defaultValue={draft.notes}
 						onValueChange={draft.setNotes}
 						placeholder="Cancel later"
-						modifiers={[font({ size: 17 }), lineLimit(4, { reservesSpace: true }), foregroundStyle(theme.text.primary)]}
+						modifiers={[
+							font({ design: 'rounded', size: 17 }),
+							lineLimit(4, { reservesSpace: true }),
+							foregroundStyle(theme.text.primary)
+						]}
 					/>
 				</Section>
 

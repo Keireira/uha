@@ -42,7 +42,7 @@ const SymbolGrid = ({ search }: Props) => {
 					<VStack key={section.title} alignment="leading" spacing={8}>
 						<HStack spacing={8} modifiers={[padding({ vertical: 8 })]}>
 							<Image systemName={section.icon} size={16} color={theme.text.secondary} />
-							<Text modifiers={[font({ size: 18, weight: 'semibold' })]}>{section.title}</Text>
+							<Text modifiers={[font({ design: 'rounded', size: 18, weight: 'semibold' })]}>{section.title}</Text>
 						</HStack>
 						<Grid horizontalSpacing={GRID_GAP} verticalSpacing={GRID_GAP}>
 							{splitEvery(COLUMNS, section.symbols).map((row, index) => (

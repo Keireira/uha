@@ -61,13 +61,13 @@ const PriceRow = ({ focusVersion }: Props) => {
 
 	return (
 		<HStack modifiers={[padding({ bottom: 18 })]}>
-				<TextField
-					key={focusVersion}
-					defaultValue={typeof price === 'number' ? String(price) : ''}
+			<TextField
+				key={focusVersion}
+				defaultValue={typeof price === 'number' ? String(price) : ''}
 				onValueChange={handleValueChange}
 				placeholder="0.00"
 				modifiers={[
-					font({ size: 34, weight: 'bold' }),
+					font({ design: 'rounded', size: 34, weight: 'bold' }),
 					foregroundStyle(theme.text.primary),
 					multilineTextAlignment('leading'),
 					keyboardType('decimal-pad')

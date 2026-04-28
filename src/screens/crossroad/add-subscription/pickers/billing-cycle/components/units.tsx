@@ -50,7 +50,7 @@ const Units = () => {
 								<Text
 									key={unit}
 									modifiers={[
-										font({ size: 17 }),
+										font({ design: 'rounded', size: 17 }),
 										padding({
 											vertical: 12,
 											horizontal: 18

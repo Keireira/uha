@@ -12,12 +12,16 @@ const ReasonSection = ({ activeType, reason, setReason }: Props) => {
 
 	return (
 		<TextField
-				axis="vertical"
-				defaultValue={reason}
-				onValueChange={setReason}
-				placeholder={activeType && isReasonEventType(activeType) ? EVENT_REASON_PLACEHOLDERS[activeType] : 'Why?'}
-				modifiers={[font({ size: 17 }), lineLimit(4, { reservesSpace: true }), foregroundStyle(theme.text.primary)]}
-			/>
+			axis="vertical"
+			defaultValue={reason}
+			onValueChange={setReason}
+			placeholder={activeType && isReasonEventType(activeType) ? EVENT_REASON_PLACEHOLDERS[activeType] : 'Why?'}
+			modifiers={[
+				font({ design: 'rounded', size: 17 }),
+				lineLimit(4, { reservesSpace: true }),
+				foregroundStyle(theme.text.primary)
+			]}
+		/>
 	);
 };
 

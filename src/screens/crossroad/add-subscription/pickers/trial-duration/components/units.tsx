@@ -19,13 +19,13 @@ const UNITS: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 const Units = () => {
 	const settingAccent = useAccent();
 
-		const { type, value, setTrialDuration } = useDraftStore(
-			useShallow((state) => ({
-				type: selectTrialDuration(state.timeline)?.duration_type ?? 'days',
-				value: selectTrialDuration(state.timeline)?.duration_value ?? 7,
-				setTrialDuration: state.actions.setTrialDuration
-			}))
-		);
+	const { type, value, setTrialDuration } = useDraftStore(
+		useShallow((state) => ({
+			type: selectTrialDuration(state.timeline)?.duration_type ?? 'days',
+			value: selectTrialDuration(state.timeline)?.duration_value ?? 7,
+			setTrialDuration: state.actions.setTrialDuration
+		}))
+	);
 
 	return (
 		<MaskedView
@@ -51,7 +51,7 @@ const Units = () => {
 								<Text
 									key={unit}
 									modifiers={[
-										font({ size: 17 }),
+										font({ design: 'rounded', size: 17 }),
 										padding({
 											vertical: 12,
 											horizontal: 18
