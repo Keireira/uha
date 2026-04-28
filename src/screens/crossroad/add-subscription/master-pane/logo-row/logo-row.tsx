@@ -16,7 +16,7 @@ import { LogoView } from '@ui';
 import { SymbolView } from 'expo-symbols';
 import Root, { LogoPressable, EditBadge, SideSlot, SideButton, FillPress } from './logo-row.styles';
 
-const logoKeys = ['logo_url', 'symbol', 'color'] as const;
+const logoKeys = ['image_uri', 'symbol', 'color'] as const;
 const blank = (v: unknown) => (v == null || v === '' ? null : v);
 
 const LogoRow = () => {
@@ -24,34 +24,34 @@ const LogoRow = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 
-	const draft = useDraftStore(
-		useShallow((state) => ({
-			slug: state.slug,
-			title: state.title,
-			color: state.color,
-			symbol: state.symbol,
-			logo_url: state.logo_url,
-			category_slug: state.category_slug,
-			logoSnapshot: state.logoSnapshot
-		}))
-	);
+		const draft = useDraftStore(
+			useShallow((state) => ({
+				custom_name: state.custom_name,
+				logo: state.logo,
+				category_slug: state.category_slug,
+				logoSnapshot: state.logoSnapshot
+			}))
+		);
 	const resetLogo = useDraftStore((state) => state.actions.resetLogo);
 
-	const {
-		data: [category]
-	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)), []);
+		const {
+			data: [category]
+		} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)), [
+			draft.category_slug
+		]);
 
-	const isLogoDirty = logoKeys.some((key) => blank(draft[key]) !== blank(draft.logoSnapshot[key]));
+		const isLogoDirty = logoKeys.some((key) => blank(draft.logo[key]) !== blank(draft.logoSnapshot[key]));
+		const logoColor = draft.logo.color ?? settingAccent;
 
-	const openLogoEditor = () => {
-		router.push({
-			pathname: '/edit-logo-sheet',
-			params: {
-				logo_url: draft.logo_url,
-				symbol: draft.symbol,
-				color: draft.color
-			}
-		});
+		const openLogoEditor = () => {
+			router.push({
+				pathname: '/edit-logo-sheet',
+				params: {
+					logo_url: draft.logo.image_uri,
+					symbol: draft.logo.symbol,
+					color: logoColor
+				}
+			});
 	};
 
 	const openColorPresets = () => {
@@ -71,15 +71,14 @@ const LogoRow = () => {
 			</SideSlot>
 
 			<LogoPressable onPress={openLogoEditor}>
-				<LogoView
-					name={draft.title}
-					symbolName={draft.symbol}
-					emoji={category?.emoji}
-					url={draft.logo_url}
-					color={draft.color}
-					slug={draft.slug}
-					size={96}
-				/>
+					<LogoView
+						name={draft.custom_name}
+						symbolName={draft.logo.symbol}
+						emoji={category?.emoji}
+						url={draft.logo.image_uri}
+						color={logoColor}
+						size={96}
+					/>
 
 				<EditBadge isInteractive>
 					<SymbolView size={18} name="pencil" tintColor={settingAccent} />
@@ -87,13 +86,13 @@ const LogoRow = () => {
 			</LogoPressable>
 
 			<SideSlot>
-				<SideButton glassEffectStyle="clear" isInteractive tintColor={draft.color}>
-					<FillPress onPress={openColorPresets}>
-						<SymbolView
-							size={22}
-							name="paintbrush.fill"
-							tintColor={isLight(draft.color) ? theme.static.black : theme.static.white}
-						/>
+					<SideButton glassEffectStyle="clear" isInteractive tintColor={logoColor}>
+						<FillPress onPress={openColorPresets}>
+							<SymbolView
+								size={22}
+								name="paintbrush.fill"
+								tintColor={isLight(logoColor) ? theme.static.black : theme.static.white}
+							/>
 					</FillPress>
 				</SideButton>
 			</SideSlot>

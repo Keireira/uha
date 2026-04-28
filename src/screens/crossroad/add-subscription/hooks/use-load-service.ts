@@ -135,15 +135,49 @@ const useLoadService = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [service, setService] = useState<ServiceT>();
 	const params = useLocalSearchParams<RouteParams>();
+	const {
+		service_id,
+		service_logo,
+		service_name,
+		service_source,
+		service_bundle_id,
+		service_category_slug,
+		service_domains,
+		source_hint,
+		country,
+		language
+	} = params;
 
 	useEffect(() => {
-		if (!params) return;
+		if (!service_id) return;
 
-		resolveService(params)
+		resolveService({
+			service_id,
+			service_logo,
+			service_name,
+			service_source,
+			service_bundle_id,
+			service_category_slug,
+			service_domains,
+			source_hint,
+			country,
+			language
+		})
 			.then(setService)
 			.catch(() => setService(createDefaultService()))
 			.finally(() => setIsLoading(false));
-	}, [params.service_id]);
+	}, [
+		service_id,
+		service_logo,
+		service_name,
+		service_source,
+		service_bundle_id,
+		service_category_slug,
+		service_domains,
+		source_hint,
+		country,
+		language
+	]);
 
 	return { service, isLoading };
 };

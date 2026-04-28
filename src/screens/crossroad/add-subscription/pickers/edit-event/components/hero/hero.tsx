@@ -52,9 +52,16 @@ const Hero = ({ activeType }: Props) => {
 			/>
 
 			<VStack alignment="leading" spacing={4}>
-				<Text modifiers={[font({ size: 17, weight: 'semibold' }), foregroundStyle(tintColor)]}>{meta.label}</Text>
+				<Text modifiers={[font({ design: 'rounded', size: 17, weight: 'semibold' }), foregroundStyle(tintColor)]}>
+					{meta.label}
+				</Text>
 
-				<Text modifiers={[font({ size: 17, weight: 'regular' }), foregroundStyle(withAlpha(theme.static.white, 0.75))]}>
+				<Text
+					modifiers={[
+						font({ design: 'rounded', size: 17, weight: 'regular' }),
+						foregroundStyle(withAlpha(theme.static.white, 0.75))
+					]}
+				>
 					{meta.description}
 				</Text>
 			</VStack>

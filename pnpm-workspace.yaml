@@ -1,2 +1,3 @@
 patchedDependencies:
   "@expo/ui": patches/@expo__ui.patch
+  react-native: patches/react-native.patch

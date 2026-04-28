@@ -22,16 +22,16 @@ const ColorPresets = () => {
 	const styles = useStyles();
 	const accent = useAccent();
 
-	const { initialColor, setColor } = useDraftStore(
-		useShallow((state) => ({
-			initialColor: state.color,
-			setColor: state.actions.setColor
-		}))
-	);
+		const { initialColor, setColor } = useDraftStore(
+			useShallow((state) => ({
+				initialColor: state.logo.color,
+				setColor: state.actions.setSubscriptionColor
+			}))
+		);
 
 	const [presets, setPresets] = useState<string[]>([]);
 	/* Picker is uncontrolled relative to the store — confirm commits, cancel discards */
-	const [pickerHex, setPickerHex] = useState(initialColor);
+		const [pickerHex, setPickerHex] = useState(initialColor ?? accent);
 
 	useEffect(() => {
 		const loadPresets = async () => {
@@ -67,8 +67,8 @@ const ColorPresets = () => {
 			</Stack.Toolbar>
 
 			<Root>
-				<ColorPicker
-					value={initialColor}
+					<ColorPicker
+						value={initialColor ?? accent}
 					onCompleteJS={onColorChangeHd}
 					thumbSize={28}
 					thumbShape="ring"

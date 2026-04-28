@@ -3,6 +3,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 
 import { useSettingsValue, setSettingsValue } from '@hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { selectCurrencyId } from '@screens/crossroad/add-subscription/events';
 
 import type { SearchParamsT } from '../select-currency.d';
 
@@ -17,8 +18,8 @@ const useParams = (): ParamsBinding => {
 
 	const recalcCurrency = useSettingsValue<string>('recalc_currency');
 	const defaultCurrency = useSettingsValue<string>('default_currency');
-	const draftCurrency = useDraftStore((state) => state.currency);
-	const setDraftCurrency = useDraftStore((state) => state.actions.setCurrency);
+	const draftCurrency = useDraftStore((state) => selectCurrencyId(state.timeline));
+	const setDraftCurrency = useDraftStore((state) => state.actions.setCurrencyId);
 
 	switch (target) {
 		case 'settings_default_currency':

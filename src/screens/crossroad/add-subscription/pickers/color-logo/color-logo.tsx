@@ -12,10 +12,11 @@ import * as ImagePicker from 'expo-image-picker';
 import type { TextInputChangeEvent } from 'react-native';
 import type { SearchBarCommands } from 'react-native-screens';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { LogoDraftT } from '@screens/crossroad/add-subscription/events';
 
 type RouteParamsT = {
-	logo_url: string;
-	symbol: string;
+	logo_url?: LogoDraftT['image_uri'];
+	symbol?: LogoDraftT['symbol'];
 };
 
 const ColorLogo = () => {
@@ -30,13 +31,13 @@ const ColorLogo = () => {
 	const params = useLocalSearchParams<RouteParamsT>();
 	const [initialParams] = useState(params);
 
-	const draft = useDraftStore(
-		useShallow((state) => ({
-			symbol: state.symbol,
-			logo_url: state.logo_url,
-			patch: state.actions.patch
-		}))
-	);
+		const draft = useDraftStore(
+			useShallow((state) => ({
+				logo: state.logo,
+				patch: state.actions.patch,
+				setLogoImage: state.actions.setLogoImage
+			}))
+		);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('transitionEnd', (e) => {
@@ -63,7 +64,7 @@ const ColorLogo = () => {
 		if (result.canceled || !result.assets.length) return;
 
 		const [asset] = result.assets;
-		draft.patch({ logo_url: asset.uri, symbol: undefined });
+		draft.setLogoImage(asset.uri);
 		router.back();
 	};
 
@@ -80,19 +81,22 @@ const ColorLogo = () => {
 		setSearch(e.nativeEvent.text);
 	};
 
-	const cancelEditsHd = () => {
-		draft.patch({
-			logo_url: initialParams.logo_url,
-			symbol: initialParams.symbol
-		});
-		router.back();
-	};
+		const cancelEditsHd = () => {
+			draft.patch({
+				logo: {
+					...draft.logo,
+					image_uri: initialParams.logo_url,
+					symbol: initialParams.symbol
+				}
+			});
+			router.back();
+		};
 
 	const finalizeEditsHd = () => {
 		router.back();
 	};
 
-	const hasChanges = draft.symbol !== initialParams.symbol || draft.logo_url !== initialParams.logo_url;
+		const hasChanges = draft.logo.symbol !== initialParams.symbol || draft.logo.image_uri !== initialParams.logo_url;
 
 	return (
 		<>

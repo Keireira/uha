@@ -41,14 +41,14 @@ const EditEventScreen = () => {
 	});
 
 	const [amountText, setAmountText] = useState<string>(() => {
-		if (existing && isPricedEvent(existing)) {
+		if (existing && isPricedEvent(existing) && typeof existing.amount === 'number') {
 			return String(existing.amount);
 		}
 
 		if (typeParam === 'refund') {
 			const [latestPriced] = events.filter(isPricedEvent).sort((a, b) => b.date.localeCompare(a.date));
 
-			if (latestPriced && 'amount' in latestPriced && latestPriced.amount > 0) {
+			if (latestPriced && 'amount' in latestPriced && typeof latestPriced.amount === 'number' && latestPriced.amount > 0) {
 				return String(latestPriced.amount);
 			}
 		}
