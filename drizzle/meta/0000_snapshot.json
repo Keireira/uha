@@ -441,8 +441,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "custom_emoji": {
-          "name": "custom_emoji",
+        "custom_symbol": {
+          "name": "custom_symbol",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

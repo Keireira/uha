@@ -67,7 +67,7 @@ CREATE TABLE `subscriptions` (
 	`billing_cycle_value` integer DEFAULT 1 NOT NULL,
 	`first_payment_date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`tender_id` text,
-	`custom_emoji` text,
+	`custom_symbol` text,
 	`cancellation_date` text,
 	`notes` text,
 	`notify_enabled` integer DEFAULT false NOT NULL,

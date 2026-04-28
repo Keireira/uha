@@ -88,7 +88,7 @@ const AddSubscriptionScreen = () => {
 				},
 				category_slug: draft.category_slug,
 				custom_name: draft.title,
-				custom_emoji: draft.symbol ?? null,
+				custom_symbol: draft.symbol ?? null,
 				billing_cycle_type: draft.billing_cycle_type,
 				billing_cycle_value: draft.billing_cycle_value,
 				currencyId: currency.id,

@@ -32,7 +32,7 @@ type SaveParams = {
 	service: ServiceInput;
 	category_slug: string;
 	custom_name: string | null;
-	custom_emoji: string | null;
+	custom_symbol: string | null;
 	billing_cycle_type: SubscriptionT['billing_cycle_type'];
 	billing_cycle_value: number;
 	/** Resolved currency id (DB row id) — used for every priced / refund event. */
@@ -119,7 +119,7 @@ const useSaveSubscriptions = () => {
 			service_id: params.service.id,
 			category_slug: params.category_slug,
 			custom_name: params.custom_name,
-			custom_emoji: params.custom_emoji,
+			custom_symbol: params.custom_symbol,
 			billing_cycle_type: params.billing_cycle_type,
 			billing_cycle_value: params.billing_cycle_value,
 			first_payment_date: params.firstPaymentDate,
