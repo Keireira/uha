@@ -9,7 +9,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useActiveEvent } from '@screens/crossroad/add-subscription/pickers/edit-event/hooks';
 
-import type { NewTimelineEventT } from '@screens/crossroad/add-subscription/hooks/use-draft-store';
+import type { NewTimelineEventT, PatchTimelineEventT } from '@screens/crossroad/add-subscription/events';
 import type { Props } from './header.d';
 
 const useData = () => {
@@ -51,7 +51,7 @@ const Header = ({ amountText, date, reason }: Props) => {
 				return {
 					type: activeType,
 					date: isoDate,
-					reason: reason.trim() || null
+					reason: reason.trim()
 				};
 
 			case 'price_up':
@@ -60,8 +60,8 @@ const Header = ({ amountText, date, reason }: Props) => {
 				return {
 					date: isoDate,
 					type: activeType,
-					currency: currency ?? 'USD',
-					amount: parsePrice(amountText) ?? 0
+					currency_id: currency ?? 'USD',
+					amount: parsePrice(amountText) ?? null
 				};
 
 			case 'resume':
@@ -72,6 +72,37 @@ const Header = ({ amountText, date, reason }: Props) => {
 
 			default:
 				return null;
+		};
+	};
+
+	const createPatch = (event: NewTimelineEventT): PatchTimelineEventT => {
+		switch (event.type) {
+			case 'pause':
+			case 'cancellation':
+				return {
+					date: event.date,
+					reason: event.reason
+				};
+
+			case 'price_up':
+			case 'price_down':
+			case 'refund':
+				return {
+					date: event.date,
+					amount: event.amount,
+					currency_id: event.currency_id
+				};
+
+			case 'resume':
+				return {
+					date: event.date
+				};
+
+			case 'trial':
+			case 'first_payment':
+				return {
+					date: event.date
+				};
 		}
 	};
 
@@ -82,7 +113,7 @@ const Header = ({ amountText, date, reason }: Props) => {
 		if (!payload) return;
 
 		if (activeEvent) {
-			updateEvent(activeEvent.id, payload);
+			updateEvent(activeEvent.id, createPatch(payload));
 		} else {
 			addEvent(payload);
 		}

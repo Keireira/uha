@@ -5,19 +5,20 @@ import { Stack, useRouter } from 'expo-router';
 import { useAccent } from '@hooks';
 import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { formatISODate, selectFirstPaymentDate } from '@screens/crossroad/add-subscription/events';
 
 const Header = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 
-	const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
-		useShallow((state) => ({
-			firstPaymentDate: state.first_payment_date,
-			setFirstPaymentDate: state.actions.setFirstPaymentDate
-		}))
-	);
+		const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
+			useShallow((state) => ({
+				firstPaymentDate: selectFirstPaymentDate(state.timeline) ?? formatISODate(new Date()),
+				setFirstPaymentDate: state.actions.setFirstPaymentDate
+			}))
+		);
 
-	const isToday = isSameDay(new Date(), firstPaymentDate);
+		const isToday = isSameDay(new Date(), firstPaymentDate);
 
 	const onSetTodayHd = () => {
 		setFirstPaymentDate(format(new Date(), 'yyyy-MM-dd'));

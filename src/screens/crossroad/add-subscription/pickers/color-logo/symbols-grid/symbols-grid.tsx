@@ -3,6 +3,7 @@ import { splitEvery } from 'ramda';
 import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
 
+import { useAccent } from '@hooks';
 import { lighten } from '@lib/colors';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useFilter, useModifiers } from './hooks';
@@ -12,27 +13,26 @@ import { Host, VStack, HStack, Grid, Image, Text } from '@expo/ui/swift-ui';
 
 import { COLUMNS, GRID_GAP, HORIZONTAL_PADDING } from './symbols-grid.constants';
 
+import type { LogoDraftT } from '@screens/crossroad/add-subscription/events';
 import type { Props } from './symbols-grid.d';
 
 const SymbolGrid = ({ search }: Props) => {
 	const theme = useTheme();
+	const settingAccent = useAccent();
 	const draft = useDraftStore(
 		useShallow((state) => ({
-			color: state.color,
-			symbol: state.symbol,
-			patch: state.actions.patch
+			color: state.logo.color,
+			symbol: state.logo.symbol,
+			setLogoSymbol: state.actions.setLogoSymbol
 		}))
 	);
 
 	const mods = useModifiers();
 	const sections = useFilter(search);
-	const selectedColor = lighten(draft.color, 0.5);
+	const selectedColor = lighten(draft.color ?? settingAccent, 0.5);
 
 	const onSelectSymbolHd = (symbol: string) => {
-		draft.patch({
-			logo_url: undefined,
-			symbol: draft.symbol === symbol ? undefined : symbol
-		});
+		draft.setLogoSymbol(draft.symbol === symbol ? undefined : (symbol as LogoDraftT['symbol']));
 	};
 
 	return (
@@ -42,7 +42,7 @@ const SymbolGrid = ({ search }: Props) => {
 					<VStack key={section.title} alignment="leading" spacing={8}>
 						<HStack spacing={8} modifiers={[padding({ vertical: 8 })]}>
 							<Image systemName={section.icon} size={16} color={theme.text.secondary} />
-							<Text modifiers={[font({ size: 18, weight: 'semibold' })]}>{section.title}</Text>
+							<Text modifiers={[font({ design: 'rounded', size: 18, weight: 'semibold' })]}>{section.title}</Text>
 						</HStack>
 						<Grid horizontalSpacing={GRID_GAP} verticalSpacing={GRID_GAP}>
 							{splitEvery(COLUMNS, section.symbols).map((row, index) => (

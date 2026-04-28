@@ -50,7 +50,7 @@ const getPriorPrice = (activeEvent: ActiveEvent, date?: Date) => {
 		})
 		.sort((a, b) => b.date.localeCompare(a.date));
 
-	if (prior && 'amount' in prior) {
+	if (prior && 'amount' in prior && typeof prior.amount === 'number') {
 		return prior.amount;
 	}
 
@@ -67,7 +67,7 @@ const useGetPriceWarning = (currencyCode = '') => {
 	]);
 
 	const getPriceWarning = (activeEvent: ActiveEvent, amountText: string, priorPrice?: number) => {
-		if (!priorPrice) return;
+		if (!(priorPrice && currency)) return;
 
 		const parsed = parsePrice(amountText);
 		if (!parsed) return;
@@ -113,21 +113,26 @@ const AmountSection = ({ date, amountText, setAmountText }: Props) => {
 						<Image systemName="exclamationmark.triangle.fill" size={16} color={theme.semantic.warning} />
 					)}
 
-					<Text modifiers={[foregroundStyle(theme.semantic.warning), font({ size: 14, weight: 'regular' })]}>
+					<Text
+						modifiers={[
+							foregroundStyle(theme.semantic.warning),
+							font({ design: 'rounded', size: 14, weight: 'regular' })
+						]}
+					>
 						{priceWarning}
 					</Text>
 				</HStack>
 			}
 		>
 			<HStack spacing={8} alignment="center">
-				<Text modifiers={[font({ size: 16, weight: 'medium' })]}>{label}</Text>
+				<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>{label}</Text>
 
 				<TextField
 					defaultValue={amountText}
 					onValueChange={setAmountText}
 					placeholder="0.00"
 					modifiers={[
-						font({ size: 24, weight: 'semibold' }),
+						font({ design: 'rounded', size: 24, weight: 'semibold' }),
 						multilineTextAlignment('trailing'),
 						keyboardType('decimal-pad'),
 						frame({ minWidth: 120, alignment: 'center' })
@@ -151,7 +156,7 @@ const AmountSection = ({ date, amountText, setAmountText }: Props) => {
 						})
 					]}
 				>
-					<Text modifiers={[font({ size: 17, weight: 'bold' }), foregroundStyle(settingAccent)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 17, weight: 'bold' }), foregroundStyle(settingAccent)]}>
 						{activeEvent.currency}
 					</Text>
 				</HStack>

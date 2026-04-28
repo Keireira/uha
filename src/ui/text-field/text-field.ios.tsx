@@ -22,7 +22,7 @@ const TextFieldIOS = ({
 		<Host matchContents={matchContents} style={style}>
 			<ExpoTextField
 				modifiers={[
-					font({ size: fontSize, weight: fontWeight }),
+					font({ design: 'rounded', size: fontSize, weight: fontWeight }),
 					foregroundStyle(color ?? theme.text.primary),
 					padding({ all: 12 }),
 					multilineTextAlignment(align),

@@ -1,0 +1,32 @@
+diff --git a/React/Views/RCTFont.mm b/React/Views/RCTFont.mm
+index 675f40c3131c782c39ceace0afc83ad803a64673..8c688b11cd3be41ab4ebccc1c06243de3970a389 100644
+--- a/React/Views/RCTFont.mm
++++ b/React/Views/RCTFont.mm
+@@ -428,6 +428,27 @@ + (UIFont *)updateFont:(UIFont *)font
+ 
+   BOOL didFindFont = NO;
+ 
++  if ([familyName isEqualToString:@"ui-rounded"]) {
++    font = cachedSystemFont(fontSize, fontWeight);
++    if (font) {
++      didFindFont = YES;
++
++      if (@available(iOS 13.0, *)) {
++        UIFontDescriptor *fontDescriptor = [font.fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
++        if (fontDescriptor) {
++          font = [UIFont fontWithDescriptor:fontDescriptor size:fontSize];
++        }
++      }
++
++      if (isItalic) {
++        UIFontDescriptor *fontDescriptor = [font fontDescriptor];
++        UIFontDescriptorSymbolicTraits symbolicTraits = fontDescriptor.symbolicTraits | UIFontDescriptorTraitItalic;
++        fontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:symbolicTraits];
++        font = [UIFont fontWithDescriptor:fontDescriptor size:fontSize];
++      }
++    }
++  }
++
+   // Handle system font as special case. This ensures that we preserve
+   // the specific metrics of the standard system font as closely as possible.
+   if ([familyName isEqual:defaultFontFamily] || [familyName isEqualToString:@"System"] ||

@@ -32,11 +32,11 @@ const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
 	const router = useRouter();
 
 	const eventTypeRows = useEventTypes();
-	const setWithTrial = useDraftStore((state) => state.actions.setWithTrial);
+	const enableTrial = useDraftStore((state) => state.actions.enableTrial);
 
 	const handleTypeSelect = (type: EventTypeT) => {
 		if (type === 'trial') {
-			setWithTrial(true);
+			enableTrial();
 
 			router.push({
 				pathname: '/(crossroad)/trial-duration',
@@ -67,7 +67,7 @@ const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
 					<Text
 						modifiers={[
 							padding({ top: 32, bottom: 8 }),
-							font({ size: 14, weight: 'semibold' }),
+							font({ design: 'rounded', size: 14, weight: 'semibold' }),
 							foregroundStyle(theme.text.secondary),
 							textCase('uppercase')
 						]}
@@ -106,7 +106,7 @@ const AddEventModal = ({ isPickerVisible, setIsPickerVisible }: Props) => {
 												>
 													<Image size={14} systemName={meta.symbol} color={tone} />
 
-													<Text modifiers={[font({ size: 17 })]}>{meta.label}</Text>
+													<Text modifiers={[font({ design: 'rounded', size: 17 })]}>{meta.label}</Text>
 												</HStack>
 											);
 										})}

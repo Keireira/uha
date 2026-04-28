@@ -23,12 +23,15 @@ export const subscriptionsTable = sqliteTable(
 		billing_cycle_type: text().$type<'days' | 'weeks' | 'months' | 'years'>().default('months').notNull(),
 		billing_cycle_value: int().default(1).notNull(),
 
+		trial_value: int().default(1).notNull(),
+		trial_type: text().$type<'days' | 'weeks' | 'months' | 'years'>().default('weeks').notNull(),
+
 		first_payment_date: text()
 			.default(sql`(CURRENT_DATE)`)
 			.notNull(),
 		tender_id: text().references(() => tendersTable.id), // uuid v4
 
-		custom_emoji: text(), // SF Symbol name, set explicitly by user
+		custom_symbol: text(), // SF Symbol name, set explicitly by user
 		cancellation_date: text(), // Shall be empty if not canceled
 
 		notes: text(), // user notes, multiline

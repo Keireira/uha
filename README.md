@@ -40,8 +40,8 @@ eas submit --platform ios
 pnpm patch "<PACKAGE_NAME>"
 
 # 2. Edit files in provided tmp path
-cd /Volumes/Personal/uha/node_modules/.pnpm_patches/@expo/ui@55.0.12
-zed ./
+# example: cd /Volumes/Personal/uha/node_modules/.pnpm_patches/@expo/ui@55.0.12
+# zed ./
 
 # 3. Edit required files
 # ...
