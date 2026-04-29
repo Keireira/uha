@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { SymbolView } from 'expo-symbols';
 import * as Haptics from 'expo-haptics';
-import { format } from 'date-fns';
 import { PieChart } from 'react-native-gifted-charts';
 
 import db from '@db';
@@ -39,12 +38,6 @@ import Root, {
 
 const ALL_TABS = ['day', 'month', 'year'] as const;
 
-const DATE_FORMATS: Record<string, string> = {
-	day: 'd MMMM',
-	month: 'MMMM yyyy',
-	year: 'yyyy'
-};
-
 const AnalyticsSheet = () => {
 	const { clavis } = useLocalSearchParams<{ clavis: string }>();
 	const router = useRouter();
@@ -70,7 +63,7 @@ const AnalyticsSheet = () => {
 	const year = useYear(summaryTxs, filledRates);
 
 	const activeSummary = activeClavis === 'day' ? day : activeClavis === 'year' ? year : month;
-	const titleDate = format(activeSummary.rawDate, DATE_FORMATS[activeClavis] ?? 'MMMM yyyy');
+	const title = activeSummary.formattedDate;
 	const enrichedCategories = useCategoryDetails(activeSummary.categories, currency);
 
 	const formattedTotal =
@@ -102,14 +95,16 @@ const AnalyticsSheet = () => {
 	};
 
 	return (
-		<Root contentContainerStyle={{ paddingBottom: 48 }}>
+		<Root>
 			<Header>
 				<CloseGlass isInteractive>
 					<CloseInner onPress={() => router.back()} hitSlop={10}>
 						<SymbolView name="xmark" size={16} weight="bold" tintColor={theme.text.primary} />
 					</CloseInner>
 				</CloseGlass>
-				<Title>{titleDate}</Title>
+				<Title numberOfLines={1} ellipsizeMode="tail">
+					{title}
+				</Title>
 				{/* Spacer to balance close button for centering */}
 				<CloseGlass style={{ opacity: 0 }} />
 			</Header>

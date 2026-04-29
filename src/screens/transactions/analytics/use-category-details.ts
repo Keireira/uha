@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import db from '@db';
 import { inArray } from 'drizzle-orm';
@@ -19,6 +20,8 @@ type CatCurrencyT = {
 };
 
 const useCategoryDetails = (categories: TxCategoryT[], currency: CatCurrencyT | undefined): EnrichedCategoryT[] => {
+	const { t } = useTranslation();
+
 	return useMemo(() => {
 		if (!categories.length || !currency) {
 			return [];
@@ -43,12 +46,12 @@ const useCategoryDetails = (categories: TxCategoryT[], currency: CatCurrencyT | 
 
 			return {
 				...cat,
-				title: details?.title ?? 'Unknown',
+				title: details?.title ?? t(`category.${cat.id}`, { defaultValue: cat.id }),
 				emoji: details?.emoji ?? '?',
 				formattedAmount
 			};
 		});
-	}, [categories, currency]);
+	}, [categories, currency, t]);
 };
 
 export default useCategoryDetails;
