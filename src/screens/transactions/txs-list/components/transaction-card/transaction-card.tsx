@@ -17,6 +17,8 @@ const TransactionCard = ({
 	slug,
 	logo_url,
 	customName,
+	custom_logo,
+	custom_symbol,
 	title,
 	emoji,
 	color,
@@ -25,6 +27,8 @@ const TransactionCard = ({
 	const router = useRouter();
 	const { t } = useTranslation();
 	const { withConversion, basePrice, convertedPrice } = useFormattedPrice(date, price, currency_code);
+	const hasCustomLogo = Boolean(custom_logo || custom_symbol);
+	const customSymbol = (custom_symbol ?? undefined) as React.ComponentProps<typeof LogoView>['symbolName'];
 
 	const openTransactionView = () => {
 		router.push({
@@ -38,7 +42,15 @@ const TransactionCard = ({
 	return (
 		<Root onPress={openTransactionView}>
 			<LogoSection>
-				<LogoView url={logo_url} slug={slug} emoji={emoji} name={customName || title} size={48} color={color} />
+				<LogoView
+					url={custom_logo ?? logo_url}
+					slug={hasCustomLogo ? null : slug}
+					symbolName={customSymbol}
+					emoji={emoji}
+					name={customName || title}
+					size={48}
+					color={color}
+				/>
 			</LogoSection>
 
 			<DescSection>

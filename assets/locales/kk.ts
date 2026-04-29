@@ -411,6 +411,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		logo_dev: 'logo.dev'
 	},
 	about: {
+		bug: 'Техникалық қате',
+		website: 'uha.app',
 		sources: 'Дереккөздер',
 		beta: 'Бетаға қосылу',
 		version: 'Нұсқа'
@@ -656,7 +658,7 @@ const kazakh: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Жазылымдар',
-				description: 'Өкінішті (◞‸◟)'
+				description: 'Жазылымды нөлден жасау'
 			}
 		},
 		add: {

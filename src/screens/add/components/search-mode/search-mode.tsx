@@ -34,7 +34,7 @@ const SearchMode = () => {
 	);
 
 	const goToNewService = (searchResult: SearchResultT) => {
-		const isInNeedForHint = ['appstore', 'playstore', 'web'].includes(searchResult.source);
+		const isInNeedForHint = searchResult.source !== 'inhouse';
 
 		const additionalParams = isInNeedForHint
 			? {
@@ -49,14 +49,19 @@ const SearchMode = () => {
 			params: {
 				service_id: searchResult.id,
 				service_name: searchResult.name,
-				service_logo: searchResult.logo_url,
-				service_source: searchResult.source,
-				service_bundle_id: searchResult.bundle_id,
-				service_category_slug: searchResult.category_slug,
-				service_domains: searchResult.domains,
-				...additionalParams
-			}
-		});
+					service_logo: searchResult.logo_url,
+					service_source: searchResult.source,
+					service_bundle_id: searchResult.bundle_id,
+					service_slug: searchResult.slug,
+					service_color: searchResult.colors?.primary,
+					service_ref_link: searchResult.ref_link,
+					service_category_slug: searchResult.category_slug,
+					service_domains: JSON.stringify(searchResult.domains ?? []),
+					service_aliases: JSON.stringify(searchResult.alternative_names ?? []),
+					service_social_links: JSON.stringify(searchResult.social_links ?? {}),
+					...additionalParams
+				}
+			});
 	};
 
 	const isFetching = isLoading && isFilled && !results.length;

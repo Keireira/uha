@@ -5,14 +5,13 @@ import { BaseText, H2, Text } from '@ui';
 
 export default styled.ScrollView`
 	flex: 1;
-	padding: 24px 16px;
 `;
 
 export const Header = styled.View`
 	flex-direction: row;
 	align-items: center;
-	padding-horizontal: 24px;
-	margin-bottom: 12px;
+	padding: 24px 16px 12px;
+	gap: 12px;
 `;
 
 export const CloseGlass = styled(GlassView)`
@@ -41,7 +40,7 @@ export const TabBarRow = styled.ScrollView.attrs({
 	horizontal: true,
 	showsHorizontalScrollIndicator: false,
 	contentContainerStyle: {
-		paddingHorizontal: 24,
+		paddingHorizontal: 16,
 		gap: 6
 	}
 })`
@@ -72,6 +71,7 @@ export const TabLabel = styled(Text)<{ $active: boolean }>`
 export const ChartSection = styled.View`
 	align-items: center;
 	margin-bottom: 32px;
+	padding-horizontal: 16px;
 `;
 
 export const CenterLabel = styled.View`
@@ -85,9 +85,10 @@ export const TotalText = styled(H2)`
 
 export const LegendSection = styled.View`
 	gap: 12px;
+	padding: 0 16px 48px;
 `;
 
-export const LegendItem = styled.View`
+export const LegendItem = styled.Pressable`
 	flex-direction: row;
 	align-items: center;
 	gap: 12px;
@@ -111,10 +112,42 @@ export const LegendTextGroup = styled.View`
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+	gap: 12px;
 `;
 
-export const LegendTitle = styled(Text)``;
+export const LegendTitle = styled(Text)`
+	flex: 1;
+`;
 
 export const LegendAmount = styled(Text)`
 	color: ${({ theme }) => theme.text.secondary};
+	text-align: right;
+`;
+
+export const MerchantSection = styled.View`
+	gap: 12px;
+	padding: 0 16px 48px;
+`;
+
+export const MerchantItem = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+`;
+
+export const MerchantTextGroup = styled.View`
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+`;
+
+export const MerchantTitle = styled(Text)`
+	flex: 1;
+`;
+
+export const MerchantAmount = styled(Text)`
+	color: ${({ theme }) => theme.text.secondary};
+	text-align: right;
 `;

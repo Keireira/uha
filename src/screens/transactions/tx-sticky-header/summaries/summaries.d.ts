@@ -15,4 +15,5 @@ export type SummaryReturnT = {
 	formattedDate: string;
 	total: number;
 	categories: TxCategoryT[];
+	transactions: TxSummaryT[];
 };

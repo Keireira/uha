@@ -80,6 +80,7 @@ const deriveRefunds = (events: TimelineEventRow[]): PriceEntry[] =>
 
 const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT): TransactionT[] => {
 	const txs: TransactionT[] = [];
+	const defaultComment = subscription.notes?.trim() ?? '';
 
 	const priceHistory = derivePriceHistory(events);
 	const pauseWindows = derivePauseWindows(events);
@@ -128,7 +129,7 @@ const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT
 			currency_id: entry.currency_id,
 			tender_id: subscription.tender_id || '',
 			subscription_id: subscription.id,
-			comment: ''
+			comment: defaultComment
 		});
 
 		nextDate = advanceDate(nextDate, subscription.billing_cycle_type, subscription.billing_cycle_value);
@@ -144,7 +145,7 @@ const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT
 			currency_id: refund.currency_id,
 			tender_id: subscription.tender_id || '',
 			subscription_id: subscription.id,
-			comment: 'refund'
+			comment: defaultComment
 		});
 	}
 

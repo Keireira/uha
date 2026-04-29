@@ -2,6 +2,7 @@ import type { TransactionT, SubscriptionT, CurrencyT, ServiceT, CategoryT, Tende
 
 export type PreparedDbTxT = {
 	id: TransactionT['id'];
+	subscription_id: TransactionT['subscription_id'];
 	currency: CurrencyT['symbol'];
 	currency_code: CurrencyT['id'];
 	denominator: CurrencyT['denominator'];
@@ -10,6 +11,8 @@ export type PreparedDbTxT = {
 	logo_url: ServiceT['logo_url'];
 	title: ServiceT['title'];
 	customName: SubscriptionT['custom_name'];
+	custom_logo: SubscriptionT['custom_logo'];
+	custom_symbol: SubscriptionT['custom_symbol'];
 	emoji: CategoryT['emoji'];
 	color: ServiceT['color'];
 	date: TransactionT['date'];

@@ -1,16 +1,16 @@
 import * as Crypto from 'expo-crypto';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import db from '@db';
-import { currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
 import { useGenerateTxs } from '@hooks/setup';
 import {
+	sortTimeline,
 	isPricedEvent,
-	selectCancellationEvent,
-	selectFirstPaymentEvent,
 	selectTrialEvent,
-	sortTimeline
+	selectCancellationEvent,
+	selectFirstPaymentEvent
 } from '@screens/crossroad/add-subscription/events';
+import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
 
 import type { ServiceT, SubscriptionT, CurrencyT } from '@models';
 import type { SubscriptionDraftT, TimelineEventT } from '@screens/crossroad/add-subscription/events';
@@ -28,7 +28,9 @@ const toMinorAmount = (amount: number, denominator: number): number => Math.roun
 
 const resolveDenominators = async (timeline: TimelineEventT[]): Promise<DenominatorMapT> => {
 	const currencyIds = [...new Set(timeline.filter(isPricedEvent).map((event) => event.currency_id))];
-	if (currencyIds.length === 0) return new Map();
+	if (!currencyIds.length) {
+		return new Map();
+	}
 
 	const rows = await db.select().from(currenciesTable).where(inArray(currenciesTable.id, currencyIds));
 	const denominators: DenominatorMapT = new Map(rows.map((row) => [row.id, row.denominator]));
@@ -58,7 +60,7 @@ const getAmount = (event: TimelineEventT): number => {
 	throw new Error(`Missing amount for ${event.type} event`);
 };
 
-const normalizeService = (service: ServiceT, draft: SubscriptionDraftT): ServiceInsertT => ({
+const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, categorySlug: string): ServiceInsertT => ({
 	id: service.id,
 	bundle_id: service.bundle_id || null,
 	slug: service.slug || service.id,
@@ -69,7 +71,7 @@ const normalizeService = (service: ServiceT, draft: SubscriptionDraftT): Service
 	domains: service.domains ?? [],
 	social_links: service.social_links ?? {},
 	aliases: service.aliases ?? [],
-	category_slug: service.category_slug || draft.category_slug
+	category_slug: categorySlug
 });
 
 const toTimelineRow = (
@@ -140,15 +142,28 @@ const useSaveSubscriptions = () => {
 			throw new Error('Cannot save subscription without first_payment event');
 		}
 
+		const categorySlug = draft.category_slug.trim();
+		if (!categorySlug) {
+			throw new Error('Cannot save subscription without category');
+		}
+
+		const [category] = await db
+			.select({ slug: categoriesTable.slug })
+			.from(categoriesTable)
+			.where(eq(categoriesTable.slug, categorySlug));
+		if (!category) {
+			throw new Error(`Cannot save subscription with unknown category: ${categorySlug}`);
+		}
+
 		const trial = selectTrialEvent(draft.timeline);
 		const cancellation = selectCancellationEvent(draft.timeline);
 		const subscriptionId = Crypto.randomUUID();
 		const denominators = await resolveDenominators(draft.timeline);
-		const serviceRow = normalizeService(service, draft);
+		const serviceRow = normalizeService(service, draft, categorySlug);
 		const subscription: SubscriptionT = {
 			id: subscriptionId,
 			service_id: service.id,
-			category_slug: draft.category_slug,
+			category_slug: categorySlug,
 			custom_name: draft.custom_name.trim() || null,
 			custom_logo: draft.logo.image_uri ?? null,
 			custom_symbol: draft.logo.symbol ?? null,
@@ -163,7 +178,10 @@ const useSaveSubscriptions = () => {
 			notify_enabled: draft.notify_enabled,
 			notify_days_before: JSON.stringify(draft.notify_days_before)
 		};
-		const timelineRows = sortTimeline(draft.timeline).map((event) => toTimelineRow(event, subscriptionId, denominators));
+
+		const timelineRows = sortTimeline(draft.timeline).map((event) =>
+			toTimelineRow(event, subscriptionId, denominators)
+		);
 
 		await db.transaction(async (tx) => {
 			await tx

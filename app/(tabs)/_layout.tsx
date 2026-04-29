@@ -39,16 +39,16 @@ const TabLayout = () => {
 					{ id: 'lib_payments', title: t('navbar.library.payments'), icon: 'creditcard' }
 				]
 			},
-			{
-				tabIndex: 2,
-				actions: [
-					{ id: 'refresh_rates', title: t('navbar.settings.refresh_rates'), icon: 'arrow.triangle.2.circlepath' }
-				]
-			},
+			// {
+			// 	tabIndex: 2,
+			// 	actions: [
+			// 		{ id: 'refresh_rates', title: t('navbar.settings.refresh_rates'), icon: 'arrow.triangle.2.circlepath' }
+			// 	]
+			// },
 			{
 				tabIndex: 3,
 				actions: [
-					{ id: 'add_service', title: t('navbar.add.service'), icon: 'building.2' },
+					// { id: 'add_service', title: t('navbar.add.service'), icon: 'building.2' },
 					{ id: 'add_category', title: t('navbar.add.category'), icon: 'square.grid.2x2' },
 					{ id: 'add_payment', title: t('navbar.add.payment'), icon: 'creditcard' },
 					{ id: 'add_subscription', title: t('navbar.add.subscription'), icon: 'arrow.triangle.2.circlepath' }
@@ -88,15 +88,15 @@ const TabLayout = () => {
 					break;
 				}
 
-				case 'refresh_rates': {
-					backfillRates();
-					break;
-				}
+				// case 'refresh_rates': {
+				// 	backfillRates();
+				// 	break;
+				// }
 
-				case 'add_service': {
-					router.push('/add-service');
-					break;
-				}
+				// case 'add_service': {
+				// 	router.push('/add-service');
+				// 	break;
+				// }
 
 				case 'add_category': {
 					router.push('/add-category');

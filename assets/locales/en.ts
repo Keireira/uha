@@ -411,6 +411,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		logo_dev: 'logo.dev'
 	},
 	about: {
+		bug: 'Report a bug',
+		website: 'uha.app',
 		sources: 'Sources',
 		beta: 'Join Beta',
 		version: 'Version'
@@ -659,7 +661,7 @@ const english: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Subscription',
-				description: 'Unfortunate (◞‸◟)'
+				description: 'Create new subscription from scratch'
 			}
 		},
 		add: {
