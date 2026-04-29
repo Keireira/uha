@@ -14,8 +14,13 @@ type RouteParams = {
 	service_name: SearchResultT['name'];
 	service_source: SearchResultT['source'];
 	service_bundle_id?: SearchResultT['bundle_id'];
+	service_slug?: SearchResultT['slug'];
+	service_color?: string;
+	service_ref_link?: string;
 	service_category_slug?: SearchResultT['category_slug'];
-	service_domains?: string; // expo-router converts string[] to string
+	service_domains?: string;
+	service_aliases?: string;
+	service_social_links?: string;
 } & Partial<ServiceQueryT>;
 
 const DEFAULT_SERVICE: ServiceT = {
@@ -34,7 +39,14 @@ const DEFAULT_SERVICE: ServiceT = {
 
 // I can't access extended data for service via brandfetch or logo.dev APIs since their heavy paywall restrictions.
 // Though, honestly their data is low quality, with 50 maybe 60 percents of useful hits here
-const REMOTE_SOURCES = new Set(['inhouse', 'appstore', 'playstore', 'web']);
+const REMOTE_SOURCES = new Set<SearchResultT['source']>([
+	'inhouse',
+	'appstore',
+	'playstore',
+	'web',
+	'brandfetch',
+	'logo.dev'
+]);
 
 const createDefaultService = (): ServiceT => ({
 	...DEFAULT_SERVICE,
@@ -55,6 +67,40 @@ const parseDomains = (raw: unknown): string[] => {
 	}
 
 	return [];
+};
+
+const parseStringArray = (raw: unknown): string[] => {
+	if (Array.isArray(raw)) {
+		return raw.filter((item): item is string => typeof item === 'string');
+	}
+
+	if (typeof raw !== 'string') {
+		return [];
+	}
+
+	try {
+		const parsed: unknown = JSON.parse(raw);
+		return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+	} catch {
+		return raw ? [raw] : [];
+	}
+};
+
+const parseStringRecord = (raw: unknown): Record<string, string> => {
+	if (typeof raw !== 'string') {
+		return {};
+	}
+
+	try {
+		const parsed: unknown = JSON.parse(raw);
+		if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+
+		return Object.fromEntries(
+			Object.entries(parsed).filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+		);
+	} catch {
+		return {};
+	}
 };
 
 const fetchFromLocalDB = async (serviceId: string): Promise<ServiceT | null> => {
@@ -79,7 +125,7 @@ const fetchFromRemote = async (params: RouteParams): Promise<ServiceT | null> =>
 
 	const query: ServiceQueryT = params.source_hint
 		? {
-				source_hint: params.service_source,
+				source_hint: params.source_hint,
 				country: params.country,
 				language: params.language
 			}
@@ -110,10 +156,15 @@ const parseFromSearch = (params: RouteParams): ServiceT => {
 		...DEFAULT_SERVICE,
 		id: params.service_id,
 		logo_url: params.service_logo ?? '',
+		slug: params.service_slug ?? domains[0]?.replace(/\./g, '-') ?? params.service_id,
 		title: params.service_name,
+		color: params.service_color ?? '',
 		bundle_id,
+		ref_link: params.service_ref_link ?? '',
 		category_slug: params.service_category_slug ?? '',
-		domains
+		domains,
+		aliases: parseStringArray(params.service_aliases),
+		social_links: parseStringRecord(params.service_social_links)
 	};
 };
 
@@ -125,10 +176,16 @@ const resolveService = async (params: RouteParams): Promise<ServiceT> => {
 	const local = await fetchFromLocalDB(params.service_id);
 	if (local) return local;
 
-	const remote = await fetchFromRemote(params);
-	if (remote) return remote;
+	if (REMOTE_SOURCES.has(params.service_source)) {
+		try {
+			const remote = await fetchFromRemote(params);
+			if (remote) return remote;
+		} catch {
+			return parseFromSearch(params);
+		}
+	}
 
-	return createDefaultService();
+	return parseFromSearch(params);
 };
 
 const useLoadService = () => {
@@ -141,8 +198,13 @@ const useLoadService = () => {
 		service_name,
 		service_source,
 		service_bundle_id,
+		service_slug,
+		service_color,
+		service_ref_link,
 		service_category_slug,
 		service_domains,
+		service_aliases,
+		service_social_links,
 		source_hint,
 		country,
 		language
@@ -151,14 +213,21 @@ const useLoadService = () => {
 	useEffect(() => {
 		if (!service_id) return;
 
+		setIsLoading(true);
+
 		resolveService({
 			service_id,
 			service_logo,
 			service_name,
 			service_source,
 			service_bundle_id,
+			service_slug,
+			service_color,
+			service_ref_link,
 			service_category_slug,
 			service_domains,
+			service_aliases,
+			service_social_links,
 			source_hint,
 			country,
 			language
@@ -172,8 +241,13 @@ const useLoadService = () => {
 		service_name,
 		service_source,
 		service_bundle_id,
+		service_slug,
+		service_color,
+		service_ref_link,
 		service_category_slug,
 		service_domains,
+		service_aliases,
+		service_social_links,
 		source_hint,
 		country,
 		language

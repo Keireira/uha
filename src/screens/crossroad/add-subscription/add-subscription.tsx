@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
+import { Stack, useRouter } from 'expo-router';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
-import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { categoriesTable, currenciesTable } from '@db/schema';
 
 import { useTheme } from 'styled-components/native';
 import { useAccent, useSettingsValue } from '@hooks';
@@ -30,9 +30,9 @@ const AddSubscriptionScreen = () => {
 	 */
 	const [focusVersion, setFocusVersion] = useState(0);
 
+	const theme = useTheme();
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const theme = useTheme();
 	const { service, isLoading } = useLoadService();
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
@@ -65,11 +65,23 @@ const AddSubscriptionScreen = () => {
 		[currencyId]
 	);
 	const currency = currencyRows?.[0];
+	const { data: categoryRows } = useLiveQuery(
+		db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug.trim())),
+		[draft.category_slug]
+	);
+	const category = categoryRows?.[0];
 
 	const errors = useMemo(() => timelineErrors(draft.timeline), [draft.timeline]);
 	const hasTimelineErrors = errors.length > 0;
 	const hasPrice = typeof amount === 'number' && amount > 0;
-	const canSave = !hasTimelineErrors && draft.custom_name.trim().length > 0 && !!currency && !!service?.id && hasPrice;
+	const hasCategory = draft.category_slug.trim().length > 0 && Boolean(category);
+	const canSave =
+		!hasTimelineErrors &&
+		draft.custom_name.trim().length > 0 &&
+		Boolean(currency) &&
+		hasCategory &&
+		Boolean(service?.id) &&
+		hasPrice;
 
 	const handleSave = async () => {
 		if (!(canSave && currency && service)) return;
@@ -79,7 +91,7 @@ const AddSubscriptionScreen = () => {
 				service: {
 					...service,
 					color: service.color || settingAccent,
-					category_slug: service.category_slug || draft.category_slug
+					category_slug: draft.category_slug
 				},
 				draft
 			});

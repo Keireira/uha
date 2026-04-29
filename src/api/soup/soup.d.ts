@@ -23,7 +23,14 @@ export type SearchResultT = {
 	domains: string[];
 	source: SourceT;
 	bundle_id?: string;
+	slug?: string;
 	category_slug?: string;
+	colors?: {
+		primary?: string;
+	};
+	ref_link?: string | null;
+	alternative_names?: string[];
+	social_links?: Record<string, string>;
 };
 
 export type SearchResponseT = SearchResultT[];
