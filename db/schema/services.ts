@@ -12,6 +12,7 @@ export const servicesTable = sqliteTable(
 		title: text().notNull(), // Adguard | Spotify | ...
 		color: text().notNull(), // #0000FF | #00FFFF | ...
 		logo_url: text(), // optional logo url if we don't have a slug to display
+		symbol: text(), // SF Symbol name, set explicitly by user
 		ref_link: text(),
 		domains: text({ mode: 'json' })
 			.$type<string[]>()

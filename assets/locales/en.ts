@@ -521,6 +521,9 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 		total: 'Total',
 		no_txs: 'No transactions'
 	},
+	analytics: {
+		other_categories: 'Other categories'
+	},
 	details: {
 		category: 'Category',
 		currency: 'Currency',

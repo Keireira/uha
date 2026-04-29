@@ -1,16 +1,21 @@
 import styled from 'styled-components/native';
 import { GlassView } from 'expo-glass-effect';
 
-import { BaseText, H2, Text } from '@ui';
+import { BaseText, Text } from '@ui';
 
-export default styled.ScrollView`
+export default styled.ScrollView.attrs({
+	showsVerticalScrollIndicator: false,
+	contentContainerStyle: {
+		paddingBottom: 48
+	}
+})`
 	flex: 1;
 `;
 
 export const Header = styled.View`
 	flex-direction: row;
 	align-items: center;
-	padding: 24px 16px 12px;
+	padding: 22px 18px 12px;
 	gap: 12px;
 `;
 
@@ -30,22 +35,22 @@ export const CloseInner = styled.Pressable`
 
 export const Title = styled(BaseText)`
 	flex: 1;
-	font-size: 22px;
+	font-size: 23px;
 	font-weight: 700;
 	text-align: center;
 	color: ${({ theme }) => theme.text.primary};
 `;
 
-export const TabBarRow = styled.ScrollView.attrs({
-	horizontal: true,
-	showsHorizontalScrollIndicator: false,
-	contentContainerStyle: {
-		paddingHorizontal: 16,
-		gap: 6
-	}
-})`
-	margin-bottom: 20px;
+export const TabBarRow = styled.View`
+	z-index: 2;
+	margin-bottom: 18px;
 	flex-grow: 0;
+	display: flex;
+	gap: 12px;
+	padding-horizontal: 18px;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
 `;
 
 export const TabGlass = styled(GlassView)<{ $active: boolean }>`
@@ -57,97 +62,110 @@ export const TabGlass = styled(GlassView)<{ $active: boolean }>`
 `;
 
 export const TabInner = styled.Pressable`
-	padding-horizontal: 16px;
-	padding-vertical: 9px;
+	padding-horizontal: 18px;
+	padding-vertical: 10px;
 `;
 
 export const TabLabel = styled(Text)<{ $active: boolean }>`
-	font-size: 15px;
-	font-weight: ${({ $active }) => ($active ? '700' : '500')};
+	font-size: 16px;
+	font-weight: ${({ $active }) => ($active ? '600' : '500')};
 	color: ${({ theme, $active }) => ($active ? theme.text.primary : theme.text.secondary)};
-	letter-spacing: 0.2px;
 `;
 
-export const ChartSection = styled.View`
+export const ChartCard = styled.View`
+	z-index: 1;
+	margin: 0 18px 22px;
+	padding: 18px 0;
+	border-radius: 28px;
 	align-items: center;
-	margin-bottom: 32px;
-	padding-horizontal: 16px;
+	justify-content: center;
+	background-color: ${({ theme }) => theme.surface.default};
+	shadow-color: ${({ theme }) => theme.shadow.default};
+	shadow-opacity: 0.08;
+	shadow-radius: 18px;
+	shadow-offset: 0px 8px;
 `;
 
-export const CenterLabel = styled.View`
+export const ChartFrame = styled.View`
+	width: 100%;
+	max-width: 256px;
+	aspect-ratio: 1;
 	align-items: center;
 	justify-content: center;
 `;
 
-export const TotalText = styled(H2)`
+export const ChartCenterLabel = styled.View`
+	position: absolute;
+	width: 96px;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const ChartTotal = styled(BaseText)`
+	margin-top: 4px;
+	font-size: 26px;
+	font-weight: 500;
+	color: ${({ theme }) => theme.text.primary};
 	text-align: center;
 `;
 
-export const LegendSection = styled.View`
-	gap: 12px;
-	padding: 0 16px 48px;
+export const BreakdownSection = styled.View`
+	padding: 0 18px;
 `;
 
-export const LegendItem = styled.Pressable`
+export const BreakdownSectionTitle = styled(Text)<{ $withTopMargin: boolean }>`
+	margin-top: ${({ $withTopMargin }) => ($withTopMargin ? '18px' : '0px')};
+	margin-bottom: 6px;
+	padding-left: 2px;
+	font-size: 15px;
+	font-weight: 500;
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
+export const BreakdownItem = styled.Pressable`
+	min-height: 64px;
 	flex-direction: row;
 	align-items: center;
-	gap: 12px;
+	gap: 14px;
+	padding-vertical: 8px;
 `;
 
-export const LegendColorDot = styled.View<{ $color: string }>`
-	width: 12px;
-	height: 12px;
-	border-radius: 6px;
-	background-color: ${({ $color }) => $color};
+export const CategoryBadge = styled.View<{ $color: string }>`
+	width: 46px;
+	height: 46px;
+	border-radius: 23px;
+	align-items: center;
+	justify-content: center;
+	background-color: ${({ $color }) => `${$color}55`};
 `;
 
-export const LegendEmoji = styled(Text)`
-	font-size: 24px;
-	width: 32px;
+export const CategoryEmoji = styled(Text)`
+	font-size: 23px;
 	text-align: center;
 `;
 
-export const LegendTextGroup = styled.View`
+export const BreakdownTextGroup = styled.View`
 	flex: 1;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
+	min-width: 0px;
 `;
 
-export const LegendTitle = styled(Text)`
-	flex: 1;
+export const BreakdownTitle = styled(BaseText)`
+	font-size: 20px;
+	font-weight: 600;
+	color: ${({ theme }) => theme.text.primary};
 `;
 
-export const LegendAmount = styled(Text)`
+export const BreakdownSubtitle = styled(Text)`
+	margin-top: 2px;
+	font-size: 16px;
+	font-weight: 400;
 	color: ${({ theme }) => theme.text.secondary};
-	text-align: right;
 `;
 
-export const MerchantSection = styled.View`
-	gap: 12px;
-	padding: 0 16px 48px;
-`;
-
-export const MerchantItem = styled.View`
-	flex-direction: row;
-	align-items: center;
-	gap: 12px;
-`;
-
-export const MerchantTextGroup = styled.View`
-	flex: 1;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-`;
-
-export const MerchantTitle = styled(Text)`
-	flex: 1;
-`;
-
-export const MerchantAmount = styled(Text)`
-	color: ${({ theme }) => theme.text.secondary};
+export const BreakdownAmount = styled(BaseText)`
+	max-width: 136px;
+	font-size: 20px;
+	font-weight: 500;
+	color: ${({ theme }) => theme.text.primary};
 	text-align: right;
 `;

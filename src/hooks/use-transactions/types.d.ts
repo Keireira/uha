@@ -3,6 +3,7 @@ import type { TransactionT, SubscriptionT, CurrencyT, ServiceT, CategoryT, Tende
 export type PreparedDbTxT = {
 	id: TransactionT['id'];
 	subscription_id: TransactionT['subscription_id'];
+	service_id: SubscriptionT['service_id'];
 	currency: CurrencyT['symbol'];
 	currency_code: CurrencyT['id'];
 	denominator: CurrencyT['denominator'];

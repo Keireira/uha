@@ -47,6 +47,7 @@ CREATE TABLE `services` (
 	`title` text NOT NULL,
 	`color` text NOT NULL,
 	`logo_url` text,
+	`symbol` text,
 	`ref_link` text,
 	`domains` text DEFAULT '[]',
 	`social_links` text DEFAULT '{}',

@@ -16,7 +16,8 @@ import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 import MasterPane from './master-pane';
 import Root from './add-subscription.styles';
 
-import type { CurrencyT } from '@models';
+import type { CurrencyT, ServiceT } from '@models';
+import type { LogoDraftT } from './events';
 
 const AddSubscriptionScreen = () => {
 	/* We have SwiftUI's multiple TextFields inside a UICollectionView, and navigation
@@ -33,9 +34,12 @@ const AddSubscriptionScreen = () => {
 	const theme = useTheme();
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const { service, isLoading } = useLoadService();
+	const { service: loadedService, localService, isLoading } = useLoadService();
+	const [service, setService] = useState<ServiceT>();
+	const [isLocalSynced, setIsLocalSynced] = useState(false);
 	const defaultCurrency = useSettingsValue<string>('default_currency');
 	const initSubscription = useDraftStore((state) => state.actions.init);
+	const patchSubscription = useDraftStore((state) => state.actions.patch);
 	const resetSubscription = useDraftStore((state) => state.actions.reset);
 	const autoFixTimeline = useDraftStore((state) => state.actions.autoFixTimeline);
 	const saveSubscription = useSaveSubscriptions();
@@ -108,18 +112,38 @@ const AddSubscriptionScreen = () => {
 	};
 
 	useEffect(() => {
-		if (isLoading || !service) return;
+		if (isLoading || !loadedService) return;
+
+		setService(loadedService);
+		setIsLocalSynced(false);
 
 		initSubscription(
 			{
-				...service,
-				color: service.color || settingAccent
+				...loadedService,
+				color: loadedService.color || settingAccent
 			},
 			{
 				currency_id: defaultCurrency as CurrencyT['id']
 			}
 		);
-	}, [initSubscription, service, settingAccent, defaultCurrency, isLoading]);
+	}, [initSubscription, loadedService, settingAccent, defaultCurrency, isLoading]);
+
+	const syncLocalService = () => {
+		if (!localService) return;
+
+		setService(localService);
+		setIsLocalSynced(true);
+		patchSubscription({
+			custom_name: localService.title,
+			category_slug: localService.category_slug,
+			logo: {
+				image_uri: localService.symbol ? undefined : (localService.logo_url ?? undefined),
+				symbol: (localService.symbol ?? undefined) as LogoDraftT['symbol'],
+				color: localService.color || settingAccent
+			}
+		});
+		setFocusVersion((v) => v + 1);
+	};
 
 	const closeSheetHd = () => {
 		setFocusVersion((v) => v + 1);
@@ -139,7 +163,11 @@ const AddSubscriptionScreen = () => {
 				<Stack.Toolbar.Button icon="xmark" variant="plain" onPress={closeSheetHd} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
-			<MasterPane focusVersion={focusVersion} />
+			<MasterPane
+				focusVersion={focusVersion}
+				canSyncLocalService={Boolean(localService) && !isLocalSynced}
+				onSyncLocalService={syncLocalService}
+			/>
 
 			<Stack.Toolbar placement="bottom">
 				{hasTimelineErrors ? (

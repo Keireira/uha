@@ -2,7 +2,7 @@
   "expo": {
     "slug": "uha",
     "name": "Uha",
-    "version": "1.24.0",
+    "version": "1.25.0",
     "orientation": "portrait",
     "icon": "./assets/images/default.png",
     "scheme": "uha",
@@ -111,7 +111,7 @@
         "expo-build-properties",
         {
           "ios": {
-            "deploymentTarget": "17.0"
+            "deploymentTarget": "18.0"
           }
         }
       ],

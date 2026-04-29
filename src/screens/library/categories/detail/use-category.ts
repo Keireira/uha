@@ -20,10 +20,26 @@ const latestPriceDate = db
 	.groupBy(timelineEventsTable.subscription_id)
 	.as('lpd');
 
+type CategorySubscriptionT = Pick<
+	typeof subscriptionsTable.$inferSelect,
+	'id' | 'custom_name' | 'billing_cycle_type' | 'billing_cycle_value'
+> & {
+	current_price: (typeof timelineEventsTable.$inferSelect)['amount'];
+	service_title: (typeof servicesTable.$inferSelect)['title'];
+	service_slug: (typeof servicesTable.$inferSelect)['slug'];
+	service_logo_url: (typeof servicesTable.$inferSelect)['logo_url'];
+	service_symbol: (typeof servicesTable.$inferSelect)['symbol'];
+	service_color: (typeof servicesTable.$inferSelect)['color'];
+	currency_code: (typeof currenciesTable.$inferSelect)['id'] | null;
+	denominator: (typeof currenciesTable.$inferSelect)['denominator'] | null;
+	fraction_digits: (typeof currenciesTable.$inferSelect)['fraction_digits'] | null;
+	intl_locale: (typeof currenciesTable.$inferSelect)['intl_locale'] | null;
+};
+
 export const useCategory = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const [category, setCategory] = useState<Record<string, any> | undefined>();
-	const [subscriptions, setSubscriptions] = useState<Record<string, any>[]>([]);
+	const [category, setCategory] = useState<typeof categoriesTable.$inferSelect | undefined>();
+	const [subscriptions, setSubscriptions] = useState<CategorySubscriptionT[]>([]);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -43,6 +59,8 @@ export const useCategory = () => {
 					billing_cycle_value: subscriptionsTable.billing_cycle_value,
 					service_title: servicesTable.title,
 					service_slug: servicesTable.slug,
+					service_logo_url: servicesTable.logo_url,
+					service_symbol: servicesTable.symbol,
 					service_color: servicesTable.color,
 					currency_code: currenciesTable.id,
 					denominator: currenciesTable.denominator,

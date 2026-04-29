@@ -100,7 +100,14 @@ const ServicesListScreen = ({ search }: Props) => {
 			return (
 				<ServiceRoot onPress={() => handlePress(services.id)}>
 					<Icon>
-						<LogoView name={services.title} slug={services.slug} color={color} size={34} />
+						<LogoView
+							name={services.title}
+							url={services.symbol ? undefined : services.logo_url}
+							slug={services.symbol ? null : services.slug}
+							symbolName={services.symbol as React.ComponentProps<typeof LogoView>['symbolName']}
+							color={color}
+							size={34}
+						/>
 					</Icon>
 
 					<Description>

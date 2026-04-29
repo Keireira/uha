@@ -451,6 +451,9 @@ export type LocaleRootT = {
 			total: string;
 			no_txs: string;
 		};
+		analytics: {
+			other_categories: string;
+		};
 		details: {
 			category: string;
 			currency: string;

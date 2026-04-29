@@ -63,9 +63,11 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 
 type Props = {
 	focusVersion: number;
+	canSyncLocalService: boolean;
+	onSyncLocalService: () => void;
 };
 
-const MasterPane = ({ focusVersion }: Props) => {
+const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -184,6 +186,20 @@ const MasterPane = ({ focusVersion }: Props) => {
 
 					<PriceRow focusVersion={focusVersion} />
 				</Section>
+
+				{canSyncLocalService && (
+					<Section>
+						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(onSyncLocalService)]}>
+							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
+
+							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Use Local Service Info</Text>
+
+							<Spacer />
+
+							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+						</HStack>
+					</Section>
+				)}
 
 				{/* FPD | Billing Cycle | Trial */}
 				<Section>

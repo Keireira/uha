@@ -25,11 +25,13 @@ const CategoryDetail = () => {
 
 	if (!category) return null;
 
+	const categoryColor = category.color ?? '#333333';
+
 	return (
 		<Root>
 			<HeroSection>
-				<HeroRing $color={category.color}>
-					<HeroGlass tintColor={category.color}>
+				<HeroRing $color={categoryColor}>
+					<HeroGlass tintColor={categoryColor}>
 						<HeroEmoji>{category.emoji}</HeroEmoji>
 					</HeroGlass>
 				</HeroRing>
@@ -50,14 +52,26 @@ const CategoryDetail = () => {
 				subscriptions.map((sub) => {
 					return (
 						<SubscriptionRow key={sub.id}>
-							<LogoView name={sub.service_title} slug={sub.service_slug} color={sub.service_color} size={36} />
+							<LogoView
+								name={sub.service_title}
+								url={sub.service_symbol ? undefined : sub.service_logo_url}
+								slug={sub.service_symbol ? null : sub.service_slug}
+								symbolName={sub.service_symbol as React.ComponentProps<typeof LogoView>['symbolName']}
+								color={sub.service_color}
+								size={36}
+							/>
 
 							<SubscriptionInfo>
 								<SubscriptionName numberOfLines={1}>{sub.custom_name || sub.service_title}</SubscriptionName>
 							</SubscriptionInfo>
 
 							<SubscriptionPrice>
-								{formatPrice(sub.current_price, sub.denominator, sub.intl_locale, sub.currency_code)}
+								{formatPrice(
+									sub.current_price ?? 0,
+									sub.denominator ?? 1,
+									sub.intl_locale ?? 'en-US',
+									sub.currency_code ?? 'USD'
+								)}
 								{formatCycle(sub.billing_cycle_type, sub.billing_cycle_value)}
 							</SubscriptionPrice>
 						</SubscriptionRow>

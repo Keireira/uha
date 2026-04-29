@@ -1,6 +1,6 @@
 {
-  "id": "65b9cbd1-95d4-4043-a157-f27913317a2d",
-  "prevId": "e6891f5e-39da-4750-b1ba-c6fc100e0a43",
+  "id": "b5ec0779-af79-4183-93f6-89826570a82e",
+  "prevId": "e2b06576-a44f-4668-ab2b-6204c4f2746c",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -39,10 +39,7 @@
       "indexes": {
         "categories_full_unique": {
           "name": "categories_full_unique",
-          "columns": [
-            "emoji",
-            "color"
-          ],
+          "columns": ["emoji", "color"],
           "isUnique": true
         }
       },
@@ -176,10 +173,7 @@
       "indexes": {
         "timeline_events_subscription_id_idx": {
           "name": "timeline_events_subscription_id_idx",
-          "columns": [
-            "subscription_id",
-            "date"
-          ],
+          "columns": ["subscription_id", "date"],
           "isUnique": false
         }
       },
@@ -187,26 +181,18 @@
         "timeline_events_subscription_id_subscriptions_id_fk": {
           "name": "timeline_events_subscription_id_subscriptions_id_fk",
           "tableFrom": "timeline_events",
-          "columnsFrom": [
-            "subscription_id"
-          ],
+          "columnsFrom": ["subscription_id"],
           "tableTo": "subscriptions",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "timeline_events_currency_id_currencies_id_fk": {
           "name": "timeline_events_currency_id_currencies_id_fk",
           "tableFrom": "timeline_events",
-          "columnsFrom": [
-            "currency_id"
-          ],
+          "columnsFrom": ["currency_id"],
           "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -251,18 +237,12 @@
       "indexes": {
         "currency_rates_lookup_idx": {
           "name": "currency_rates_lookup_idx",
-          "columns": [
-            "target_currency_id",
-            "date"
-          ],
+          "columns": ["target_currency_id", "date"],
           "isUnique": false
         },
         "currency_rates_unique": {
           "name": "currency_rates_unique",
-          "columns": [
-            "target_currency_id",
-            "date"
-          ],
+          "columns": ["target_currency_id", "date"],
           "isUnique": true
         }
       },
@@ -270,13 +250,9 @@
         "currency_rates_target_currency_id_currencies_id_fk": {
           "name": "currency_rates_target_currency_id_currencies_id_fk",
           "tableFrom": "currency_rates",
-          "columnsFrom": [
-            "target_currency_id"
-          ],
+          "columnsFrom": ["target_currency_id"],
           "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -330,6 +306,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "ref_link": {
           "name": "ref_link",
           "type": "text",
@@ -372,16 +355,12 @@
       "indexes": {
         "services_category_slug_idx": {
           "name": "services_category_slug_idx",
-          "columns": [
-            "category_slug"
-          ],
+          "columns": ["category_slug"],
           "isUnique": false
         },
         "services_title_idx": {
           "name": "services_title_idx",
-          "columns": [
-            "title"
-          ],
+          "columns": ["title"],
           "isUnique": false
         }
       },
@@ -389,13 +368,9 @@
         "services_category_slug_categories_slug_fk": {
           "name": "services_category_slug_categories_slug_fk",
           "tableFrom": "services",
-          "columnsFrom": [
-            "category_slug"
-          ],
+          "columnsFrom": ["category_slug"],
           "tableTo": "categories",
-          "columnsTo": [
-            "slug"
-          ],
+          "columnsTo": ["slug"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -530,23 +505,17 @@
       "indexes": {
         "subscriptions_category_slug_idx": {
           "name": "subscriptions_category_slug_idx",
-          "columns": [
-            "category_slug"
-          ],
+          "columns": ["category_slug"],
           "isUnique": false
         },
         "subscriptions_service_id_idx": {
           "name": "subscriptions_service_id_idx",
-          "columns": [
-            "service_id"
-          ],
+          "columns": ["service_id"],
           "isUnique": false
         },
         "subscriptions_tender_id_idx": {
           "name": "subscriptions_tender_id_idx",
-          "columns": [
-            "tender_id"
-          ],
+          "columns": ["tender_id"],
           "isUnique": false
         }
       },
@@ -554,39 +523,27 @@
         "subscriptions_category_slug_categories_slug_fk": {
           "name": "subscriptions_category_slug_categories_slug_fk",
           "tableFrom": "subscriptions",
-          "columnsFrom": [
-            "category_slug"
-          ],
+          "columnsFrom": ["category_slug"],
           "tableTo": "categories",
-          "columnsTo": [
-            "slug"
-          ],
+          "columnsTo": ["slug"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "subscriptions_service_id_services_id_fk": {
           "name": "subscriptions_service_id_services_id_fk",
           "tableFrom": "subscriptions",
-          "columnsFrom": [
-            "service_id"
-          ],
+          "columnsFrom": ["service_id"],
           "tableTo": "services",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "subscriptions_tender_id_tenders_id_fk": {
           "name": "subscriptions_tender_id_tenders_id_fk",
           "tableFrom": "subscriptions",
-          "columnsFrom": [
-            "tender_id"
-          ],
+          "columnsFrom": ["tender_id"],
           "tableTo": "tenders",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -707,17 +664,12 @@
       "indexes": {
         "transactions_sub_date_idx": {
           "name": "transactions_sub_date_idx",
-          "columns": [
-            "subscription_id",
-            "date"
-          ],
+          "columns": ["subscription_id", "date"],
           "isUnique": false
         },
         "transactions_date_idx": {
           "name": "transactions_date_idx",
-          "columns": [
-            "date"
-          ],
+          "columns": ["date"],
           "isUnique": false
         }
       },
@@ -725,39 +677,27 @@
         "transactions_currency_id_currencies_id_fk": {
           "name": "transactions_currency_id_currencies_id_fk",
           "tableFrom": "transactions",
-          "columnsFrom": [
-            "currency_id"
-          ],
+          "columnsFrom": ["currency_id"],
           "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "transactions_tender_id_tenders_id_fk": {
           "name": "transactions_tender_id_tenders_id_fk",
           "tableFrom": "transactions",
-          "columnsFrom": [
-            "tender_id"
-          ],
+          "columnsFrom": ["tender_id"],
           "tableTo": "tenders",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "transactions_subscription_id_subscriptions_id_fk": {
           "name": "transactions_subscription_id_subscriptions_id_fk",
           "tableFrom": "transactions",
-          "columnsFrom": [
-            "subscription_id"
-          ],
+          "columnsFrom": ["subscription_id"],
           "tableTo": "subscriptions",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -892,26 +832,18 @@
         "user_recalc_currency_currencies_id_fk": {
           "name": "user_recalc_currency_currencies_id_fk",
           "tableFrom": "user",
-          "columnsFrom": [
-            "recalc_currency"
-          ],
+          "columnsFrom": ["recalc_currency"],
           "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "user_default_currency_currencies_id_fk": {
           "name": "user_default_currency_currencies_id_fk",
           "tableFrom": "user",
-          "columnsFrom": [
-            "default_currency"
-          ],
+          "columnsFrom": ["default_currency"],
           "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }

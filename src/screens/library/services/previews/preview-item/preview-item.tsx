@@ -5,7 +5,7 @@ import Root, { LogoGlass, Title } from './preview-item.styles';
 
 import type { PropsT } from './preview-item.d';
 
-const PreviewItem = ({ id, title, slug, color = '#333333', onPress }: PropsT) => {
+const PreviewItem = ({ id, title, logo_url, slug, symbol, color = '#333333', onPress }: PropsT) => {
 	const handlePress = useCallback(() => {
 		onPress?.(id);
 	}, [id, onPress]);
@@ -13,7 +13,14 @@ const PreviewItem = ({ id, title, slug, color = '#333333', onPress }: PropsT) =>
 	return (
 		<Root onPress={handlePress}>
 			<LogoGlass>
-				<LogoView name={title} slug={slug} color={color} size={44} />
+				<LogoView
+					name={title}
+					url={symbol ? undefined : logo_url}
+					slug={symbol ? null : slug}
+					symbolName={symbol as React.ComponentProps<typeof LogoView>['symbolName']}
+					color={color}
+					size={44}
+				/>
 			</LogoGlass>
 
 			<Title>{title}</Title>

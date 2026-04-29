@@ -546,6 +546,9 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 		total: '合計',
 		no_txs: '取引なし'
 	},
+	analytics: {
+		other_categories: 'その他のカテゴリ'
+	},
 	details: {
 		category: 'カテゴリ',
 		currency: '通貨',

@@ -60,19 +60,24 @@ const getAmount = (event: TimelineEventT): number => {
 	throw new Error(`Missing amount for ${event.type} event`);
 };
 
-const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, categorySlug: string): ServiceInsertT => ({
-	id: service.id,
-	bundle_id: service.bundle_id || null,
-	slug: service.slug || service.id,
-	title: service.title || draft.custom_name,
-	color: service.color || draft.logo.color || '#999999',
-	logo_url: service.logo_url || null,
-	ref_link: service.ref_link || null,
-	domains: service.domains ?? [],
-	social_links: service.social_links ?? {},
-	aliases: service.aliases ?? [],
-	category_slug: categorySlug
-});
+const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, categorySlug: string): ServiceInsertT => {
+	const symbol = draft.logo.symbol ?? null;
+
+	return {
+		id: service.id,
+		bundle_id: service.bundle_id || null,
+		slug: service.slug || service.id,
+		title: service.title || draft.custom_name.trim(),
+		color: draft.logo.color || service.color || '#999999',
+		logo_url: symbol ? null : draft.logo.image_uri || service.logo_url || null,
+		symbol,
+		ref_link: service.ref_link || null,
+		domains: service.domains ?? [],
+		social_links: service.social_links ?? {},
+		aliases: service.aliases ?? [],
+		category_slug: categorySlug
+	};
+};
 
 const toTimelineRow = (
 	event: TimelineEventT,
@@ -195,6 +200,7 @@ const useSaveSubscriptions = () => {
 						title: serviceRow.title,
 						color: serviceRow.color,
 						logo_url: serviceRow.logo_url,
+						symbol: serviceRow.symbol,
 						ref_link: serviceRow.ref_link,
 						domains: serviceRow.domains,
 						social_links: serviceRow.social_links,

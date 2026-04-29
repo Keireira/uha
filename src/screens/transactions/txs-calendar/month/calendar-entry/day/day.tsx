@@ -11,6 +11,7 @@ const Day = ({ content, raw, txs, isSelected, iconSize, setSelectedDay }: Props)
 	const indexTx = head(txs);
 	const hasCustomLogo = Boolean(indexTx?.custom_logo || indexTx?.custom_symbol);
 	const customSymbol = (indexTx?.custom_symbol ?? undefined) as React.ComponentProps<typeof LogoView>['symbolName'];
+	const logoUrl = indexTx?.custom_logo ?? (indexTx?.custom_symbol ? undefined : indexTx?.logo_url);
 
 	const onPressHd = () => {
 		if (isSelected || !content) return;
@@ -24,7 +25,7 @@ const Day = ({ content, raw, txs, isSelected, iconSize, setSelectedDay }: Props)
 			<LogoContainer>
 				{txs.length > 0 && indexTx && (
 					<LogoView
-						url={indexTx.custom_logo ?? indexTx.logo_url}
+						url={logoUrl}
 						slug={hasCustomLogo ? null : indexTx.slug}
 						symbolName={customSymbol}
 						color={indexTx.color}
