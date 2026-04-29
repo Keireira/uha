@@ -178,6 +178,7 @@ const useSaveSubscriptions = () => {
 			notify_enabled: draft.notify_enabled,
 			notify_days_before: JSON.stringify(draft.notify_days_before)
 		};
+
 		const timelineRows = sortTimeline(draft.timeline).map((event) =>
 			toTimelineRow(event, subscriptionId, denominators)
 		);

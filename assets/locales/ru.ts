@@ -409,6 +409,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		logo_dev: 'logo.dev'
 	},
 	about: {
+		bug: 'Сообщить об ошибке',
+		website: 'uha.app',
 		sources: 'Источники',
 		beta: 'Бета-тестирование',
 		version: 'Версия'

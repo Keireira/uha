@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useEntitlement, useTipJar, useAccent } from '@hooks';
+import { useEntitlement, useTipJar, useAccent, useFeatureGate } from '@hooks';
 
 import { H6, SmallText } from '@ui';
 import Root, { Pill, Inner } from './support.styles';
@@ -19,8 +19,13 @@ const Support = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const accentColor = useAccent();
+	const openFeatureGate = useFeatureGate();
 	const { isUnlimited } = useEntitlement();
 	const { products: tipProducts, purchasing: isPurchasing, purchaseTip } = useTipJar();
+
+	const purchaseUnlimited = () => {
+		openFeatureGate();
+	};
 
 	return (
 		<>
@@ -44,6 +49,14 @@ const Support = () => {
 			)}
 
 			<Root>
+				{!isUnlimited && (
+					<Pill key="settings_buy_unlimited" $color={accentColor}>
+						<Inner onPress={purchaseUnlimited} disabled={Boolean(isPurchasing)}>
+							<H6 $color={accentColor}>Unlimited</H6>
+						</Inner>
+					</Pill>
+				)}
+
 				{EXTERNAL_SUPPORT.map((unit) => {
 					const openLink = () => Linking.openURL(unit.url);
 

@@ -434,6 +434,8 @@ const settingsScreen: LocaleRootT['settings'] = {
 		logo_dev: 'logo.dev'
 	},
 	about: {
+		bug: 'バグを報告',
+		website: 'uha.app',
 		sources: 'ソース',
 		beta: 'ベータに参加',
 		version: 'バージョン'

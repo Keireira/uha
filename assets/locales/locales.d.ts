@@ -537,6 +537,8 @@ export type LocaleRootT = {
 			logo_dev: string;
 		};
 		about: {
+			bug: string;
+			website: string;
 			sources: string;
 			beta: string;
 			version: string;
