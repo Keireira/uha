@@ -82,6 +82,7 @@ const AddSubscriptionScreen = () => {
 		hasCategory &&
 		Boolean(service?.id) &&
 		hasPrice;
+	const saveButtonTint = canSave ? settingAccent : theme.text.tertiary;
 
 	const handleSave = async () => {
 		if (!(canSave && currency && service)) return;
@@ -146,7 +147,7 @@ const AddSubscriptionScreen = () => {
 						Fix timeline issues
 					</Stack.Toolbar.Button>
 				) : (
-					<Stack.Toolbar.Button onPress={handleSave} disabled={!canSave} tintColor={settingAccent}>
+					<Stack.Toolbar.Button onPress={handleSave} tintColor={saveButtonTint}>
 						Create Subscription
 					</Stack.Toolbar.Button>
 				)}

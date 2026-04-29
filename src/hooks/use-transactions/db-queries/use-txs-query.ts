@@ -44,6 +44,8 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 				logo_url: servicesTable.logo_url,
 				title: servicesTable.title,
 				customName: subscriptionsTable.custom_name,
+				custom_logo: subscriptionsTable.custom_logo,
+				custom_symbol: subscriptionsTable.custom_symbol,
 				emoji: categoriesTable.emoji,
 				color: servicesTable.color,
 				date: transactionsTable.date,

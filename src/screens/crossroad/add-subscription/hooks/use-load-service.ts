@@ -9,10 +9,10 @@ import type { ServiceT } from '@models';
 import type { ServiceQueryT, SearchResultT } from '@api/soup';
 
 type RouteParams = {
-	service_id: SearchResultT['id'];
+	service_id?: SearchResultT['id'];
 	service_logo?: SearchResultT['logo_url'];
-	service_name: SearchResultT['name'];
-	service_source: SearchResultT['source'];
+	service_name?: SearchResultT['name'];
+	service_source?: SearchResultT['source'];
 	service_bundle_id?: SearchResultT['bundle_id'];
 	service_slug?: SearchResultT['slug'];
 	service_color?: string;
@@ -22,6 +22,10 @@ type RouteParams = {
 	service_aliases?: string;
 	service_social_links?: string;
 } & Partial<ServiceQueryT>;
+
+type LoadedRouteParams = RouteParams & {
+	service_id: SearchResultT['id'];
+};
 
 const DEFAULT_SERVICE: ServiceT = {
 	id: '',
@@ -116,7 +120,7 @@ const fetchFromLocalDB = async (serviceId: string): Promise<ServiceT | null> => 
 	};
 };
 
-const fetchFromRemote = async (params: RouteParams): Promise<ServiceT | null> => {
+const fetchFromRemote = async (params: LoadedRouteParams): Promise<ServiceT | null> => {
 	const serviceId = params.service_bundle_id || params.service_id;
 
 	if (!serviceId) {
@@ -151,13 +155,14 @@ const fetchFromRemote = async (params: RouteParams): Promise<ServiceT | null> =>
 const parseFromSearch = (params: RouteParams): ServiceT => {
 	const domains = parseDomains(params.service_domains);
 	const bundle_id = params.service_bundle_id ?? domains[0] ?? '';
+	const serviceId = params.service_id ?? Crypto.randomUUID();
 
 	return {
 		...DEFAULT_SERVICE,
-		id: params.service_id,
+		id: serviceId,
 		logo_url: params.service_logo ?? '',
-		slug: params.service_slug ?? domains[0]?.replace(/\./g, '-') ?? params.service_id,
-		title: params.service_name,
+		slug: params.service_slug ?? domains[0]?.replace(/\./g, '-') ?? serviceId,
+		title: params.service_name ?? '',
 		color: params.service_color ?? '',
 		bundle_id,
 		ref_link: params.service_ref_link ?? '',
@@ -168,21 +173,19 @@ const parseFromSearch = (params: RouteParams): ServiceT => {
 	};
 };
 
-const resolveService = async (params: RouteParams): Promise<ServiceT> => {
-	if (!REMOTE_SOURCES.has(params.service_source)) {
+const resolveService = async (params: LoadedRouteParams): Promise<ServiceT> => {
+	if (!params.service_source || !REMOTE_SOURCES.has(params.service_source)) {
 		return parseFromSearch(params);
 	}
 
 	const local = await fetchFromLocalDB(params.service_id);
 	if (local) return local;
 
-	if (REMOTE_SOURCES.has(params.service_source)) {
-		try {
-			const remote = await fetchFromRemote(params);
-			if (remote) return remote;
-		} catch {
-			return parseFromSearch(params);
-		}
+	try {
+		const remote = await fetchFromRemote(params);
+		if (remote) return remote;
+	} catch {
+		return parseFromSearch(params);
 	}
 
 	return parseFromSearch(params);
@@ -211,7 +214,11 @@ const useLoadService = () => {
 	} = params;
 
 	useEffect(() => {
-		if (!service_id) return;
+		if (!service_id) {
+			setService(createDefaultService());
+			setIsLoading(false);
+			return;
+		}
 
 		setIsLoading(true);
 

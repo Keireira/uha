@@ -40,6 +40,8 @@ const TxDetailedView = () => {
 					date={date}
 					slug={transaction.slug}
 					logo_url={transaction.logo_url}
+					custom_logo={transaction.custom_logo}
+					custom_symbol={transaction.custom_symbol}
 					emoji={transaction.emoji}
 					customName={transaction.customName}
 					title={transaction.title}
