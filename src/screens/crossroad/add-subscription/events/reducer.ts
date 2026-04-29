@@ -14,6 +14,7 @@ import type {
 	BillingCycleT,
 	FirstPaymentEventT,
 	ISODateStringT,
+	LogoDraftT,
 	MajorAmountT,
 	NewTimelineEventT,
 	PatchTimelineEventT,
@@ -60,7 +61,7 @@ export const createFirstPaymentEvent = ({
 	idFactory,
 	date,
 	currency_id,
-		amount = null
+	amount = null
 }: EnsureFirstPaymentParamsT): FirstPaymentEventT => {
 	return {
 		id: idFactory(),
@@ -77,14 +78,17 @@ export const createSubscriptionDraft = (
 		idFactory,
 		currency_id,
 		first_payment_date = today(),
-			amount = null,
+		amount = null,
 		billing_cycle_type = 'months',
 		billing_cycle_value = 1
 	}: DraftInitT
 ): SubscriptionDraftT => {
+	const symbol = (service.symbol ?? undefined) as LogoDraftT['symbol'];
+
 	return {
 		logo: {
-			image_uri: service.logo_url ?? undefined,
+			image_uri: symbol ? undefined : (service.logo_url ?? undefined),
+			symbol,
 			color: service.color
 		},
 		custom_name: service.title,

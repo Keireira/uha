@@ -16,12 +16,13 @@ const Merchant = ({ date, slug, logo_url, custom_logo, custom_symbol, emoji, cus
 	const isInFuture = isAfterToday(date);
 	const hasCustomLogo = Boolean(custom_logo || custom_symbol);
 	const customSymbol = (custom_symbol ?? undefined) as React.ComponentProps<typeof LogoView>['symbolName'];
+	const logoUrl = custom_logo ?? (custom_symbol ? undefined : logo_url);
 
 	return (
 		<Root>
 			<LogoView
 				name={customName || title}
-				url={custom_logo ?? logo_url}
+				url={logoUrl}
 				slug={hasCustomLogo ? null : slug}
 				symbolName={customSymbol}
 				color={color}

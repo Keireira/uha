@@ -33,14 +33,21 @@ const ServiceDetail = () => {
 			<AccentRail
 				segments={[
 					{ color: service.color, flex: 3 },
-					{ color: service.category_color, flex: 2 }
+					{ color: service.category_color ?? service.color, flex: 2 }
 				]}
 			/>
 
 			<Content>
 				<HeroSection>
 					<LogoWrapper $color={service.color}>
-						<LogoView name={service.title} slug={service.slug} color={service.color} size={56} />
+						<LogoView
+							name={service.title}
+							url={service.symbol ? undefined : service.logo_url}
+							slug={service.symbol ? null : service.slug}
+							symbolName={service.symbol as React.ComponentProps<typeof LogoView>['symbolName']}
+							color={service.color}
+							size={56}
+						/>
 					</LogoWrapper>
 
 					<HeroTitle>{service.title}</HeroTitle>
@@ -73,7 +80,12 @@ const ServiceDetail = () => {
 							</SubscriptionInfo>
 
 							<SubscriptionPrice>
-								{formatPrice(sub.current_price, sub.denominator, sub.intl_locale, sub.currency_code)}
+								{formatPrice(
+									sub.current_price ?? 0,
+									sub.denominator ?? 1,
+									sub.intl_locale ?? 'en-US',
+									sub.currency_code ?? 'USD'
+								)}
 								{formatCycle(sub.billing_cycle_type, sub.billing_cycle_value)}
 							</SubscriptionPrice>
 						</SubscriptionRow>

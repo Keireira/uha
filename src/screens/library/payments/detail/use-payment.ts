@@ -4,7 +4,14 @@ import { useLocalSearchParams } from 'expo-router';
 
 import db from '@db';
 import { and, eq, inArray, max } from 'drizzle-orm';
-import { tendersTable, subscriptionsTable, servicesTable, categoriesTable, currenciesTable, timelineEventsTable } from '@db/schema';
+import {
+	tendersTable,
+	subscriptionsTable,
+	servicesTable,
+	categoriesTable,
+	currenciesTable,
+	timelineEventsTable
+} from '@db/schema';
 
 /** Event types that carry a price — used to derive the subscription's current price. */
 const PRICED_EVENT_TYPES = ['first_payment', 'price_up', 'price_down'] as const;
@@ -20,10 +27,28 @@ const latestPriceDate = db
 	.groupBy(timelineEventsTable.subscription_id)
 	.as('lpd');
 
+type PaymentSubscriptionT = Pick<
+	typeof subscriptionsTable.$inferSelect,
+	'id' | 'custom_name' | 'billing_cycle_type' | 'billing_cycle_value'
+> & {
+	current_price: (typeof timelineEventsTable.$inferSelect)['amount'];
+	service_title: (typeof servicesTable.$inferSelect)['title'];
+	service_slug: (typeof servicesTable.$inferSelect)['slug'];
+	service_logo_url: (typeof servicesTable.$inferSelect)['logo_url'];
+	service_symbol: (typeof servicesTable.$inferSelect)['symbol'];
+	service_color: (typeof servicesTable.$inferSelect)['color'];
+	category_emoji: (typeof categoriesTable.$inferSelect)['emoji'];
+	category_title: (typeof categoriesTable.$inferSelect)['title'];
+	currency_code: (typeof currenciesTable.$inferSelect)['id'] | null;
+	denominator: (typeof currenciesTable.$inferSelect)['denominator'] | null;
+	fraction_digits: (typeof currenciesTable.$inferSelect)['fraction_digits'] | null;
+	intl_locale: (typeof currenciesTable.$inferSelect)['intl_locale'] | null;
+};
+
 export const usePayment = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const [payment, setPayment] = useState<Record<string, any> | undefined>();
-	const [subscriptions, setSubscriptions] = useState<Record<string, any>[]>([]);
+	const [payment, setPayment] = useState<typeof tendersTable.$inferSelect | undefined>();
+	const [subscriptions, setSubscriptions] = useState<PaymentSubscriptionT[]>([]);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -43,6 +68,8 @@ export const usePayment = () => {
 					billing_cycle_value: subscriptionsTable.billing_cycle_value,
 					service_title: servicesTable.title,
 					service_slug: servicesTable.slug,
+					service_logo_url: servicesTable.logo_url,
+					service_symbol: servicesTable.symbol,
 					service_color: servicesTable.color,
 					category_emoji: categoriesTable.emoji,
 					category_title: categoriesTable.title,
