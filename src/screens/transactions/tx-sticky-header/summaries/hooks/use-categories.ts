@@ -16,7 +16,7 @@ type LastKnownRatesT = Map<string, number>;
 
 const DEFAULT_DENOMINATOR = 1;
 const __STUB_COLOR = '#ffffff';
-const DEFAULT_SUMMARY = { total: 0, categories: [] };
+const DEFAULT_SUMMARY = { total: 0, categories: [], transactions: [] };
 
 const formatCategoryPredicate = (acc: CategoryAccumulatorT, tx: TxSummaryT) => {
 	const denominator = tx.denominator || DEFAULT_DENOMINATOR;
@@ -51,7 +51,8 @@ const computeSummary = (data: TxSummaryT[]) => {
 
 	return {
 		total: result.total,
-		categories: sortedCategories
+		categories: sortedCategories,
+		transactions: data
 	};
 };
 

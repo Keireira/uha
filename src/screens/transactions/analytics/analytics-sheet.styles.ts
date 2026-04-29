@@ -88,7 +88,7 @@ export const LegendSection = styled.View`
 	padding: 0 16px 48px;
 `;
 
-export const LegendItem = styled.View`
+export const LegendItem = styled.Pressable`
 	flex-direction: row;
 	align-items: center;
 	gap: 12px;
@@ -120,6 +120,34 @@ export const LegendTitle = styled(Text)`
 `;
 
 export const LegendAmount = styled(Text)`
+	color: ${({ theme }) => theme.text.secondary};
+	text-align: right;
+`;
+
+export const MerchantSection = styled.View`
+	gap: 12px;
+	padding: 0 16px 48px;
+`;
+
+export const MerchantItem = styled.View`
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+`;
+
+export const MerchantTextGroup = styled.View`
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+`;
+
+export const MerchantTitle = styled(Text)`
+	flex: 1;
+`;
+
+export const MerchantAmount = styled(Text)`
 	color: ${({ theme }) => theme.text.secondary};
 	text-align: right;
 `;

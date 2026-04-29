@@ -36,6 +36,7 @@ const useTransactionsQuery = ({ forcedTimeMode, withFilters, customWhere }: UseT
 		db
 			.select({
 				id: transactionsTable.id,
+				subscription_id: transactionsTable.subscription_id,
 				currency: currenciesTable.symbol,
 				currency_code: currenciesTable.id,
 				denominator: currenciesTable.denominator,
