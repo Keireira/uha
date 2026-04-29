@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.author         = 'Alena Dzhukich'
   s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/settings-bridge'
   s.platforms      = {
-    :ios => '17.0'
+    :ios => '18.0'
   }
   s.source         = { git: '' }
   s.static_framework = true
