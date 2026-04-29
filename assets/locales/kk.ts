@@ -523,6 +523,9 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 		total: 'Барлығы',
 		no_txs: 'Транзакциялар жоқ'
 	},
+	analytics: {
+		other_categories: 'Басқа санаттар'
+	},
 	details: {
 		category: 'Санат',
 		currency: 'Валюта',

@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from 'styled-components/native';
-import { SymbolView } from 'expo-symbols';
 import * as Haptics from 'expo-haptics';
-import { PieChart } from 'react-native-gifted-charts';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -14,66 +11,30 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useSettingsValue, useGetFilledDateRates } from '@hooks';
 import { useDay, useYear, useMonth, useSummariesQuery } from '../tx-sticky-header/summaries/hooks';
 
-import { LogoView } from '@ui';
+import { buildMerchantBreakdown, formatAmount } from './utils';
 import useCategoryDetails from './use-category-details';
-import Root, {
-	Header,
-	CloseGlass,
-	CloseInner,
-	Title,
-	TabBarRow,
-	TabGlass,
-	TabInner,
-	TabLabel,
-	ChartSection,
-	CenterLabel,
-	TotalText,
-	LegendSection,
-	LegendItem,
-	LegendEmoji,
-	LegendTextGroup,
-	LegendTitle,
-	LegendAmount,
-	LegendColorDot,
-	MerchantSection,
-	MerchantItem,
-	MerchantTextGroup,
-	MerchantTitle,
-	MerchantAmount
-} from './analytics-sheet.styles';
+import AnalyticsHeader from './components/analytics-header';
+import PeriodTabs from './components/period-tabs';
+import AnalyticsChartCard from './components/analytics-chart-card';
+import BreakdownList from './components/breakdown-list';
+import Root from './analytics-sheet.styles';
 
-import type { CurrencyT } from '@models';
-import type { PreparedDbTxT } from '@hooks/use-transactions';
+import type { BreakdownRowT, BreakdownSectionT, ChartDatumT } from './analytics.d';
 
 const ALL_TABS = ['day', 'month', 'year'] as const;
-
-type MerchantBreakdownT = {
-	id: string;
-	title: string;
-	amount: number;
-	formattedAmount: string;
-	tx: PreparedDbTxT;
-};
-
-const formatAmount = (amount: number, currency: CurrencyT): string =>
-	amount.toLocaleString(currency.intl_locale, {
-		style: 'currency',
-		currency: currency.id,
-		currencyDisplay: 'symbol',
-		minimumFractionDigits: amount > 1000 ? 0 : currency.fraction_digits,
-		maximumFractionDigits: amount > 1000 ? 0 : currency.fraction_digits
-	});
+const OTHER_CATEGORY_ID = '__other_categories__';
+const OTHER_CATEGORY_THRESHOLD = 0.08;
+const MAX_CHART_CATEGORY_COUNT = 5;
+const OTHER_CATEGORY_COLOR = '#8E8E93';
+const OTHER_CATEGORY_EMOJI = '•••';
 
 const AnalyticsSheet = () => {
 	const { clavis } = useLocalSearchParams<{ clavis: string }>();
-	const router = useRouter();
 	const { t } = useTranslation();
-	const theme = useTheme();
 	const [activeClavis, setActiveClavis] = useState(clavis ?? 'month');
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
 	const tabs = useMemo(() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')), [clavis]);
-
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
 	const {
@@ -88,92 +49,133 @@ const AnalyticsSheet = () => {
 	const day = useDay(summaryTxs, filledRates);
 	const month = useMonth(summaryTxs, filledRates);
 	const year = useYear(summaryTxs, filledRates);
-
 	const activeSummary = activeClavis === 'day' ? day : activeClavis === 'year' ? year : month;
+
 	const enrichedCategories = useCategoryDetails(activeSummary.categories, currency);
+	const smallCategoryIds = useMemo(() => {
+		if (activeSummary.total <= 0) return new Set<string>();
+
+		return new Set(
+			enrichedCategories
+				.filter(
+					(cat, index) =>
+						index >= MAX_CHART_CATEGORY_COUNT || cat.amount / activeSummary.total < OTHER_CATEGORY_THRESHOLD
+				)
+				.map((cat) => cat.id)
+		);
+	}, [activeSummary.total, enrichedCategories]);
+	const smallCategories = useMemo(
+		() => enrichedCategories.filter((cat) => smallCategoryIds.has(cat.id)),
+		[enrichedCategories, smallCategoryIds]
+	);
+	const otherCategoryAmount = smallCategories.reduce((acc, cat) => acc + cat.amount, 0);
+	const otherCategory =
+		smallCategories.length > 0 && currency
+			? {
+					id: OTHER_CATEGORY_ID,
+					title: t('transactions.analytics.other_categories'),
+					amount: otherCategoryAmount,
+					formattedAmount: formatAmount(otherCategoryAmount, currency),
+					color: OTHER_CATEGORY_COLOR,
+					emoji: OTHER_CATEGORY_EMOJI
+				}
+			: null;
+	const visibleCategories = otherCategory
+		? [...enrichedCategories.filter((cat) => !smallCategoryIds.has(cat.id)), otherCategory]
+		: enrichedCategories;
 	const selectedCategory = enrichedCategories.find((cat) => cat.id === selectedCategoryId);
-	const isDrillingDown = Boolean(selectedCategory);
-	const title = selectedCategory?.title ?? activeSummary.formattedDate;
+	const isOtherCategorySelected = selectedCategoryId === OTHER_CATEGORY_ID && Boolean(otherCategory);
+	const merchantBreakdown = useMemo(() => {
+		if (!currency || !selectedCategory) return [];
 
-	const formattedTotal = activeSummary.total > 0 && currency ? formatAmount(activeSummary.total, currency) : '—';
-
-	const pieData = enrichedCategories.map((cat) => ({
-		id: cat.id,
-		value: cat.amount,
-		color: cat.color
-	}));
-
-	const merchants = useMemo((): MerchantBreakdownT[] => {
-		if (!selectedCategory || !currency) {
-			return [];
-		}
-
-		const byMerchant = new Map<string, MerchantBreakdownT>();
-		const txs = activeSummary.transactions.filter((tx) => tx.category_slug === selectedCategory.id);
-
-		for (const tx of txs) {
-			const key = tx.subscription_id;
-			const denominator = tx.denominator || 1;
-			const amount = tx.price / denominator;
-			const current = byMerchant.get(key);
-
-			if (current) {
-				current.amount += amount;
-				current.formattedAmount = formatAmount(current.amount, currency);
-				continue;
-			}
-
-			byMerchant.set(key, {
-				id: key,
-				title: tx.customName || tx.title,
-				amount,
-				formattedAmount: formatAmount(amount, currency),
-				tx
-			});
-		}
-
-		return Array.from(byMerchant.values()).sort((a, b) => b.amount - a.amount);
+		return buildMerchantBreakdown(
+			activeSummary.transactions.filter((tx) => tx.category_slug === selectedCategory.id),
+			currency
+		);
 	}, [activeSummary.transactions, currency, selectedCategory]);
 
-	const filteredMerchants = useMemo(() => {
-		if (!selectedCategory || !currency) {
-			return [];
+	const categoryMerchantCounts = useMemo(() => {
+		const counts = new Map<string, Set<string>>();
+
+		for (const tx of activeSummary.transactions) {
+			if (!tx.category_slug) continue;
+
+			const merchantIds = counts.get(tx.category_slug) ?? new Set<string>();
+			merchantIds.add(tx.service_id || tx.slug || tx.title);
+			counts.set(tx.category_slug, merchantIds);
 		}
 
-		return merchants.filter((merchant) => merchant.id !== selectedCategory.id);
-	}, [selectedCategory, currency, merchants]);
+		return counts;
+	}, [activeSummary.transactions]);
 
-	const drilledMerchants = filteredMerchants.map((merchant) => ({
-		id: merchant.id,
-		value: merchant.amount,
-		color: merchant.tx.color
+	const chartData: ChartDatumT[] = selectedCategory
+		? merchantBreakdown.map((merchant) => ({
+				id: merchant.id,
+				value: merchant.amount,
+				color: merchant.tx.color || selectedCategory.color
+			}))
+		: isOtherCategorySelected
+			? smallCategories.map((cat) => ({
+					id: cat.id,
+					value: cat.amount,
+					color: cat.color
+				}))
+			: visibleCategories.map((cat) => ({
+					id: cat.id,
+					value: cat.amount,
+					color: cat.color
+				}));
+
+	const chartTotal = selectedCategory?.amount ?? (isOtherCategorySelected ? otherCategoryAmount : activeSummary.total);
+	const formattedTotal = currency && chartTotal > 0 ? formatAmount(chartTotal, currency) : '—';
+	const periodTitle =
+		selectedCategory?.title ?? (isOtherCategorySelected ? otherCategory?.title : activeSummary.formattedDate);
+	const servicesLabel = t('navbar.library.services', { defaultValue: 'Services' }).toLowerCase();
+
+	const largeCategories = otherCategory
+		? enrichedCategories.filter((cat) => !smallCategoryIds.has(cat.id))
+		: enrichedCategories;
+	const categoryRows: BreakdownRowT[] = largeCategories.map((cat) => ({
+		type: 'category',
+		id: cat.id,
+		title: cat.title,
+		subtitle: `${categoryMerchantCounts.get(cat.id)?.size ?? 0} ${servicesLabel}`,
+		amount: cat.amount,
+		formattedAmount: cat.formattedAmount,
+		color: cat.color,
+		emoji: cat.emoji
 	}));
 
-	const formattedTotalFormatted =
-		drilledMerchants.length > 0 && currency
-			? formatAmount(
-					drilledMerchants.reduce((acc, merchant) => acc + merchant.value, 0),
-					currency
-				)
-			: '—';
+	const smallCategoryRows: BreakdownRowT[] = smallCategories.map((cat) => ({
+		type: 'category',
+		id: cat.id,
+		title: cat.title,
+		subtitle: `${categoryMerchantCounts.get(cat.id)?.size ?? 0} ${servicesLabel}`,
+		amount: cat.amount,
+		formattedAmount: cat.formattedAmount,
+		color: cat.color,
+		emoji: cat.emoji
+	}));
 
-	const centerMerchantLabel = () => (
-		<CenterLabel>
-			<TotalText>{formattedTotalFormatted}</TotalText>
-		</CenterLabel>
-	);
+	const merchantRows: BreakdownRowT[] = merchantBreakdown.map((merchant) => ({
+		type: 'merchant',
+		id: merchant.id,
+		title: merchant.title,
+		subtitle: selectedCategory?.title ?? '',
+		amount: merchant.amount,
+		formattedAmount: merchant.formattedAmount,
+		tx: merchant.tx
+	}));
 
-	const centerLabel = () => (
-		<CenterLabel>
-			<TotalText>{formattedTotal}</TotalText>
-		</CenterLabel>
-	);
-
-	const handleTabPress = (tab: string) => {
-		if (tab === activeClavis) return;
-		Haptics.selectionAsync();
+	const handleTabChange = (tab: string) => {
 		setSelectedCategoryId(null);
 		setActiveClavis(tab);
+	};
+
+	const selectChartDatum = (id: string) => {
+		if (selectedCategory) return;
+		Haptics.selectionAsync();
+		setSelectedCategoryId(id);
 	};
 
 	const selectCategory = (id: string) => {
@@ -186,118 +188,30 @@ const AnalyticsSheet = () => {
 		Haptics.selectionAsync();
 		setSelectedCategoryId(null);
 	};
+	const topLevelSections: BreakdownSectionT[] = [
+		...(categoryRows.length > 0 ? [{ id: 'categories', rows: categoryRows }] : []),
+		...(otherCategory && smallCategoryRows.length > 0
+			? [{ id: OTHER_CATEGORY_ID, title: otherCategory.title, rows: smallCategoryRows }]
+			: [])
+	];
+	const sections: BreakdownSectionT[] = selectedCategory
+		? [{ id: 'merchants', rows: merchantRows }]
+		: isOtherCategorySelected
+			? [{ id: OTHER_CATEGORY_ID, rows: smallCategoryRows }]
+			: topLevelSections;
 
 	return (
 		<Root>
-			<Header>
-				<CloseGlass isInteractive>
-					<CloseInner onPress={isDrillingDown ? resetDrilldown : () => router.back()} hitSlop={10}>
-						<SymbolView
-							name={isDrillingDown ? 'chevron.left' : 'xmark'}
-							size={16}
-							weight="bold"
-							tintColor={theme.text.primary}
-						/>
-					</CloseInner>
-				</CloseGlass>
-				<Title numberOfLines={1} ellipsizeMode="tail">
-					{title}
-				</Title>
-				{/* Spacer to balance close button for centering */}
-				<CloseGlass style={{ opacity: 0 }} />
-			</Header>
+			<AnalyticsHeader
+				title={periodTitle ?? activeSummary.formattedDate}
+				isNested={Boolean(selectedCategory || isOtherCategorySelected)}
+				onBack={resetDrilldown}
+			/>
 
-			<TabBarRow>
-				{tabs.map((tab) => {
-					const isActive = activeClavis === tab;
+			<PeriodTabs tabs={tabs} activeTab={activeClavis} onChange={handleTabChange} />
 
-					return (
-						<TabGlass
-							key={tab}
-							$active={isActive}
-							isInteractive
-							tintColor={isActive ? theme.accents.orange : undefined}
-						>
-							<TabInner onPress={() => handleTabPress(tab)}>
-								<TabLabel $active={isActive}>{t(`dates.${tab}`)}</TabLabel>
-							</TabInner>
-						</TabGlass>
-					);
-				})}
-			</TabBarRow>
-
-			<ChartSection>
-				{isDrillingDown && drilledMerchants.length > 0 && (
-					<PieChart
-						data={drilledMerchants}
-						donut
-						radius={120}
-						innerRadius={80}
-						innerCircleColor={theme.background.secondary}
-						centerLabelComponent={centerMerchantLabel}
-						onPress={(item: (typeof pieData)[number]) => selectCategory(item.id)}
-						strokeWidth={4}
-						strokeColor={theme.background.secondary}
-					/>
-				)}
-
-				{!isDrillingDown && pieData.length > 0 && (
-					<PieChart
-						data={pieData}
-						donut
-						radius={120}
-						innerRadius={80}
-						innerCircleColor={theme.background.secondary}
-						centerLabelComponent={centerLabel}
-						onPress={(item: (typeof pieData)[number]) => selectCategory(item.id)}
-						strokeWidth={4}
-						strokeColor={theme.background.secondary}
-					/>
-				)}
-			</ChartSection>
-
-			{isDrillingDown ? (
-				<MerchantSection>
-					{merchants.map(({ id, title: merchantTitle, formattedAmount, tx }) => {
-						const hasCustomLogo = Boolean(tx.custom_logo || tx.custom_symbol);
-						const customSymbol = (tx.custom_symbol ?? undefined) as React.ComponentProps<typeof LogoView>['symbolName'];
-
-						return (
-							<MerchantItem key={id}>
-								<LogoView
-									url={tx.custom_logo ?? tx.logo_url}
-									slug={hasCustomLogo ? null : tx.slug}
-									symbolName={customSymbol}
-									emoji={tx.emoji}
-									name={merchantTitle}
-									size={36}
-									color={tx.color}
-								/>
-
-								<MerchantTextGroup>
-									<MerchantTitle numberOfLines={1} ellipsizeMode="tail">
-										{merchantTitle}
-									</MerchantTitle>
-									<MerchantAmount>{formattedAmount}</MerchantAmount>
-								</MerchantTextGroup>
-							</MerchantItem>
-						);
-					})}
-				</MerchantSection>
-			) : (
-				<LegendSection>
-					{enrichedCategories.map((cat) => (
-						<LegendItem key={cat.id} onPress={() => selectCategory(cat.id)}>
-							<LegendColorDot $color={cat.color} />
-							<LegendEmoji>{cat.emoji}</LegendEmoji>
-							<LegendTextGroup>
-								<LegendTitle>{cat.title}</LegendTitle>
-								<LegendAmount>{cat.formattedAmount}</LegendAmount>
-							</LegendTextGroup>
-						</LegendItem>
-					))}
-				</LegendSection>
-			)}
+			<AnalyticsChartCard data={chartData} total={formattedTotal} onPressDatum={selectChartDatum} />
+			<BreakdownList sections={sections} onPressCategory={selectCategory} />
 		</Root>
 	);
 };

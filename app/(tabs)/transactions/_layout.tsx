@@ -58,7 +58,7 @@ const Layout = () => {
 				options={{
 					gestureEnabled: true,
 					presentation: 'formSheet',
-					sheetAllowedDetents: [0.7, 0.92],
+					sheetAllowedDetents: [1.0],
 					sheetLargestUndimmedDetentIndex: 'none',
 					sheetGrabberVisible: true,
 					sheetCornerRadius: -1,
