@@ -656,7 +656,7 @@ const russian: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Подписки',
-				description: 'К сожалению (◞‸◟)'
+				description: 'Создать подписку с нуля'
 			}
 		},
 		add: {

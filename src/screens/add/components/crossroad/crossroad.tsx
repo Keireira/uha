@@ -15,11 +15,11 @@ const ITEMS = [
 		icon: 'square.grid.2x2',
 		slug: 'category'
 	},
-	{
-		route: '/add-service',
-		icon: 'building.2',
-		slug: 'service'
-	},
+	// {
+	// 	route: '/add-service',
+	// 	icon: 'building.2',
+	// 	slug: 'service'
+	// },
 	{
 		route: '/add-payment',
 		icon: 'creditcard',

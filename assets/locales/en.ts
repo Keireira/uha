@@ -661,7 +661,7 @@ const english: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Subscription',
-				description: 'Unfortunate (◞‸◟)'
+				description: 'Create new subscription from scratch'
 			}
 		},
 		add: {

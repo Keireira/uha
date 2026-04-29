@@ -658,7 +658,7 @@ const kazakh: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Жазылымдар',
-				description: 'Өкінішті (◞‸◟)'
+				description: 'Жазылымды нөлден жасау'
 			}
 		},
 		add: {

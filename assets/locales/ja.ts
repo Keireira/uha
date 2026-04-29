@@ -681,7 +681,7 @@ const nihongo: LocaleRootT = {
 			},
 			subscription: {
 				title: 'サブスクリプション',
-				description: '残念 (◞‸◟)'
+				description: 'サブスクを一から作成'
 			}
 		},
 		add: {

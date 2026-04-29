@@ -658,7 +658,7 @@ const spanish: LocaleRootT = {
 			},
 			subscription: {
 				title: 'Suscripciones',
-				description: 'Lamentablemente (◞‸◟)'
+				description: 'Crear una suscripción desde cero'
 			}
 		},
 		add: {
