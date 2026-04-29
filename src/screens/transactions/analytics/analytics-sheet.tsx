@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 
@@ -9,6 +9,7 @@ import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useSettingsValue, useGetFilledDateRates } from '@hooks';
+import { useLensesStore } from '@screens/transactions/models';
 import { useDay, useYear, useMonth, useSummariesQuery } from '../tx-sticky-header/summaries/hooks';
 
 import { buildMerchantBreakdown, formatAmount } from './utils';
@@ -29,10 +30,13 @@ const OTHER_CATEGORY_COLOR = '#8E8E93';
 const OTHER_CATEGORY_EMOJI = '•••';
 
 const AnalyticsSheet = () => {
+	const router = useRouter();
 	const { clavis } = useLocalSearchParams<{ clavis: string }>();
 	const { t } = useTranslation();
 	const [activeClavis, setActiveClavis] = useState(clavis ?? 'month');
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+	const clearFilters = useLensesStore((s) => s.clearFilters);
+	const addFilter = useLensesStore((s) => s.addFilter);
 
 	const tabs = useMemo(() => (clavis === 'day' ? ALL_TABS : ALL_TABS.filter((tab) => tab !== 'day')), [clavis]);
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
@@ -188,6 +192,13 @@ const AnalyticsSheet = () => {
 		Haptics.selectionAsync();
 		setSelectedCategoryId(null);
 	};
+	const selectMerchant = (serviceId: string) => {
+		clearFilters();
+		addFilter({ type: 'service', value: serviceId });
+		Haptics.selectionAsync();
+		router.back();
+	};
+
 	const topLevelSections: BreakdownSectionT[] = [
 		...(categoryRows.length > 0 ? [{ id: 'categories', rows: categoryRows }] : []),
 		...(otherCategory && smallCategoryRows.length > 0
@@ -211,7 +222,7 @@ const AnalyticsSheet = () => {
 			<PeriodTabs tabs={tabs} activeTab={activeClavis} onChange={handleTabChange} />
 
 			<AnalyticsChartCard data={chartData} total={formattedTotal} onPressDatum={selectChartDatum} />
-			<BreakdownList sections={sections} onPressCategory={selectCategory} />
+			<BreakdownList sections={sections} onPressCategory={selectCategory} onPressMerchant={selectMerchant} />
 		</Root>
 	);
 };

@@ -19,9 +19,10 @@ import type { BreakdownSectionT } from '../analytics.d';
 type Props = {
 	sections: BreakdownSectionT[];
 	onPressCategory: (id: string) => void;
+	onPressMerchant: (serviceId: string) => void;
 };
 
-const BreakdownList = ({ sections, onPressCategory }: Props) => {
+const BreakdownList = ({ sections, onPressCategory, onPressMerchant }: Props) => {
 	const { t } = useTranslation();
 
 	return (
@@ -61,9 +62,14 @@ const BreakdownList = ({ sections, onPressCategory }: Props) => {
 							typeof LogoView
 						>['symbolName'];
 						const logoUrl = row.tx.custom_logo ?? (row.tx.custom_symbol ? undefined : row.tx.logo_url);
+						const serviceId = row.tx.service_id;
 
 						return (
-							<BreakdownItem key={row.id}>
+							<BreakdownItem
+								key={row.id}
+								disabled={!serviceId}
+								onPress={serviceId ? () => onPressMerchant(serviceId) : undefined}
+							>
 								<LogoView
 									url={logoUrl}
 									slug={hasCustomLogo ? null : row.tx.slug}
