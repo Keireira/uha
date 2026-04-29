@@ -22,7 +22,11 @@ import { currencyRatesTable, transactionsTable } from '@db/schema';
  */
 const todayStr = () => lightFormat(startOfToday(), 'yyyy-MM-dd');
 
-const getMissingDates = () => {
+type BackfillRatesOptionsT = {
+	refetchExisting?: boolean;
+};
+
+const getRateDates = ({ refetchExisting = false }: BackfillRatesOptionsT = {}) => {
 	const txs = db
 		.select({
 			date: transactionsTable.date,
@@ -38,14 +42,14 @@ const getMissingDates = () => {
 
 	// Always guarantee today's rate exists — see `todayStr` comment above.
 	const today = todayStr();
-	if (!existingDates.has(today)) {
+	if (refetchExisting || !existingDates.has(today)) {
 		dates.add(today);
 	}
 
 	for (const tx of txs) {
 		const formattedDate = lightFormat(tx.date, 'yyyy-MM-dd');
 
-		if (existingDates.has(formattedDate)) {
+		if (!refetchExisting && existingDates.has(formattedDate)) {
 			continue;
 		}
 
@@ -55,8 +59,10 @@ const getMissingDates = () => {
 	return Array.from(dates);
 };
 
-export const backfillRates = async (): Promise<{ success: boolean; fetchedCount: number }> => {
-	const newDates = getMissingDates();
+export const backfillRates = async (
+	options: BackfillRatesOptionsT = {}
+): Promise<{ success: boolean; fetchedCount: number }> => {
+	const newDates = getRateDates(options);
 
 	if (!newDates.length) {
 		return {
