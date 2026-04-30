@@ -79,6 +79,7 @@ const LoadFinalStage = () => {
 							<Stack.Screen
 								name="(crossroad)"
 								options={{
+									freezeOnBlur: true,
 									presentation: 'formSheet',
 									animation: 'slide_from_bottom'
 								}}

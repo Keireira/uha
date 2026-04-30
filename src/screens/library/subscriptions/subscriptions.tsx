@@ -17,7 +17,7 @@ import { Host, Text, HStack, List, Section, Button } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
 
-const Services = () => {
+const Subscriptions = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
 	const [, setSearchQuery] = useState('');
@@ -52,7 +52,7 @@ const Services = () => {
 							return (
 								<HStack key={index} spacing={14} modifiers={[padding({ vertical: 8, horizontal: 0 })]}>
 									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
-										Service #{index + 1}
+										Subscription #{index + 1}
 									</Text>
 
 									<Button label="Go To" onPress={() => router.push('./test')} />
@@ -72,11 +72,11 @@ const Services = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter services"
+					placeholder="Filter subscriptions"
 				/>
 			</Stack.Toolbar>
 		</>
 	);
 };
 
-export default Services;
+export default Subscriptions;

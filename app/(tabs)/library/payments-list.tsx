@@ -1,3 +1,3 @@
-import { PaymentsList } from '@screens/library/payments';
+import { PaymentsLibrary } from '@screens/library';
 
-export default PaymentsList;
+export default PaymentsLibrary;

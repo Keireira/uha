@@ -1,3 +1,3 @@
-export { default as ServicesList } from './services';
-export { default as ServicePreviews } from './previews';
-export { default as ServiceDetail } from './detail';
+export { default as ServiceDetails } from './details';
+
+export { default } from './services';

@@ -1,3 +1,3 @@
-export { default as PaymentsList } from './payments';
-export { default as PaymentPreviews } from './previews';
-export { default as PaymentDetail } from './detail';
+export { default as PaymentDetails } from './details';
+
+export { default } from './payments';

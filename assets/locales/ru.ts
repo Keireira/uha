@@ -507,14 +507,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Искать везде',
-		categories: 'Искать в категориях',
-		services: 'Искать в сервисах',
-		payments: 'Искать в платежах'
-	}
-};
+const libraryScreen: LocaleRootT['library'] = {};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {
@@ -623,7 +616,8 @@ const russian: LocaleRootT = {
 			title: 'Библиотека',
 			categories: 'Категории',
 			services: 'Сервисы',
-			payments: 'Платежи'
+			payments: 'Платежи',
+			subscriptions: 'Подписки'
 		},
 		settings: {
 			title: 'Настройки',

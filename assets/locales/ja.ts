@@ -532,14 +532,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'すべてを検索',
-		categories: 'カテゴリで検索',
-		services: 'サービスで検索',
-		payments: '支払い方法で検索'
-	}
-};
+const libraryScreen: LocaleRootT['library'] = {};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {
@@ -648,7 +641,8 @@ const nihongo: LocaleRootT = {
 			title: 'ライブラリ',
 			categories: 'カテゴリ',
 			services: 'サービス',
-			payments: '支払い方法'
+			payments: '支払い方法',
+			subscriptions: 'サブスクリプション'
 		},
 		settings: {
 			title: '設定',

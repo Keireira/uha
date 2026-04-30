@@ -509,14 +509,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Buscar en todo',
-		categories: 'Buscar en categorías',
-		services: 'Buscar en servicios',
-		payments: 'Buscar en pagos'
-	}
-};
+const libraryScreen: LocaleRootT['library'] = {};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {
@@ -625,7 +618,8 @@ const spanish: LocaleRootT = {
 			title: 'Biblioteca',
 			categories: 'Categorías',
 			services: 'Servicios',
-			payments: 'Pagos'
+			payments: 'Pagos',
+			subscriptions: 'Suscripciones'
 		},
 		settings: {
 			title: 'Ajustes',

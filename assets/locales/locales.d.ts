@@ -432,6 +432,7 @@ export type LocaleRootT = {
 			categories: string;
 			services: string;
 			payments: string;
+			subscriptions: string;
 		};
 		settings: {
 			title: string;
@@ -481,14 +482,7 @@ export type LocaleRootT = {
 			subscriptions: string;
 		};
 	};
-	library: {
-		search: {
-			all: string;
-			categories: string;
-			services: string;
-			payments: string;
-		};
-	};
+	library: {};
 	settings: {
 		system: {
 			notifications: {

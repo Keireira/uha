@@ -509,14 +509,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Барлық жерден іздеу',
-		categories: 'Санаттардан іздеу',
-		services: 'Қызметтерден іздеу',
-		payments: 'Төлемдерден іздеу'
-	}
-};
+const libraryScreen: LocaleRootT['library'] = {};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {
@@ -625,7 +618,8 @@ const kazakh: LocaleRootT = {
 			title: 'Кітапхана',
 			categories: 'Санаттар',
 			services: 'Қызметтер',
-			payments: 'Төлемдер'
+			payments: 'Төлемдер',
+			subscriptions: 'Жазылымдар'
 		},
 		settings: {
 			title: 'Параметрлер',

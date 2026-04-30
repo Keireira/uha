@@ -1,3 +1,3 @@
-import { Library } from '@screens';
+import LibraryScreen from '@screens/library';
 
-export default Library;
+export default LibraryScreen;

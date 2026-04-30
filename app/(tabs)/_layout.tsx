@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { useAccent } from '@hooks';
-import { backfillRates } from '@hooks/setup';
 import { useTxDatesStore } from '@screens/transactions/models';
 
 import TabContextMenu from '@modules/tab-context-menu';
@@ -36,19 +35,13 @@ const TabLayout = () => {
 				actions: [
 					{ id: 'lib_categories', title: t('navbar.library.categories'), icon: 'square.grid.2x2' },
 					{ id: 'lib_services', title: t('navbar.library.services'), icon: 'building.2' },
-					{ id: 'lib_payments', title: t('navbar.library.payments'), icon: 'creditcard' }
+					{ id: 'lib_payments', title: t('navbar.library.payments'), icon: 'creditcard' },
+					{ id: 'lib_subscriptions', title: t('navbar.library.subscriptions'), icon: 'arrow.triangle.2.circlepath' }
 				]
 			},
-			// {
-			// 	tabIndex: 2,
-			// 	actions: [
-			// 		{ id: 'refresh_rates', title: t('navbar.settings.refresh_rates'), icon: 'arrow.triangle.2.circlepath' }
-			// 	]
-			// },
 			{
-				tabIndex: 3,
+				tabIndex: 2,
 				actions: [
-					// { id: 'add_service', title: t('navbar.add.service'), icon: 'building.2' },
 					{ id: 'add_category', title: t('navbar.add.category'), icon: 'square.grid.2x2' },
 					{ id: 'add_payment', title: t('navbar.add.payment'), icon: 'creditcard' },
 					{ id: 'add_subscription', title: t('navbar.add.subscription'), icon: 'arrow.triangle.2.circlepath' }
@@ -88,15 +81,10 @@ const TabLayout = () => {
 					break;
 				}
 
-				// case 'refresh_rates': {
-				// 	backfillRates();
-				// 	break;
-				// }
-
-				// case 'add_service': {
-				// 	router.push('/add-service');
-				// 	break;
-				// }
+				case 'lib_subscriptions': {
+					router.navigate('/(tabs)/library/subscriptions-list');
+					break;
+				}
 
 				case 'add_category': {
 					router.push('/add-category');
