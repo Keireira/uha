@@ -561,6 +561,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Подписки'
+	},
+	refresh_success: {
+		title: 'Транзакции синхронизированы',
+		description: 'Прошлые и будущие записи обновлены'
 	}
 };
 
@@ -618,7 +622,8 @@ const russian: LocaleRootT = {
 			description: 'Конвертация валют может быть неточной'
 		},
 		success: {
-			title: 'Курсы обновлены'
+			title: 'Курсы обновлены',
+			description: 'Транзакции и курсы актуальны'
 		}
 	},
 	category: defaultCategories,

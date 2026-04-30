@@ -563,6 +563,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Suscripciones'
+	},
+	refresh_success: {
+		title: 'Transacciones sincronizadas',
+		description: 'Entradas pasadas y futuras actualizadas'
 	}
 };
 
@@ -620,7 +624,8 @@ const spanish: LocaleRootT = {
 			description: 'Las conversiones pueden ser inexactas'
 		},
 		success: {
-			title: 'Tasas actualizadas'
+			title: 'Tasas actualizadas',
+			description: 'Transacciones y tasas actualizadas'
 		}
 	},
 	category: defaultCategories,

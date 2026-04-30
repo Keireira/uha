@@ -415,6 +415,7 @@ export type LocaleRootT = {
 		};
 		success: {
 			title: string;
+			description: string;
 		};
 	};
 	category: Record<CategorySlugs, string>;
@@ -480,6 +481,10 @@ export type LocaleRootT = {
 		};
 		view_mode: {
 			subscriptions: string;
+		};
+		refresh_success: {
+			title: string;
+			description: string;
 		};
 	};
 	library: {

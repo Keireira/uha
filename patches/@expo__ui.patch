@@ -2,7 +2,7 @@ diff --git a/build/swift-ui/DatePicker/index.d.ts b/build/swift-ui/DatePicker/in
 index 74df5b6e7f7ae1d976f74f4cbf355164421e01dc..1c1f7fb8a3d4afc3c255fb327686c0ce80450e67 100644
 --- a/build/swift-ui/DatePicker/index.d.ts
 +++ b/build/swift-ui/DatePicker/index.d.ts
-@@ -26,6 +26,13 @@ export type DatePickerProps = {
+@@ -26,6 +26,12 @@ export type DatePickerProps = {
       * Callback when the date selection changes.
       */
      onDateChange?: (date: Date) => void;
@@ -19,7 +19,7 @@ diff --git a/ios/DatePickerView.swift b/ios/DatePickerView.swift
 index 5d257e69a989e23feb1d78621cf66d3fa8285931..dcdfacbf2dc9f03dd68876bfeacef8fa013d4314 100644
 --- a/ios/DatePickerView.swift
 +++ b/ios/DatePickerView.swift
-@@ -21,6 +21,8 @@ internal struct DatePickerView: ExpoSwiftUI.View {
+@@ -21,6 +21,7 @@ internal struct DatePickerView: ExpoSwiftUI.View {
          date = props.selection ?? Date()
        }
        .if(props.title == nil && !hasChildren) { $0.labelsHidden() }
@@ -27,7 +27,7 @@ index 5d257e69a989e23feb1d78621cf66d3fa8285931..dcdfacbf2dc9f03dd68876bfeacef8fa
  #endif
    }
 
-@@ -104,5 +106,7 @@ internal final class DatePickerProps: UIBaseViewProps {
+@@ -104,5 +105,6 @@ internal final class DatePickerProps: UIBaseViewProps {
    @Field var selection: Date?
    @Field var range: DateRange?
    @Field var displayedComponents: [DatePickerComponent] = [.date]
@@ -87,7 +87,7 @@ diff --git a/src/swift-ui/DatePicker/index.tsx b/src/swift-ui/DatePicker/index.t
 index 5af13962458b12d70f577eb6ebfbbc4a430a56cf..9b3f000faa68a15affeaa8ce535fa0923e657e22 100644
 --- a/src/swift-ui/DatePicker/index.tsx
 +++ b/src/swift-ui/DatePicker/index.tsx
-@@ -33,6 +33,13 @@ export type DatePickerProps = {
+@@ -33,6 +33,12 @@ export type DatePickerProps = {
     * Callback when the date selection changes.
     */
    onDateChange?: (date: Date) => void;

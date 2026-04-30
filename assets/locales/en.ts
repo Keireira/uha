@@ -562,6 +562,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Subscriptions'
+	},
+	refresh_success: {
+		title: 'Transactions synced',
+		description: 'Past and upcoming entries are up to date'
 	}
 };
 
@@ -624,7 +628,8 @@ const english: LocaleRootT = {
 			description: 'Currency conversions may be inaccurate'
 		},
 		success: {
-			title: 'Rates updated'
+			title: 'Rates updated',
+			description: 'Transactions and rates are up to date'
 		}
 	},
 	category: defaultCategories,

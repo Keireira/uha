@@ -563,6 +563,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Жазылымдар'
+	},
+	refresh_success: {
+		title: 'Транзакциялар синхрондалды',
+		description: 'Өткен және алдағы жазбалар жаңартылды'
 	}
 };
 
@@ -620,7 +624,8 @@ const kazakh: LocaleRootT = {
 			description: 'Валюта айырбасы дәл болмауы мүмкін'
 		},
 		success: {
-			title: 'Бағамдар жаңартылды'
+			title: 'Бағамдар жаңартылды',
+			description: 'Транзакциялар мен бағамдар жаңарды'
 		}
 	},
 	category: defaultCategories,

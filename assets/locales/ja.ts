@@ -586,6 +586,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'サブスクリプション'
+	},
+	refresh_success: {
+		title: '取引を同期しました',
+		description: '過去と今後の項目を更新しました'
 	}
 };
 
@@ -643,7 +647,8 @@ const nihongo: LocaleRootT = {
 			description: '通貨換算が不正確な場合があります'
 		},
 		success: {
-			title: 'レート更新完了'
+			title: 'レート更新完了',
+			description: '取引とレートを更新しました'
 		}
 	},
 	category: defaultCategories,

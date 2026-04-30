@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useTheme } from 'styled-components/native';
 import { useTranslation } from 'react-i18next';
 
+import { withAlpha } from '@lib/colors';
 import { isHeaderSection } from './utils';
 import { useDirectionStore } from '@models';
 import { useAccent, useSettingsValue } from '@hooks';
@@ -58,7 +59,13 @@ const TxsList = ({ transactions }: Props) => {
 			const horizonYears = typeof maxHorizon === 'number' && Number.isFinite(maxHorizon) ? maxHorizon : 2;
 
 			await regenerateAllTxs(horizonYears);
-			await backfillRates({ refetchExisting: true });
+			await backfillRates({ refetchExisting: false });
+
+			Toast.show({
+				type: 'success',
+				text1: t('transactions.refresh_success.title'),
+				text2: t('transactions.refresh_success.description')
+			});
 		} catch {
 			Toast.show({
 				type: 'error',
@@ -93,7 +100,7 @@ const TxsList = ({ transactions }: Props) => {
 						<RefreshControl
 							refreshing={isRefreshing}
 							onRefresh={handleRefresh}
-							tintColor={accentColor}
+							tintColor={withAlpha(accentColor, 0.6)}
 							colors={[accentColor]}
 							progressViewOffset={8}
 						/>
