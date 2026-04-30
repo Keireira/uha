@@ -658,6 +658,7 @@ const kazakh: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Жаңа жазба',
 		no_results: 'Ештеңе табылмады',
 		grid: {
 			category: {

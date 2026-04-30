@@ -662,6 +662,7 @@ const english: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'New entry',
 		no_results: 'No results has been found',
 		grid: {
 			category: {

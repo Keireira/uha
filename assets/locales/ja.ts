@@ -681,6 +681,7 @@ const nihongo: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: '新しいエントリ',
 		no_results: '何も見つかりませんでした',
 		grid: {
 			category: {

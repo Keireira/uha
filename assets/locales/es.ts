@@ -658,6 +658,7 @@ const spanish: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Nueva entrada',
 		no_results: 'No se encontró nada',
 		grid: {
 			category: {

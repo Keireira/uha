@@ -651,6 +651,7 @@ export type LocaleRootT = {
 		};
 	};
 	crossroad: {
+		title: string;
 		no_results: string;
 		grid: {
 			category: {

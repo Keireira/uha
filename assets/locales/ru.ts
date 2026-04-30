@@ -656,6 +656,7 @@ const russian: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Новая сущность',
 		no_results: 'Ничего не найдено',
 		grid: {
 			category: {
