@@ -8,25 +8,21 @@ import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { MIN_EVENT_DATE, formatISODate, selectFirstPaymentDate } from '@screens/crossroad/add-subscription/events';
 
 import { Host, DatePicker } from '@expo/ui/swift-ui';
-import { datePickerStyle } from '@expo/ui/swift-ui/modifiers';
+import { tint, datePickerStyle } from '@expo/ui/swift-ui/modifiers';
 
 import type { UserT } from '@models';
-import type { DatePickerComponent } from '@expo/ui/swift-ui';
-
-const DISPLAYED_COMPONENTS: DatePickerComponent[] = ['date'];
-const PICKER_MODIFIERS = [datePickerStyle('graphical')];
 
 const Calendar = () => {
 	const [locale] = useLocales();
 	const settingAccent = useAccent();
 	const maxHorizon = useSettingsValue<UserT['max_horizon']>('max_horizon');
 
-		const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
-			useShallow((state) => ({
-				firstPaymentDate: selectFirstPaymentDate(state.timeline) ?? formatISODate(new Date()),
-				setFirstPaymentDate: state.actions.setFirstPaymentDate
-			}))
-		);
+	const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
+		useShallow((state) => ({
+			firstPaymentDate: selectFirstPaymentDate(state.timeline) ?? formatISODate(new Date()),
+			setFirstPaymentDate: state.actions.setFirstPaymentDate
+		}))
+	);
 
 	const maxEventDate = useMemo(() => {
 		return endOfYear(addYears(new Date(), maxHorizon));
@@ -40,11 +36,10 @@ const Calendar = () => {
 		<Host matchContents>
 			<DatePicker
 				selection={parseISO(firstPaymentDate)}
-				displayedComponents={DISPLAYED_COMPONENTS}
+				displayedComponents={['date']}
 				onDateChange={onDateChangeHd}
 				range={{ start: MIN_EVENT_DATE, end: maxEventDate }}
-				modifiers={PICKER_MODIFIERS}
-				tint={settingAccent}
+				modifiers={[datePickerStyle('graphical'), tint(settingAccent)]}
 				locale={locale?.languageTag ?? 'en-US'}
 			/>
 		</Host>

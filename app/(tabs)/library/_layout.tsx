@@ -38,8 +38,14 @@ const Layout = () => {
 				name="index"
 				options={{
 					...sharedScreenConfig,
-					headerShown: false,
-					animation: 'none'
+					title: 'Settings',
+					headerTitleStyle: {
+						color: 'transparent'
+					},
+					animation: 'fade',
+					headerShown: true,
+					headerTransparent: true,
+					headerShadowVisible: false
 				}}
 			/>
 

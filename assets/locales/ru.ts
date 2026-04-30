@@ -507,7 +507,26 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {};
+const libraryScreen: LocaleRootT['library'] = {
+	grid: {
+		categories: {
+			title: 'Категории',
+			description: 'Просмотр и редактирование групп'
+		},
+		services: {
+			title: 'Сервисы',
+			description: 'Просмотр и редактирование сервисов'
+		},
+		payments: {
+			title: 'Методы оплаты',
+			description: 'Карты, кошельки и другие методы'
+		},
+		subscriptions: {
+			title: 'Подписки',
+			description: 'Просмотр и редактирование планов'
+		}
+	}
+};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {

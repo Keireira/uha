@@ -532,7 +532,26 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {};
+const libraryScreen: LocaleRootT['library'] = {
+	grid: {
+		categories: {
+			title: 'カテゴリ',
+			description: 'カテゴリグループの表示と編集'
+		},
+		services: {
+			title: 'サービス',
+			description: 'サービスの表示と編集'
+		},
+		payments: {
+			title: '支払い方法',
+			description: 'カードやウォレットの表示と編集'
+		},
+		subscriptions: {
+			title: 'サブスクリプション',
+			description: 'プランの表示と編集'
+		}
+	}
+};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {

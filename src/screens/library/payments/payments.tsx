@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import { asc } from 'drizzle-orm';
 import { Stack, useRouter } from 'expo-router';
+import { useFuzzySearchList } from '@nozbe/microfuzz/react';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useAccent } from '@hooks';
+import db from '@db';
+import { tendersTable } from '@db/schema';
+
+import { openLibraryDetails } from '../common';
 
 import {
 	font,
@@ -9,22 +16,37 @@ import {
 	listStyle,
 	listRowSeparator,
 	listRowBackground,
+	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, Text, HStack, List, Section, Button } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
+
+type PaymentT = typeof tendersTable.$inferSelect;
+
+const getText = (payment: PaymentT) => [payment.title, payment.comment ?? '', payment.emoji];
+const mapResultItem = ({ item }: { item: PaymentT }) => item;
 
 const Payments = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
-	const [, setSearchQuery] = useState('');
+	const [searchQuery, setSearchQuery] = useState('');
+	const { data = [] } = useLiveQuery(db.select().from(tendersTable).orderBy(asc(tendersTable.title)));
+	const matches = useFuzzySearchList({
+		list: data,
+		queryText: searchQuery,
+		getText,
+		mapResultItem
+	});
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
 		setSearchQuery(e.nativeEvent.text.trim());
 	};
+
+	const payments = searchQuery ? matches : data;
 
 	return (
 		<>
@@ -48,14 +70,21 @@ const Payments = () => {
 					]}
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
-						{Array.from({ length: 25 }).map((_, index) => {
+						{payments.map((payment) => {
 							return (
-								<HStack key={index} spacing={14} modifiers={[padding({ vertical: 8, horizontal: 0 })]}>
+								<HStack
+									key={payment.id}
+									spacing={14}
+									modifiers={[
+										padding({ vertical: 8, horizontal: 0 }),
+										onTapGesture(() => openLibraryDetails('payment', payment.id, payment.title))
+									]}
+								>
 									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
-										Payment Method #{index + 1}
+										{payment.emoji} {payment.title}
 									</Text>
-
-									<Button label="Go To" onPress={() => router.push('./test')} />
+									<Spacer />
+									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{payment.comment ?? ''}</Text>
 								</HStack>
 							);
 						})}

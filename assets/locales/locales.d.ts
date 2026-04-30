@@ -482,7 +482,26 @@ export type LocaleRootT = {
 			subscriptions: string;
 		};
 	};
-	library: {};
+	library: {
+		grid: {
+			categories: {
+				title: string;
+				description: string;
+			};
+			services: {
+				title: string;
+				description: string;
+			};
+			payments: {
+				title: string;
+				description: string;
+			};
+			subscriptions: {
+				title: string;
+				description: string;
+			};
+		};
+	};
 	settings: {
 		system: {
 			notifications: {

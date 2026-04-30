@@ -509,7 +509,26 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 
-const libraryScreen: LocaleRootT['library'] = {};
+const libraryScreen: LocaleRootT['library'] = {
+	grid: {
+		categories: {
+			title: 'Санаттар',
+			description: 'Топтарды қарау және өзгерту'
+		},
+		services: {
+			title: 'Қызметтер',
+			description: 'Қызметтерді қарау және өзгерту'
+		},
+		payments: {
+			title: 'Төлем тәсілдері',
+			description: 'Карталар мен әмияндарды өзгерту'
+		},
+		subscriptions: {
+			title: 'Жазылымдар',
+			description: 'Жоспарларды қарау және өзгерту'
+		}
+	}
+};
 
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {

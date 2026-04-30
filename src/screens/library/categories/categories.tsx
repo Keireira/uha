@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import { useAccent } from '@hooks';
+
+import db from '@db';
+import { asc } from 'drizzle-orm';
+import { categoriesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
+import { openLibraryDetails } from '../common';
 
 import {
 	font,
@@ -9,22 +18,44 @@ import {
 	listStyle,
 	listRowSeparator,
 	listRowBackground,
+	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, Text, HStack, List, Section, Button } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
 
+type CategoryT = typeof categoriesTable.$inferSelect;
+
+const mapResultItem = ({ item }: { item: CategoryT }) => item;
+
 const Categories = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const settingAccent = useAccent();
-	const [, setSearchQuery] = useState('');
+	const [searchQuery, setSearchQuery] = useState('');
+	const { data = [] } = useLiveQuery(db.select().from(categoriesTable).orderBy(asc(categoriesTable.title)));
+
+	const getText = (category: CategoryT) => [
+		category.title ?? '',
+		category.slug,
+		category.emoji ?? '',
+		t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })
+	];
+	const matches = useFuzzySearchList({
+		list: data,
+		queryText: searchQuery,
+		getText,
+		mapResultItem
+	});
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
 		setSearchQuery(e.nativeEvent.text.trim());
 	};
+
+	const categories = searchQuery ? matches : data;
 
 	return (
 		<>
@@ -48,14 +79,24 @@ const Categories = () => {
 					]}
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
-						{Array.from({ length: 25 }).map((_, index) => {
-							return (
-								<HStack key={index} spacing={14} modifiers={[padding({ vertical: 8, horizontal: 0 })]}>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
-										Category #{index + 1}
-									</Text>
+						{categories.map((category) => {
+							const title = category.title ?? t(`category.${category.slug}`, { defaultValue: category.title });
 
-									<Button label="Go To" onPress={() => router.push('./test')} />
+							const openDetails = () => {
+								openLibraryDetails('category', category.slug, title);
+							};
+
+							return (
+								<HStack
+									key={category.slug}
+									spacing={14}
+									modifiers={[padding({ vertical: 8, horizontal: 0 }), onTapGesture(openDetails)]}
+								>
+									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
+										{category.emoji ? `${category.emoji} ${title}` : title}
+									</Text>
+									<Spacer />
+									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{category.color ?? ''}</Text>
 								</HStack>
 							);
 						})}

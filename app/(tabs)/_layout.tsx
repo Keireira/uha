@@ -14,7 +14,7 @@ const TabLayout = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
-	const setActiveMonth = useTxDatesStore((s) => s.setActiveMonth);
+	const setActiveMonth = useTxDatesStore((state) => state.setActiveMonth);
 
 	useEffect(() => {
 		TabContextMenu.configure([
