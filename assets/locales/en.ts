@@ -509,13 +509,26 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Search everywhere',
-		categories: 'Search in categories',
-		services: 'Search in services',
-		payments: 'Search in payments'
+	grid: {
+		categories: {
+			title: 'Categories',
+			description: 'Browse and edit category groups'
+		},
+		services: {
+			title: 'Services',
+			description: 'Browse and edit providers'
+		},
+		payments: {
+			title: 'Payment methods',
+			description: 'Browse and edit cards or wallets'
+		},
+		subscriptions: {
+			title: 'Subscriptions',
+			description: 'Browse and edit active plans'
+		}
 	}
 };
+
 const transactionsScreen: LocaleRootT['transactions'] = {
 	calendar: {
 		total: 'Total',
@@ -549,6 +562,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Subscriptions'
+	},
+	refresh_success: {
+		title: 'Transactions synced',
+		description: 'Past and upcoming entries are up to date'
 	}
 };
 
@@ -611,7 +628,8 @@ const english: LocaleRootT = {
 			description: 'Currency conversions may be inaccurate'
 		},
 		success: {
-			title: 'Rates updated'
+			title: 'Rates updated',
+			description: 'Transactions and rates are up to date'
 		}
 	},
 	category: defaultCategories,
@@ -628,7 +646,8 @@ const english: LocaleRootT = {
 			title: 'Library',
 			categories: 'Categories',
 			services: 'Services',
-			payments: 'Payments'
+			payments: 'Payments',
+			subscriptions: 'Subscriptions'
 		},
 		settings: {
 			title: 'Settings',
@@ -648,6 +667,7 @@ const english: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'New entry',
 		no_results: 'No results has been found',
 		grid: {
 			category: {

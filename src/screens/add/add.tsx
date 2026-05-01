@@ -8,7 +8,15 @@ import Root from './add.styles';
 const AddCrossroad = () => {
 	const { isSearchMode } = useSearch();
 
-	return <Root>{isSearchMode ? <SearchMode /> : <Crossroad />}</Root>;
+	if (isSearchMode) {
+		return (
+			<Root>
+				<SearchMode />
+			</Root>
+		);
+	}
+
+	return <Crossroad />;
 };
 
 export default AddCrossroad;

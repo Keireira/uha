@@ -415,6 +415,7 @@ export type LocaleRootT = {
 		};
 		success: {
 			title: string;
+			description: string;
 		};
 	};
 	category: Record<CategorySlugs, string>;
@@ -432,6 +433,7 @@ export type LocaleRootT = {
 			categories: string;
 			services: string;
 			payments: string;
+			subscriptions: string;
 		};
 		settings: {
 			title: string;
@@ -480,13 +482,29 @@ export type LocaleRootT = {
 		view_mode: {
 			subscriptions: string;
 		};
+		refresh_success: {
+			title: string;
+			description: string;
+		};
 	};
 	library: {
-		search: {
-			all: string;
-			categories: string;
-			services: string;
-			payments: string;
+		grid: {
+			categories: {
+				title: string;
+				description: string;
+			};
+			services: {
+				title: string;
+				description: string;
+			};
+			payments: {
+				title: string;
+				description: string;
+			};
+			subscriptions: {
+				title: string;
+				description: string;
+			};
 		};
 	};
 	settings: {
@@ -638,6 +656,7 @@ export type LocaleRootT = {
 		};
 	};
 	crossroad: {
+		title: string;
 		no_results: string;
 		grid: {
 			category: {

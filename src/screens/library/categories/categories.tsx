@@ -1,31 +1,123 @@
 import React, { useState } from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
-import CategoriesList from './list';
-import { View } from 'react-native';
-import Root from './categories.styles';
-import { Wrapper, TextInput } from '@ui';
+import { useAccent } from '@hooks';
 
-const CategoriesScreen = () => {
+import db from '@db';
+import { asc } from 'drizzle-orm';
+import { categoriesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
+import { openLibraryDetails } from '../common';
+
+import {
+	font,
+	padding,
+	listStyle,
+	listRowSeparator,
+	listRowBackground,
+	onTapGesture,
+	scrollTargetBehavior,
+	scrollDismissesKeyboard,
+	scrollContentBackground
+} from '@expo/ui/swift-ui/modifiers';
+import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+
+import type { TextInputChangeEvent } from 'react-native';
+
+type CategoryT = typeof categoriesTable.$inferSelect;
+
+const mapResultItem = ({ item }: { item: CategoryT }) => item;
+
+const Categories = () => {
+	const router = useRouter();
 	const { t } = useTranslation();
-	const [search, setSearch] = useState('');
+	const settingAccent = useAccent();
+	const [searchQuery, setSearchQuery] = useState('');
+	const { data = [] } = useLiveQuery(db.select().from(categoriesTable).orderBy(asc(categoriesTable.title)));
+
+	const getText = (category: CategoryT) => [
+		category.title ?? '',
+		category.slug,
+		category.emoji ?? '',
+		t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })
+	];
+	const matches = useFuzzySearchList({
+		list: data,
+		queryText: searchQuery,
+		getText,
+		mapResultItem
+	});
+
+	const handleChangeText = (e: TextInputChangeEvent) => {
+		setSearchQuery(e.nativeEvent.text.trim());
+	};
+
+	const categories = searchQuery ? matches : data;
 
 	return (
-		<Wrapper as={Root}>
-			<View style={{ flex: 1 }}>
-				<TextInput
-					leadingIcon="search"
-					autoCorrect={false}
-					placeholder={t('library.search.categories')}
-					value={search}
-					onChangeText={setSearch}
-					onClear={() => setSearch('')}
+		<>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button
+					variant="plain"
+					icon="chevron.backward"
+					accessibilityLabel="Go back"
+					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
+					tintColor={settingAccent}
 				/>
-			</View>
+			</Stack.Toolbar>
 
-			<CategoriesList search={search} />
-		</Wrapper>
+			<Host style={{ flex: 1 }}>
+				<List
+					modifiers={[
+						listStyle('insetGrouped'),
+						scrollDismissesKeyboard('immediately'),
+						scrollTargetBehavior('viewAligned'),
+						scrollContentBackground('hidden')
+					]}
+				>
+					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
+						{categories.map((category) => {
+							const title = category.title ?? t(`category.${category.slug}`, { defaultValue: category.title });
+
+							const openDetails = () => {
+								openLibraryDetails('category', category.slug, title);
+							};
+
+							return (
+								<HStack
+									key={category.slug}
+									spacing={14}
+									modifiers={[padding({ vertical: 8, horizontal: 0 }), onTapGesture(openDetails)]}
+								>
+									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
+										{category.emoji ? `${category.emoji} ${title}` : title}
+									</Text>
+									<Spacer />
+									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{category.color ?? ''}</Text>
+								</HStack>
+							);
+						})}
+					</Section>
+				</List>
+			</Host>
+
+			<Stack.Toolbar placement="bottom">
+				<Stack.SearchBar
+					autoFocus={false}
+					inputType="text"
+					autoCapitalize="none"
+					placement="integratedButton"
+					hideNavigationBar={false}
+					onChangeText={handleChangeText}
+					tintColor={settingAccent}
+					placeholder="Filter categories"
+				/>
+			</Stack.Toolbar>
+		</>
 	);
 };
 
-export default CategoriesScreen;
+export default Categories;

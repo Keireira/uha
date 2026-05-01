@@ -1,3 +1,3 @@
-import { ServicesList } from '@screens/library/services';
+import { ServicesLibrary } from '@screens/library';
 
-export default ServicesList;
+export default ServicesLibrary;

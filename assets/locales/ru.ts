@@ -508,11 +508,23 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Искать везде',
-		categories: 'Искать в категориях',
-		services: 'Искать в сервисах',
-		payments: 'Искать в платежах'
+	grid: {
+		categories: {
+			title: 'Категории',
+			description: 'Просмотр и редактирование групп'
+		},
+		services: {
+			title: 'Сервисы',
+			description: 'Просмотр и редактирование сервисов'
+		},
+		payments: {
+			title: 'Методы оплаты',
+			description: 'Карты, кошельки и другие методы'
+		},
+		subscriptions: {
+			title: 'Подписки',
+			description: 'Просмотр и редактирование планов'
+		}
 	}
 };
 
@@ -549,6 +561,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Подписки'
+	},
+	refresh_success: {
+		title: 'Транзакции синхронизированы',
+		description: 'Прошлые и будущие записи обновлены'
 	}
 };
 
@@ -606,7 +622,8 @@ const russian: LocaleRootT = {
 			description: 'Конвертация валют может быть неточной'
 		},
 		success: {
-			title: 'Курсы обновлены'
+			title: 'Курсы обновлены',
+			description: 'Транзакции и курсы актуальны'
 		}
 	},
 	category: defaultCategories,
@@ -623,7 +640,8 @@ const russian: LocaleRootT = {
 			title: 'Библиотека',
 			categories: 'Категории',
 			services: 'Сервисы',
-			payments: 'Платежи'
+			payments: 'Платежи',
+			subscriptions: 'Подписки'
 		},
 		settings: {
 			title: 'Настройки',
@@ -643,6 +661,7 @@ const russian: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Новая сущность',
 		no_results: 'Ничего не найдено',
 		grid: {
 			category: {

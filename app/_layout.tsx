@@ -16,6 +16,7 @@ import '@src/i18n';
 
 import { useGetTheme } from '@themes';
 import { toastConfig } from '@elements';
+import { useTheme } from '@react-navigation/native';
 
 logger.install();
 SplashScreen.preventAutoHideAsync();
@@ -39,6 +40,19 @@ const LoadFinalStage = () => {
 	useBackfillRates();
 	useInitPurchases();
 	const theme = useGetTheme();
+
+	/* This is a hack (https://github.com/expo/expo/issues/33040#issuecomment-2495435678)
+	 * When we swipe between cards in the stack, we experience a WHITE background underneat the screens.
+	 * I tried to:
+	 * - change backgroundColor in app.json;
+	 * - set backgroundColor in the contentStyle
+	 * - use transparentModal
+	 * - use expo-system-ui
+	 *
+	 * Nothing has been worked but this
+	 */
+	const RNTheme = useTheme();
+	RNTheme.colors.background = theme.background.default;
 
 	useEffect(() => {
 		if (!theme) return;
@@ -79,6 +93,7 @@ const LoadFinalStage = () => {
 							<Stack.Screen
 								name="(crossroad)"
 								options={{
+									freezeOnBlur: true,
 									presentation: 'formSheet',
 									animation: 'slide_from_bottom'
 								}}

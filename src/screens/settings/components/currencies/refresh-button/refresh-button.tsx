@@ -18,7 +18,7 @@ const RefreshButton = () => {
 		setIsRefreshing(true);
 
 		try {
-			await backfillRates();
+			await backfillRates({ refetchExisting: true });
 
 			Toast.show({
 				type: 'success',
