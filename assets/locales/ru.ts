@@ -545,11 +545,17 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	details: {
 		save: 'Сохранить',
+		copy: 'Скопировать',
+		copied: 'Скопировано',
 		id_copied: 'ID скопирован',
 		section: {
 			identity: 'Идентификация',
 			appearance: 'Внешний вид',
-			other: 'Прочее'
+			other: 'Прочее',
+			aliases: 'Псевдонимы'
+		},
+		aliases: {
+			add: 'Добавить псевдоним…'
 		},
 		fields: {
 			slug: 'Slug',

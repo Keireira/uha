@@ -537,11 +537,17 @@ export type LocaleRootT = {
 		};
 		details: {
 			save: string;
+			copy: string;
+			copied: string;
 			id_copied: string;
 			section: {
 				identity: string;
 				appearance: string;
 				other: string;
+				aliases: string;
+			};
+			aliases: {
+				add: string;
 			};
 			fields: {
 				slug: string;

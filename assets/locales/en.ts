@@ -540,11 +540,17 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	details: {
 		save: 'Save',
+		copy: 'Copy',
+		copied: 'Copied',
 		id_copied: 'ID copied',
 		section: {
 			identity: 'Identity',
 			appearance: 'Appearance',
-			other: 'Other'
+			other: 'Other',
+			aliases: 'Aliases'
+		},
+		aliases: {
+			add: 'Add alias…'
 		},
 		fields: {
 			slug: 'Slug',

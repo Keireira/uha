@@ -561,11 +561,17 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	details: {
 		save: '保存',
+		copy: 'コピー',
+		copied: 'コピーしました',
 		id_copied: 'ID をコピーしました',
 		section: {
 			identity: '識別情報',
 			appearance: '外観',
-			other: 'その他'
+			other: 'その他',
+			aliases: '別名'
+		},
+		aliases: {
+			add: '別名を追加…'
 		},
 		fields: {
 			slug: 'スラッグ',

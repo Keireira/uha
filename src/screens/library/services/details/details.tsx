@@ -16,8 +16,11 @@ import { normalizeOptional } from '../../common';
 import {
 	tag,
 	font,
+	padding,
 	listStyle,
 	lineLimit,
+	onSubmit,
+	submitLabel,
 	onTapGesture,
 	truncationMode,
 	foregroundStyle,
@@ -25,15 +28,19 @@ import {
 	scrollDismissesKeyboard,
 	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import {
 	Host,
 	Text,
 	List,
 	HStack,
+	VStack,
 	Image,
 	Picker,
+	Button,
 	Section,
 	TextField,
+	ContextMenu,
 	ColorPicker,
 	LabeledContent
 } from '@expo/ui/swift-ui';
@@ -60,7 +67,12 @@ const ServiceDetails = () => {
 	const [bundleId, setBundleId] = useState('');
 	const [refLink, setRefLink] = useState('');
 	const [categorySlug, setCategorySlug] = useState('');
+	const [aliases, setAliases] = useState<string[]>([]);
+	const [aliasDraft, setAliasDraft] = useState('');
+	const [aliasInputKey, setAliasInputKey] = useState(0);
 	const [isSlugEditable, setIsSlugEditable] = useState(false);
+	const [isLogoEditable, setIsLogoEditable] = useState(false);
+	const [isRefEditable, setIsRefEditable] = useState(false);
 
 	useEffect(() => {
 		if (!service) return;
@@ -73,9 +85,28 @@ const ServiceDetails = () => {
 		setBundleId(service.bundle_id ?? '');
 		setRefLink(service.ref_link ?? '');
 		setCategorySlug(service.category_slug);
+		setAliases(service.aliases ?? []);
 	}, [service]);
 
+	const addAlias = () => {
+		const value = aliasDraft.trim();
+		if (!value || aliases.includes(value)) {
+			setAliasDraft('');
+			setAliasInputKey((n) => n + 1);
+			return;
+		}
+		setAliases([...aliases, value]);
+		setAliasDraft('');
+		setAliasInputKey((n) => n + 1);
+	};
+
+	const removeAlias = (alias: string) => () => {
+		setAliases((current) => current.filter((a) => a !== alias));
+	};
+
 	const enableSlugEdit = () => setIsSlugEditable(true);
+	const enableLogoEdit = () => setIsLogoEditable(true);
+	const enableRefEdit = () => setIsRefEditable(true);
 
 	const copyId = () => {
 		if (!service) return;
@@ -87,6 +118,12 @@ const ServiceDetails = () => {
 			text1: t('library.details.id_copied'),
 			text2: service.id
 		});
+	};
+
+	const copyText = (value: string) => () => {
+		if (!value) return;
+		Clipboard.setString(value);
+		Toast.show({ type: 'success', text1: t('library.details.copied'), text2: value });
 	};
 
 	const save = async () => {
@@ -107,7 +144,8 @@ const ServiceDetails = () => {
 					symbol: normalizeOptional(symbol),
 					bundle_id: normalizeOptional(bundleId),
 					ref_link: normalizeOptional(refLink),
-					category_slug: categorySlug
+					category_slug: categorySlug,
+					aliases
 				})
 				.where(eq(servicesTable.id, service.id));
 
@@ -184,7 +222,7 @@ const ServiceDetails = () => {
 						>
 							{categories.map((category) => (
 								<Text key={category.slug} modifiers={[tag(category.slug)]}>
-									{category.title ?? category.slug}
+									{t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })}
 								</Text>
 							))}
 						</Picker>
@@ -207,14 +245,53 @@ const ServiceDetails = () => {
 							/>
 						</LabeledContent>
 
-						<LabeledContent label={t('library.details.fields.logo_url')} modifiers={labelMods}>
-							<TextField
-								defaultValue={service.logo_url ?? ''}
-								placeholder="https://…"
-								onValueChange={setLogoUrl}
-								modifiers={valueMods}
-							/>
-						</LabeledContent>
+						{isLogoEditable ? (
+							<LabeledContent label={t('library.details.fields.logo_url')} modifiers={labelMods}>
+								<TextField
+									autoFocus
+									defaultValue={logoUrl}
+									placeholder="https://…"
+									onValueChange={setLogoUrl}
+									onFocusChange={(focused) => !focused && setIsLogoEditable(false)}
+									modifiers={valueMods}
+								/>
+							</LabeledContent>
+						) : (
+							<LabeledContent
+								label={t('library.details.fields.logo_url')}
+								modifiers={[onTapGesture(enableLogoEdit)]}
+							>
+								<ContextMenu>
+									<ContextMenu.Trigger>
+										<Text
+											modifiers={[
+												multilineTextAlignment('trailing'),
+												foregroundStyle(theme.text.secondary),
+												font({ size: 16, weight: 'regular' }),
+												lineLimit(1),
+												truncationMode('tail')
+											]}
+										>
+											{logoUrl || '—'}
+										</Text>
+									</ContextMenu.Trigger>
+									<ContextMenu.Preview>
+										<VStack modifiers={[padding({ all: 14 })]}>
+											<Text modifiers={[font({ size: 13, design: 'monospaced', weight: 'regular' })]}>
+												{logoUrl || '—'}
+											</Text>
+										</VStack>
+									</ContextMenu.Preview>
+									<ContextMenu.Items>
+										<Button
+											label={t('library.details.copy')}
+											systemImage="doc.on.doc"
+											onPress={copyText(logoUrl)}
+										/>
+									</ContextMenu.Items>
+								</ContextMenu>
+							</LabeledContent>
+						)}
 					</Section>
 
 					<Section title={t('library.details.section.other')}>
@@ -227,12 +304,90 @@ const ServiceDetails = () => {
 							/>
 						</LabeledContent>
 
-						<LabeledContent label={t('library.details.fields.ref_link')} modifiers={labelMods}>
+						{isRefEditable ? (
+							<LabeledContent label={t('library.details.fields.ref_link')} modifiers={labelMods}>
+								<TextField
+									autoFocus
+									defaultValue={refLink}
+									placeholder="https://…"
+									onValueChange={setRefLink}
+									onFocusChange={(focused) => !focused && setIsRefEditable(false)}
+									modifiers={valueMods}
+								/>
+							</LabeledContent>
+						) : (
+							<LabeledContent
+								label={t('library.details.fields.ref_link')}
+								modifiers={[onTapGesture(enableRefEdit)]}
+							>
+								<ContextMenu>
+									<ContextMenu.Trigger>
+										<Text
+											modifiers={[
+												multilineTextAlignment('trailing'),
+												foregroundStyle(theme.text.secondary),
+												font({ size: 16, weight: 'regular' }),
+												lineLimit(1),
+												truncationMode('tail')
+											]}
+										>
+											{refLink || '—'}
+										</Text>
+									</ContextMenu.Trigger>
+									<ContextMenu.Preview>
+										<VStack modifiers={[padding({ all: 14 })]}>
+											<Text modifiers={[font({ size: 13, design: 'monospaced', weight: 'regular' })]}>
+												{refLink || '—'}
+											</Text>
+										</VStack>
+									</ContextMenu.Preview>
+									<ContextMenu.Items>
+										<Button
+											label={t('library.details.copy')}
+											systemImage="doc.on.doc"
+											onPress={copyText(refLink)}
+										/>
+									</ContextMenu.Items>
+								</ContextMenu>
+							</LabeledContent>
+						)}
+					</Section>
+
+					<Section title={t('library.details.section.aliases')}>
+						{aliases.map((alias) => (
+							<HStack
+								key={alias}
+								spacing={8}
+								modifiers={[
+									padding({ vertical: 4 }),
+									swipeActions({
+										actions: [
+											{
+												id: 'delete',
+												systemImage: 'trash',
+												tint: theme.semantic.error,
+												onPress: removeAlias(alias)
+											}
+										]
+									})
+								]}
+							>
+								<Text modifiers={[font({ size: 16, weight: 'regular' })]}>{alias}</Text>
+							</HStack>
+						))}
+
+						<LabeledContent label="" modifiers={labelMods}>
 							<TextField
-								defaultValue={service.ref_link ?? ''}
-								placeholder="https://…"
-								onValueChange={setRefLink}
-								modifiers={valueMods}
+								key={`alias-input-${aliasInputKey}`}
+								defaultValue=""
+								placeholder={t('library.details.aliases.add')}
+								onValueChange={setAliasDraft}
+								modifiers={[
+									multilineTextAlignment('leading'),
+									font({ size: 16, weight: 'regular' }),
+									submitLabel('done'),
+									onSubmit(addAlias)
+								]}
 							/>
 						</LabeledContent>
 					</Section>

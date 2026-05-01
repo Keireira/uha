@@ -541,11 +541,17 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	details: {
 		save: 'Сақтау',
+		copy: 'Көшіру',
+		copied: 'Көшірілді',
 		id_copied: 'ID көшірілді',
 		section: {
 			identity: 'Идентификация',
 			appearance: 'Сыртқы түрі',
-			other: 'Басқа'
+			other: 'Басқа',
+			aliases: 'Бүркеншік атаулар'
+		},
+		aliases: {
+			add: 'Бүркеншік ат қосу…'
 		},
 		fields: {
 			slug: 'Slug',
