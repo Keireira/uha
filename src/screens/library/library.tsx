@@ -75,73 +75,85 @@ const LibraryScreen = () => {
 				showsIndicators={false}
 				modifiers={[background(theme.background.default), scrollContentBackground('hidden')]}
 			>
-				<WrapHStack spacing={12} lineSpacing={12} modifiers={[padding({ horizontal: 20, top: 16, bottom: 32 })]}>
-					{ITEMS.map((item, index, arr) => {
-						const goTo = () => router.push(item.route);
+				<VStack alignment="leading">
+					<Text
+						modifiers={[
+							padding({ horizontal: 20 }),
+							frame({ alignment: 'leading' }),
+							font({ size: 32, design: 'rounded', weight: 'bold' })
+						]}
+					>
+						{t('library.title')}
+					</Text>
 
-						return (
-							<Button
-								key={item.route}
-								onPress={goTo}
-								modifiers={[
-									frame({
-										alignment: 'topLeading',
-										idealWidth: getWidth(index, arr.length)
-									}),
-									buttonStyle('borderless')
-								]}
-							>
-								<VStack
-									alignment="leading"
-									spacing={12}
+					<WrapHStack spacing={12} lineSpacing={12} modifiers={[padding({ horizontal: 20, top: 16, bottom: 32 })]}>
+						{ITEMS.map((item, index, arr) => {
+							const goTo = () => router.push(item.route);
+
+							return (
+								<Button
+									key={item.route}
+									onPress={goTo}
 									modifiers={[
-										padding({ vertical: 20, horizontal: 16 }),
-										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'topLeading' }),
-										glassEffect({
-											glass: {
-												variant: 'regular',
-												interactive: true
-											},
-											shape: 'roundedRectangle',
-											cornerRadius: 16
+										frame({
+											alignment: 'topLeading',
+											idealWidth: getWidth(index, arr.length)
 										}),
-										onTapGesture(goTo)
+										buttonStyle('borderless')
 									]}
 								>
-									<ZStack>
-										<Circle
-											modifiers={[frame({ width: 42, height: 42 }), foregroundStyle(withAlpha(settingAccent, 0.2))]}
-										/>
-
-										<Image systemName={item.icon} size={18} color={settingAccent} />
-									</ZStack>
-
-									<Text
+									<VStack
+										alignment="leading"
+										spacing={12}
 										modifiers={[
-											multilineTextAlignment('leading'),
-											foregroundStyle(theme.text.primary),
-											lineLimit(1, { reservesSpace: false }),
-											font({ size: 16, design: 'rounded', weight: 'semibold' })
+											padding({ vertical: 20, horizontal: 16 }),
+											frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'topLeading' }),
+											glassEffect({
+												glass: {
+													variant: 'regular',
+													interactive: true
+												},
+												shape: 'roundedRectangle',
+												cornerRadius: 16
+											}),
+											onTapGesture(goTo)
 										]}
 									>
-										{t(`library.grid.${item.slug}.title`)}
-									</Text>
+										<ZStack>
+											<Circle
+												modifiers={[frame({ width: 42, height: 42 }), foregroundStyle(withAlpha(settingAccent, 0.2))]}
+											/>
 
-									<Text
-										modifiers={[
-											multilineTextAlignment('leading'),
-											lineLimit(2, { reservesSpace: true }),
-											foregroundStyle(theme.text.secondary),
-											font({ size: 12, design: 'rounded', weight: 'regular' })
-										]}
-									>
-										{t(`library.grid.${item.slug}.description`)}
-									</Text>
-								</VStack>
-							</Button>
-						);
-					})}
-				</WrapHStack>
+											<Image systemName={item.icon} size={18} color={settingAccent} />
+										</ZStack>
+
+										<Text
+											modifiers={[
+												multilineTextAlignment('leading'),
+												foregroundStyle(theme.text.primary),
+												lineLimit(1, { reservesSpace: false }),
+												font({ size: 16, design: 'rounded', weight: 'semibold' })
+											]}
+										>
+											{t(`library.grid.${item.slug}.title`)}
+										</Text>
+
+										<Text
+											modifiers={[
+												multilineTextAlignment('leading'),
+												lineLimit(2, { reservesSpace: true }),
+												foregroundStyle(theme.text.secondary),
+												font({ size: 12, design: 'rounded', weight: 'regular' })
+											]}
+										>
+											{t(`library.grid.${item.slug}.description`)}
+										</Text>
+									</VStack>
+								</Button>
+							);
+						})}
+					</WrapHStack>
+				</VStack>
 			</ScrollView>
 		</Host>
 	);

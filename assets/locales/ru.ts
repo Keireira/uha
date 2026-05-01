@@ -508,6 +508,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Библиотека',
 	grid: {
 		categories: {
 			title: 'Категории',

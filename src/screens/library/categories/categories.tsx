@@ -6,7 +6,7 @@ import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 import { useAccent } from '@hooks';
 
 import db from '@db';
-import { asc } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
@@ -16,18 +16,18 @@ import {
 	font,
 	padding,
 	listStyle,
+	onTapGesture,
 	listRowSeparator,
 	listRowBackground,
-	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/swipe-actions';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
+import type { CategoryT } from '@models';
 import type { TextInputChangeEvent } from 'react-native';
-
-type CategoryT = typeof categoriesTable.$inferSelect;
 
 const mapResultItem = ({ item }: { item: CategoryT }) => item;
 
@@ -57,6 +57,10 @@ const Categories = () => {
 
 	const categories = searchQuery ? matches : data;
 
+	const deleteCategory = (slug: string) => async () => {
+		await db.delete(categoriesTable).where(eq(categoriesTable.slug, slug));
+	};
+
 	return (
 		<>
 			<Stack.Toolbar placement="left">
@@ -64,7 +68,7 @@ const Categories = () => {
 					variant="plain"
 					icon="chevron.backward"
 					accessibilityLabel="Go back"
-					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
+					onPress={() => router.replace('/(tabs)/library')}
 					tintColor={settingAccent}
 				/>
 			</Stack.Toolbar>
@@ -90,7 +94,20 @@ const Categories = () => {
 								<HStack
 									key={category.slug}
 									spacing={14}
-									modifiers={[padding({ vertical: 8, horizontal: 0 }), onTapGesture(openDetails)]}
+									modifiers={[
+										padding({ vertical: 8, horizontal: 0 }),
+										onTapGesture(openDetails),
+										swipeActions({
+											actions: [
+												{
+													id: 'delete',
+													systemImage: 'trash',
+													role: 'destructive',
+													onPress: deleteCategory(category.slug)
+												}
+											]
+										})
+									]}
 								>
 									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
 										{category.emoji ? `${category.emoji} ${title}` : title}

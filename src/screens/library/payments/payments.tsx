@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { asc } from 'drizzle-orm';
 import { Stack, useRouter } from 'expo-router';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { useAccent } from '@hooks';
 import db from '@db';
+import { useAccent } from '@hooks';
+import { asc, eq } from 'drizzle-orm';
 import { tendersTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { openLibraryDetails } from '../common';
 
@@ -21,14 +21,14 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/swipe-actions';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
+import type { TenderT } from '@models';
 import type { TextInputChangeEvent } from 'react-native';
 
-type PaymentT = typeof tendersTable.$inferSelect;
-
-const getText = (payment: PaymentT) => [payment.title, payment.comment ?? '', payment.emoji];
-const mapResultItem = ({ item }: { item: PaymentT }) => item;
+const getText = (payment: TenderT) => [payment.title, payment.comment ?? '', payment.emoji];
+const mapResultItem = ({ item }: { item: TenderT }) => item;
 
 const Payments = () => {
 	const router = useRouter();
@@ -48,6 +48,10 @@ const Payments = () => {
 
 	const payments = searchQuery ? matches : data;
 
+	const deletePayment = (id: string) => async () => {
+		await db.delete(tendersTable).where(eq(tendersTable.id, id));
+	};
+
 	return (
 		<>
 			<Stack.Toolbar placement="left">
@@ -55,7 +59,7 @@ const Payments = () => {
 					variant="plain"
 					icon="chevron.backward"
 					accessibilityLabel="Go back"
-					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
+					onPress={() => router.replace('/(tabs)/library')}
 					tintColor={settingAccent}
 				/>
 			</Stack.Toolbar>
@@ -77,7 +81,17 @@ const Payments = () => {
 									spacing={14}
 									modifiers={[
 										padding({ vertical: 8, horizontal: 0 }),
-										onTapGesture(() => openLibraryDetails('payment', payment.id, payment.title))
+										onTapGesture(() => openLibraryDetails('payment', payment.id, payment.title)),
+										swipeActions({
+											actions: [
+												{
+													id: 'delete',
+													systemImage: 'trash',
+													role: 'destructive',
+													onPress: deletePayment(payment.id)
+												}
+											]
+										})
 									]}
 								>
 									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>

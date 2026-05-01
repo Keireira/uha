@@ -77,7 +77,7 @@ const Crossroad = () => {
 						modifiers={[
 							padding({ horizontal: 20 }),
 							frame({ alignment: 'leading' }),
-							font({ size: 32, design: 'rounded', weight: 'semibold' })
+							font({ size: 32, design: 'rounded', weight: 'bold' })
 						]}
 					>
 						{t('crossroad.title')}

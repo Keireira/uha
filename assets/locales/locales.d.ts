@@ -487,6 +487,7 @@ export type LocaleRootT = {
 		};
 	};
 	library: {
+		title: string;
 		grid: {
 			categories: {
 				title: string;

@@ -510,6 +510,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Жинақ',
 	grid: {
 		categories: {
 			title: 'Санаттар',
@@ -638,7 +639,7 @@ const kazakh: LocaleRootT = {
 			open_filters: 'Сүзгілер'
 		},
 		library: {
-			title: 'Кітапхана',
+			title: 'Жинақ',
 			categories: 'Санаттар',
 			services: 'Қызметтер',
 			payments: 'Төлемдер',

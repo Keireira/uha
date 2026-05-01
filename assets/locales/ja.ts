@@ -533,6 +533,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'ライブラリ',
 	grid: {
 		categories: {
 			title: 'カテゴリ',

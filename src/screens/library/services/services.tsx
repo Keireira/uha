@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { asc, eq } from 'drizzle-orm';
 import { Stack, useRouter } from 'expo-router';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { useAccent } from '@hooks';
 import db from '@db';
+import { useAccent } from '@hooks';
+import { asc, eq } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, servicesTable } from '@db/schema';
 
 import { openLibraryDetails } from '../common';
@@ -14,13 +14,14 @@ import {
 	font,
 	padding,
 	listStyle,
+	onTapGesture,
 	listRowSeparator,
 	listRowBackground,
-	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/swipe-actions';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
@@ -57,6 +58,10 @@ const Services = () => {
 
 	const services = searchQuery ? matches : data;
 
+	const deleteService = (id: string) => async () => {
+		await db.delete(servicesTable).where(eq(servicesTable.id, id));
+	};
+
 	return (
 		<>
 			<Stack.Toolbar placement="left">
@@ -64,7 +69,7 @@ const Services = () => {
 					variant="plain"
 					icon="chevron.backward"
 					accessibilityLabel="Go back"
-					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
+					onPress={() => router.replace('/(tabs)/library')}
 					tintColor={settingAccent}
 				/>
 			</Stack.Toolbar>
@@ -86,7 +91,17 @@ const Services = () => {
 									spacing={14}
 									modifiers={[
 										padding({ vertical: 8, horizontal: 0 }),
-										onTapGesture(() => openLibraryDetails('service', service.id, service.title))
+										onTapGesture(() => openLibraryDetails('service', service.id, service.title)),
+										swipeActions({
+											actions: [
+												{
+													id: 'delete',
+													systemImage: 'trash',
+													role: 'destructive',
+													onPress: deleteService(service.id)
+												}
+											]
+										})
 									]}
 								>
 									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>{service.title}</Text>
