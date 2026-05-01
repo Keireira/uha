@@ -14,6 +14,10 @@ public class ExpoUIModifiersModule: Module {
         return try LocaleModifier(from: params, appContext: appContext)
       }
 
+      ViewModifierRegistry.register("firstWeekday") { params, appContext, _ in
+        return try FirstWeekdayModifier(from: params, appContext: appContext)
+      }
+
       ViewModifierRegistry.register("swipeActions") { params, appContext, dispatcher in
         return try SwipeActionsModifier(from: params, appContext: appContext, eventDispatcher: dispatcher)
       }
@@ -22,6 +26,7 @@ public class ExpoUIModifiersModule: Module {
     OnDestroy {
       ViewModifierRegistry.unregister("scrollIndicators")
       ViewModifierRegistry.unregister("locale")
+      ViewModifierRegistry.unregister("firstWeekday")
       ViewModifierRegistry.unregister("swipeActions")
     }
   }

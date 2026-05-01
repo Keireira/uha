@@ -630,7 +630,21 @@ const english: LocaleRootT = {
 		month: 'Month',
 		year: 'Year',
 		in_month: 'In {{month}}',
-		in_year: 'In {{year}}'
+		in_year: 'In {{year}}',
+		in_months: {
+			0: 'In January',
+			1: 'In February',
+			2: 'In March',
+			3: 'In April',
+			4: 'In May',
+			5: 'In June',
+			6: 'In July',
+			7: 'In August',
+			8: 'In September',
+			9: 'In October',
+			10: 'In November',
+			11: 'In December'
+		}
 	},
 	rates: {
 		error: {

@@ -407,6 +407,8 @@ export type LocaleRootT = {
 		year: string;
 		in_month: string;
 		in_year: string;
+		/** Pre-formatted "in <Month>" phrase for locales whose month names inflect (e.g. ru, kk). Indexed 0–11 to match `Date.getMonth()`. */
+		in_months: Record<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 	};
 	rates: {
 		error: {
@@ -506,12 +508,14 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
+		/**
+		 * Plural-aware "in use" warning. The base keys (`category`, `service`, `payment`)
+		 * are looked up by i18next with the appropriate CLDR suffix
+		 * (`_one`, `_few`, `_many`, `_other`) based on the active locale and `{{count}}`.
+		 */
 		delete_blocked: {
 			title: string;
-			category: string;
-			service: string;
-			payment: string;
-		};
+		} & Record<string, string>;
 	};
 	settings: {
 		system: {

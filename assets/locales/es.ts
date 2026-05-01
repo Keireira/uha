@@ -626,7 +626,21 @@ const spanish: LocaleRootT = {
 		month: 'Mes',
 		year: 'Año',
 		in_month: 'En {{month}}',
-		in_year: 'En {{year}}'
+		in_year: 'En {{year}}',
+		in_months: {
+			0: 'En enero',
+			1: 'En febrero',
+			2: 'En marzo',
+			3: 'En abril',
+			4: 'En mayo',
+			5: 'En junio',
+			6: 'En julio',
+			7: 'En agosto',
+			8: 'En septiembre',
+			9: 'En octubre',
+			10: 'En noviembre',
+			11: 'En diciembre'
+		}
 	},
 	rates: {
 		error: {

@@ -646,7 +646,21 @@ const nihongo: LocaleRootT = {
 		month: '月',
 		year: '年',
 		in_month: '{{month}}',
-		in_year: '{{year}}年'
+		in_year: '{{year}}年',
+		in_months: {
+			0: '1月に',
+			1: '2月に',
+			2: '3月に',
+			3: '4月に',
+			4: '5月に',
+			5: '6月に',
+			6: '7月に',
+			7: '8月に',
+			8: '9月に',
+			9: '10月に',
+			10: '11月に',
+			11: '12月に'
+		}
 	},
 	rates: {
 		error: {

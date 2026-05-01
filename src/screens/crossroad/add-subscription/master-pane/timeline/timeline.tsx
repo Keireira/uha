@@ -169,7 +169,7 @@ const Timeline = () => {
 											foregroundStyle(theme.text.secondary)
 										]}
 									>
-										{format(parseISO(event.date), 'MMM d, yyyy')}
+										{format(parseISO(event.date), 'PP')}
 									</Text>
 
 									<Image systemName="chevron.right" size={12} color={theme.text.secondary} />

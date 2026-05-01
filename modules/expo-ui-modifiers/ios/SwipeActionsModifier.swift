@@ -32,6 +32,7 @@ internal struct SwipeActionRecord: Record {
   @Field var id: String = ""
   @Field var systemImage: String = ""
   @Field var tint: UIColor?
+  // destructive will always remove item from list
   @Field var role: SwipeActionRoleOption = .default
   // Optional visible label. Empty string keeps the button icon-only.
   @Field var label: String = ""
