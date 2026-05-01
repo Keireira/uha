@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-  s.name           = 'SwipeActions'
+  s.name           = 'ExpoUIModifiers'
   s.version        = '1.0.0'
-  s.summary        = 'Custom @expo/ui/swift-ui modifier for SwiftUI swipeActions'
-  s.description    = 'Registers a swipeActions ViewModifier in ExpoUI ViewModifierRegistry, exposing iconOnly swipe action buttons.'
+  s.summary        = 'Custom @expo/ui/swift-ui ViewModifiers'
+  s.description    = 'Registers extra ViewModifiers (scrollIndicators, locale) into ExpoUI ViewModifierRegistry.'
   s.author         = 'Alena Dzhukich'
-  s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/swipe-actions'
+  s.homepage       = 'https://github.com/Keireira/uha/tree/master/modules/expo-ui-modifiers'
   s.platforms      = {
     :ios => '18.0'
   }

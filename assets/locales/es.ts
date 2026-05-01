@@ -528,6 +528,15 @@ const libraryScreen: LocaleRootT['library'] = {
 			title: 'Suscripciones',
 			description: 'Ver y editar planes activos'
 		}
+	},
+	delete_blocked: {
+		title: 'No se puede eliminar',
+		category_one: 'En uso por 1 suscripción',
+		category_other: 'En uso por {{count}} suscripciones',
+		service_one: 'En uso por 1 suscripción',
+		service_other: 'En uso por {{count}} suscripciones',
+		payment_one: 'En uso por 1 suscripción',
+		payment_other: 'En uso por {{count}} suscripciones'
 	}
 };
 

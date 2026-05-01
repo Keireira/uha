@@ -528,6 +528,15 @@ const libraryScreen: LocaleRootT['library'] = {
 			title: 'Жазылымдар',
 			description: 'Жоспарларды қарау және өзгерту'
 		}
+	},
+	delete_blocked: {
+		title: 'Жою мүмкін емес',
+		category_one: '1 жазылымда қолданылады',
+		category_other: '{{count}} жазылымда қолданылады',
+		service_one: '1 жазылымда қолданылады',
+		service_other: '{{count}} жазылымда қолданылады',
+		payment_one: '1 жазылымда қолданылады',
+		payment_other: '{{count}} жазылымда қолданылады'
 	}
 };
 

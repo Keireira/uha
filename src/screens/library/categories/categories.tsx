@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import { useAccent } from '@hooks';
 
 import db from '@db';
-import { asc, eq } from 'drizzle-orm';
-import { categoriesTable } from '@db/schema';
+import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { categoriesTable, subscriptionsTable } from '@db/schema';
 
 import { openLibraryDetails } from '../common';
 
@@ -23,7 +24,8 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { swipeActions } from '@modules/swipe-actions';
+import Toast from 'react-native-toast-message';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { CategoryT } from '@models';
@@ -32,6 +34,7 @@ import type { TextInputChangeEvent } from 'react-native';
 const mapResultItem = ({ item }: { item: CategoryT }) => item;
 
 const Categories = () => {
+	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
@@ -58,6 +61,20 @@ const Categories = () => {
 	const categories = searchQuery ? matches : data;
 
 	const deleteCategory = (slug: string) => async () => {
+		const [{ count = 0 } = {}] = await db
+			.select({ count: sql<number>`count(*)`.mapWith(Number) })
+			.from(subscriptionsTable)
+			.where(eq(subscriptionsTable.category_slug, slug));
+
+		if (count > 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.category', { count })
+			});
+			return;
+		}
+
 		await db.delete(categoriesTable).where(eq(categoriesTable.slug, slug));
 	};
 
@@ -102,7 +119,7 @@ const Categories = () => {
 												{
 													id: 'delete',
 													systemImage: 'trash',
-													role: 'destructive',
+													tint: theme.semantic.error,
 													onPress: deleteCategory(category.slug)
 												}
 											]

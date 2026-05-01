@@ -60,7 +60,9 @@ internal struct SwipeActionsModifier: ViewModifier, Record {
     let tintColor: Color? = action.tint.map { Color($0) }
 
     Button(role: action.role.buttonRole) {
-      dispatcher?(["id": actionId])
+      // Routing in @expo/ui JS keys events by modifier $type, see
+      // node_modules/@expo/ui/src/swift-ui/modifiers/utils.ts.
+      dispatcher?(["swipeActions": ["id": actionId]])
     } label: {
       if action.label.isEmpty {
         Label("", systemImage: action.systemImage)

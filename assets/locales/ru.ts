@@ -526,6 +526,21 @@ const libraryScreen: LocaleRootT['library'] = {
 			title: 'Подписки',
 			description: 'Просмотр и редактирование планов'
 		}
+	},
+	delete_blocked: {
+		title: 'Нельзя удалить',
+		category_one: 'Используется в {{count}} подписке',
+		category_few: 'Используется в {{count}} подписках',
+		category_many: 'Используется в {{count}} подписках',
+		category_other: 'Используется в {{count}} подписках',
+		service_one: 'Используется в {{count}} подписке',
+		service_few: 'Используется в {{count}} подписках',
+		service_many: 'Используется в {{count}} подписках',
+		service_other: 'Используется в {{count}} подписках',
+		payment_one: 'Используется в {{count}} подписке',
+		payment_few: 'Используется в {{count}} подписках',
+		payment_many: 'Используется в {{count}} подписках',
+		payment_other: 'Используется в {{count}} подписках'
 	}
 };
 

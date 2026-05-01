@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { useAccent } from '@hooks';
-import { asc, eq } from 'drizzle-orm';
-import { tendersTable } from '@db/schema';
+import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { subscriptionsTable, tendersTable } from '@db/schema';
 
 import { openLibraryDetails } from '../common';
 
@@ -14,14 +16,15 @@ import {
 	font,
 	padding,
 	listStyle,
+	onTapGesture,
 	listRowSeparator,
 	listRowBackground,
-	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { swipeActions } from '@modules/swipe-actions';
+import Toast from 'react-native-toast-message';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TenderT } from '@models';
@@ -31,7 +34,9 @@ const getText = (payment: TenderT) => [payment.title, payment.comment ?? '', pay
 const mapResultItem = ({ item }: { item: TenderT }) => item;
 
 const Payments = () => {
+	const theme = useTheme();
 	const router = useRouter();
+	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
 	const { data = [] } = useLiveQuery(db.select().from(tendersTable).orderBy(asc(tendersTable.title)));
@@ -49,6 +54,20 @@ const Payments = () => {
 	const payments = searchQuery ? matches : data;
 
 	const deletePayment = (id: string) => async () => {
+		const [{ count = 0 } = {}] = await db
+			.select({ count: sql<number>`count(*)`.mapWith(Number) })
+			.from(subscriptionsTable)
+			.where(eq(subscriptionsTable.tender_id, id));
+
+		if (count > 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.payment', { count })
+			});
+			return;
+		}
+
 		await db.delete(tendersTable).where(eq(tendersTable.id, id));
 	};
 
@@ -87,7 +106,7 @@ const Payments = () => {
 												{
 													id: 'delete',
 													systemImage: 'trash',
-													role: 'destructive',
+													tint: theme.semantic.error,
 													onPress: deletePayment(payment.id)
 												}
 											]

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { useAccent } from '@hooks';
-import { asc, eq } from 'drizzle-orm';
+import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { categoriesTable, servicesTable } from '@db/schema';
+import { categoriesTable, servicesTable, subscriptionsTable } from '@db/schema';
 
 import { openLibraryDetails } from '../common';
 
@@ -21,7 +23,8 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { swipeActions } from '@modules/swipe-actions';
+import Toast from 'react-native-toast-message';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
@@ -35,7 +38,9 @@ const getText = ({ service, category }: ServiceRowT) => [service.title, service.
 const mapResultItem = ({ item }: { item: ServiceRowT }) => item;
 
 const Services = () => {
+	const theme = useTheme();
 	const router = useRouter();
+	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
 	const { data = [] } = useLiveQuery(
@@ -59,6 +64,20 @@ const Services = () => {
 	const services = searchQuery ? matches : data;
 
 	const deleteService = (id: string) => async () => {
+		const [{ count = 0 } = {}] = await db
+			.select({ count: sql<number>`count(*)`.mapWith(Number) })
+			.from(subscriptionsTable)
+			.where(eq(subscriptionsTable.service_id, id));
+
+		if (count > 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.service', { count })
+			});
+			return;
+		}
+
 		await db.delete(servicesTable).where(eq(servicesTable.id, id));
 	};
 
@@ -97,7 +116,7 @@ const Services = () => {
 												{
 													id: 'delete',
 													systemImage: 'trash',
-													role: 'destructive',
+													tint: theme.semantic.error,
 													onPress: deleteService(service.id)
 												}
 											]

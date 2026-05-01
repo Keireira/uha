@@ -506,6 +506,12 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
+		delete_blocked: {
+			title: string;
+			category: string;
+			service: string;
+			payment: string;
+		};
 	};
 	settings: {
 		system: {

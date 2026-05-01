@@ -1,9 +1,0 @@
-{
-  "name": "swipe-actions",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Custom @expo/ui/swift-ui modifier for SwiftUI swipeActions with icon-only labels",
-  "license": "AGPL-3.0",
-  "main": "index.ts",
-  "platforms": ["ios"]
-}

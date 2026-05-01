@@ -527,6 +527,15 @@ const libraryScreen: LocaleRootT['library'] = {
 			title: 'Subscriptions',
 			description: 'Browse and edit active plans'
 		}
+	},
+	delete_blocked: {
+		title: 'Cannot delete',
+		category_one: 'Used by 1 subscription',
+		category_other: 'Used by {{count}} subscriptions',
+		service_one: 'Used by 1 subscription',
+		service_other: 'Used by {{count}} subscriptions',
+		payment_one: 'Used by 1 subscription',
+		payment_other: 'Used by {{count}} subscriptions'
 	}
 };
 

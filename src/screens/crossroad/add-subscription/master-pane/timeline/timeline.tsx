@@ -34,7 +34,7 @@ import {
 	foregroundStyle,
 	listSectionMargins
 } from '@expo/ui/swift-ui/modifiers';
-import { swipeActions } from '@modules/swipe-actions';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { AddEventModal, AddEventButton, ErrorsBanner } from './components';
 
 const Timeline = () => {

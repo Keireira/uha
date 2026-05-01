@@ -551,6 +551,12 @@ const libraryScreen: LocaleRootT['library'] = {
 			title: 'サブスクリプション',
 			description: 'プランの表示と編集'
 		}
+	},
+	delete_blocked: {
+		title: '削除できません',
+		category_other: '{{count}} 件のサブスクリプションで使用中',
+		service_other: '{{count}} 件のサブスクリプションで使用中',
+		payment_other: '{{count}} 件のサブスクリプションで使用中'
 	}
 };
 

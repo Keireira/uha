@@ -22,7 +22,7 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { swipeActions } from '@modules/swipe-actions';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { TextInputChangeEvent } from 'react-native';
