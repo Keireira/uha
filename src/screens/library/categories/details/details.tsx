@@ -99,15 +99,23 @@ const CategoryDetails = () => {
 		font({ size: 16, weight: 'regular' })
 	];
 
+	const closeModal = () => {
+		router.back();
+	};
+
 	return (
 		<>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
+			</Stack.Toolbar>
+
 			<Stack.Screen options={{ title: t(`category.${category.slug}`, { defaultValue: category.title }) }} />
 
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={save} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
-			<Host style={{ flex: 1 }}>
+			<Host style={{ flex: 1, backgroundColor: theme.background.secondary }}>
 				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
 					<Section title={t('library.details.section.identity')}>
 						{isSlugEditable ? (

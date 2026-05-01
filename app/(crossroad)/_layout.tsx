@@ -45,23 +45,6 @@ const Layout = () => {
 			/>
 
 			<Stack.Screen
-				name="edit-logo-sheet"
-				options={{
-					title: 'Color & Logo',
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
-				name="color-presets"
-				options={{
-					...sharedScreenConfig,
-					title: 'Color Presets',
-					sheetAllowedDetents: [0.8]
-				}}
-			/>
-
-			<Stack.Screen
 				name="first-payment-date"
 				options={{
 					title: 'First Payment Date',

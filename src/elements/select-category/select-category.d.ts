@@ -1,3 +1,3 @@
 export type SearchParamsT = {
-	target: 'add_subscription_category';
+	target: 'add_subscription_category' | 'library_service_category';
 };

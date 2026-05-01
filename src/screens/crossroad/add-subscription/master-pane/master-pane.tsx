@@ -37,9 +37,24 @@ import {
 	listRowSeparator,
 	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
+import {
+	Host,
+	List,
+	Section,
+	Toggle,
+	Text,
+	ColorPicker,
+	HStack,
+	Spacer,
+	Image,
+	TextField,
+	RNHostView
+} from '@expo/ui/swift-ui';
 
 import type { BillingCycleT } from '../events';
+
+const logoKeys = ['image_uri', 'symbol', 'color'] as const;
+const blank = (v: unknown) => (v == null || v === '' ? null : v);
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },
@@ -91,9 +106,14 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 			setTitle: state.actions.setSubscriptionTitle,
 			enableTrial: state.actions.enableTrial,
 			disableTrial: state.actions.disableTrial,
-			setNotes: state.actions.setNotes
+			setNotes: state.actions.setNotes,
+
+			logo: state.logo,
+			logoSnapshot: state.logoSnapshot
 		}))
 	);
+	const resetLogo = useDraftStore((state) => state.actions.resetLogo);
+	const setColor = useDraftStore((state) => state.actions.setSubscriptionColor);
 
 	const {
 		data: [category]
@@ -163,6 +183,8 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 		}
 	};
 
+	const isLogoDirty = logoKeys.some((key) => blank(draft.logo[key]) !== blank(draft.logoSnapshot[key]));
+
 	return (
 		<Host style={{ flex: 1 }} useViewportSizeMeasurement>
 			<List
@@ -192,19 +214,46 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 					<PriceRow focusVersion={focusVersion} />
 				</Section>
 
-				{canSyncLocalService && (
+				{/* Sync with local service */}
+				{(canSyncLocalService || isLogoDirty) && (
 					<Section>
-						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(onSyncLocalService)]}>
-							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
+						{canSyncLocalService && (
+							<HStack spacing={8} alignment="center" modifiers={[onTapGesture(onSyncLocalService)]}>
+								<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
 
-							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Use Local Service Info</Text>
+								<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>
+									Use Local Service Info
+								</Text>
 
-							<Spacer />
+								<Spacer />
 
-							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-						</HStack>
+								<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+							</HStack>
+						)}
+
+						{isLogoDirty && (
+							<HStack spacing={8} alignment="center" modifiers={[onTapGesture(resetLogo)]}>
+								<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
+
+								<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Reset Logo</Text>
+
+								<Spacer />
+
+								<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+							</HStack>
+						)}
 					</Section>
 				)}
+
+				{/* Color Picker */}
+				<Section>
+					<ColorPicker
+						label="Color"
+						supportsOpacity={false}
+						onSelectionChange={setColor}
+						selection={draft.logo.color ?? settingAccent ?? null}
+					/>
+				</Section>
 
 				{/* FPD | Billing Cycle | Trial */}
 				<Section>

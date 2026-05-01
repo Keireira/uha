@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { useAccent } from '@hooks';
+import { withAlpha } from '@lib/colors';
 import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, servicesTable, subscriptionsTable } from '@db/schema';
 
-import { openLibraryDetails } from '../common';
+import { openLibraryDetails } from '../shared';
 
 import {
 	font,
+	frame,
 	padding,
 	listStyle,
+	lineLimit,
 	onTapGesture,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
 	scrollTargetBehavior,
@@ -25,8 +29,9 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, VStack, ZStack, Image, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
 
+import type { SFSymbol } from 'sf-symbols-typescript';
 import type { TextInputChangeEvent } from 'react-native';
 
 type ServiceRowT = {
@@ -34,12 +39,16 @@ type ServiceRowT = {
 	category: typeof categoriesTable.$inferSelect | null;
 };
 
-const getText = ({ service, category }: ServiceRowT) => [service.title, service.slug ?? '', category?.title ?? ''];
+const getText = ({ service, category }: ServiceRowT) => [
+	service.title,
+	service.slug ?? '',
+	category?.title ?? '',
+	...(service.aliases ?? [])
+];
 const mapResultItem = ({ item }: { item: ServiceRowT }) => item;
 
 const Services = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -83,16 +92,6 @@ const Services = () => {
 
 	return (
 		<>
-			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					variant="plain"
-					icon="chevron.backward"
-					accessibilityLabel="Go back"
-					onPress={() => router.replace('/(tabs)/library')}
-					tintColor={settingAccent}
-				/>
-			</Stack.Toolbar>
-
 			<Host style={{ flex: 1 }}>
 				<List
 					modifiers={[
@@ -104,12 +103,17 @@ const Services = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{services.map(({ service, category }) => {
+							const tone = service.color || settingAccent;
+							const subtitle =
+								(category && t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })) ??
+								service.category_slug;
+
 							return (
 								<HStack
 									key={service.id}
-									spacing={14}
+									spacing={12}
 									modifiers={[
-										padding({ vertical: 8, horizontal: 0 }),
+										padding({ vertical: 6, horizontal: 0 }),
 										onTapGesture(() => openLibraryDetails('service', service.id, service.title)),
 										swipeActions({
 											actions: [
@@ -123,11 +127,37 @@ const Services = () => {
 										})
 									]}
 								>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>{service.title}</Text>
+									<ZStack>
+										<Circle modifiers={[frame({ width: 36, height: 36 }), foregroundStyle(withAlpha(tone, 0.2))]} />
+										{service.symbol ? (
+											<Image systemName={service.symbol as SFSymbol} size={16} color={tone} />
+										) : (
+											<Text modifiers={[font({ size: 18 })]}>{category?.emoji ?? '•'}</Text>
+										)}
+									</ZStack>
+
+									<VStack alignment="leading" spacing={2}>
+										<Text
+											modifiers={[
+												font({ size: 16, design: 'rounded', weight: 'semibold' }),
+												foregroundStyle(theme.text.primary),
+												lineLimit(1)
+											]}
+										>
+											{service.title}
+										</Text>
+										<Text
+											modifiers={[
+												font({ size: 13, design: 'rounded' }),
+												foregroundStyle(theme.text.secondary),
+												lineLimit(1)
+											]}
+										>
+											{subtitle}
+										</Text>
+									</VStack>
+
 									<Spacer />
-									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>
-										{category?.title ?? service.category_slug}
-									</Text>
 								</HStack>
 							);
 						})}

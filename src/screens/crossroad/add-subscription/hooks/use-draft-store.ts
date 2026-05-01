@@ -90,10 +90,18 @@ const useDraftStore = create<SubscriptionDraftStoreT>((set) => ({
 		patch: (draft: Partial<SubscriptionDraftT>) => set((state) => patchDraft(state, draft)),
 		reset: () => set(resetState()),
 
-		setLogoSymbol: (symbol: LogoDraftT['symbol']) => set((state) => setLogoSymbol(state, symbol)),
-		setLogoImage: (image_uri: LogoDraftT['image_uri']) => set((state) => setLogoImage(state, image_uri)),
-		setSubscriptionColor: (color: LogoDraftT['color']) => set((state) => setSubscriptionColor(state, color)),
-		resetLogo: () => set((state) => ({ logo: state.logoSnapshot })),
+		setLogoSymbol: (symbol: LogoDraftT['symbol']) => {
+			set((state) => setLogoSymbol(state, symbol));
+		},
+		setLogoImage: (image_uri: LogoDraftT['image_uri']) => {
+			set((state) => setLogoImage(state, image_uri));
+		},
+		setSubscriptionColor: (color: LogoDraftT['color']) => {
+			set((state) => setSubscriptionColor(state, color));
+		},
+		resetLogo: () => {
+			set((state) => ({ logo: state.logoSnapshot }));
+		},
 
 		setSubscriptionTitle: (name: string) => set((state) => setSubscriptionTitle(state, name)),
 		setTenderId: (id: TenderT['id'] | null) => set({ tender_id: id }),

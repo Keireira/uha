@@ -10,8 +10,8 @@ import { SymbolView } from 'expo-symbols';
 import { Header, SearchBar } from './components';
 import Root, { Row, Title } from './select-category.styles';
 
-const FALLBACK_COLOR = '#888';
 const FALLBACK_EMOJI = '•';
+const FALLBACK_COLOR = '#888';
 
 const SelectCategoryScreen = () => {
 	const { t } = useTranslation();
@@ -29,12 +29,13 @@ const SelectCategoryScreen = () => {
 		<Root
 			showsVerticalScrollIndicator={false}
 			contentContainerStyle={{
+				gap: 6,
 				paddingTop: 70,
-				paddingBottom: 84,
-				gap: 6
+				paddingBottom: 84
 			}}
 		>
 			<Header />
+
 			{categories.map((category) => {
 				const isActive = category.slug === currentValue;
 				const localized = t(`category.${category.slug}`, { defaultValue: category.title });

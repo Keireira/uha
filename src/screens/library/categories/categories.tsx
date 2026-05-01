@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import { useAccent } from '@hooks';
+import { withAlpha } from '@lib/colors';
 
 import db from '@db';
 import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, subscriptionsTable } from '@db/schema';
 
-import { openLibraryDetails } from '../common';
+import { openLibraryDetails } from '../shared';
 
 import {
 	font,
+	frame,
 	padding,
 	listStyle,
+	lineLimit,
 	onTapGesture,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
 	scrollTargetBehavior,
@@ -26,7 +30,7 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, VStack, ZStack, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
 
 import type { CategoryT } from '@models';
 import type { TextInputChangeEvent } from 'react-native';
@@ -35,7 +39,6 @@ const mapResultItem = ({ item }: { item: CategoryT }) => item;
 
 const Categories = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -96,16 +99,6 @@ const Categories = () => {
 
 	return (
 		<>
-			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					variant="plain"
-					icon="chevron.backward"
-					accessibilityLabel="Go back"
-					onPress={() => router.replace('/(tabs)/library')}
-					tintColor={settingAccent}
-				/>
-			</Stack.Toolbar>
-
 			<Host style={{ flex: 1 }}>
 				<List
 					modifiers={[
@@ -117,7 +110,8 @@ const Categories = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{categories.map((category) => {
-							const title = category.title ?? t(`category.${category.slug}`, { defaultValue: category.title });
+							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
+							const tone = category.color || settingAccent;
 
 							const openDetails = () => {
 								openLibraryDetails('category', category.slug, title);
@@ -126,9 +120,9 @@ const Categories = () => {
 							return (
 								<HStack
 									key={category.slug}
-									spacing={14}
+									spacing={12}
 									modifiers={[
-										padding({ vertical: 8, horizontal: 0 }),
+										padding({ vertical: 6, horizontal: 0 }),
 										onTapGesture(openDetails),
 										swipeActions({
 											actions: [
@@ -142,11 +136,33 @@ const Categories = () => {
 										})
 									]}
 								>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
-										{category.emoji ? `${category.emoji} ${title}` : title}
-									</Text>
+									<ZStack>
+										<Circle modifiers={[frame({ width: 36, height: 36 }), foregroundStyle(withAlpha(tone, 0.2))]} />
+										<Text modifiers={[font({ size: 18 })]}>{category.emoji ?? '•'}</Text>
+									</ZStack>
+
+									<VStack alignment="leading" spacing={2}>
+										<Text
+											modifiers={[
+												font({ size: 16, design: 'rounded', weight: 'semibold' }),
+												foregroundStyle(theme.text.primary),
+												lineLimit(1)
+											]}
+										>
+											{title}
+										</Text>
+										<Text
+											modifiers={[
+												font({ size: 13, design: 'rounded' }),
+												foregroundStyle(theme.text.secondary),
+												lineLimit(1)
+											]}
+										>
+											{category.slug}
+										</Text>
+									</VStack>
+
 									<Spacer />
-									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{category.color ?? ''}</Text>
 								</HStack>
 							);
 						})}

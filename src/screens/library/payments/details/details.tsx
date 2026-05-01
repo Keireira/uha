@@ -120,8 +120,16 @@ const PaymentDetails = () => {
 		truncationMode('middle')
 	];
 
+	const closeModal = () => {
+		router.back();
+	};
+
 	return (
 		<>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
+			</Stack.Toolbar>
+
 			<Stack.Screen options={{ title: payment.title || '' }} />
 
 			<Stack.Toolbar placement="right">

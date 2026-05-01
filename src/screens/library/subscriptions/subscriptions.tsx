@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { asc, eq } from 'drizzle-orm';
 import { useAccent, useSettingsValue } from '@hooks';
+import { withAlpha } from '@lib/colors';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, servicesTable, subscriptionsTable, tendersTable, timelineEventsTable } from '@db/schema';
 
-import { openLibraryDetails } from '../common';
+import { openLibraryDetails } from '../shared';
 import { regenerateAllTxs } from '@hooks/setup';
 
 import {
 	font,
+	frame,
 	padding,
 	listStyle,
+	lineLimit,
 	onTapGesture,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
 	scrollTargetBehavior,
@@ -23,8 +29,9 @@ import {
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, VStack, ZStack, Image, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
 
+import type { SFSymbol } from 'sf-symbols-typescript';
 import type { TextInputChangeEvent } from 'react-native';
 import type { SubscriptionT, ServiceT, CategoryT, TenderT } from '@models';
 
@@ -48,7 +55,8 @@ const getText = ({ subscription, service, category, payment }: SubscriptionRowT)
 ];
 
 const Subscriptions = () => {
-	const router = useRouter();
+	const theme = useTheme();
+	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
 	const maxHorizon = useSettingsValue<number>('max_horizon');
@@ -91,16 +99,6 @@ const Subscriptions = () => {
 
 	return (
 		<>
-			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					variant="plain"
-					icon="chevron.backward"
-					accessibilityLabel="Go back"
-					onPress={() => router.replace('/(tabs)/library')}
-					tintColor={settingAccent}
-				/>
-			</Stack.Toolbar>
-
 			<Host style={{ flex: 1 }}>
 				<List
 					modifiers={[
@@ -111,30 +109,66 @@ const Subscriptions = () => {
 					]}
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
-						{subscriptions.map(({ subscription, service, payment }) => {
+						{subscriptions.map(({ subscription, service, category, payment }) => {
 							const title = subscription.custom_name || service.title;
+							const tone = service.color || settingAccent;
+							const subtitle =
+								payment?.title ??
+								(category && t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })) ??
+								'';
+
 							return (
 								<HStack
 									key={subscription.id}
-									spacing={14}
+									spacing={12}
 									modifiers={[
-										padding({ vertical: 8, horizontal: 0 }),
+										padding({ vertical: 6, horizontal: 0 }),
 										onTapGesture(() => openLibraryDetails('subscription', subscription.id, title)),
 										swipeActions({
 											actions: [
 												{
 													id: 'delete',
 													systemImage: 'trash',
-													role: 'destructive',
+													tint: theme.semantic.error,
 													onPress: deleteSubscription(subscription.id)
 												}
 											]
 										})
 									]}
 								>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>{title}</Text>
+									<ZStack>
+										<Circle modifiers={[frame({ width: 36, height: 36 }), foregroundStyle(withAlpha(tone, 0.2))]} />
+										{service.symbol ? (
+											<Image systemName={service.symbol as SFSymbol} size={16} color={tone} />
+										) : (
+											<Text modifiers={[font({ size: 18 })]}>{category?.emoji ?? '•'}</Text>
+										)}
+									</ZStack>
+
+									<VStack alignment="leading" spacing={2}>
+										<Text
+											modifiers={[
+												font({ size: 16, design: 'rounded', weight: 'semibold' }),
+												foregroundStyle(theme.text.primary),
+												lineLimit(1)
+											]}
+										>
+											{title}
+										</Text>
+										{subtitle ? (
+											<Text
+												modifiers={[
+													font({ size: 13, design: 'rounded' }),
+													foregroundStyle(theme.text.secondary),
+													lineLimit(1)
+												]}
+											>
+												{subtitle}
+											</Text>
+										) : null}
+									</VStack>
+
 									<Spacer />
-									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{payment?.title ?? ''}</Text>
 								</HStack>
 							);
 						})}

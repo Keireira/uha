@@ -1,11 +1,10 @@
 import React from 'react';
 import { splitEvery } from 'ramda';
-import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
 
 import { useAccent } from '@hooks';
+import { useParams } from '../hooks';
 import { lighten } from '@lib/colors';
-import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { useFilter, useModifiers } from './hooks';
 
 import { font, padding, onTapGesture } from '@expo/ui/swift-ui/modifiers';
@@ -13,26 +12,20 @@ import { Host, VStack, HStack, Grid, Image, Text } from '@expo/ui/swift-ui';
 
 import { COLUMNS, GRID_GAP, HORIZONTAL_PADDING } from './symbols-grid.constants';
 
-import type { LogoDraftT } from '@screens/crossroad/add-subscription/events';
 import type { Props } from './symbols-grid.d';
+import type { SFSymbol } from 'sf-symbols-typescript';
 
 const SymbolGrid = ({ search }: Props) => {
 	const theme = useTheme();
 	const settingAccent = useAccent();
-	const draft = useDraftStore(
-		useShallow((state) => ({
-			color: state.logo.color,
-			symbol: state.logo.symbol,
-			setLogoSymbol: state.actions.setLogoSymbol
-		}))
-	);
+	const paramsBinding = useParams();
 
-	const mods = useModifiers();
 	const sections = useFilter(search);
-	const selectedColor = lighten(draft.color ?? settingAccent, 0.5);
+	const modifiers = useModifiers(paramsBinding.color);
+	const selectedColor = lighten(paramsBinding.color ?? settingAccent, 0.5);
 
-	const onSelectSymbolHd = (symbol: string) => {
-		draft.setLogoSymbol(draft.symbol === symbol ? undefined : (symbol as LogoDraftT['symbol']));
+	const onSelectSymbolHd = (symbol: SFSymbol) => {
+		paramsBinding.setSymbol(paramsBinding.symbol === symbol ? undefined : symbol);
 	};
 
 	return (
@@ -42,22 +35,28 @@ const SymbolGrid = ({ search }: Props) => {
 					<VStack key={section.title} alignment="leading" spacing={8}>
 						<HStack spacing={8} modifiers={[padding({ vertical: 8 })]}>
 							<Image systemName={section.icon} size={16} color={theme.text.secondary} />
+
 							<Text modifiers={[font({ design: 'rounded', size: 18, weight: 'semibold' })]}>{section.title}</Text>
 						</HStack>
+
 						<Grid horizontalSpacing={GRID_GAP} verticalSpacing={GRID_GAP}>
 							{splitEvery(COLUMNS, section.symbols).map((row, index) => (
 								<Grid.Row key={`${section.title}-${index}`}>
 									{row.map((symbol) => {
-										const isSelected = draft.symbol === symbol;
-										const modifiers = isSelected ? mods.selected : mods.notSelected;
+										const isSelected = paramsBinding.symbol === symbol;
+										const localModifiers = isSelected ? modifiers.selected : modifiers.notSelected;
 
 										return (
 											<Image
 												key={symbol}
-												systemName={symbol}
 												size={22}
+												systemName={symbol}
 												color={isSelected ? selectedColor : theme.text.secondary}
-												modifiers={[...mods.shared, ...modifiers, onTapGesture(() => onSelectSymbolHd(symbol))]}
+												modifiers={[
+													...modifiers.shared,
+													...localModifiers,
+													onTapGesture(() => onSelectSymbolHd(symbol))
+												]}
 											/>
 										);
 									})}

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
+import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 
 import db from '@db';
-import { asc, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, servicesTable } from '@db/schema';
 
 import { useAccent } from '@hooks';
 import { withAlpha } from '@lib/colors';
-import { normalizeOptional } from '../../common';
+import { normalizeOptional } from '../../shared';
+import { useEditServiceStore } from '@screens/library/services/hooks';
 
 import {
-	tag,
 	font,
 	padding,
 	listStyle,
@@ -36,7 +36,6 @@ import {
 	HStack,
 	VStack,
 	Image,
-	Picker,
 	Button,
 	Section,
 	TextField,
@@ -46,6 +45,8 @@ import {
 } from '@expo/ui/swift-ui';
 import Toast from 'react-native-toast-message';
 import Clipboard from '@react-native-clipboard/clipboard';
+
+import type { SFSymbol } from 'sf-symbols-typescript';
 
 const ServiceDetails = () => {
 	const theme = useTheme();
@@ -57,17 +58,29 @@ const ServiceDetails = () => {
 	const {
 		data: [service]
 	} = useLiveQuery(db.select().from(servicesTable).where(eq(servicesTable.id, id)).limit(1), [id]);
-	const { data: categories = [] } = useLiveQuery(db.select().from(categoriesTable).orderBy(asc(categoriesTable.title)));
 
-	const [slug, setSlug] = useState('');
-	const [title, setTitle] = useState('');
-	const [color, setColor] = useState('');
-	const [logoUrl, setLogoUrl] = useState('');
-	const [symbol, setSymbol] = useState('');
-	const [bundleId, setBundleId] = useState('');
-	const [refLink, setRefLink] = useState('');
-	const [categorySlug, setCategorySlug] = useState('');
-	const [aliases, setAliases] = useState<string[]>([]);
+	const initStore = useEditServiceStore((state) => state.init);
+	const patch = useEditServiceStore((state) => state.patch);
+
+	const draft = useEditServiceStore(
+		useShallow((state) => ({
+			slug: state.slug,
+			title: state.title,
+			color: state.color,
+			logo_url: state.logo_url,
+			symbol: state.symbol,
+			bundle_id: state.bundle_id,
+			ref_link: state.ref_link,
+			category_slug: state.category_slug,
+			aliases: state.aliases
+		}))
+	);
+
+	const { data: [category] = [] } = useLiveQuery(
+		db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug)),
+		[draft.category_slug]
+	);
+
 	const [aliasDraft, setAliasDraft] = useState('');
 	const [aliasInputKey, setAliasInputKey] = useState(0);
 	const [isSlugEditable, setIsSlugEditable] = useState(false);
@@ -77,31 +90,35 @@ const ServiceDetails = () => {
 	useEffect(() => {
 		if (!service) return;
 
-		setTitle(service.title);
-		setSlug(service.slug ?? '');
-		setColor(service.color);
-		setLogoUrl(service.logo_url ?? '');
-		setSymbol(service.symbol ?? '');
-		setBundleId(service.bundle_id ?? '');
-		setRefLink(service.ref_link ?? '');
-		setCategorySlug(service.category_slug);
-		setAliases(service.aliases ?? []);
-	}, [service]);
+		initStore({
+			id: service.id,
+			slug: service.slug ?? '',
+			title: service.title,
+			color: service.color,
+			logo_url: service.logo_url ?? '',
+			symbol: (service.symbol ?? '') as SFSymbol | '',
+			bundle_id: service.bundle_id ?? '',
+			ref_link: service.ref_link ?? '',
+			category_slug: service.category_slug,
+			aliases: service.aliases ?? []
+		});
+	}, [service, initStore]);
 
 	const addAlias = () => {
 		const value = aliasDraft.trim();
-		if (!value || aliases.includes(value)) {
+		if (!value || draft.aliases.includes(value)) {
 			setAliasDraft('');
 			setAliasInputKey((n) => n + 1);
 			return;
 		}
-		setAliases([...aliases, value]);
+
+		patch({ aliases: [...draft.aliases, value] });
 		setAliasDraft('');
 		setAliasInputKey((n) => n + 1);
 	};
 
 	const removeAlias = (alias: string) => () => {
-		setAliases((current) => current.filter((a) => a !== alias));
+		patch({ aliases: draft.aliases.filter((a) => a !== alias) });
 	};
 
 	const enableSlugEdit = () => setIsSlugEditable(true);
@@ -126,26 +143,40 @@ const ServiceDetails = () => {
 		Toast.show({ type: 'success', text1: t('library.details.copied'), text2: value });
 	};
 
+	const openCategoryPicker = () => {
+		router.push({
+			pathname: '/(pickers)/select-category',
+			params: { target: 'library_service_category' }
+		});
+	};
+
+	const openLogoPicker = () => {
+		router.push({
+			pathname: '/(pickers)/select-symbol-logo',
+			params: { target: 'library_service_logo' }
+		});
+	};
+
 	const save = async () => {
 		if (!service) return;
 
-		const nextTitle = title.trim();
-		const nextColor = color.trim();
-		if (!nextTitle || !nextColor || !categorySlug) return;
+		const nextTitle = draft.title.trim();
+		const nextColor = draft.color.trim();
+		if (!nextTitle || !nextColor || !draft.category_slug) return;
 
 		try {
 			await db
 				.update(servicesTable)
 				.set({
 					title: nextTitle,
-					slug: normalizeOptional(slug),
+					slug: normalizeOptional(draft.slug),
 					color: nextColor,
-					logo_url: normalizeOptional(logoUrl),
-					symbol: normalizeOptional(symbol),
-					bundle_id: normalizeOptional(bundleId),
-					ref_link: normalizeOptional(refLink),
-					category_slug: categorySlug,
-					aliases
+					logo_url: normalizeOptional(draft.logo_url),
+					symbol: normalizeOptional(draft.symbol),
+					bundle_id: normalizeOptional(draft.bundle_id),
+					ref_link: normalizeOptional(draft.ref_link),
+					category_slug: draft.category_slug,
+					aliases: draft.aliases
 				})
 				.where(eq(servicesTable.id, service.id));
 
@@ -163,7 +194,6 @@ const ServiceDetails = () => {
 		foregroundStyle(theme.text.secondary),
 		font({ size: 16, weight: 'regular' })
 	];
-
 	const idValueMods = [
 		multilineTextAlignment('trailing'),
 		foregroundStyle(theme.text.secondary),
@@ -171,10 +201,29 @@ const ServiceDetails = () => {
 		lineLimit(1),
 		truncationMode('middle')
 	];
+	const linkValueMods = [
+		multilineTextAlignment('trailing'),
+		foregroundStyle(theme.text.secondary),
+		font({ size: 16, weight: 'regular' }),
+		lineLimit(1),
+		truncationMode('tail')
+	];
+
+	const categoryLabel = draft.category_slug
+		? t(`category.${draft.category_slug}`, { defaultValue: category?.title ?? draft.category_slug })
+		: '—';
+
+	const closeModal = () => {
+		router.back();
+	};
 
 	return (
 		<>
-			<Stack.Screen options={{ title: title || service.title }} />
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
+			</Stack.Toolbar>
+
+			<Stack.Screen options={{ title: draft.title || service.title }} />
 
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={save} tintColor={settingAccent} />
@@ -194,91 +243,75 @@ const ServiceDetails = () => {
 							<LabeledContent label={t('library.details.fields.slug')}>
 								<TextField
 									autoFocus
-									defaultValue={slug}
+									defaultValue={draft.slug}
 									placeholder="slug"
-									onValueChange={setSlug}
+									onValueChange={(slug) => patch({ slug })}
 									modifiers={valueMods}
 								/>
 							</LabeledContent>
 						) : (
 							<LabeledContent label={t('library.details.fields.slug')} modifiers={[onLongPressGesture(enableSlugEdit)]}>
-								<Text modifiers={valueMods}>{slug || '—'}</Text>
+								<Text modifiers={valueMods}>{draft.slug || '—'}</Text>
 							</LabeledContent>
 						)}
 
 						<LabeledContent label={t('library.details.fields.title')} modifiers={labelMods}>
 							<TextField
-								defaultValue={service?.title ?? ''}
+								defaultValue={service.title}
 								placeholder=""
-								onValueChange={setTitle}
+								onValueChange={(title) => patch({ title })}
 								modifiers={valueMods}
 							/>
 						</LabeledContent>
 
-						<Picker
-							label={t('library.details.fields.category')}
-							selection={categorySlug}
-							onSelectionChange={setCategorySlug}
-						>
-							{categories.map((category) => (
-								<Text key={category.slug} modifiers={[tag(category.slug)]}>
-									{t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })}
-								</Text>
-							))}
-						</Picker>
+						<LabeledContent label={t('library.details.fields.category')} modifiers={[onTapGesture(openCategoryPicker)]}>
+							<HStack spacing={6}>
+								<Text modifiers={valueMods}>{categoryLabel}</Text>
+								<Image systemName="chevron.right" size={12} color={withAlpha(settingAccent, 0.6)} />
+							</HStack>
+						</LabeledContent>
 					</Section>
 
 					<Section title={t('library.details.section.appearance')}>
 						<ColorPicker
 							label={t('library.details.fields.color')}
-							selection={color ?? null}
-							onSelectionChange={setColor}
+							selection={draft.color || null}
+							onSelectionChange={(color) => patch({ color })}
 							supportsOpacity={false}
 						/>
 
-						<LabeledContent label={t('library.details.fields.symbol')} modifiers={labelMods}>
-							<TextField
-								defaultValue={service.symbol ?? ''}
-								placeholder="square.fill"
-								onValueChange={setSymbol}
-								modifiers={valueMods}
-							/>
+						<LabeledContent label={t('library.details.fields.symbol')} modifiers={[onTapGesture(openLogoPicker)]}>
+							<HStack spacing={8}>
+								{draft.symbol ? (
+									<Image systemName={draft.symbol as SFSymbol} size={20} color={draft.color || settingAccent} />
+								) : (
+									<Text modifiers={valueMods}>—</Text>
+								)}
+								<Image systemName="chevron.right" size={12} color={withAlpha(settingAccent, 0.6)} />
+							</HStack>
 						</LabeledContent>
 
 						{isLogoEditable ? (
 							<LabeledContent label={t('library.details.fields.logo_url')} modifiers={labelMods}>
 								<TextField
 									autoFocus
-									defaultValue={logoUrl}
+									defaultValue={draft.logo_url}
 									placeholder="https://…"
-									onValueChange={setLogoUrl}
+									onValueChange={(logo_url) => patch({ logo_url })}
 									onFocusChange={(focused) => !focused && setIsLogoEditable(false)}
 									modifiers={valueMods}
 								/>
 							</LabeledContent>
 						) : (
-							<LabeledContent
-								label={t('library.details.fields.logo_url')}
-								modifiers={[onTapGesture(enableLogoEdit)]}
-							>
+							<LabeledContent label={t('library.details.fields.logo_url')} modifiers={[onTapGesture(enableLogoEdit)]}>
 								<ContextMenu>
 									<ContextMenu.Trigger>
-										<Text
-											modifiers={[
-												multilineTextAlignment('trailing'),
-												foregroundStyle(theme.text.secondary),
-												font({ size: 16, weight: 'regular' }),
-												lineLimit(1),
-												truncationMode('tail')
-											]}
-										>
-											{logoUrl || '—'}
-										</Text>
+										<Text modifiers={linkValueMods}>{draft.logo_url || '—'}</Text>
 									</ContextMenu.Trigger>
 									<ContextMenu.Preview>
 										<VStack modifiers={[padding({ all: 14 })]}>
 											<Text modifiers={[font({ size: 13, design: 'monospaced', weight: 'regular' })]}>
-												{logoUrl || '—'}
+												{draft.logo_url || '—'}
 											</Text>
 										</VStack>
 									</ContextMenu.Preview>
@@ -286,7 +319,7 @@ const ServiceDetails = () => {
 										<Button
 											label={t('library.details.copy')}
 											systemImage="doc.on.doc"
-											onPress={copyText(logoUrl)}
+											onPress={copyText(draft.logo_url)}
 										/>
 									</ContextMenu.Items>
 								</ContextMenu>
@@ -299,7 +332,7 @@ const ServiceDetails = () => {
 							<TextField
 								defaultValue={service.bundle_id ?? ''}
 								placeholder="com.example.app"
-								onValueChange={setBundleId}
+								onValueChange={(bundle_id) => patch({ bundle_id })}
 								modifiers={valueMods}
 							/>
 						</LabeledContent>
@@ -308,36 +341,23 @@ const ServiceDetails = () => {
 							<LabeledContent label={t('library.details.fields.ref_link')} modifiers={labelMods}>
 								<TextField
 									autoFocus
-									defaultValue={refLink}
+									defaultValue={draft.ref_link}
 									placeholder="https://…"
-									onValueChange={setRefLink}
+									onValueChange={(ref_link) => patch({ ref_link })}
 									onFocusChange={(focused) => !focused && setIsRefEditable(false)}
 									modifiers={valueMods}
 								/>
 							</LabeledContent>
 						) : (
-							<LabeledContent
-								label={t('library.details.fields.ref_link')}
-								modifiers={[onTapGesture(enableRefEdit)]}
-							>
+							<LabeledContent label={t('library.details.fields.ref_link')} modifiers={[onTapGesture(enableRefEdit)]}>
 								<ContextMenu>
 									<ContextMenu.Trigger>
-										<Text
-											modifiers={[
-												multilineTextAlignment('trailing'),
-												foregroundStyle(theme.text.secondary),
-												font({ size: 16, weight: 'regular' }),
-												lineLimit(1),
-												truncationMode('tail')
-											]}
-										>
-											{refLink || '—'}
-										</Text>
+										<Text modifiers={linkValueMods}>{draft.ref_link || '—'}</Text>
 									</ContextMenu.Trigger>
 									<ContextMenu.Preview>
 										<VStack modifiers={[padding({ all: 14 })]}>
 											<Text modifiers={[font({ size: 13, design: 'monospaced', weight: 'regular' })]}>
-												{refLink || '—'}
+												{draft.ref_link || '—'}
 											</Text>
 										</VStack>
 									</ContextMenu.Preview>
@@ -345,7 +365,7 @@ const ServiceDetails = () => {
 										<Button
 											label={t('library.details.copy')}
 											systemImage="doc.on.doc"
-											onPress={copyText(refLink)}
+											onPress={copyText(draft.ref_link)}
 										/>
 									</ContextMenu.Items>
 								</ContextMenu>
@@ -354,7 +374,7 @@ const ServiceDetails = () => {
 					</Section>
 
 					<Section title={t('library.details.section.aliases')}>
-						{aliases.map((alias) => (
+						{draft.aliases.map((alias) => (
 							<HStack
 								key={alias}
 								spacing={8}

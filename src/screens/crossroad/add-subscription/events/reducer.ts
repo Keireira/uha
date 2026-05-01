@@ -120,30 +120,26 @@ export const patchDraft = (draft: SubscriptionDraftT, patch: Partial<Subscriptio
 export const setLogoSymbol = (
 	draft: SubscriptionDraftT,
 	symbol: SubscriptionDraftT['logo']['symbol']
-): SubscriptionDraftT => {
-	return {
-		...draft,
-		logo: {
-			...draft.logo,
-			image_uri: undefined,
-			symbol
-		}
-	};
-};
+): SubscriptionDraftT => ({
+	...draft,
+	logo: {
+		...draft.logo,
+		image_uri: undefined,
+		symbol
+	}
+});
 
 export const setLogoImage = (
 	draft: SubscriptionDraftT,
 	image_uri: SubscriptionDraftT['logo']['image_uri']
-): SubscriptionDraftT => {
-	return {
-		...draft,
-		logo: {
-			...draft.logo,
-			image_uri,
-			symbol: undefined
-		}
-	};
-};
+): SubscriptionDraftT => ({
+	...draft,
+	logo: {
+		...draft.logo,
+		image_uri,
+		symbol: undefined
+	}
+});
 
 export const setSubscriptionColor = (
 	draft: SubscriptionDraftT,
