@@ -2,10 +2,12 @@ import React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
+import { useAccent } from '@hooks';
+
 import { Header } from './components';
 import Root from './notifications.styles';
 import { Host, List, Section, Toggle, Text } from '@expo/ui/swift-ui';
-import { environment, listStyle, tag } from '@expo/ui/swift-ui/modifiers';
+import { environment, listStyle, tint, tag } from '@expo/ui/swift-ui/modifiers';
 
 const DAY_PRESETS = [0, 1, 2, 3, 7, 14] as const;
 const TMP_LABELS = {
@@ -18,6 +20,7 @@ const TMP_LABELS = {
 } as const;
 
 const NotificationsScreen = () => {
+	const settingAccent = useAccent();
 	const { isEnabled, daysBefore, setEnabled, setDaysBefore } = useDraftStore(
 		useShallow((state) => ({
 			isEnabled: state.notify_enabled,
@@ -41,10 +44,15 @@ const NotificationsScreen = () => {
 				<List
 					selection={daysBefore}
 					onSelectionChange={onSelectionChangeHd}
-					modifiers={[listStyle('insetGrouped'), environment('editMode', 'active')]}
+					modifiers={[listStyle('insetGrouped'), environment('editMode', 'active'), tint(settingAccent)]}
 				>
 					<Section title="Reminders" footer={<Text>Get a push notification ahead of each upcoming payment.</Text>}>
-						<Toggle label="Notify me before payment" isOn={isEnabled} onIsOnChange={setEnabled} />
+						<Toggle
+							label="Notify me before payment"
+							modifiers={[tint(settingAccent)]}
+							isOn={isEnabled}
+							onIsOnChange={setEnabled}
+						/>
 					</Section>
 
 					{isEnabled && (

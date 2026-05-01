@@ -533,11 +533,23 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'すべてを検索',
-		categories: 'カテゴリで検索',
-		services: 'サービスで検索',
-		payments: '支払い方法で検索'
+	grid: {
+		categories: {
+			title: 'カテゴリ',
+			description: 'カテゴリグループの表示と編集'
+		},
+		services: {
+			title: 'サービス',
+			description: 'サービスの表示と編集'
+		},
+		payments: {
+			title: '支払い方法',
+			description: 'カードやウォレットの表示と編集'
+		},
+		subscriptions: {
+			title: 'サブスクリプション',
+			description: 'プランの表示と編集'
+		}
 	}
 };
 
@@ -574,6 +586,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'サブスクリプション'
+	},
+	refresh_success: {
+		title: '取引を同期しました',
+		description: '過去と今後の項目を更新しました'
 	}
 };
 
@@ -648,7 +664,8 @@ const nihongo: LocaleRootT = {
 			title: 'ライブラリ',
 			categories: 'カテゴリ',
 			services: 'サービス',
-			payments: '支払い方法'
+			payments: '支払い方法',
+			subscriptions: 'サブスクリプション'
 		},
 		settings: {
 			title: '設定',
@@ -668,6 +685,7 @@ const nihongo: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: '新しいエントリ',
 		no_results: '何も見つかりませんでした',
 		grid: {
 			category: {

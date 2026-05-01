@@ -1,3 +1,3 @@
-import { CategoriesList } from '@screens/library/categories';
+import { CategoriesLibrary } from '@screens/library';
 
-export default CategoriesList;
+export default CategoriesLibrary;

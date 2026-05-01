@@ -510,11 +510,23 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Buscar en todo',
-		categories: 'Buscar en categorías',
-		services: 'Buscar en servicios',
-		payments: 'Buscar en pagos'
+	grid: {
+		categories: {
+			title: 'Categorías',
+			description: 'Ver y editar grupos'
+		},
+		services: {
+			title: 'Servicios',
+			description: 'Ver y editar proveedores'
+		},
+		payments: {
+			title: 'Métodos de pago',
+			description: 'Tarjetas y billeteras u otros métodos'
+		},
+		subscriptions: {
+			title: 'Suscripciones',
+			description: 'Ver y editar planes activos'
+		}
 	}
 };
 
@@ -551,6 +563,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Suscripciones'
+	},
+	refresh_success: {
+		title: 'Transacciones sincronizadas',
+		description: 'Entradas pasadas y futuras actualizadas'
 	}
 };
 
@@ -625,7 +641,8 @@ const spanish: LocaleRootT = {
 			title: 'Biblioteca',
 			categories: 'Categorías',
 			services: 'Servicios',
-			payments: 'Pagos'
+			payments: 'Pagos',
+			subscriptions: 'Suscripciones'
 		},
 		settings: {
 			title: 'Ajustes',
@@ -645,6 +662,7 @@ const spanish: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Nueva entrada',
 		no_results: 'No se encontró nada',
 		grid: {
 			category: {

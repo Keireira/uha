@@ -510,11 +510,23 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
-	search: {
-		all: 'Барлық жерден іздеу',
-		categories: 'Санаттардан іздеу',
-		services: 'Қызметтерден іздеу',
-		payments: 'Төлемдерден іздеу'
+	grid: {
+		categories: {
+			title: 'Санаттар',
+			description: 'Топтарды қарау және өзгерту'
+		},
+		services: {
+			title: 'Қызметтер',
+			description: 'Қызметтерді қарау және өзгерту'
+		},
+		payments: {
+			title: 'Төлем тәсілдері',
+			description: 'Карталар мен әмияндарды өзгерту'
+		},
+		subscriptions: {
+			title: 'Жазылымдар',
+			description: 'Жоспарларды қарау және өзгерту'
+		}
 	}
 };
 
@@ -551,6 +563,10 @@ const transactionsScreen: LocaleRootT['transactions'] = {
 	},
 	view_mode: {
 		subscriptions: 'Жазылымдар'
+	},
+	refresh_success: {
+		title: 'Транзакциялар синхрондалды',
+		description: 'Өткен және алдағы жазбалар жаңартылды'
 	}
 };
 
@@ -625,7 +641,8 @@ const kazakh: LocaleRootT = {
 			title: 'Кітапхана',
 			categories: 'Санаттар',
 			services: 'Қызметтер',
-			payments: 'Төлемдер'
+			payments: 'Төлемдер',
+			subscriptions: 'Жазылымдар'
 		},
 		settings: {
 			title: 'Параметрлер',
@@ -645,6 +662,7 @@ const kazakh: LocaleRootT = {
 	settings: settingsScreen,
 
 	crossroad: {
+		title: 'Жаңа жазба',
 		no_results: 'Ештеңе табылмады',
 		grid: {
 			category: {

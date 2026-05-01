@@ -1,12 +1,14 @@
 import React, { useCallback, useRef } from 'react';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 
 import { useSearch } from '@screens/add/hooks';
 
 import type { SearchBarCommands } from 'react-native-screens';
 
 const Layout = () => {
+	const theme = useTheme();
 	const { t } = useTranslation();
 	const { runSearch } = useSearch();
 	const searchBarRef = useRef<SearchBarCommands>(null);
@@ -31,6 +33,9 @@ const Layout = () => {
 					headerShown: true,
 					headerTransparent: true,
 					headerShadowVisible: false,
+					contentStyle: {
+						backgroundColor: theme.background.default
+					},
 					headerSearchBarOptions: {
 						ref: searchBarRef,
 						hideNavigationBar: false,

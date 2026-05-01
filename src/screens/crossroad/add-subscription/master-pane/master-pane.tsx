@@ -1,6 +1,6 @@
 import React from 'react';
-import { format, parseISO } from 'date-fns';
 import { useRouter } from 'expo-router';
+import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
@@ -10,20 +10,24 @@ import { eq } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, tendersTable } from '@db/schema';
 
-import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { useAccent } from '@hooks';
+
 import {
-	selectFirstPaymentDate,
 	selectHasTrial,
-	selectTrialDuration
+	selectTrialDuration,
+	selectFirstPaymentDate
 } from '@screens/crossroad/add-subscription/events';
+import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
 import LogoRow from './logo-row';
 import Timeline from './timeline';
 import PriceRow from './price-row';
 import {
 	font,
+	tint,
 	listStyle,
 	lineLimit,
+	toggleStyle,
 	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
@@ -71,6 +75,7 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
+	const settingAccent = useAccent();
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
@@ -228,7 +233,12 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 					</HStack>
 
 					{/* Trial block */}
-					<Toggle label="With Trial" isOn={hasTrial} onIsOnChange={setTrialEnabled} />
+					<Toggle
+						label="With Trial"
+						isOn={hasTrial}
+						modifiers={[toggleStyle('switch'), tint(settingAccent)]}
+						onIsOnChange={setTrialEnabled}
+					/>
 
 					{hasTrial && (
 						<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>

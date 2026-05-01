@@ -1,91 +1,149 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useRouter } from 'expo-router';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { SymbolView } from 'expo-symbols';
-import { Wrapper, TextInput } from '@ui';
-import { PaymentPreviews } from './payments';
-import { ServicePreviews } from './services';
-import { CategoryPreviews } from './categories';
+import { useAccent } from '@hooks';
+import { withAlpha } from '@lib/colors';
+
 import {
-	HeaderRow,
-	ScreenTitle,
-	AddButton,
-	TabBar,
-	TabGlass,
-	TabInner,
-	TabLabel,
-	FixedHeader,
-	Content
-} from './library.styles';
+	font,
+	frame,
+	padding,
+	background,
+	buttonStyle,
+	glassEffect,
+	lineLimit,
+	onTapGesture,
+	foregroundStyle,
+	multilineTextAlignment,
+	scrollContentBackground
+} from '@expo/ui/swift-ui/modifiers';
+import { WrapHStack } from '@modules/wrap-hstack';
+import { Host, ScrollView, VStack, ZStack, Text, Image, Circle, Button } from '@expo/ui/swift-ui';
 
-type TabT = 'categories' | 'services' | 'payments';
+import type { SFSymbol } from 'sf-symbols-typescript';
 
-const TABS: { key: TabT; label: string }[] = [
-	{ key: 'categories', label: 'Categories' },
-	{ key: 'services', label: 'Services' },
-	{ key: 'payments', label: 'Payments' }
-];
+const ITEMS = [
+	{
+		route: '/(tabs)/library/categories-list',
+		icon: 'square.grid.2x2' satisfies SFSymbol,
+		slug: 'categories'
+	},
+	{
+		route: '/(tabs)/library/services-list',
+		icon: 'building.2' satisfies SFSymbol,
+		slug: 'services'
+	},
+	{
+		route: '/(tabs)/library/payments-list',
+		icon: 'creditcard' satisfies SFSymbol,
+		slug: 'payments'
+	},
+	{
+		route: '/(tabs)/library/subscriptions-list',
+		icon: 'arrow.triangle.2.circlepath' satisfies SFSymbol,
+		slug: 'subscriptions'
+	}
+] as const;
 
-const TAB_ROUTES = {
-	categories: '/add-category',
-	services: '/add-service',
-	payments: '/add-payment'
-} as const;
+const useButtonsWidth = () => {
+	const halfButtonWidth = (initialWindowMetrics?.frame.width ?? 400) / 2 - 26;
+	const fullButtonWidth = halfButtonWidth * 2 + 13;
+
+	const getWidth = (index: number, arrLength: number) => {
+		const isLast = index === arrLength - 1;
+		const isEven = index % 2 === 0;
+
+		return isLast && isEven ? fullButtonWidth : halfButtonWidth;
+	};
+
+	return getWidth;
+};
 
 const LibraryScreen = () => {
-	const { t } = useTranslation();
 	const theme = useTheme();
 	const router = useRouter();
-	const [search, setSearch] = useState('');
-	const [activeTab, setActiveTab] = useState<TabT>('categories');
+	const { t } = useTranslation();
+	const settingAccent = useAccent();
+	const getWidth = useButtonsWidth();
 
 	return (
-		<Wrapper withBottom={false}>
-			<FixedHeader>
-				<HeaderRow>
-					<ScreenTitle>Library</ScreenTitle>
-					<AddButton onPress={() => router.push(TAB_ROUTES[activeTab])}>
-						<SymbolView name="plus" size={16} tintColor={theme.text.primary} />
-					</AddButton>
-				</HeaderRow>
-
-				<TextInput
-					leadingIcon="search"
-					autoCorrect={false}
-					placeholder={t('library.search.all')}
-					value={search}
-					onChangeText={setSearch}
-					onClear={() => setSearch('')}
-				/>
-
-				<TabBar>
-					{TABS.map((tab) => {
-						const isActive = activeTab === tab.key;
+		<Host style={{ flex: 1 }}>
+			<ScrollView
+				showsIndicators={false}
+				modifiers={[background(theme.background.default), scrollContentBackground('hidden')]}
+			>
+				<WrapHStack spacing={12} lineSpacing={12} modifiers={[padding({ horizontal: 20, top: 16, bottom: 32 })]}>
+					{ITEMS.map((item, index, arr) => {
+						const goTo = () => router.push(item.route);
 
 						return (
-							<TabGlass
-								key={tab.key}
-								$active={isActive}
-								isInteractive
-								tintColor={isActive ? theme.accents.orange : undefined}
+							<Button
+								key={item.route}
+								onPress={goTo}
+								modifiers={[
+									frame({
+										alignment: 'topLeading',
+										idealWidth: getWidth(index, arr.length)
+									}),
+									buttonStyle('borderless')
+								]}
 							>
-								<TabInner onPress={() => setActiveTab(tab.key)}>
-									<TabLabel $active={isActive}>{tab.label}</TabLabel>
-								</TabInner>
-							</TabGlass>
+								<VStack
+									alignment="leading"
+									spacing={12}
+									modifiers={[
+										padding({ vertical: 20, horizontal: 16 }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'topLeading' }),
+										glassEffect({
+											glass: {
+												variant: 'regular',
+												interactive: true
+											},
+											shape: 'roundedRectangle',
+											cornerRadius: 16
+										}),
+										onTapGesture(goTo)
+									]}
+								>
+									<ZStack>
+										<Circle
+											modifiers={[frame({ width: 42, height: 42 }), foregroundStyle(withAlpha(settingAccent, 0.2))]}
+										/>
+
+										<Image systemName={item.icon} size={18} color={settingAccent} />
+									</ZStack>
+
+									<Text
+										modifiers={[
+											multilineTextAlignment('leading'),
+											foregroundStyle(theme.text.primary),
+											lineLimit(1, { reservesSpace: false }),
+											font({ size: 16, design: 'rounded', weight: 'semibold' })
+										]}
+									>
+										{t(`library.grid.${item.slug}.title`)}
+									</Text>
+
+									<Text
+										modifiers={[
+											multilineTextAlignment('leading'),
+											lineLimit(2, { reservesSpace: true }),
+											foregroundStyle(theme.text.secondary),
+											font({ size: 12, design: 'rounded', weight: 'regular' })
+										]}
+									>
+										{t(`library.grid.${item.slug}.description`)}
+									</Text>
+								</VStack>
+							</Button>
 						);
 					})}
-				</TabBar>
-			</FixedHeader>
-
-			<Content>
-				{activeTab === 'categories' && <CategoryPreviews search={search} />}
-				{activeTab === 'services' && <ServicePreviews search={search} />}
-				{activeTab === 'payments' && <PaymentPreviews search={search} />}
-			</Content>
-		</Wrapper>
+				</WrapHStack>
+			</ScrollView>
+		</Host>
 	);
 };
 
