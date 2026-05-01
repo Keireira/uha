@@ -2,7 +2,8 @@ CREATE TABLE `categories` (
 	`slug` text PRIMARY KEY NOT NULL,
 	`title` text,
 	`emoji` text,
-	`color` text
+	`color` text,
+	`is_system` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`emoji`,`color`);--> statement-breakpoint

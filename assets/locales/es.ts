@@ -530,6 +530,7 @@ const libraryScreen: LocaleRootT['library'] = {
 		}
 	},
 	delete_blocked: {
+		default_category: 'No se puede eliminar la categoría del sistema',
 		title: 'No se puede eliminar',
 		category_one: 'En uso por 1 suscripción',
 		category_other: 'En uso por {{count}} suscripciones',
@@ -537,6 +538,29 @@ const libraryScreen: LocaleRootT['library'] = {
 		service_other: 'En uso por {{count}} suscripciones',
 		payment_one: 'En uso por 1 suscripción',
 		payment_other: 'En uso por {{count}} suscripciones'
+	},
+	details: {
+		save: 'Guardar',
+		id_copied: 'ID copiado',
+		section: {
+			identity: 'Identidad',
+			appearance: 'Apariencia',
+			other: 'Otros'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Título personalizado',
+			emoji: 'Emoji',
+			color: 'Color',
+			comment: 'Comentario',
+			card: 'Tarjeta',
+			category: 'Categoría',
+			symbol: 'Símbolo SF',
+			logo_url: 'URL del logo',
+			bundle_id: 'ID del paquete',
+			ref_link: 'Enlace de referido'
+		}
 	}
 };
 
@@ -662,6 +686,7 @@ const spanish: LocaleRootT = {
 			open_filters: 'Filtros'
 		},
 		library: {
+			root: 'Raíz',
 			title: 'Biblioteca',
 			categories: 'Categorías',
 			services: 'Servicios',

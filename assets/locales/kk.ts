@@ -531,12 +531,36 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	delete_blocked: {
 		title: 'Жою мүмкін емес',
+		default_category: 'Жүйелік санатты жою мүмкін емес',
 		category_one: '1 жазылымда қолданылады',
 		category_other: '{{count}} жазылымда қолданылады',
 		service_one: '1 жазылымда қолданылады',
 		service_other: '{{count}} жазылымда қолданылады',
 		payment_one: '1 жазылымда қолданылады',
 		payment_other: '{{count}} жазылымда қолданылады'
+	},
+	details: {
+		save: 'Сақтау',
+		id_copied: 'ID көшірілді',
+		section: {
+			identity: 'Идентификация',
+			appearance: 'Сыртқы түрі',
+			other: 'Басқа'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Таңдамалы атау',
+			emoji: 'Эмодзи',
+			color: 'Түс',
+			comment: 'Пікір',
+			card: 'Карта',
+			category: 'Санат',
+			symbol: 'SF Symbol',
+			logo_url: 'Логотип URL мекенжайы',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Рефералдық сілтеме'
+		}
 	}
 };
 
@@ -662,6 +686,7 @@ const kazakh: LocaleRootT = {
 			open_filters: 'Сүзгілер'
 		},
 		library: {
+			root: 'Түбір',
 			title: 'Жинақ',
 			categories: 'Санаттар',
 			services: 'Қызметтер',

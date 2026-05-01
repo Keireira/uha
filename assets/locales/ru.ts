@@ -529,6 +529,7 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	delete_blocked: {
 		title: 'Нельзя удалить',
+		default_category: 'Нельзя удалить системную категорию',
 		category_one: 'Используется в {{count}} подписке',
 		category_few: 'Используется в {{count}} подписках',
 		category_many: 'Используется в {{count}} подписках',
@@ -541,6 +542,29 @@ const libraryScreen: LocaleRootT['library'] = {
 		payment_few: 'Используется в {{count}} подписках',
 		payment_many: 'Используется в {{count}} подписках',
 		payment_other: 'Используется в {{count}} подписках'
+	},
+	details: {
+		save: 'Сохранить',
+		id_copied: 'ID скопирован',
+		section: {
+			identity: 'Идентификация',
+			appearance: 'Внешний вид',
+			other: 'Прочее'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Своё название',
+			emoji: 'Эмодзи',
+			color: 'Цвет',
+			comment: 'Комментарий',
+			card: 'Это карта',
+			category: 'Категория',
+			symbol: 'SF Symbol',
+			logo_url: 'URL логотипа',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Реферальная ссылка'
+		}
 	}
 };
 
@@ -666,6 +690,7 @@ const russian: LocaleRootT = {
 			open_filters: 'Фильтры'
 		},
 		library: {
+			root: 'Корень',
 			title: 'Библиотека',
 			categories: 'Категории',
 			services: 'Сервисы',

@@ -554,9 +554,33 @@ const libraryScreen: LocaleRootT['library'] = {
 	},
 	delete_blocked: {
 		title: '削除できません',
+		default_category: 'システムカテゴリは削除できません',
 		category_other: '{{count}} 件のサブスクリプションで使用中',
 		service_other: '{{count}} 件のサブスクリプションで使用中',
 		payment_other: '{{count}} 件のサブスクリプションで使用中'
+	},
+	details: {
+		save: '保存',
+		id_copied: 'ID をコピーしました',
+		section: {
+			identity: '識別情報',
+			appearance: '外観',
+			other: 'その他'
+		},
+		fields: {
+			slug: 'スラッグ',
+			id: 'ID',
+			title: 'カスタムタイトル',
+			emoji: '絵文字',
+			color: '色',
+			comment: 'コメント',
+			card: 'カード',
+			category: 'カテゴリ',
+			symbol: 'SFシンボル',
+			logo_url: 'ロゴURL',
+			bundle_id: 'バンドルID',
+			ref_link: '紹介リンク'
+		}
 	}
 };
 
@@ -682,6 +706,7 @@ const nihongo: LocaleRootT = {
 			open_filters: 'フィルター'
 		},
 		library: {
+			root: 'ルート',
 			title: 'ライブラリ',
 			categories: 'カテゴリ',
 			services: 'サービス',

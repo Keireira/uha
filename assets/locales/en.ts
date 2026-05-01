@@ -529,13 +529,37 @@ const libraryScreen: LocaleRootT['library'] = {
 		}
 	},
 	delete_blocked: {
-		title: 'Cannot delete',
+		title: "Can't delete",
+		default_category: 'This is system category',
 		category_one: 'Used by 1 subscription',
 		category_other: 'Used by {{count}} subscriptions',
 		service_one: 'Used by 1 subscription',
 		service_other: 'Used by {{count}} subscriptions',
 		payment_one: 'Used by 1 subscription',
 		payment_other: 'Used by {{count}} subscriptions'
+	},
+	details: {
+		save: 'Save',
+		id_copied: 'ID copied',
+		section: {
+			identity: 'Identity',
+			appearance: 'Appearance',
+			other: 'Other'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Custom Title',
+			emoji: 'Emoji',
+			color: 'Color',
+			comment: 'Comment',
+			card: 'Card',
+			category: 'Category',
+			symbol: 'SF Symbol',
+			logo_url: 'Logo URL',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Referral link'
+		}
 	}
 };
 
@@ -666,6 +690,7 @@ const english: LocaleRootT = {
 			open_filters: 'Filters'
 		},
 		library: {
+			root: 'Root',
 			title: 'Library',
 			categories: 'Categories',
 			services: 'Services',

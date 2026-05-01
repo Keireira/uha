@@ -47,6 +47,7 @@ const Categories = () => {
 		category.emoji ?? '',
 		t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })
 	];
+
 	const matches = useFuzzySearchList({
 		list: data,
 		queryText: searchQuery,
@@ -71,6 +72,21 @@ const Categories = () => {
 				type: 'error',
 				text1: t('library.delete_blocked.title'),
 				text2: t('library.delete_blocked.category', { count })
+			});
+			return;
+		}
+
+		const [{ is_system: isSystem } = {}] = await db
+			.select({ is_system: categoriesTable.is_system })
+			.from(categoriesTable)
+			.where(eq(categoriesTable.slug, slug))
+			.limit(1);
+
+		if (isSystem) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.default_category')
 			});
 			return;
 		}

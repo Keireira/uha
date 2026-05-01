@@ -407,7 +407,10 @@ export type LocaleRootT = {
 		year: string;
 		in_month: string;
 		in_year: string;
-		/** Pre-formatted "in <Month>" phrase for locales whose month names inflect (e.g. ru, kk). Indexed 0–11 to match `Date.getMonth()`. */
+		/*
+		 * Pre-formatted "in <Month>" phrase for locales whose month names inflect (e.g. ru, kk).
+		 * Indexed 0–11 to match `Date.getMonth()`.
+		 **/
 		in_months: Record<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 	};
 	rates: {
@@ -430,6 +433,7 @@ export type LocaleRootT = {
 			open_filters: string;
 		};
 		library: {
+			root: string;
 			title: string;
 			categories: string;
 			services: string;
@@ -508,14 +512,52 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
-		/**
-		 * Plural-aware "in use" warning. The base keys (`category`, `service`, `payment`)
-		 * are looked up by i18next with the appropriate CLDR suffix
-		 * (`_one`, `_few`, `_many`, `_other`) based on the active locale and `{{count}}`.
-		 */
+
 		delete_blocked: {
 			title: string;
-		} & Record<string, string>;
+			default_category: string;
+
+			/**
+			 * Plural-aware "in use" warning. The base keys (`category`, `service`, `payment`)
+			 * are looked up by i18next with the appropriate CLDR suffix
+			 * (`_one`, `_few`, `_many`, `_other`) based on the active locale and `{{count}}`.
+			 */
+			category_one?: string;
+			category_few?: string;
+			category_many?: string;
+			category_other?: string;
+			service_one?: string;
+			service_few?: string;
+			service_many?: string;
+			service_other?: string;
+			payment_one?: string;
+			payment_few?: string;
+			payment_many?: string;
+			payment_other?: string;
+		};
+		details: {
+			save: string;
+			id_copied: string;
+			section: {
+				identity: string;
+				appearance: string;
+				other: string;
+			};
+			fields: {
+				slug: string;
+				id: string;
+				title: string;
+				emoji: string;
+				color: string;
+				comment: string;
+				card: string;
+				category: string;
+				symbol: string;
+				logo_url: string;
+				bundle_id: string;
+				ref_link: string;
+			};
+		};
 	};
 	settings: {
 		system: {
