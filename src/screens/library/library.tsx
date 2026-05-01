@@ -17,6 +17,7 @@ import {
 	lineLimit,
 	onTapGesture,
 	foregroundStyle,
+	multilineTextAlignment,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
 import { WrapHStack } from '@modules/wrap-hstack';
@@ -76,7 +77,7 @@ const LibraryScreen = () => {
 			>
 				<WrapHStack spacing={12} lineSpacing={12} modifiers={[padding({ horizontal: 20, top: 16, bottom: 32 })]}>
 					{ITEMS.map((item, index, arr) => {
-						const goTo = () => router.replace(item.route);
+						const goTo = () => router.push(item.route);
 
 						return (
 							<Button
@@ -87,7 +88,7 @@ const LibraryScreen = () => {
 										alignment: 'topLeading',
 										idealWidth: getWidth(index, arr.length)
 									}),
-									buttonStyle('plain')
+									buttonStyle('borderless')
 								]}
 							>
 								<VStack
@@ -95,7 +96,7 @@ const LibraryScreen = () => {
 									spacing={12}
 									modifiers={[
 										padding({ vertical: 20, horizontal: 16 }),
-										frame({ maxWidth: 9999, alignment: 'topLeading' }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'topLeading' }),
 										glassEffect({
 											glass: {
 												variant: 'regular',
@@ -117,6 +118,8 @@ const LibraryScreen = () => {
 
 									<Text
 										modifiers={[
+											multilineTextAlignment('leading'),
+											foregroundStyle(theme.text.primary),
 											lineLimit(1, { reservesSpace: false }),
 											font({ size: 16, design: 'rounded', weight: 'semibold' })
 										]}
@@ -126,6 +129,7 @@ const LibraryScreen = () => {
 
 									<Text
 										modifiers={[
+											multilineTextAlignment('leading'),
 											lineLimit(2, { reservesSpace: true }),
 											foregroundStyle(theme.text.secondary),
 											font({ size: 12, design: 'rounded', weight: 'regular' })

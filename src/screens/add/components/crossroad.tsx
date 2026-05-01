@@ -12,11 +12,11 @@ import {
 	frame,
 	padding,
 	background,
-	buttonStyle,
 	glassEffect,
 	lineLimit,
 	onTapGesture,
 	foregroundStyle,
+	multilineTextAlignment,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
 import { WrapHStack } from '@modules/wrap-hstack';
@@ -96,7 +96,7 @@ const Crossroad = () => {
 											alignment: 'topLeading',
 											idealWidth: getWidth(index, arr.length)
 										}),
-										buttonStyle('plain')
+										onTapGesture(goTo)
 									]}
 								>
 									<VStack
@@ -104,7 +104,7 @@ const Crossroad = () => {
 										spacing={12}
 										modifiers={[
 											padding({ vertical: 20, horizontal: 16 }),
-											frame({ maxWidth: 9999, alignment: 'topLeading' }),
+											frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'topLeading' }),
 											glassEffect({
 												glass: {
 													variant: 'regular',
@@ -112,8 +112,7 @@ const Crossroad = () => {
 												},
 												shape: 'roundedRectangle',
 												cornerRadius: 16
-											}),
-											onTapGesture(goTo)
+											})
 										]}
 									>
 										<ZStack>
@@ -126,8 +125,14 @@ const Crossroad = () => {
 
 										<Text
 											modifiers={[
+												multilineTextAlignment('leading'),
 												lineLimit(1, { reservesSpace: false }),
-												font({ size: 16, design: 'rounded', weight: 'semibold' })
+												font({
+													size: 16,
+													design: 'rounded',
+													weight: 'semibold'
+												}),
+												foregroundStyle(theme.text.primary)
 											]}
 										>
 											{t(`crossroad.grid.${item.slug}.title`)}
@@ -135,6 +140,7 @@ const Crossroad = () => {
 
 										<Text
 											modifiers={[
+												multilineTextAlignment('leading'),
 												lineLimit(2, { reservesSpace: true }),
 												foregroundStyle(theme.text.secondary),
 												font({ size: 12, design: 'rounded', weight: 'regular' })

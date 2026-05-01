@@ -55,7 +55,7 @@ const Payments = () => {
 					variant="plain"
 					icon="chevron.backward"
 					accessibilityLabel="Go back"
-					onPress={() => router.replace('/(tabs)/library')}
+					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
 					tintColor={settingAccent}
 				/>
 			</Stack.Toolbar>

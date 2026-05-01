@@ -108,7 +108,7 @@ const Timeline = () => {
 										<Rectangle
 											modifiers={[
 												foregroundStyle(withAlpha(theme.text.tertiary, 0.2)),
-												frame({ width: 2, maxHeight: 9999 }),
+												frame({ width: 2, maxHeight: Number.POSITIVE_INFINITY }),
 												opacity(isFirst ? 0 : 1)
 											]}
 										/>
@@ -117,7 +117,7 @@ const Timeline = () => {
 										<Rectangle
 											modifiers={[
 												foregroundStyle(withAlpha(theme.text.tertiary, 0.2)),
-												frame({ width: 2, maxHeight: 9999 }),
+												frame({ width: 2, maxHeight: Number.POSITIVE_INFINITY }),
 												opacity(isLast ? 0 : 1)
 											]}
 										/>
