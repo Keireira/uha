@@ -1,16 +1,20 @@
 import * as Crypto from 'expo-crypto';
-import { eq, inArray } from 'drizzle-orm';
 
 import db from '@db';
+import { eq, inArray } from 'drizzle-orm';
+import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
+
 import { useGenerateTxs } from '@hooks/setup';
 import {
 	sortTimeline,
 	isPricedEvent,
 	selectTrialEvent,
+	selectTrialEndDate,
 	selectCancellationEvent,
 	selectFirstPaymentEvent
 } from '@screens/crossroad/add-subscription/events';
-import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
+import { setupNotificationsFor } from '@lib/notifications';
+import { useSubscriptionNotifications } from './utils';
 
 import type { ServiceT, SubscriptionT, CurrencyT } from '@models';
 import type { SubscriptionDraftT, TimelineEventT } from '@screens/crossroad/add-subscription/events';
@@ -140,6 +144,7 @@ const toTimelineRow = (
 
 const useSaveSubscriptions = () => {
 	const generateSubscriptionTxs = useGenerateTxs();
+	const buildNotifications = useSubscriptionNotifications();
 
 	const saveSubscription = async ({ service, draft }: SaveParamsT): Promise<SubscriptionT['id']> => {
 		const firstPayment = selectFirstPaymentEvent(draft.timeline);
@@ -181,7 +186,8 @@ const useSaveSubscriptions = () => {
 			cancellation_date: cancellation?.date ?? null,
 			notes: draft.notes.trim() || null,
 			notify_enabled: draft.notify_enabled,
-			notify_days_before: JSON.stringify(draft.notify_days_before)
+			notify_days_before: draft.notify_days_before,
+			notify_trial_end: draft.notify_trial_end
 		};
 
 		const timelineRows = sortTimeline(draft.timeline).map((event) =>
@@ -217,6 +223,21 @@ const useSaveSubscriptions = () => {
 		});
 
 		await generateSubscriptionTxs(subscription);
+
+		if (draft.notify_enabled) {
+			const notifications = buildNotifications({
+				title: draft.custom_name.trim() || service.title,
+				firstPaymentDate: firstPayment.date,
+				notifyEnabled: draft.notify_enabled,
+				notifyDaysBefore: draft.notify_days_before,
+				notifyTrialEnd: draft.notify_trial_end,
+				trialEndDate: trial ? selectTrialEndDate(trial) : undefined
+			});
+
+			if (notifications.length) {
+				await setupNotificationsFor(subscriptionId)(notifications);
+			}
+		}
 
 		return subscriptionId;
 	};

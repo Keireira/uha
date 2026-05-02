@@ -34,8 +34,6 @@ const Layout = () => {
 
 	return (
 		<Stack>
-			{/*<Stack.Screen name="index" />*/}
-
 			<Stack.Screen
 				name="add-subscription"
 				options={{

@@ -139,11 +139,10 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 	const trialPreview = formatTrial(trialDuration.duration_type, trialDuration.duration_value);
 	const categoryPreview = category?.title ?? (draft.category_slug ? t(`category.${draft.category_slug}`) : 'None');
 	const paymentPreview = tender?.title ?? 'None';
-	const notificationsPreview = !draft.notify_enabled
-		? 'Off'
-		: draft.notify_days_before.length === 0
-			? 'On'
-			: `${draft.notify_days_before.length} reminder${draft.notify_days_before.length === 1 ? '' : 's'}`;
+	const notificationsPreview =
+		draft.notify_enabled && draft.notify_days_before > 0
+			? `${draft.notify_days_before} ${draft.notify_days_before === 1 ? 'day' : 'days'} before`
+			: 'Off';
 
 	const goToFPDSettings = () => {
 		router.push('/(crossroad)/first-payment-date');

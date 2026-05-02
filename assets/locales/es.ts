@@ -400,10 +400,11 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Fuentes de búsqueda',
-		footer: 'Los resultados verificados se muestran siempre, independientemente de esta configuración.',
 		search: 'Buscar',
 		primary: 'Principal',
 		language: 'Idioma',
+		inhouse: 'API de Uha',
+		inhouse_desc: 'Nuestra propia base de datos seleccionada de marcas y suscripciones',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
@@ -682,6 +683,18 @@ const spanish: LocaleRootT = {
 		}
 	},
 	category: defaultCategories,
+
+	notifications: {
+		title: 'Recordatorio de suscripción',
+		subscription: {
+			today: 'El pago de tu suscripción vence hoy.',
+			in_days: 'El pago de tu suscripción vence en {{count}} días.'
+		},
+		trial: {
+			today: 'El periodo de prueba de tu suscripción termina hoy.',
+			in_days: 'El periodo de prueba de tu suscripción termina en {{count}} días.'
+		}
+	},
 
 	navbar: {
 		transactions: {

@@ -2,6 +2,8 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 
 export const uhaDb = SQLite.openDatabaseSync('uha.db', { enableChangeListener: true });
+// So we could use cascade delete foreign keys
+uhaDb.execSync('PRAGMA foreign_keys = ON;');
 
 if (__DEV__) {
 	console.log('\x1b[34m[DEV SETUP]: \x1b[35mSetting up dev mode...\x1b[0m');
@@ -14,6 +16,7 @@ const db = drizzle(uhaDb);
 
 /** Silent connection for bulk writes — no change listener, avoids flooding useLiveQuery */
 const silentClient = SQLite.openDatabaseSync('uha.db');
+silentClient.execSync('PRAGMA foreign_keys = ON;');
 export const silentDb = drizzle(silentClient);
 
 export default db;

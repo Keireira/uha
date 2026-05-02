@@ -423,10 +423,11 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: '検索ソース',
-		footer: '認証済みの結果はこれらの設定に関係なく常に表示されます。',
 		search: '検索',
 		primary: 'プライマリ',
 		language: '言語',
+		inhouse: 'Uha API',
+		inhouse_desc: 'ブランドとサブスクリプションを厳選した自社データベース',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
@@ -702,6 +703,18 @@ const nihongo: LocaleRootT = {
 		}
 	},
 	category: defaultCategories,
+
+	notifications: {
+		title: 'サブスクリプションのリマインダー',
+		subscription: {
+			today: 'サブスクリプションのお支払い期限は本日です。',
+			in_days: '{{count}}日後にサブスクリプションのお支払い期限を迎えます。'
+		},
+		trial: {
+			today: 'サブスクリプションの無料トライアルは本日終了します。',
+			in_days: 'サブスクリプションの無料トライアルは{{count}}日後に終了します。'
+		}
+	},
 
 	navbar: {
 		transactions: {

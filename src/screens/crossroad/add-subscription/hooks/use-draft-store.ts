@@ -51,7 +51,8 @@ const createEmptyDraft = (): SubscriptionDraftT => ({
 	billing_cycle_type: 'months',
 	billing_cycle_value: 1,
 	notify_enabled: false,
-	notify_days_before: [1],
+	notify_days_before: 1,
+	notify_trial_end: false,
 	notes: '',
 	timeline: []
 });
@@ -108,7 +109,8 @@ const useDraftStore = create<SubscriptionDraftStoreT>((set) => ({
 		setCategorySlug: (slug: CategoryT['slug']) => set({ category_slug: slug }),
 		setBillingCycle: (type: BillingCycleT, value: number) => set((state) => setBillingCycle(state, type, value)),
 		setNotifyEnabled: (enabled: boolean) => set({ notify_enabled: enabled }),
-		setNotifyDaysBefore: (days: number[]) => set({ notify_days_before: days }),
+		setNotifyDaysBefore: (days: number) => set({ notify_days_before: days }),
+		setNotifyTrialEnd: (enabled: boolean) => set({ notify_trial_end: enabled }),
 		setNotes: (notes: string) => set({ notes }),
 
 		setFirstPaymentDate: (date: string) => set((state) => setFirstPaymentDate(state, date)),

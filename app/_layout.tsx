@@ -25,7 +25,7 @@ setNotificationHandler({
 	handleNotification: async () => ({
 		shouldShowBanner: true,
 		shouldShowList: true,
-		shouldPlaySound: false,
+		shouldPlaySound: true,
 		shouldSetBadge: false
 	})
 });

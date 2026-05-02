@@ -89,7 +89,7 @@ const PriceRow = ({ focusVersion }: Props) => {
 					}),
 					controlSize('regular'),
 					buttonStyle('bordered'),
-					foregroundStyle(theme.static.white)
+					foregroundStyle(theme.text.primary)
 				]}
 			/>
 		</HStack>

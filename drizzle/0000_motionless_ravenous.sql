@@ -27,7 +27,7 @@ CREATE TABLE `timeline_events` (
 	`duration_type` text,
 	`duration_value` integer,
 	`reason` text,
-	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -76,7 +76,8 @@ CREATE TABLE `subscriptions` (
 	`cancellation_date` text,
 	`notes` text,
 	`notify_enabled` integer DEFAULT false NOT NULL,
-	`notify_days_before` text DEFAULT '[1]' NOT NULL,
+	`notify_days_before` integer DEFAULT 1 NOT NULL,
+	`notify_trial_end` integer DEFAULT false NOT NULL,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action
@@ -100,12 +101,12 @@ CREATE TABLE `transactions` (
 	`date` text DEFAULT (CURRENT_DATE) NOT NULL,
 	`amount` integer NOT NULL,
 	`currency_id` text NOT NULL,
-	`tender_id` text NOT NULL,
+	`tender_id` text,
 	`subscription_id` text NOT NULL,
 	`comment` text DEFAULT '',
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`tender_id`) REFERENCES `tenders`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE INDEX `transactions_sub_date_idx` ON `transactions` (`subscription_id`,`date`);--> statement-breakpoint
@@ -124,8 +125,15 @@ CREATE TABLE `user` (
 	`appstore_country` text DEFAULT 'US' NOT NULL,
 	`playstore_country` text DEFAULT 'US' NOT NULL,
 	`playstore_lang` text DEFAULT 'en' NOT NULL,
-	`search_sources` text DEFAULT '["inhouse","appstore","playstore","web","brandfetch"]' NOT NULL,
-	`color_presets` text DEFAULT '["#F26D6D","#F28865","#F2A856","#F2C94C","#D9CE4A","#A6C957","#6DB865","#4FB093","#4AB8B3","#5BC0D8","#5AA9E6","#6B8CEA","#7A7EE8","#9B7AE5","#B573DB","#D66FC9","#E66BA5","#ED6882"]' NOT NULL,
+	`search_sources` text DEFAULT '["inhouse","appstore","web"]' NOT NULL,
 	FOREIGN KEY (`recalc_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`default_currency`) REFERENCES `currencies`(`id`) ON UPDATE no action ON DELETE no action
 );
+--> statement-breakpoint
+CREATE TABLE `notifications` (
+	`id` text PRIMARY KEY NOT NULL,
+	`linked_subscription_id` text NOT NULL,
+	FOREIGN KEY (`linked_subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE INDEX `notifications_linked_subscription_id_idx` ON `notifications` (`linked_subscription_id`);

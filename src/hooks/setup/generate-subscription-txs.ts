@@ -86,9 +86,7 @@ const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT
 	const pauseWindows = derivePauseWindows(events);
 	const refunds = deriveRefunds(events);
 
-	const cancellation = subscription.cancellation_date
-		? parseLocalDate(subscription.cancellation_date)
-		: null;
+	const cancellation = subscription.cancellation_date ? parseLocalDate(subscription.cancellation_date) : null;
 
 	// Scheduled billing transactions — bail per-iteration when we hit cancellation
 	// or pause windows, not at the outer level.
@@ -112,11 +110,7 @@ const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT
 		}
 
 		if (isInsidePauseWindow(txDateStr, pauseWindows)) {
-			nextDate = advanceDate(
-				nextDate,
-				subscription.billing_cycle_type,
-				subscription.billing_cycle_value
-			);
+			nextDate = advanceDate(nextDate, subscription.billing_cycle_type, subscription.billing_cycle_value);
 			continue;
 		}
 
@@ -127,7 +121,7 @@ const buildTxsForSubscription = ({ subscription, horizon, events }: BuildParamsT
 			amount: entry.amount,
 			date: nextDate.toISOString(),
 			currency_id: entry.currency_id,
-			tender_id: subscription.tender_id || '',
+			tender_id: subscription.tender_id,
 			subscription_id: subscription.id,
 			comment: defaultComment
 		});

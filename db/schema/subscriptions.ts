@@ -38,8 +38,8 @@ export const subscriptionsTable = sqliteTable(
 
 		// notifications
 		notify_enabled: int({ mode: 'boolean' }).default(false).notNull(),
-		// JSON array of integers — days before the next payment to send a reminder, e.g. [0, 1, 3]
-		notify_days_before: text().default('[1]').notNull()
+		notify_days_before: int().default(1).notNull(),
+		notify_trial_end: int({ mode: 'boolean' }).default(false).notNull()
 	},
 	(table) => [
 		index('subscriptions_category_slug_idx').on(table.category_slug),

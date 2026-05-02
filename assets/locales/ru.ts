@@ -398,10 +398,11 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Источники поиска',
-		footer: 'Верифицированные результаты отображаются всегда, независимо от этих настроек.',
 		search: 'Поиск',
 		primary: 'Основные',
 		language: 'Язык',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Наша собственная база брендов и подписок',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
@@ -686,6 +687,18 @@ const russian: LocaleRootT = {
 		}
 	},
 	category: defaultCategories,
+
+	notifications: {
+		title: 'Напоминание о подписке',
+		subscription: {
+			today: 'Срок оплаты подписки — сегодня.',
+			in_days: 'Срок оплаты подписки наступит через {{count}} дн.'
+		},
+		trial: {
+			today: 'Пробный период подписки заканчивается сегодня.',
+			in_days: 'Пробный период подписки закончится через {{count}} дн.'
+		}
+	},
 
 	navbar: {
 		transactions: {

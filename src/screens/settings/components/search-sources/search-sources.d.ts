@@ -5,5 +5,6 @@ export type ProviderMeta = {
 	key: SourceT;
 	color_slug: AccentT;
 	labelKey: string;
+	subtitleKey?: string;
 	storeConfig?: 'country' | 'country+lang';
 };

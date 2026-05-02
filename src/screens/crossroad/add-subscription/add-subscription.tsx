@@ -55,6 +55,7 @@ const AddSubscriptionScreen = () => {
 			notes: state.notes,
 			notify_enabled: state.notify_enabled,
 			notify_days_before: state.notify_days_before,
+			notify_trial_end: state.notify_trial_end,
 			timeline: state.timeline
 		}))
 	);

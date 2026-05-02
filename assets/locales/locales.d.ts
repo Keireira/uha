@@ -424,6 +424,18 @@ export type LocaleRootT = {
 	};
 	category: Record<CategorySlugs, string>;
 
+	notifications: {
+		title: string;
+		subscription: {
+			today: string;
+			in_days: string;
+		};
+		trial: {
+			today: string;
+			in_days: string;
+		};
+	};
+
 	navbar: {
 		transactions: {
 			title: string;
@@ -605,10 +617,11 @@ export type LocaleRootT = {
 		};
 		sources: {
 			header: string;
-			footer: string;
 			search: string;
 			primary: string;
 			language: string;
+			inhouse: string;
+			inhouse_desc: string;
 			appstore: string;
 			playstore: string;
 			web: string;

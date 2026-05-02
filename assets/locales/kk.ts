@@ -400,10 +400,11 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Іздеу көздері',
-		footer: 'Тексерілген нәтижелер осы параметрлерге қарамастан әрқашан көрсетіледі.',
 		search: 'Іздеу',
 		primary: 'Негізгі',
 		language: 'Тіл',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Брендтер мен жазылымдардың өзіміз іріктеген дерекқоры',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
@@ -682,6 +683,18 @@ const kazakh: LocaleRootT = {
 		}
 	},
 	category: defaultCategories,
+
+	notifications: {
+		title: 'Жазылым туралы еске салу',
+		subscription: {
+			today: 'Жазылым төлемінің мерзімі бүгін.',
+			in_days: 'Жазылым төлемінің мерзімі {{count}} күннен кейін.'
+		},
+		trial: {
+			today: 'Жазылымның сынақ мерзімі бүгін аяқталады.',
+			in_days: 'Жазылымның сынақ мерзімі {{count}} күннен кейін аяқталады.'
+		}
+	},
 
 	navbar: {
 		transactions: {

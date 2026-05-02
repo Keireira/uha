@@ -400,10 +400,11 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Search Sources',
-		footer: 'Inhouse results are always shown regardless of these settings.',
 		search: 'Search',
 		primary: 'Primary',
 		language: 'Language',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Our own curated database of brands and subscriptions',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
@@ -686,6 +687,18 @@ const english: LocaleRootT = {
 		}
 	},
 	category: defaultCategories,
+
+	notifications: {
+		title: 'Subscription Reminder',
+		subscription: {
+			today: 'Your subscription payment is due today.',
+			in_days: 'Your subscription payment is due in {{count}} days.'
+		},
+		trial: {
+			today: 'Your subscription trial will end today.',
+			in_days: 'Your subscription trial will end in {{count}} days.'
+		}
+	},
 
 	navbar: {
 		transactions: {

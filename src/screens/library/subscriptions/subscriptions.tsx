@@ -12,6 +12,7 @@ import { servicesTable, subscriptionsTable, timelineEventsTable } from '@db/sche
 import { openLibraryDetails } from '../shared';
 import { regenerateAllTxs } from '@hooks/setup';
 import { useAccent, useSettingsValue } from '@hooks';
+import { removeNotificationsFor } from '@lib/notifications';
 
 import {
 	font,
@@ -83,6 +84,7 @@ const Subscriptions = () => {
 	};
 
 	const deleteSubscription = (id: string) => async () => {
+		await removeNotificationsFor(id)();
 		await db.delete(timelineEventsTable).where(eq(timelineEventsTable.subscription_id, id));
 		await db.delete(subscriptionsTable).where(eq(subscriptionsTable.id, id));
 
