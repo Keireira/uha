@@ -165,7 +165,7 @@ const Services = () => {
 											{service.title}
 										</Text>
 
-										{categoryTitle && (
+										{Boolean(categoryTitle) && (
 											<Text
 												modifiers={[
 													font({ size: 16, weight: 'regular', design: 'rounded' }),

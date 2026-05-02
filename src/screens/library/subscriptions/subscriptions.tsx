@@ -154,7 +154,7 @@ const Subscriptions = () => {
 											{title}
 										</Text>
 
-										{subtitle ? (
+										{Boolean(subtitle) && (
 											<Text
 												modifiers={[
 													font({ size: 16, design: 'rounded', weight: 'regular' }),
@@ -164,7 +164,7 @@ const Subscriptions = () => {
 											>
 												{subtitle}
 											</Text>
-										) : null}
+										)}
 									</VStack>
 								</HStack>
 							);

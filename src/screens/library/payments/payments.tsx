@@ -101,7 +101,7 @@ const Payments = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{payments.map((payment) => {
-							const subtitle = payment.comment?.trim() || (payment.is_card ? t('library.details.fields.card') : '');
+							const comment = payment.comment?.trim() || (payment.is_card ? t('library.details.fields.card') : '');
 
 							const openDetails = () => {
 								openLibraryDetails('payment', payment.id, payment.title);
@@ -150,7 +150,7 @@ const Payments = () => {
 											{payment.title}
 										</Text>
 
-										{subtitle && (
+										{Boolean(comment) && (
 											<Text
 												modifiers={[
 													font({ size: 13, design: 'rounded' }),
@@ -158,7 +158,7 @@ const Payments = () => {
 													lineLimit(1)
 												]}
 											>
-												{subtitle}
+												{comment}
 											</Text>
 										)}
 									</VStack>

@@ -1,18 +1,35 @@
 import React from 'react';
+import { useTheme } from 'styled-components/native';
 
 import { useAccent } from '@hooks';
 import { useFilter, useParams } from './hooks';
 
+import {
+	bold,
+	font,
+	frame,
+	shapes,
+	padding,
+	listStyle,
+	lineLimit,
+	contentShape,
+	onTapGesture,
+	foregroundStyle,
+	listRowSeparator,
+	listRowBackground,
+	scrollTargetBehavior,
+	scrollDismissesKeyboard,
+	scrollContentBackground
+} from '@expo/ui/swift-ui/modifiers';
 import { LogoView } from '@ui';
 import { NoResults } from '@elements';
-import { SymbolView } from 'expo-symbols';
 import { Header, SearchBar } from './components';
-import Root, { Row, Description, Title, Comment } from './select-tender.styles';
+import { Host, Text, VStack, HStack, RNHostView, List, Section, Spacer, Image } from '@expo/ui/swift-ui';
 
-const FALLBACK_COLOR = '#888';
-const FALLBACK_EMOJI = '•';
+import type { SFSymbol } from 'expo-symbols';
 
 const SelectTenderScreen = () => {
+	const theme = useTheme();
 	const settingAccent = useAccent();
 	const { currentValue, commit } = useParams();
 	const { tenders, hasSearch, setSearchQuery } = useFilter();
@@ -24,43 +41,90 @@ const SelectTenderScreen = () => {
 	};
 
 	return (
-		<Root
-			showsVerticalScrollIndicator={false}
-			contentContainerStyle={{
-				paddingTop: 70,
-				paddingBottom: 84,
-				gap: 6
-			}}
-		>
+		<>
 			<Header />
 
-			{tenders.map((tender) => {
-				const withComment = Boolean(tender.comment);
-				const isActive = tender.id === currentValue;
+			<Host style={{ flex: 1 }}>
+				<List
+					modifiers={[
+						listStyle('insetGrouped'),
+						scrollContentBackground('hidden'),
+						scrollTargetBehavior('viewAligned'),
+						scrollDismissesKeyboard('immediately')
+					]}
+				>
+					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
+						{tenders.map((tender) => {
+							const withComment = Boolean(tender.comment);
+							const isActive = tender.id === currentValue;
 
-				const onPressHd = () => onSelectHd(tender.id);
+							const selectTender = () => {
+								onSelectHd(tender.id);
+							};
 
-				return (
-					<Row key={tender.id} onPress={onPressHd}>
-						<LogoView emoji={tender.emoji ?? FALLBACK_EMOJI} color={tender.color ?? FALLBACK_COLOR} size={48} />
+							return (
+								<HStack
+									key={tender.id}
+									spacing={16}
+									modifiers={[
+										onTapGesture(selectTender),
+										contentShape(shapes.rectangle()),
+										padding({ vertical: 6, horizontal: 0 }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' })
+									]}
+								>
+									<RNHostView matchContents>
+										<LogoView
+											key={`${tender.id}-icon`}
+											symbolName={tender.symbol as SFSymbol}
+											color={tender.color || settingAccent}
+											name={tender.title || ''}
+											emoji={tender.emoji}
+											size={48}
+										/>
+									</RNHostView>
 
-						<Description>
-							<Title $isActive={isActive} $tintColor={settingAccent}>
-								{tender.title}
-							</Title>
+									<VStack alignment="leading" spacing={4}>
+										<Text
+											modifiers={[
+												font({ size: 20, design: 'rounded', weight: 'medium' }),
+												foregroundStyle(isActive ? settingAccent : theme.text.primary),
+												lineLimit(1)
+											]}
+										>
+											{tender.title}
+										</Text>
 
-							{withComment && <Comment>{tender.comment}</Comment>}
-						</Description>
+										{withComment && (
+											<Text
+												modifiers={[
+													font({ size: 16, design: 'rounded', weight: 'regular' }),
+													foregroundStyle(theme.text.secondary),
+													lineLimit(1)
+												]}
+											>
+												{tender.comment}
+											</Text>
+										)}
+									</VStack>
 
-						{isActive && <SymbolView name="checkmark" size={16} weight="black" tintColor={settingAccent} />}
-					</Row>
-				);
-			})}
+									{isActive && (
+										<>
+											<Spacer />
+											<Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />
+										</>
+									)}
+								</HStack>
+							);
+						})}
+					</Section>
+				</List>
+			</Host>
 
 			{!tenders.length && hasSearch && <NoResults />}
 
 			<SearchBar setSearchQuery={setSearchQuery} />
-		</Root>
+		</>
 	);
 };
 
