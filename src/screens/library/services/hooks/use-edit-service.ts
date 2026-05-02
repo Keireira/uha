@@ -2,15 +2,6 @@ import { create } from 'zustand';
 
 import type { SFSymbol } from 'expo-symbols';
 
-/**
- * Edit-state store for `src/screens/library/services/details`.
- *
- * Mirrors `useDraftStore` for the add-subscription flow but only holds the
- * fields a Service row owns. Used as the bridge between the service detail
- * screen and the modal pickers (`select-category`, `select-symbol-logo`) so that
- * sheets can read/commit values without going through expo-router params.
- */
-
 type ServiceEditState = {
 	id: string;
 	slug: string;

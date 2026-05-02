@@ -5,11 +5,11 @@ import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
-import { useAccent } from '@hooks';
 import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { subscriptionsTable, tendersTable } from '@db/schema';
 
+import { useAccent } from '@hooks';
 import { openLibraryDetails } from '../shared';
 
 import {
@@ -112,10 +112,10 @@ const Payments = () => {
 									key={payment.id}
 									spacing={16}
 									modifiers={[
+										onTapGesture(openDetails),
+										contentShape(shapes.rectangle()),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
-										contentShape(shapes.rectangle()),
-										onTapGesture(openDetails),
 										swipeActions({
 											actions: [
 												{
@@ -142,7 +142,7 @@ const Payments = () => {
 									<VStack alignment="leading" spacing={4}>
 										<Text
 											modifiers={[
-												font({ size: 18, design: 'rounded', weight: 'regular' }),
+												font({ size: 20, design: 'rounded', weight: 'medium' }),
 												foregroundStyle(theme.text.primary),
 												lineLimit(1)
 											]}
