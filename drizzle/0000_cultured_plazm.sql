@@ -133,6 +133,8 @@ CREATE TABLE `user` (
 CREATE TABLE `notifications` (
 	`id` text PRIMARY KEY NOT NULL,
 	`linked_subscription_id` text NOT NULL,
+	`kind` text NOT NULL,
+	`fire_date` text NOT NULL,
 	FOREIGN KEY (`linked_subscription_id`) REFERENCES `subscriptions`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint

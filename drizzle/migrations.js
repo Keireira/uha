@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_motionless_ravenous.sql';
-import m0001 from './0001_lively_alice.sql';
+import m0000 from './0000_cultured_plazm.sql';
+import m0001 from './0001_clean_secret_warriors.sql';
 
 export default {
 	journal,

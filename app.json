@@ -2,7 +2,7 @@
   "expo": {
     "slug": "uha",
     "name": "Uha",
-    "version": "1.26.0",
+    "version": "1.27.0",
     "orientation": "portrait",
     "icon": "./assets/images/default.png",
     "scheme": "uha",
@@ -23,6 +23,8 @@
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true,
         "NSUserNotificationsUsageDescription": "This app uses notifications to notify you about upcoming payments",
+        "UIBackgroundModes": ["fetch", "processing"],
+        "BGTaskSchedulerPermittedIdentifiers": ["com.keireira.uha.notifications-reconcile"],
         "CFBundleIcons": {
           "CFBundleAlternateIcons": {
             "enby": {
@@ -125,7 +127,8 @@
       "expo-sharing",
       "expo-secure-store",
       "expo-sqlite",
-      "./plugins/with-alt-icons"
+      "./plugins/with-alt-icons",
+      "expo-background-task"
     ],
     "experiments": {
       "typedRoutes": true

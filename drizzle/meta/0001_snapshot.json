@@ -1,6 +1,6 @@
 {
-  "id": "87ed1c46-8554-4422-b426-1dc07bdf0d4d",
-  "prevId": "df8bd6bb-4505-4e0a-87ae-b581251cb42b",
+  "id": "598d492a-7bd2-4f85-bd62-d791672d04ff",
+  "prevId": "d80a338c-9b19-4a5c-b052-d8e5ad34c6ca",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -886,6 +886,20 @@
         },
         "linked_subscription_id": {
           "name": "linked_subscription_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fire_date": {
+          "name": "fire_date",
           "type": "text",
           "primaryKey": false,
           "notNull": true,

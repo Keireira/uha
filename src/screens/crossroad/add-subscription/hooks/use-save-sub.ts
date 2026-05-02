@@ -9,12 +9,10 @@ import {
 	sortTimeline,
 	isPricedEvent,
 	selectTrialEvent,
-	selectTrialEndDate,
 	selectCancellationEvent,
 	selectFirstPaymentEvent
 } from '@screens/crossroad/add-subscription/events';
-import { setupNotificationsFor } from '@lib/notifications';
-import { useSubscriptionNotifications } from './utils';
+import { reconcileSubscription } from '@lib/notifications';
 
 import type { ServiceT, SubscriptionT, CurrencyT } from '@models';
 import type { SubscriptionDraftT, TimelineEventT } from '@screens/crossroad/add-subscription/events';
@@ -144,7 +142,6 @@ const toTimelineRow = (
 
 const useSaveSubscriptions = () => {
 	const generateSubscriptionTxs = useGenerateTxs();
-	const buildNotifications = useSubscriptionNotifications();
 
 	const saveSubscription = async ({ service, draft }: SaveParamsT): Promise<SubscriptionT['id']> => {
 		const firstPayment = selectFirstPaymentEvent(draft.timeline);
@@ -223,21 +220,7 @@ const useSaveSubscriptions = () => {
 		});
 
 		await generateSubscriptionTxs(subscription);
-
-		if (draft.notify_enabled) {
-			const notifications = buildNotifications({
-				title: draft.custom_name.trim() || service.title,
-				firstPaymentDate: firstPayment.date,
-				notifyEnabled: draft.notify_enabled,
-				notifyDaysBefore: draft.notify_days_before,
-				notifyTrialEnd: draft.notify_trial_end,
-				trialEndDate: trial ? selectTrialEndDate(trial) : undefined
-			});
-
-			if (notifications.length) {
-				await setupNotificationsFor(subscriptionId)(notifications);
-			}
-		}
+		await reconcileSubscription(subscriptionId);
 
 		return subscriptionId;
 	};

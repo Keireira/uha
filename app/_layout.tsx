@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import { logger, ErrorBoundary } from '@lib/logger';
 
 import { useInitSettings } from '@hooks/settings';
+import { useReconcileNotificationsOnForeground } from '@lib/notifications';
 import { useSqlMigrations, useBackfillRates, useInitPurchases } from '@hooks/setup';
 
 import '@src/i18n';
@@ -39,6 +40,8 @@ const AppToast = () => {
 const LoadFinalStage = () => {
 	useBackfillRates();
 	useInitPurchases();
+	useReconcileNotificationsOnForeground();
+
 	const theme = useGetTheme();
 
 	/* This is a hack (https://github.com/expo/expo/issues/33040#issuecomment-2495435678)

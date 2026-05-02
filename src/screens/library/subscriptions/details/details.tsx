@@ -8,6 +8,7 @@ import { categoriesTable, servicesTable, subscriptionsTable, tendersTable } from
 
 import { regenerateAllTxs } from '@hooks/setup';
 import { useAccent, useSettingsValue } from '@hooks';
+import { reconcileSubscription } from '@lib/notifications';
 import { normalizeOptional, parsePositiveInt } from '../../shared';
 
 import { listStyle, scrollDismissesKeyboard, tag } from '@expo/ui/swift-ui/modifiers';
@@ -83,6 +84,7 @@ const SubscriptionDetails = () => {
 
 		const horizonYears = typeof maxHorizon === 'number' && Number.isFinite(maxHorizon) ? maxHorizon : 2;
 		await regenerateAllTxs(horizonYears);
+		await reconcileSubscription(subscription.id);
 	};
 
 	const closeModal = () => {
