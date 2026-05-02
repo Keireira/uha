@@ -7,6 +7,7 @@ export const categoriesTable = sqliteTable(
 		title: text(),
 		emoji: text(), // 🍔 | 🚗 | ...
 		color: text(), // #FF0000 | #00FF00 | ...
+		symbol: text(), // SF Symbol name
 		is_system: int({ mode: 'boolean' }).default(false).notNull()
 	},
 	(table) => [unique('categories_full_unique').on(table.emoji, table.color)]

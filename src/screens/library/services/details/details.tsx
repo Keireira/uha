@@ -46,7 +46,7 @@ import {
 import Toast from 'react-native-toast-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 const ServiceDetails = () => {
 	const theme = useTheme();

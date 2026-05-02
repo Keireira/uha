@@ -3,6 +3,7 @@ CREATE TABLE `categories` (
 	`title` text,
 	`emoji` text,
 	`color` text,
+	`symbol` text,
 	`is_system` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint

@@ -4,7 +4,7 @@ import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 import { SYMBOL_SECTIONS } from '@assets/data';
 
 import type { SymbolSection } from '@assets/data';
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 type FlatSymbol = {
 	symbol: SFSymbol;

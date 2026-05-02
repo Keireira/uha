@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEditServiceStore } from '@screens/library/services/hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 import type { SearchParamsT, LogoSnapshotT } from '../select-symbol-logo.d';
 
 export type ParamsBinding = LogoSnapshotT & {

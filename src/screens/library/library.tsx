@@ -23,7 +23,7 @@ import {
 import { WrapHStack } from '@modules/wrap-hstack';
 import { Host, ScrollView, VStack, ZStack, Text, Image, Circle, Button } from '@expo/ui/swift-ui';
 
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 const ITEMS = [
 	{

@@ -13,7 +13,7 @@ import { Host, VStack, HStack, Grid, Image, Text } from '@expo/ui/swift-ui';
 import { COLUMNS, GRID_GAP, HORIZONTAL_PADDING } from './symbols-grid.constants';
 
 import type { Props } from './symbols-grid.d';
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 const SymbolGrid = ({ search }: Props) => {
 	const theme = useTheme();

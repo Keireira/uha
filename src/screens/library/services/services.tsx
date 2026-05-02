@@ -31,7 +31,7 @@ import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, Text, HStack, VStack, ZStack, Image, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
 
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 import type { TextInputChangeEvent } from 'react-native';
 
 type ServiceRowT = {

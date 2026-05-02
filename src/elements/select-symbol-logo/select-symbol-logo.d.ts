@@ -1,4 +1,4 @@
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 export type SelectLogoTarget = 'add_subscription_logo' | 'library_service_logo';
 

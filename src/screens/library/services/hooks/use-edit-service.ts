@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 /**
  * Edit-state store for `src/screens/library/services/details`.

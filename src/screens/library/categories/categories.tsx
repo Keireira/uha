@@ -4,22 +4,22 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
-import { useAccent } from '@hooks';
-import { withAlpha } from '@lib/colors';
-
 import db from '@db';
 import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, subscriptionsTable } from '@db/schema';
 
+import { useAccent } from '@hooks';
 import { openLibraryDetails } from '../shared';
 
 import {
 	font,
 	frame,
+	shapes,
 	padding,
 	listStyle,
 	lineLimit,
+	contentShape,
 	onTapGesture,
 	foregroundStyle,
 	listRowSeparator,
@@ -28,14 +28,18 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
+import { LogoView } from '@ui';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, VStack, ZStack, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
 
 import type { CategoryT } from '@models';
+import type { SFSymbol } from 'expo-symbols';
 import type { TextInputChangeEvent } from 'react-native';
 
-const mapResultItem = ({ item }: { item: CategoryT }) => item;
+type MapResult = {
+	item: CategoryT;
+};
 
 const Categories = () => {
 	const theme = useTheme();
@@ -52,10 +56,10 @@ const Categories = () => {
 	];
 
 	const matches = useFuzzySearchList({
+		getText,
 		list: data,
 		queryText: searchQuery,
-		getText,
-		mapResultItem
+		mapResultItem: ({ item }: MapResult) => item
 	});
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
@@ -111,7 +115,6 @@ const Categories = () => {
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{categories.map((category) => {
 							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
-							const tone = category.color || settingAccent;
 
 							const openDetails = () => {
 								openLibraryDetails('category', category.slug, title);
@@ -120,9 +123,11 @@ const Categories = () => {
 							return (
 								<HStack
 									key={category.slug}
-									spacing={12}
+									spacing={16}
 									modifiers={[
 										padding({ vertical: 6, horizontal: 0 }),
+										frame({ maxWidth: Infinity, alignment: 'leading' }),
+										contentShape(shapes.rectangle()),
 										onTapGesture(openDetails),
 										swipeActions({
 											actions: [
@@ -136,33 +141,28 @@ const Categories = () => {
 										})
 									]}
 								>
-									<ZStack>
-										<Circle modifiers={[frame({ width: 36, height: 36 }), foregroundStyle(withAlpha(tone, 0.2))]} />
-										<Text modifiers={[font({ size: 18 })]}>{category.emoji ?? '•'}</Text>
-									</ZStack>
+									<RNHostView matchContents>
+										<LogoView
+											key={`${category.slug}-icon`}
+											symbolName={category.symbol as SFSymbol}
+											name={category.title || ''}
+											emoji={category.emoji}
+											color={category.color}
+											size={48}
+										/>
+									</RNHostView>
 
-									<VStack alignment="leading" spacing={2}>
-										<Text
-											modifiers={[
-												font({ size: 16, design: 'rounded', weight: 'semibold' }),
-												foregroundStyle(theme.text.primary),
-												lineLimit(1)
-											]}
-										>
-											{title}
-										</Text>
-										<Text
-											modifiers={[
-												font({ size: 13, design: 'rounded' }),
-												foregroundStyle(theme.text.secondary),
-												lineLimit(1)
-											]}
-										>
-											{category.slug}
-										</Text>
-									</VStack>
+									<Text
+										modifiers={[
+											font({ size: 18, design: 'rounded', weight: 'regular' }),
+											foregroundStyle(theme.text.primary),
+											lineLimit(1)
+										]}
+									>
+										{title}
+									</Text>
 
-									<Spacer />
+									{/*<Spacer />*/}
 								</HStack>
 							);
 						})}
