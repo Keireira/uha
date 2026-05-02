@@ -1,19 +1,36 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 
 import { useAccent } from '@hooks';
 import { useFilter, useParams } from './hooks';
 
+import {
+	bold,
+	font,
+	frame,
+	shapes,
+	padding,
+	listStyle,
+	lineLimit,
+	contentShape,
+	onTapGesture,
+	foregroundStyle,
+	listRowSeparator,
+	listRowBackground,
+	scrollTargetBehavior,
+	scrollDismissesKeyboard,
+	scrollContentBackground
+} from '@expo/ui/swift-ui/modifiers';
 import { LogoView } from '@ui';
 import { NoResults } from '@elements';
-import { SymbolView } from 'expo-symbols';
 import { Header, SearchBar } from './components';
-import Root, { Row, Title } from './select-category.styles';
+import { Host, Text, HStack, RNHostView, List, Section, Spacer, Image } from '@expo/ui/swift-ui';
 
-const FALLBACK_EMOJI = '•';
-const FALLBACK_COLOR = '#888';
+import type { SFSymbol } from 'expo-symbols';
 
 const SelectCategoryScreen = () => {
+	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const { currentValue, commit } = useParams();
@@ -26,37 +43,76 @@ const SelectCategoryScreen = () => {
 	};
 
 	return (
-		<Root
-			showsVerticalScrollIndicator={false}
-			contentContainerStyle={{
-				gap: 6,
-				paddingTop: 70,
-				paddingBottom: 84
-			}}
-		>
+		<>
 			<Header />
 
-			{categories.map((category) => {
-				const isActive = category.slug === currentValue;
-				const localized = t(`category.${category.slug}`, { defaultValue: category.title });
+			<Host style={{ flex: 1 }}>
+				<List
+					modifiers={[
+						listStyle('insetGrouped'),
+						scrollContentBackground('hidden'),
+						scrollTargetBehavior('viewAligned'),
+						scrollDismissesKeyboard('immediately')
+					]}
+				>
+					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
+						{categories.map((category) => {
+							const isActive = category.slug === currentValue;
+							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
 
-				return (
-					<Row key={category.slug} onPress={() => onSelectHd(category.slug)}>
-						<LogoView emoji={category.emoji ?? FALLBACK_EMOJI} color={category.color ?? FALLBACK_COLOR} size={48} />
+							const selecteCategory = () => {
+								onSelectHd(category.slug);
+							};
 
-						<Title $isActive={isActive} $tintColor={settingAccent} numberOfLines={1} ellipsizeMode="tail">
-							{localized}
-						</Title>
+							return (
+								<HStack
+									key={category.slug}
+									spacing={16}
+									modifiers={[
+										onTapGesture(selecteCategory),
+										contentShape(shapes.rectangle()),
+										padding({ vertical: 6, horizontal: 0 }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' })
+									]}
+								>
+									<RNHostView matchContents>
+										<LogoView
+											key={`${category.slug}-icon`}
+											symbolName={category.symbol as SFSymbol}
+											name={category.title || ''}
+											emoji={category.emoji}
+											color={category.color}
+											size={48}
+										/>
+									</RNHostView>
 
-						{isActive && <SymbolView name="checkmark" weight="black" size={16} tintColor={settingAccent} />}
-					</Row>
-				);
-			})}
+									<Text
+										modifiers={[
+											font({ size: 20, design: 'rounded', weight: 'medium' }),
+											foregroundStyle(isActive ? settingAccent : theme.text.primary),
+											lineLimit(1)
+										]}
+									>
+										{title}
+									</Text>
+
+									{isActive && (
+										<>
+											<Spacer />
+											<Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />
+										</>
+									)}
+								</HStack>
+							);
+						})}
+					</Section>
+				</List>
+			</Host>
 
 			{!categories.length && hasSearch && <NoResults />}
 
 			<SearchBar setSearchQuery={setSearchQuery} />
-		</Root>
+		</>
 	);
 };
 
