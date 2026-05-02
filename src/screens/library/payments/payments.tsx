@@ -6,7 +6,6 @@ import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
 import db from '@db';
 import { useAccent } from '@hooks';
-import { withAlpha } from '@lib/colors';
 import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { subscriptionsTable, tendersTable } from '@db/schema';
@@ -16,9 +15,11 @@ import { openLibraryDetails } from '../shared';
 import {
 	font,
 	frame,
+	shapes,
 	padding,
 	listStyle,
 	lineLimit,
+	contentShape,
 	onTapGesture,
 	foregroundStyle,
 	listRowSeparator,
@@ -27,37 +28,49 @@ import {
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
+import { LogoView } from '@ui';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, VStack, ZStack, Circle, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { Host, Text, VStack, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
 
 import type { TenderT } from '@models';
+import type { SFSymbol } from 'expo-symbols';
 import type { TextInputChangeEvent } from 'react-native';
 
-const getText = (payment: TenderT) => [payment.title, payment.comment ?? '', payment.emoji];
-const mapResultItem = ({ item }: { item: TenderT }) => item;
+type MapResult = {
+	item: TenderT;
+};
+
+const getText = (payment: TenderT) => {
+	return [payment.title, payment.comment ?? '', payment.emoji];
+};
+
+const usePayments = (searchQuery = '') => {
+	const { data = [] } = useLiveQuery(db.select().from(tendersTable).orderBy(asc(tendersTable.title)));
+
+	const matches = useFuzzySearchList({
+		list: data,
+		queryText: searchQuery,
+		getText,
+		mapResultItem: ({ item }: MapResult) => item
+	});
+
+	return searchQuery ? matches : data;
+};
 
 const Payments = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
-	const { data = [] } = useLiveQuery(db.select().from(tendersTable).orderBy(asc(tendersTable.title)));
-	const matches = useFuzzySearchList({
-		list: data,
-		queryText: searchQuery,
-		getText,
-		mapResultItem
-	});
+	const payments = usePayments(searchQuery);
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
 		setSearchQuery(e.nativeEvent.text.trim());
 	};
 
-	const payments = searchQuery ? matches : data;
-
 	const deletePayment = (id: string) => async () => {
-		const [{ count = 0 } = {}] = await db
+		const [{ count = 0 }] = await db
 			.select({ count: sql<number>`count(*)`.mapWith(Number) })
 			.from(subscriptionsTable)
 			.where(eq(subscriptionsTable.tender_id, id));
@@ -68,6 +81,7 @@ const Payments = () => {
 				text1: t('library.delete_blocked.title'),
 				text2: t('library.delete_blocked.payment', { count })
 			});
+
 			return;
 		}
 
@@ -87,16 +101,21 @@ const Payments = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{payments.map((payment) => {
-							const tone = payment.color || settingAccent;
 							const subtitle = payment.comment?.trim() || (payment.is_card ? t('library.details.fields.card') : '');
+
+							const openDetails = () => {
+								openLibraryDetails('payment', payment.id, payment.title);
+							};
 
 							return (
 								<HStack
 									key={payment.id}
-									spacing={12}
+									spacing={16}
 									modifiers={[
 										padding({ vertical: 6, horizontal: 0 }),
-										onTapGesture(() => openLibraryDetails('payment', payment.id, payment.title)),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
+										contentShape(shapes.rectangle()),
+										onTapGesture(openDetails),
 										swipeActions({
 											actions: [
 												{
@@ -109,22 +128,29 @@ const Payments = () => {
 										})
 									]}
 								>
-									<ZStack>
-										<Circle modifiers={[frame({ width: 36, height: 36 }), foregroundStyle(withAlpha(tone, 0.2))]} />
-										<Text modifiers={[font({ size: 18 })]}>{payment.emoji}</Text>
-									</ZStack>
+									<RNHostView matchContents>
+										<LogoView
+											key={`${payment.id}-icon`}
+											symbolName={payment.symbol as SFSymbol}
+											name={payment.title}
+											emoji={payment.emoji}
+											color={payment.color}
+											size={48}
+										/>
+									</RNHostView>
 
-									<VStack alignment="leading" spacing={2}>
+									<VStack alignment="leading" spacing={4}>
 										<Text
 											modifiers={[
-												font({ size: 16, design: 'rounded', weight: 'semibold' }),
+												font({ size: 18, design: 'rounded', weight: 'regular' }),
 												foregroundStyle(theme.text.primary),
 												lineLimit(1)
 											]}
 										>
 											{payment.title}
 										</Text>
-										{subtitle ? (
+
+										{subtitle && (
 											<Text
 												modifiers={[
 													font({ size: 13, design: 'rounded' }),
@@ -134,10 +160,8 @@ const Payments = () => {
 											>
 												{subtitle}
 											</Text>
-										) : null}
+										)}
 									</VStack>
-
-									<Spacer />
 								</HStack>
 							);
 						})}

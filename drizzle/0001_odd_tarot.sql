@@ -34,22 +34,22 @@ INSERT INTO "categories" ("color", "emoji", "slug", "title", "is_system", "symbo
   ('#FFD700', '🔐', 'vpn_and_security', NULL, true, NULL),
   ('#7B68EE', '🎬', 'video_streaming', NULL, true, NULL);
 --> statement-breakpoint
-INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title") VALUES
-  ('88888888-0000-0000-0000-000000000001', '💳', '', '#1A1F71', true, 'Credit Card'),
-  ('88888888-0000-0000-0000-000000000002', '💳', '', '#1A8F71', true, 'Debit Card'),
-  ('88888888-0000-0000-0000-000000000003', '💸', '', '#007F73', false, 'PayPal'),
-  ('88888888-0000-0000-0000-000000000004', '🍎', '', '#000000', false, 'Apple Pay'),
-  ('88888888-0000-0000-0000-000000000005', '🤖', '', '#4285F4', false, 'Google Pay'),
-  ('88888888-0000-0000-0000-000000000006', '📱', '', '#4285F4', false, 'Samsung Pay'),
-  ('88888888-0000-0000-0000-000000000007', '🏦', '', '#2C3E50', false, 'Bank Transfer'),
-  ('88888888-0000-0000-0000-000000000008', '🪙', '', '#F7931A', false, 'Crypto'),
-  ('88888888-0000-0000-0000-000000000009', '🎁', '', '#E74C3C', false, 'Gift Card'),
-  ('88888888-0000-0000-0000-000000000011', '💊', '', '#8B3FFD', false, 'YooMoney'),
-  ('88888888-0000-0000-0000-000000000012', '🧧', '', '#FFDD2D', false, 'Kaspi'),
-  ('88888888-0000-0000-0000-000000000013', '🎟️', '', '#00BFFF', false, 'Alipay'),
-  ('88888888-0000-0000-0000-000000000014', '🐲', '', '#07C160', false, 'WeChat Pay'),
-  ('88888888-0000-0000-0000-000000000015', '⛓️💥', '', '#635BFF', false, 'Stripe'),
-  ('88888888-0000-0000-0000-000000000016', '📨', '', '#3B7BBF', false, 'Direct Debit');
+INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title", "symbol") VALUES
+  ('88888888-0000-0000-0000-000000000001', '💳', '', '#1A1F71', true, 'Credit Card', NULL),
+  ('88888888-0000-0000-0000-000000000002', '💳', '', '#1A8F71', true, 'Debit Card', NULL),
+  ('88888888-0000-0000-0000-000000000003', '💸', '', '#007F73', false, 'PayPal', NULL),
+  ('88888888-0000-0000-0000-000000000004', '🍎', '', '#000000', false, 'Apple Store', NULL),
+  ('88888888-0000-0000-0000-000000000005', '🤖', '', '#4285F4', false, 'Google Play', NULL),
+  ('88888888-0000-0000-0000-000000000006', '📱', '', '#4285F4', false, 'Samsung Pay', NULL),
+  ('88888888-0000-0000-0000-000000000007', '🏦', '', '#2C3E50', false, 'Bank Transfer', NULL),
+  ('88888888-0000-0000-0000-000000000008', '🪙', '', '#F7931A', false, 'Crypto', NULL),
+  ('88888888-0000-0000-0000-000000000009', '🎁', '', '#E74C3C', false, 'Gift Card', NULL),
+  ('88888888-0000-0000-0000-000000000011', '💊', '', '#8B3FFD', false, 'YooMoney', NULL),
+  ('88888888-0000-0000-0000-000000000012', '🧧', '', '#FFDD2D', false, 'Kaspi', NULL),
+  ('88888888-0000-0000-0000-000000000013', '🎟️', '', '#00BFFF', false, 'Alipay', NULL),
+  ('88888888-0000-0000-0000-000000000014', '🐲', '', '#07C160', false, 'WeChat Pay', NULL),
+  ('88888888-0000-0000-0000-000000000015', '⛓️', '', '#635BFF', false, 'Stripe', NULL),
+  ('88888888-0000-0000-0000-000000000016', '📨', '', '#3B7BBF', false, 'Direct Debit', NULL);
 --> statement-breakpoint
 INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, region) VALUES
 	('AOA', 'Kz', 100, 2, 'pt-AO', 'africa'),

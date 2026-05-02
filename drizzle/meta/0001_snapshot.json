@@ -1,6 +1,6 @@
 {
-  "id": "d7ff1b36-1d35-4d2a-86a7-8abc43ae53e0",
-  "prevId": "2dece809-6046-4db6-9ea5-bba169b5d4f6",
+  "id": "9d2ec69e-7989-4a70-94e0-c89eeddc753d",
+  "prevId": "f62e56f8-77d5-472d-86b9-f8fdaa73a0be",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -662,6 +662,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },

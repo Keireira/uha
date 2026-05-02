@@ -126,7 +126,7 @@ const Categories = () => {
 									spacing={16}
 									modifiers={[
 										padding({ vertical: 6, horizontal: 0 }),
-										frame({ maxWidth: Infinity, alignment: 'leading' }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
 										contentShape(shapes.rectangle()),
 										onTapGesture(openDetails),
 										swipeActions({
@@ -161,8 +161,6 @@ const Categories = () => {
 									>
 										{title}
 									</Text>
-
-									{/*<Spacer />*/}
 								</HStack>
 							);
 						})}

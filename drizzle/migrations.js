@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_empty_sunset_bain.sql';
-import m0001 from './0001_funny_tinkerer.sql';
+import m0000 from './0000_slow_molecule_man.sql';
+import m0001 from './0001_odd_tarot.sql';
 
   export default {
     journal,
