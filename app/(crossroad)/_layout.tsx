@@ -38,7 +38,8 @@ const Layout = () => {
 				name="add-subscription"
 				options={{
 					title: 'New Subscription',
-					...sharedScreenConfig
+					...sharedScreenConfig,
+					freezeOnBlur: true
 				}}
 			/>
 

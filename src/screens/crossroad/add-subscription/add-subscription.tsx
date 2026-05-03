@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useNavigation } from 'expo-router';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -10,26 +10,25 @@ import { categoriesTable, currenciesTable } from '@db/schema';
 import { useTheme } from 'styled-components/native';
 import { useAccent, useSettingsValue } from '@hooks';
 
-import { selectCurrencyId, selectCurrentAmount, timelineErrors } from './events';
 import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
+import { selectCurrencyId, selectCurrentAmount, timelineErrors } from './events';
 
 import MasterPane from './master-pane';
-import Root from './add-subscription.styles';
+import { Host } from '@expo/ui/swift-ui';
 
-import type { CurrencyT, ServiceT } from '@models';
 import type { LogoDraftT } from './events';
+import type { CurrencyT, ServiceT } from '@models';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+	index: undefined;
+	modal: undefined;
+};
+
+type StackNavigation = NativeStackNavigationProp<RootStackParamList>;
 
 const AddSubscriptionScreen = () => {
-	/* We have SwiftUI's multiple TextFields inside a UICollectionView, and navigation
-	 * is happening while one of them is still the first responder.
-	 * And if we will try to destroy list(by closing formSheet), we got an exception
-	 * "The first responder contained inside of a deleted section or item refused to resign".
-	 * To avoid such a situation we shall call UIResponder.resignFirstResponder
-	 * But this is not a swift, so we have to force inputs lose focus in a hard way.
-	 * We can't use Keybpard.dismiss() here btw, so using key in every input at master's root,
-	 * and moving router to the bottom of the stack is our only option.
-	 */
-	const [focusVersion, setFocusVersion] = useState(0);
+	const [mountId, setMountId] = useState(() => Date.now());
 
 	const theme = useTheme();
 	const router = useRouter();
@@ -61,20 +60,40 @@ const AddSubscriptionScreen = () => {
 	);
 	const currencyId = selectCurrencyId(draft.timeline);
 	const amount = selectCurrentAmount(draft.timeline);
+	const navigation = useNavigation<StackNavigation>();
+
+	useEffect(() => {
+		// Monkey??? patch to force a re-render on transitionEnd
+		const unsubscribe = navigation.addListener('transitionEnd', () => {
+			setMountId(Date.now());
+		});
+
+		return unsubscribe;
+	}, [navigation]);
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('beforeRemove', () => {
+			resetSubscription();
+		});
+
+		return unsubscribe;
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [navigation]);
 
 	const { data: currencyRows } = useLiveQuery(
 		db
 			.select()
 			.from(currenciesTable)
-			.where(eq(currenciesTable.id, currencyId ?? '')),
+			.where(eq(currenciesTable.id, currencyId ?? ''))
+			.limit(1),
 		[currencyId]
 	);
-	const currency = currencyRows?.[0];
+	const currency = currencyRows.at(0);
 	const { data: categoryRows } = useLiveQuery(
-		db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug.trim())),
+		db.select().from(categoriesTable).where(eq(categoriesTable.slug, draft.category_slug.trim())).limit(1),
 		[draft.category_slug]
 	);
-	const category = categoryRows?.[0];
+	const category = categoryRows.at(0);
 
 	const errors = useMemo(() => timelineErrors(draft.timeline), [draft.timeline]);
 	const hasTimelineErrors = errors.length > 0;
@@ -87,7 +106,6 @@ const AddSubscriptionScreen = () => {
 		hasCategory &&
 		Boolean(service?.id) &&
 		hasPrice;
-	const saveButtonTint = canSave ? settingAccent : theme.text.tertiary;
 
 	const handleSave = async () => {
 		if (!(canSave && currency && service)) return;
@@ -101,12 +119,8 @@ const AddSubscriptionScreen = () => {
 				},
 				draft
 			});
-			setFocusVersion((v) => v + 1);
 
-			setTimeout(() => {
-				resetSubscription();
-				router.back();
-			}, 0);
+			router.back();
 		} catch (err) {
 			console.warn('[add-subscription] save failed:', err);
 		}
@@ -143,45 +157,43 @@ const AddSubscriptionScreen = () => {
 				color: localService.color || settingAccent
 			}
 		});
-		setFocusVersion((v) => v + 1);
 	};
 
 	const closeSheetHd = () => {
-		setFocusVersion((v) => v + 1);
-
-		setTimeout(() => {
-			router.back();
-		}, 0);
+		router.back();
 	};
 
-	if (isLoading) {
-		return null;
-	}
-
 	return (
-		<Root>
+		<>
 			<Stack.Toolbar placement="left">
 				<Stack.Toolbar.Button icon="xmark" variant="plain" onPress={closeSheetHd} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
-			<MasterPane
-				focusVersion={focusVersion}
-				canSyncLocalService={Boolean(localService) && !isLocalSynced}
-				onSyncLocalService={syncLocalService}
-			/>
-
 			<Stack.Toolbar placement="bottom">
 				{hasTimelineErrors ? (
-					<Stack.Toolbar.Button onPress={autoFixTimeline} tintColor={theme.semantic.error}>
+					<Stack.Toolbar.Button key={`fix-${mountId}`} onPress={autoFixTimeline} tintColor={theme.semantic.error}>
 						Fix timeline issues
 					</Stack.Toolbar.Button>
 				) : (
-					<Stack.Toolbar.Button onPress={handleSave} tintColor={saveButtonTint}>
+					<Stack.Toolbar.Button
+						key={`create-${mountId}`}
+						disabled={!canSave}
+						onPress={handleSave}
+						tintColor={settingAccent}
+					>
 						Create Subscription
 					</Stack.Toolbar.Button>
 				)}
 			</Stack.Toolbar>
-		</Root>
+
+			<Host style={{ flex: 1 }}>
+				<MasterPane
+					key={mountId}
+					onSyncLocalService={syncLocalService}
+					canSyncLocalService={Boolean(localService) && !isLocalSynced}
+				/>
+			</Host>
+		</>
 	);
 };
 
