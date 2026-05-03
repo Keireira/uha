@@ -5,13 +5,17 @@ import i18next from 'i18next';
 import { reconcileAllSubscriptions } from './reconcile';
 import { registerNotificationsBackgroundTask } from './background-task';
 
-export const useReconcileNotificationsOnForeground = () => {
+const useReconcileNotificationsOnForeground = () => {
 	const isReconcilingRef = useRef(false);
 
 	useEffect(() => {
-		registerNotificationsBackgroundTask().catch((err) => {
-			console.warn('[notifications] background task registration failed:', err);
-		});
+		registerNotificationsBackgroundTask()
+			.then(() => {
+				console.log('[FG][Notifications] background task registration succeeded');
+			})
+			.catch((err) => {
+				console.warn('[FG][Notifications] background task registration failed:', err);
+			});
 
 		const run = async () => {
 			if (isReconcilingRef.current) return;
@@ -19,8 +23,9 @@ export const useReconcileNotificationsOnForeground = () => {
 
 			try {
 				await reconcileAllSubscriptions();
+				console.log('[FG][Notifications] reconcile succeeded');
 			} catch (err) {
-				console.warn('[notifications] reconcile failed:', err);
+				console.warn('[FG][Notifications] reconcile failed:', err);
 			} finally {
 				isReconcilingRef.current = false;
 			}
@@ -41,3 +46,5 @@ export const useReconcileNotificationsOnForeground = () => {
 		};
 	}, []);
 };
+
+export default useReconcileNotificationsOnForeground;

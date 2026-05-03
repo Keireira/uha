@@ -8,7 +8,7 @@ import type { SubscriptionT } from '@models';
 
 const EMPTY_RES = { cancelled: [], failed: [] };
 
-export const removeNotifications = async (notificationIds: string[]) => {
+const removeNotifications = async (notificationIds: string[]) => {
 	const results = await Promise.allSettled(
 		notificationIds.map((id) => Notifications.cancelScheduledNotificationAsync(id))
 	);

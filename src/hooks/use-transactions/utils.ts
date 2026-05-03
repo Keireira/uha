@@ -1,25 +1,4 @@
-import { addDays, addWeeks, addMonths, addYears } from 'date-fns';
-
 import type { PreparedSubscriptionT } from './types.d';
-
-export const advanceDate = (
-	date: Date,
-	type: PreparedSubscriptionT['billing_cycle_type'],
-	value: PreparedSubscriptionT['billing_cycle_value']
-) => {
-	switch (type) {
-		case 'days':
-			return addDays(date, value);
-		case 'weeks':
-			return addWeeks(date, value);
-		case 'months':
-			return addMonths(date, value);
-		case 'years':
-			return addYears(date, value);
-		default:
-			return date;
-	}
-};
 
 export const debugLogging = (maxDate: Date, preparedSubscriptions: PreparedSubscriptionT[]) => {
 	console.log('\n\x1b[1m\x1b[35m🔮 Phantom Transactions\x1b[0m');

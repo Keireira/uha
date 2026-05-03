@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+
 import SettingsBridgeModule from '@modules/settings-bridge';
 import { checkNotifications, RESULTS } from 'react-native-permissions';
 
 import type { PermissionStatus } from 'react-native-permissions';
 
-export const useNotificationsPermission = () => {
+const useNotificationsPermission = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [status, setStatus] = useState<PermissionStatus | null>(null);
 

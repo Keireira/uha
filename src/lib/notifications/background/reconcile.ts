@@ -1,41 +1,31 @@
-import { addDays, addMonths, addWeeks, addYears, format, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { and, eq, isNull } from 'drizzle-orm';
 
 import { silentDb } from '@db';
 import { servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
 
-import { buildSubscriptionNotifications } from './build';
-import { removeNotificationsFor } from './remove';
-import { setupNotificationsFor } from './setup';
+import { addByCycle } from '@lib/date';
+import { setupNotificationsFor } from '../setup';
+import { removeNotificationsFor } from '../remove';
+import buildSubscriptionNotifications from './build';
 
 import type { SubscriptionT } from '@models';
 
-const advanceCycleDate = (base: Date, type: 'days' | 'weeks' | 'months' | 'years', value: number): Date => {
-	switch (type) {
-		case 'days':
-			return addDays(base, value);
-		case 'weeks':
-			return addWeeks(base, value);
-		case 'months':
-			return addMonths(base, value);
-		case 'years':
-			return addYears(base, value);
-	}
-};
-
-const computeTrialEndDate = (subscriptionId: SubscriptionT['id']): string | undefined => {
+const computeTrialEndDate = (subscriptionId: SubscriptionT['id']) => {
 	const trial = silentDb
 		.select()
 		.from(timelineEventsTable)
 		.where(and(eq(timelineEventsTable.subscription_id, subscriptionId), eq(timelineEventsTable.type, 'trial')))
 		.get();
 
-	if (!(trial && trial.duration_type && typeof trial.duration_value === 'number')) return undefined;
+	if (!(trial && trial.duration_type && typeof trial.duration_value === 'number')) {
+		return;
+	}
 
-	return format(advanceCycleDate(parseISO(trial.date), trial.duration_type, trial.duration_value), 'yyyy-MM-dd');
+	return format(addByCycle(parseISO(trial.date), trial.duration_type, trial.duration_value), 'yyyy-MM-dd');
 };
 
-const resolveTitle = (subscription: SubscriptionT): string => {
+const resolveTitle = (subscription: SubscriptionT) => {
 	if (subscription.custom_name) return subscription.custom_name;
 
 	const service = silentDb
@@ -47,30 +37,35 @@ const resolveTitle = (subscription: SubscriptionT): string => {
 	return service?.title ?? '';
 };
 
-export const reconcileSubscription = async (subscriptionId: SubscriptionT['id']): Promise<void> => {
+export const reconcileSubscription = async (subscriptionId: SubscriptionT['id']) => {
 	const subscription = silentDb
 		.select()
 		.from(subscriptionsTable)
 		.where(eq(subscriptionsTable.id, subscriptionId))
 		.get();
 
-	if (!subscription) return;
+	if (!subscription) {
+		return;
+	}
 
 	await removeNotificationsFor(subscriptionId)();
 
-	if (subscription.cancellation_date) return;
-	if (!subscription.notify_enabled && !subscription.notify_trial_end) return;
+	if (subscription.cancellation_date || !(subscription.notify_enabled || subscription.notify_trial_end)) {
+		return;
+	}
 
-	const trialEndDate = subscription.notify_trial_end ? computeTrialEndDate(subscriptionId) : undefined;
 	const desired = buildSubscriptionNotifications({
 		title: resolveTitle(subscription),
 		firstPaymentDate: subscription.first_payment_date,
+
 		billingCycleType: subscription.billing_cycle_type,
 		billingCycleValue: subscription.billing_cycle_value,
+
 		notifyEnabled: subscription.notify_enabled,
 		notifyDaysBefore: subscription.notify_days_before,
+
 		notifyTrialEnd: subscription.notify_trial_end,
-		trialEndDate
+		trialEndDate: subscription.notify_trial_end ? computeTrialEndDate(subscriptionId) : undefined
 	});
 
 	if (!desired.length) return;
@@ -78,7 +73,7 @@ export const reconcileSubscription = async (subscriptionId: SubscriptionT['id'])
 	await setupNotificationsFor(subscriptionId)(desired);
 };
 
-export const reconcileAllSubscriptions = async (): Promise<void> => {
+export const reconcileAllSubscriptions = async () => {
 	const subscriptions = silentDb
 		.select({ id: subscriptionsTable.id })
 		.from(subscriptionsTable)

@@ -14,7 +14,7 @@ import { normalizeOptional, parsePositiveInt } from '../../shared';
 import { listStyle, scrollDismissesKeyboard, tag } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, Text, TextField, Picker, Toggle, Button } from '@expo/ui/swift-ui';
 
-type BillingCycleT = 'days' | 'weeks' | 'months' | 'years';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 const cycleTypes: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 const noPaymentMethod = '__none__';
