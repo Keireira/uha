@@ -23,9 +23,18 @@ import {
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
 import { LogoView } from '@ui';
-import { NoResults } from '@elements';
 import { Header, SearchBar } from './components';
-import { Host, Text, HStack, RNHostView, List, Section, Spacer, Image } from '@expo/ui/swift-ui';
+import {
+	Host,
+	Text,
+	HStack,
+	RNHostView,
+	List,
+	Section,
+	Spacer,
+	Image,
+	ContentUnavailableView
+} from '@expo/ui/swift-ui';
 
 import type { SFSymbol } from 'expo-symbols';
 
@@ -107,9 +116,11 @@ const SelectCategoryScreen = () => {
 						})}
 					</Section>
 				</List>
-			</Host>
 
-			{!categories.length && hasSearch && <NoResults />}
+				{!categories.length && hasSearch && (
+					<ContentUnavailableView title="No categories found" systemImage="magnifyingglass" />
+				)}
+			</Host>
 
 			<SearchBar setSearchQuery={setSearchQuery} />
 		</>

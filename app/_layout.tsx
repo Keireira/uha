@@ -1,23 +1,28 @@
 import React, { useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components/native';
 import * as SplashScreen from 'expo-splash-screen';
-import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack, useRootNavigationState } from 'expo-router';
-import { setNotificationHandler } from 'expo-notifications';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 
-import Toast from 'react-native-toast-message';
+// Notifications
+import { setNotificationHandler } from 'expo-notifications';
+import { useReconcileNotificationsOnForeground } from '@lib/notifications';
+
+// Logging & Local Response
+import { AppToast } from '@elements';
 import { logger, ErrorBoundary } from '@lib/logger';
 
+// Themes setup
+import { useGetTheme } from '@themes';
+import { useTheme } from '@react-navigation/native';
+import { ThemeProvider } from 'styled-components/native';
+
+// Setup
 import { useInitSettings } from '@hooks/settings';
-import { useReconcileNotificationsOnForeground } from '@lib/notifications';
 import { useSqlMigrations, useBackfillRates, useInitPurchases } from '@hooks/setup';
 
+// Locale
 import '@src/i18n';
-
-import { useGetTheme } from '@themes';
-import { toastConfig } from '@elements';
-import { useTheme } from '@react-navigation/native';
 
 logger.install();
 SplashScreen.preventAutoHideAsync();
@@ -31,12 +36,6 @@ setNotificationHandler({
 	})
 });
 
-const AppToast = () => {
-	const insets = useSafeAreaInsets();
-
-	return <Toast config={toastConfig} topOffset={insets.top} />;
-};
-
 const LoadFinalStage = () => {
 	useBackfillRates();
 	useInitPurchases();
@@ -45,7 +44,7 @@ const LoadFinalStage = () => {
 	const theme = useGetTheme();
 
 	/* This is a hack (https://github.com/expo/expo/issues/33040#issuecomment-2495435678)
-	 * When we swipe between cards in the stack, we experience a WHITE background underneat the screens.
+	 * When we swipe between cards in the stack, we experience a WHITE background underneath the screens.
 	 * I tried to:
 	 * - change backgroundColor in app.json;
 	 * - set backgroundColor in the contentStyle

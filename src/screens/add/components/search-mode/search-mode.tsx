@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsValue } from '@hooks';
 import { useSearch } from '@screens/add/hooks';
 
-import { NoResults } from '@elements';
 import { Host, Text } from '@expo/ui/swift-ui';
-import { ResultSection, TopHitCard, Loader } from './components';
 import { font, frame, padding } from '@expo/ui/swift-ui/modifiers';
+import { ResultSection, TopHitCard, Loader, NoResults } from './components';
 
 import type { SearchResultT } from '@api/soup/soup.d';
 
