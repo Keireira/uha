@@ -7,6 +7,12 @@
     "icon": "./assets/images/default.png",
     "scheme": "uha",
     "userInterfaceStyle": "automatic",
+    "experiments": {
+      "typedRoutes": true,
+      "inlineModules": {
+        "watchedDirectories": ["app", "src"]
+      }
+    },
     "ios": {
       "icon": "./assets/images/uha.icon",
       "appleTeamId": "WU9ZX7QZRL",
@@ -130,9 +136,6 @@
       "./plugins/with-alt-icons",
       "expo-background-task"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
       "router": {},
       "supportsRTL": false,

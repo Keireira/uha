@@ -43,8 +43,8 @@
       "@locales/*": ["./assets/locales/*"],
 
       "@themes": ["./src/themes"],
-      "@themes/*": ["./src/themes/*"]
-    }
+      "@themes/*": ["./src/themes/*"],
+    },
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
 }
