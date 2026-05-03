@@ -408,6 +408,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'Usa el nombre exacto del sitio, como https://uha.app',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},

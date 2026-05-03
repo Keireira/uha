@@ -46,7 +46,8 @@ export const PROVIDERS: ProviderMeta[] = [
 	{
 		key: 'web',
 		color_slug: 'orange',
-		labelKey: 'settings.sources.web'
+		labelKey: 'settings.sources.web',
+		subtitleKey: 'settings.sources.web_desc'
 	},
 	{
 		key: 'brandfetch',

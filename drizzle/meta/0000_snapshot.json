@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d80a338c-9b19-4a5c-b052-d8e5ad34c6ca",
+  "id": "caeea749-59d0-4df3-9bf3-1e465c73d3db",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -821,24 +821,21 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'US'"
+          "autoincrement": false
         },
         "playstore_country": {
           "name": "playstore_country",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'US'"
+          "autoincrement": false
         },
         "playstore_lang": {
           "name": "playstore_lang",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'en'"
+          "autoincrement": false
         },
         "search_sources": {
           "name": "search_sources",

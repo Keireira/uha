@@ -20,8 +20,8 @@ export const userTable = sqliteTable('user', {
 	ai_enabled: int({ mode: 'boolean' }).default(false).notNull(),
 	is_unlimited: int({ mode: 'boolean' }).default(false).notNull(),
 	accent: text().$type<AccentT>().default('orange').notNull(),
-	appstore_country: text().default('US').notNull(),
-	playstore_country: text().default('US').notNull(),
-	playstore_lang: text().default('en').notNull(),
+	appstore_country: text().notNull(),
+	playstore_country: text().notNull(),
+	playstore_lang: text().notNull(),
 	search_sources: text({ mode: 'json' }).$type<SourceT[]>().default(['inhouse', 'appstore', 'web']).notNull()
 });

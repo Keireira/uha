@@ -171,5 +171,3 @@ INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, r
   ('MYR', 'RM', 100, 2, 'ms-MY', 'other'),
   ('EGP', 'E£', 100, 2, 'ar-EG', 'other'),
   ('MVR', 'Rf', 100, 2, 'dv-MV', 'other');
---> statement-breakpoint
-INSERT INTO "user" ("id", "recalc_currency", "default_currency") VALUES ('00000000-0000-0000-0000-000000000000', 'USD', 'USD');

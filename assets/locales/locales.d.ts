@@ -625,6 +625,7 @@ export type LocaleRootT = {
 			appstore: string;
 			playstore: string;
 			web: string;
+			web_desc: string;
 			brandfetch: string;
 			logo_dev: string;
 		};
