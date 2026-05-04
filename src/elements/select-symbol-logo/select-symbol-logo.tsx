@@ -71,6 +71,7 @@ const SelectSymbolLogoScreen = () => {
 		router.back();
 	};
 
+	const showImagePicker = !['library_category_logo', 'library_tender_logo'].includes(target);
 	const woChanges = paramsBinding.symbol === snapshot.symbol && paramsBinding.image_uri === snapshot.image_uri;
 
 	return (
@@ -78,7 +79,7 @@ const SelectSymbolLogoScreen = () => {
 			<Stack.Toolbar placement="left">
 				<Stack.Toolbar.Button icon="xmark" onPress={cancelEditsHd} />
 
-				{target !== 'library_category_logo' && (
+				{showImagePicker && (
 					<Stack.Toolbar.Button separateBackground variant="plain" icon="photo.stack" onPress={openImagePickerHd} />
 				)}
 			</Stack.Toolbar>

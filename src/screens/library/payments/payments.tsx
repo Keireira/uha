@@ -101,7 +101,7 @@ const Payments = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{payments.map((payment) => {
-							const comment = payment.comment?.trim() || (payment.is_card ? t('library.details.fields.card') : '');
+							const comment = payment.comment || (payment.is_card ? t('library.details.fields.card') : null);
 
 							const openDetails = () => {
 								openLibraryDetails('payment', payment.id, payment.title);
@@ -135,6 +135,7 @@ const Payments = () => {
 											name={payment.title}
 											emoji={payment.emoji}
 											color={payment.color}
+											url={payment.logo_url}
 											size={48}
 										/>
 									</RNHostView>

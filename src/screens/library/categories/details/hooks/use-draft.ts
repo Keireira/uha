@@ -12,10 +12,11 @@ import type { CategoryEditParams } from '@screens/library/categories';
 const normalizeCategoryDraft = (category: typeof categoriesTable.$inferSelect): CategoryEditParams => ({
 	slug: category.slug || '',
 	title: category.title || '',
-	color: category.color || '',
+
 	emoji: category.emoji || '',
-	symbol: category.symbol as SFSymbol,
-	logo_url: category.logo_url || ''
+	color: category.color || '',
+	logo_url: category.logo_url || '',
+	symbol: category.symbol as SFSymbol
 });
 
 const useDraft = (category?: typeof categoriesTable.$inferSelect) => {

@@ -89,6 +89,7 @@ const SelectTenderScreen = () => {
 											symbolName={tender.symbol as SFSymbol}
 											color={tender.color || settingAccent}
 											name={tender.title || ''}
+											url={tender.logo_url}
 											emoji={tender.emoji}
 											size={48}
 										/>

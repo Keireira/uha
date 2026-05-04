@@ -17,6 +17,7 @@ const prepareCategoryToSave = (draft: CategoryEditParams) => {
 	return {
 		slug,
 		title: draft.title.trim(),
+
 		color: draft.color.trim(),
 		emoji: draft.emoji || null,
 		symbol: draft.symbol || null,
@@ -27,7 +28,7 @@ const prepareCategoryToSave = (draft: CategoryEditParams) => {
 const useSaveCategory = () => {
 	const router = useRouter();
 
-	const saveCategory = async (category: CategoryT, draft: CategoryEditParams) => {
+	const saveCategory = async (initDraft: CategoryT, draft: CategoryEditParams) => {
 		const nextCategory = prepareCategoryToSave(draft);
 
 		if (!nextCategory) {
@@ -37,14 +38,14 @@ const useSaveCategory = () => {
 		const { slug: nextSlug, ...dataToUpdate } = nextCategory;
 
 		try {
-			if (nextSlug === category.slug) {
-				await db.update(categoriesTable).set(dataToUpdate).where(eq(categoriesTable.slug, category.slug));
+			if (nextSlug === initDraft.slug) {
+				await db.update(categoriesTable).set(dataToUpdate).where(eq(categoriesTable.slug, initDraft.slug));
 			} else {
 				await db.transaction(async (tx) => {
 					await tx
 						.update(subscriptionsTable)
 						.set({ category_slug: nextSlug })
-						.where(eq(subscriptionsTable.category_slug, category.slug));
+						.where(eq(subscriptionsTable.category_slug, initDraft.slug));
 
 					await tx
 						.update(categoriesTable)
@@ -52,7 +53,7 @@ const useSaveCategory = () => {
 							slug: nextSlug,
 							...dataToUpdate
 						})
-						.where(eq(categoriesTable.slug, category.slug));
+						.where(eq(categoriesTable.slug, initDraft.slug));
 				});
 			}
 
