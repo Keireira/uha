@@ -721,9 +721,8 @@ const russian: LocaleRootT = {
 			title: 'Настройки',
 			refresh_rates: 'Обновить курсы'
 		},
-		add: {
+		search: {
 			title: 'Новое',
-			service: 'Новый сервис',
 			category: 'Новая категория',
 			payment: 'Новый платёж',
 			subscription: 'Новая подписка'
@@ -755,7 +754,7 @@ const russian: LocaleRootT = {
 				description: 'Создать подписку с нуля'
 			}
 		},
-		add: {
+		search: {
 			header: 'Найти сервис',
 			search_bar: 'Поиск сервиса',
 			search_results: 'Результаты поиска',

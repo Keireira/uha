@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 
 import { useAccent } from '@hooks';
 import { useParams } from './hooks';
@@ -8,12 +8,13 @@ import { ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import type { TextInputChangeEvent } from 'react-native';
-import type { LogoSnapshotT } from './select-symbol-logo.d';
 import type { SearchBarCommands } from 'react-native-screens';
+import type { LogoSnapshotT, SearchParamsT } from './select-symbol-logo.d';
 
 const SelectSymbolLogoScreen = () => {
 	const router = useRouter();
 	const settingAccent = useAccent();
+	const { target } = useLocalSearchParams<SearchParamsT>();
 
 	const [search, setSearch] = useState('');
 	const searchRef = useRef<SearchBarCommands>(null);
@@ -76,7 +77,10 @@ const SelectSymbolLogoScreen = () => {
 		<>
 			<Stack.Toolbar placement="left">
 				<Stack.Toolbar.Button icon="xmark" onPress={cancelEditsHd} />
-				<Stack.Toolbar.Button separateBackground variant="plain" icon="photo.stack" onPress={openImagePickerHd} />
+
+				{target !== 'library_category_logo' && (
+					<Stack.Toolbar.Button separateBackground variant="plain" icon="photo.stack" onPress={openImagePickerHd} />
+				)}
 			</Stack.Toolbar>
 
 			<Stack.Toolbar placement="right">

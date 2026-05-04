@@ -1,6 +1,6 @@
 {
-  "id": "2e481cab-c1cc-4496-8b1e-2cd15c010fd9",
-  "prevId": "caeea749-59d0-4df3-9bf3-1e465c73d3db",
+  "id": "85534192-b227-461d-b8f3-757fef51ebd1",
+  "prevId": "ff605ff2-6bd9-4a55-a65f-74503b4d66d9",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -37,6 +37,13 @@
         },
         "symbol": {
           "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "logo_url": {
+          "name": "logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

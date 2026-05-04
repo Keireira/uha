@@ -717,9 +717,8 @@ const spanish: LocaleRootT = {
 			title: 'Ajustes',
 			refresh_rates: 'Actualizar tasas'
 		},
-		add: {
+		search: {
 			title: 'Nuevo',
-			service: 'Nuevo servicio',
 			category: 'Nueva categoría',
 			payment: 'Nuevo pago',
 			subscription: 'Nueva suscripción'
@@ -751,7 +750,7 @@ const spanish: LocaleRootT = {
 				description: 'Crear una suscripción desde cero'
 			}
 		},
-		add: {
+		search: {
 			header: 'Buscar servicio',
 			search_bar: 'Buscar servicio',
 			search_results: 'Resultados',

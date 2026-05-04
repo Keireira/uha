@@ -737,9 +737,8 @@ const nihongo: LocaleRootT = {
 			title: '設定',
 			refresh_rates: 'レート更新'
 		},
-		add: {
+		search: {
 			title: '新規',
-			service: '新しいサービス',
 			category: '新しいカテゴリ',
 			payment: '新しい支払い方法',
 			subscription: '新しいサブスクリプション'
@@ -771,7 +770,7 @@ const nihongo: LocaleRootT = {
 				description: 'サブスクを一から作成'
 			}
 		},
-		add: {
+		search: {
 			header: 'サービスを探す',
 			search_bar: 'サービスを検索',
 			search_results: '検索結果',

@@ -44,6 +44,8 @@ export type SwipeAction = {
 	role?: SwipeActionRole;
 	/** Empty/omitted = icon-only button. Provide a string to show a label. */
 	label?: string;
+	/** When `false`, the action is omitted. Defaults to `true`. */
+	enabled?: boolean;
 };
 
 export type SwipeActionsConfig = {
@@ -65,7 +67,8 @@ export const swipeActions = ({
 	edge = 'trailing',
 	allowsFullSwipe = true
 }: SwipeActionsConfig): ModifierConfig => {
-	const handlers = new Map(actions.map((a) => [a.id, a.onPress]));
+	const visible = actions.filter((a) => a.enabled !== false);
+	const handlers = new Map(visible.map((a) => [a.id, a.onPress]));
 
 	return createModifierWithEventListener(
 		'swipeActions',
@@ -77,7 +80,7 @@ export const swipeActions = ({
 		{
 			edge,
 			allowsFullSwipe,
-			actions: actions.map(stripOnPress)
+			actions: visible.map(stripOnPress)
 		}
 	);
 };

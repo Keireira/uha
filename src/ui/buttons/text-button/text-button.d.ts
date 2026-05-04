@@ -4,4 +4,5 @@ export type Props = {
 	size?: number;
 	title: string;
 	glassTint?: string;
+	color?: string;
 } & ExpoButtonProps;
