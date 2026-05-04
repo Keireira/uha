@@ -81,9 +81,9 @@ const TabLayout = () => {
 			{
 				tabIndex: 2,
 				actions: [
-					{ id: 'add_category', title: t('navbar.add.category'), icon: 'square.grid.2x2' },
-					{ id: 'add_payment', title: t('navbar.add.payment'), icon: 'creditcard' },
-					{ id: 'add_subscription', title: t('navbar.add.subscription'), icon: 'arrow.triangle.2.circlepath' }
+					{ id: 'add_category', title: t('navbar.search.category'), icon: 'square.grid.2x2' },
+					{ id: 'add_payment', title: t('navbar.search.payment'), icon: 'creditcard' },
+					{ id: 'add_subscription', title: t('navbar.search.subscription'), icon: 'arrow.triangle.2.circlepath' }
 				]
 			}
 		]);
@@ -167,8 +167,8 @@ const TabLayout = () => {
 				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="gear" />
 			</NativeTabs.Trigger>
 
-			<NativeTabs.Trigger name="add" role="search">
-				<NativeTabs.Trigger.Label>{t('navbar.add.title')}</NativeTabs.Trigger.Label>
+			<NativeTabs.Trigger name="search" role="search">
+				<NativeTabs.Trigger.Label>{t('navbar.search.title')}</NativeTabs.Trigger.Label>
 				<NativeTabs.Trigger.Icon selectedColor={settingAccent} sf="plus" />
 			</NativeTabs.Trigger>
 		</NativeTabs>

@@ -717,9 +717,8 @@ const kazakh: LocaleRootT = {
 			title: 'Параметрлер',
 			refresh_rates: 'Бағамдарды жаңарту'
 		},
-		add: {
+		search: {
 			title: 'Жаңа',
-			service: 'Жаңа қызмет',
 			category: 'Жаңа санат',
 			payment: 'Жаңа төлем',
 			subscription: 'Жаңа жазылым'
@@ -751,7 +750,7 @@ const kazakh: LocaleRootT = {
 				description: 'Жазылымды нөлден жасау'
 			}
 		},
-		add: {
+		search: {
 			header: 'Қызмет іздеу',
 			search_bar: 'Қызметті іздеу',
 			search_results: 'Іздеу нәтижелері',

@@ -456,9 +456,8 @@ export type LocaleRootT = {
 			title: string;
 			refresh_rates: string;
 		};
-		add: {
+		search: {
 			title: string;
-			service: string;
 			category: string;
 			payment: string;
 			subscription: string;
@@ -748,7 +747,7 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
-		add: {
+		search: {
 			header: string;
 			search_bar: string;
 			search_results: string;

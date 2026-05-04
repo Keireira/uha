@@ -315,6 +315,7 @@ const ServiceDetails = () => {
 											</Text>
 										</VStack>
 									</ContextMenu.Preview>
+
 									<ContextMenu.Items>
 										<Button
 											label={t('library.details.copy')}

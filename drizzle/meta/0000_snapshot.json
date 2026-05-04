@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "caeea749-59d0-4df3-9bf3-1e465c73d3db",
+  "id": "ff605ff2-6bd9-4a55-a65f-74503b4d66d9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -37,6 +37,13 @@
         },
         "symbol": {
           "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "logo_url": {
+          "name": "logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

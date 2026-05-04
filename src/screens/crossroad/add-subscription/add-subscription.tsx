@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 import { Stack, useRouter, useNavigation } from 'expo-router';
+import { useShallow } from 'zustand/react/shallow';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
@@ -14,7 +14,7 @@ import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 import { selectCurrencyId, selectCurrentAmount, timelineErrors } from './events';
 
 import MasterPane from './master-pane';
-import { Host, ActivityIndicator } from '@expo/ui/swift-ui';
+import { Host } from '@expo/ui/swift-ui';
 
 import type { CurrencyT, ServiceT } from '@models';
 import type { LogoDraftT, SubscriptionDraftT } from './events';

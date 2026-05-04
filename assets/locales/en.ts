@@ -721,9 +721,8 @@ const english: LocaleRootT = {
 			title: 'Settings',
 			refresh_rates: 'Update Rates'
 		},
-		add: {
+		search: {
 			title: 'New',
-			service: 'New Service',
 			category: 'New Category',
 			payment: 'New Payment',
 			subscription: 'New Subscription'
@@ -755,7 +754,7 @@ const english: LocaleRootT = {
 				description: 'Create new subscription from scratch'
 			}
 		},
-		add: {
+		search: {
 			header: 'Find new Service',
 			search_bar: 'Search service to add',
 			search_results: 'Search Results',
