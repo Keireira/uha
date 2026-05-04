@@ -1,24 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 
 import db from '@db';
 import { eq } from 'drizzle-orm';
+import { categoriesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { categoriesTable, subscriptionsTable } from '@db/schema';
 
 import { useAccent } from '@hooks';
+import { useDetailsDraft, useSaveDetails } from '@screens/library/categories/hooks';
 
 import {
 	font,
+	frame,
 	listStyle,
+	resizable,
+	clipShape,
+	onTapGesture,
 	foregroundStyle,
+	listRowSeparator,
+	listRowBackground,
+	listSectionSpacing,
 	onLongPressGesture,
 	multilineTextAlignment,
 	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, Text, List, Section, TextField, ColorPicker, LabeledContent } from '@expo/ui/swift-ui';
+import {
+	Host,
+	Text,
+	List,
+	Image,
+	HStack,
+	Section,
+	TextField,
+	ColorPicker,
+	LabeledContent,
+	RNHostView
+} from '@expo/ui/swift-ui';
+import { LogoView } from '@ui';
 
 type LocalSearchParams = {
 	id: string;
@@ -26,82 +46,73 @@ type LocalSearchParams = {
 	type: 'category';
 };
 
-const CategoryDetails = () => {
-	const theme = useTheme();
-	const router = useRouter();
-	const { t } = useTranslation();
-	const settingAccent = useAccent();
+const useCategoryDetailsQuery = () => {
 	const { id } = useLocalSearchParams<LocalSearchParams>();
 
 	const {
 		data: [category]
 	} = useLiveQuery(db.select().from(categoriesTable).where(eq(categoriesTable.slug, id)).limit(1), [id]);
 
-	const [slug, setSlug] = useState('');
-	const [title, setTitle] = useState('');
-	const [emoji, setEmoji] = useState('');
-	const [color, setColor] = useState('');
+	return category;
+};
+
+const CategoryDetails = () => {
+	const theme = useTheme();
+	const router = useRouter();
+	const { t } = useTranslation();
+	const settingAccent = useAccent();
+
+	const saveCategory = useSaveDetails();
+	const category = useCategoryDetailsQuery();
+	const { draft, actions } = useDetailsDraft(category);
+
 	const [isSlugEditable, setIsSlugEditable] = useState(false);
 
-	useEffect(() => {
-		if (!category) return;
-
-		setSlug(category.slug);
-		setTitle(category.title ?? '');
-		setEmoji(category.emoji ?? '');
-		setColor(category.color ?? '');
-	}, [category]);
-
-	const enableSlugEdit = () => setIsSlugEditable(true);
-
-	const save = async () => {
-		if (!category) return;
-
-		const nextSlug = slug.trim();
-		if (!nextSlug) return;
-
-		const nextTitle = title.trim() || null;
-		const nextEmoji = emoji.trim() || null;
-		const nextColor = color.trim() || null;
-
-		try {
-			if (nextSlug !== category.slug) {
-				await db.transaction(async (tx) => {
-					await tx
-						.update(subscriptionsTable)
-						.set({ category_slug: nextSlug })
-						.where(eq(subscriptionsTable.category_slug, category.slug));
-
-					await tx
-						.update(categoriesTable)
-						.set({ slug: nextSlug, title: nextTitle, emoji: nextEmoji, color: nextColor })
-						.where(eq(categoriesTable.slug, category.slug));
-				});
-			} else {
-				await db
-					.update(categoriesTable)
-					.set({ title: nextTitle, emoji: nextEmoji, color: nextColor })
-					.where(eq(categoriesTable.slug, category.slug));
-			}
-
-			router.back();
-		} catch (err) {
-			console.warn('[category-details] save failed:', err);
-		}
-	};
-
-	if (!category?.slug) return null;
-
-	const labelMods = [font({ size: 16, weight: 'regular' })];
+	const labelMods = [font({ size: 16, weight: 'regular', design: 'rounded' })];
 	const valueMods = [
 		multilineTextAlignment('trailing'),
 		foregroundStyle(theme.text.secondary),
-		font({ size: 16, weight: 'regular' })
+		font({ size: 16, weight: 'regular', design: 'rounded' })
 	];
+
+	const screenTitle = useMemo(() => {
+		if (!category) return '';
+
+		if (category.title) {
+			return category.title;
+		}
+
+		return t(`category.${category.slug}`, { defaultValue: category.slug });
+	}, [category, t]);
 
 	const closeModal = () => {
 		router.back();
 	};
+
+	const enableSlugEdit = () => {
+		if (category?.is_system) return;
+
+		setIsSlugEditable(true);
+	};
+
+	const openLogoPicker = () => {
+		router.push({
+			pathname: '/(pickers)/select-symbol-logo',
+			params: {
+				target: 'library_category_logo'
+			}
+		});
+	};
+
+	const save = () => {
+		if (!category) return;
+
+		saveCategory(category, draft);
+	};
+
+	if (!category?.slug) {
+		return null;
+	}
 
 	return (
 		<>
@@ -109,58 +120,114 @@ const CategoryDetails = () => {
 				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
 			</Stack.Toolbar>
 
-			<Stack.Screen options={{ title: t(`category.${category.slug}`, { defaultValue: category.title }) }} />
+			<Stack.Screen options={{ title: screenTitle }} />
 
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={save} tintColor={settingAccent} />
 			</Stack.Toolbar>
 
-			<Host style={{ flex: 1, backgroundColor: theme.background.secondary }}>
+			<Host style={{ flex: 1 }}>
 				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
+					<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+						<HStack alignment="center" modifiers={[frame({ maxWidth: Number.POSITIVE_INFINITY })]}>
+							<RNHostView matchContents>
+								<LogoView
+									name={draft.title}
+									symbolName={draft.symbol}
+									emoji={draft.emoji}
+									url={draft.logo_url}
+									color={draft.color}
+									size={96}
+								/>
+							</RNHostView>
+						</HStack>
+					</Section>
+
 					<Section title={t('library.details.section.identity')}>
-						{isSlugEditable ? (
+						{/* Slug */}
+						{isSlugEditable && !category.is_system ? (
 							<LabeledContent label={t('library.details.fields.slug')}>
 								<TextField
 									autoFocus
-									defaultValue={category?.slug ?? ''}
+									defaultValue={draft.slug}
 									placeholder="slug"
-									onValueChange={setSlug}
+									onValueChange={actions.onChangeSlug}
 									modifiers={valueMods}
 								/>
 							</LabeledContent>
 						) : (
 							<LabeledContent label={t('library.details.fields.slug')} modifiers={[onLongPressGesture(enableSlugEdit)]}>
-								<Text modifiers={valueMods}>{slug}</Text>
+								<Text modifiers={valueMods}>{draft.slug}</Text>
 							</LabeledContent>
 						)}
 
+						{/* Title */}
 						<LabeledContent label={t('library.details.fields.title')} modifiers={labelMods}>
 							<TextField
-								defaultValue={category?.title ?? ''}
+								defaultValue={draft.title}
 								placeholder="Override current one"
-								onValueChange={setTitle}
+								onValueChange={actions.onChangeTitle}
 								modifiers={valueMods}
 							/>
 						</LabeledContent>
 					</Section>
 
 					<Section title={t('library.details.section.appearance')}>
+						{/* Emoji */}
 						<LabeledContent label={t('library.details.fields.emoji')} modifiers={labelMods}>
 							<TextField
-								defaultValue={category?.emoji ?? ''}
+								defaultValue={draft.emoji}
 								placeholder="One emoji to symbolize"
-								onValueChange={(v) => setEmoji(v.slice(-8))}
-								modifiers={valueMods}
+								onValueChange={actions.onChangeEmoji}
+								modifiers={[...valueMods, font({ size: 20, design: 'rounded', weight: 'regular' })]}
 							/>
 						</LabeledContent>
 
+						{/* Logo URL */}
+						<LabeledContent
+							label={t('library.details.fields.logo_url')}
+							modifiers={[onTapGesture(actions.openImagePicker)]}
+						>
+							<HStack spacing={8}>
+								{draft.logo_url ? (
+									<Image
+										uiImage={draft.logo_url}
+										modifiers={[resizable(), frame({ width: 28, height: 28 }), clipShape('roundedRectangle')]}
+									/>
+								) : (
+									<Text modifiers={valueMods}>—</Text>
+								)}
+							</HStack>
+						</LabeledContent>
+
+						{/* Symbol */}
+						<LabeledContent label={t('library.details.fields.symbol')} modifiers={[onTapGesture(openLogoPicker)]}>
+							<HStack spacing={8}>
+								{draft.symbol ? (
+									<Image systemName={draft.symbol} size={22} color={draft.color || settingAccent} />
+								) : (
+									<Text modifiers={valueMods}>—</Text>
+								)}
+							</HStack>
+						</LabeledContent>
+
+						{/* Color */}
 						<ColorPicker
 							label={t('library.details.fields.color')}
-							selection={color || null}
-							onSelectionChange={setColor}
+							selection={draft.color}
+							onSelectionChange={actions.onChangeColor}
 							supportsOpacity={false}
 						/>
 					</Section>
+
+					{draft.logo_url && (
+						<Section>
+							<HStack spacing={8} alignment="center" modifiers={[onTapGesture(actions.resetLogoUrl)]}>
+								<Image systemName="pencil.and.outline" size={18} color={theme.accents.red} />
+								<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Remove Image</Text>
+							</HStack>
+						</Section>
+					)}
 				</List>
 			</Host>
 		</>

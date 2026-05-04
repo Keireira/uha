@@ -46,7 +46,12 @@ const Categories = () => {
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
-	const { data = [] } = useLiveQuery(db.select().from(categoriesTable).orderBy(asc(categoriesTable.title)));
+	const { data = [] } = useLiveQuery(
+		db
+			.select()
+			.from(categoriesTable)
+			.orderBy(asc(sql`lower(coalesce(${categoriesTable.title}, ${categoriesTable.slug}))`))
+	);
 
 	const getText = (category: CategoryT) => [
 		category.title ?? '',
@@ -114,7 +119,7 @@ const Categories = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{categories.map((category) => {
-							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
+							const title = category.title || t(`category.${category.slug}`, { defaultValue: category.slug });
 
 							const openDetails = () => {
 								openLibraryDetails('category', category.slug, title);
@@ -148,6 +153,7 @@ const Categories = () => {
 											name={category.title || ''}
 											emoji={category.emoji}
 											color={category.color}
+											url={category.logo_url}
 											size={48}
 										/>
 									</RNHostView>
