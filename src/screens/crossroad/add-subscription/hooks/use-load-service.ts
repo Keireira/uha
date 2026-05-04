@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import * as Crypto from 'expo-crypto';
 import { useLocalSearchParams } from 'expo-router';
 import db from '@db';
@@ -230,9 +230,6 @@ const resolveService = async (params: LoadedRouteParams): Promise<ResolvedServic
 };
 
 const useLoadService = () => {
-	const [isLoading, setIsLoading] = useState(true);
-	const [service, setService] = useState<ServiceT>();
-	const [localService, setLocalService] = useState<ServiceT | null>(null);
 	const params = useLocalSearchParams<RouteParams>();
 	const {
 		service_id,
@@ -253,9 +250,53 @@ const useLoadService = () => {
 		language
 	} = params;
 
+	const defaultServiceRef = useRef<ServiceT | null>(null);
+	const preliminaryService = useMemo<ServiceT>(() => {
+		if (!service_id) {
+			if (!defaultServiceRef.current) {
+				defaultServiceRef.current = createDefaultService();
+			}
+			return defaultServiceRef.current;
+		}
+
+		return parseFromSearch({
+			service_id,
+			service_logo,
+			service_symbol,
+			service_name,
+			service_source,
+			service_bundle_id,
+			service_slug,
+			service_color,
+			service_ref_link,
+			service_category_slug,
+			service_domains,
+			service_aliases,
+			service_social_links
+		});
+	}, [
+		service_id,
+		service_logo,
+		service_symbol,
+		service_name,
+		service_source,
+		service_bundle_id,
+		service_slug,
+		service_color,
+		service_ref_link,
+		service_category_slug,
+		service_domains,
+		service_aliases,
+		service_social_links
+	]);
+
+	const [service, setService] = useState<ServiceT>(preliminaryService);
+	const [localService, setLocalService] = useState<ServiceT | null>(null);
+	const [isLoading, setIsLoading] = useState(Boolean(service_id));
+
 	useEffect(() => {
 		if (!service_id) {
-			setService(createDefaultService());
+			setService(preliminaryService);
 			setLocalService(null);
 			setIsLoading(false);
 			return;
@@ -288,11 +329,12 @@ const useLoadService = () => {
 				setLocalService(resolved.localService);
 			})
 			.catch(() => {
-				setService(createDefaultService());
+				setService(preliminaryService);
 				setLocalService(null);
 			})
 			.finally(() => setIsLoading(false));
 	}, [
+		preliminaryService,
 		service_id,
 		service_logo,
 		service_symbol,
@@ -311,7 +353,7 @@ const useLoadService = () => {
 		language
 	]);
 
-	return { service, localService, isLoading };
+	return { service, preliminaryService, localService, isLoading };
 };
 
 export default useLoadService;
