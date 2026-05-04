@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
 import { categoriesTable } from '@db/schema';
-import useEditCategoryStore from './use-edit-category';
+import useEditCategoryStore from '../../hooks/use-edit-category';
 
 import * as ImagePicker from 'expo-image-picker';
 
 import type { SFSymbol } from 'expo-symbols';
-import type { CategoryEditParams } from './use-edit-category';
+import type { CategoryEditParams } from '@screens/library/categories';
 
 const normalizeCategoryDraft = (category: typeof categoriesTable.$inferSelect): CategoryEditParams => ({
 	slug: category.slug || '',
@@ -18,7 +18,7 @@ const normalizeCategoryDraft = (category: typeof categoriesTable.$inferSelect): 
 	logo_url: category.logo_url || ''
 });
 
-const useDetailsDraft = (category?: typeof categoriesTable.$inferSelect) => {
+const useDraft = (category?: typeof categoriesTable.$inferSelect) => {
 	const initStore = useEditCategoryStore((state) => state.actions.init);
 	const patch = useEditCategoryStore((state) => state.actions.patch);
 
@@ -59,6 +59,7 @@ const useDetailsDraft = (category?: typeof categoriesTable.$inferSelect) => {
 		const [asset] = result.assets;
 		patch({ logo_url: asset.uri });
 	};
+	const resetSymbol = () => patch({ symbol: undefined });
 	const resetLogoUrl = () => patch({ logo_url: undefined });
 
 	return {
@@ -69,9 +70,10 @@ const useDetailsDraft = (category?: typeof categoriesTable.$inferSelect) => {
 			onChangeColor,
 			onChangeEmoji,
 			resetLogoUrl,
+			resetSymbol,
 			openImagePicker
 		}
 	};
 };
 
-export default useDetailsDraft;
+export default useDraft;

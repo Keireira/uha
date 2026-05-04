@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { categoriesTable, subscriptionsTable } from '@db/schema';
 
 import type { CategoryT } from '@models';
-import type { CategoryEditParams } from './use-edit-category';
+import type { CategoryEditParams } from '@screens/library/categories';
 
 const prepareCategoryToSave = (draft: CategoryEditParams) => {
 	const slug = draft.slug.trim();
@@ -24,7 +24,7 @@ const prepareCategoryToSave = (draft: CategoryEditParams) => {
 	};
 };
 
-const useSaveDetails = () => {
+const useSaveCategory = () => {
 	const router = useRouter();
 
 	const saveCategory = async (category: CategoryT, draft: CategoryEditParams) => {
@@ -66,4 +66,4 @@ const useSaveDetails = () => {
 	return saveCategory;
 };
 
-export default useSaveDetails;
+export default useSaveCategory;
