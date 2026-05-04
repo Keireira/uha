@@ -400,13 +400,15 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Іздеу көздері',
-		footer: 'Тексерілген нәтижелер осы параметрлерге қарамастан әрқашан көрсетіледі.',
 		search: 'Іздеу',
 		primary: 'Негізгі',
 		language: 'Тіл',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Брендтер мен жазылымдардың өзіміз іріктеген дерекқоры',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'https://uha.app сияқты сайттың нақты атауын пайдаланыңыз',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},
@@ -510,6 +512,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Жинақ',
 	grid: {
 		categories: {
 			title: 'Санаттар',
@@ -526,6 +529,45 @@ const libraryScreen: LocaleRootT['library'] = {
 		subscriptions: {
 			title: 'Жазылымдар',
 			description: 'Жоспарларды қарау және өзгерту'
+		}
+	},
+	delete_blocked: {
+		title: 'Жою мүмкін емес',
+		default_category: 'Жүйелік санатты жою мүмкін емес',
+		category_one: '1 жазылымда қолданылады',
+		category_other: '{{count}} жазылымда қолданылады',
+		service_one: '1 жазылымда қолданылады',
+		service_other: '{{count}} жазылымда қолданылады',
+		payment_one: '1 жазылымда қолданылады',
+		payment_other: '{{count}} жазылымда қолданылады'
+	},
+	details: {
+		save: 'Сақтау',
+		copy: 'Көшіру',
+		copied: 'Көшірілді',
+		id_copied: 'ID көшірілді',
+		section: {
+			identity: 'Идентификация',
+			appearance: 'Сыртқы түрі',
+			other: 'Басқа',
+			aliases: 'Бүркеншік атаулар'
+		},
+		aliases: {
+			add: 'Бүркеншік ат қосу…'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Таңдамалы атау',
+			emoji: 'Эмодзи',
+			color: 'Түс',
+			comment: 'Пікір',
+			card: 'Карта',
+			category: 'Санат',
+			symbol: 'SF Symbol',
+			logo_url: 'Логотип URL мекенжайы',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Рефералдық сілтеме'
 		}
 	}
 };
@@ -616,7 +658,21 @@ const kazakh: LocaleRootT = {
 		month: 'Ай',
 		year: 'Жыл',
 		in_month: '{{month}} айында',
-		in_year: '{{year}} жылында'
+		in_year: '{{year}} жылында',
+		in_months: {
+			0: 'Қаңтарда',
+			1: 'Ақпанда',
+			2: 'Наурызда',
+			3: 'Сәуірде',
+			4: 'Мамырда',
+			5: 'Маусымда',
+			6: 'Шілдеде',
+			7: 'Тамызда',
+			8: 'Қыркүйекте',
+			9: 'Қазанда',
+			10: 'Қарашада',
+			11: 'Желтоқсанда'
+		}
 	},
 	rates: {
 		error: {
@@ -629,6 +685,18 @@ const kazakh: LocaleRootT = {
 	},
 	category: defaultCategories,
 
+	notifications: {
+		title: 'Жазылым туралы еске салу',
+		subscription: {
+			today: 'Жазылым төлемінің мерзімі бүгін.',
+			in_days: 'Жазылым төлемінің мерзімі {{count}} күннен кейін.'
+		},
+		trial: {
+			today: 'Жазылымның сынақ мерзімі бүгін аяқталады.',
+			in_days: 'Жазылымның сынақ мерзімі {{count}} күннен кейін аяқталады.'
+		}
+	},
+
 	navbar: {
 		transactions: {
 			title: 'Басты',
@@ -638,7 +706,8 @@ const kazakh: LocaleRootT = {
 			open_filters: 'Сүзгілер'
 		},
 		library: {
-			title: 'Кітапхана',
+			root: 'Түбір',
+			title: 'Жинақ',
 			categories: 'Санаттар',
 			services: 'Қызметтер',
 			payments: 'Төлемдер',

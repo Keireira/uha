@@ -29,17 +29,31 @@ import {
 	lineLimit,
 	toggleStyle,
 	onTapGesture,
-	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	foregroundStyle,
 	listSectionSpacing,
+	scrollTargetBehavior,
 	listRowBackground,
 	listRowSeparator,
 	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, List, Section, Toggle, Text, HStack, Spacer, Image, TextField, RNHostView } from '@expo/ui/swift-ui';
+import {
+	List,
+	Section,
+	Toggle,
+	Text,
+	ColorPicker,
+	HStack,
+	Spacer,
+	Image,
+	TextField,
+	RNHostView
+} from '@expo/ui/swift-ui';
 
 import type { BillingCycleT } from '../events';
+
+const logoKeys = ['image_uri', 'symbol', 'color'] as const;
+const blank = (v: unknown) => (v == null || v === '' ? null : v);
 
 const UNIT_LABELS: Record<BillingCycleT, { single: string; plural: string }> = {
 	days: { single: 'Daily', plural: 'days' },
@@ -66,12 +80,11 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 };
 
 type Props = {
-	focusVersion: number;
 	canSyncLocalService: boolean;
 	onSyncLocalService: () => void;
 };
 
-const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: Props) => {
+const MasterPane = ({ canSyncLocalService, onSyncLocalService }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -91,9 +104,14 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 			setTitle: state.actions.setSubscriptionTitle,
 			enableTrial: state.actions.enableTrial,
 			disableTrial: state.actions.disableTrial,
-			setNotes: state.actions.setNotes
+			setNotes: state.actions.setNotes,
+
+			logo: state.logo,
+			logoSnapshot: state.logoSnapshot
 		}))
 	);
+	const resetLogo = useDraftStore((state) => state.actions.resetLogo);
+	const setColor = useDraftStore((state) => state.actions.setSubscriptionColor);
 
 	const {
 		data: [category]
@@ -114,16 +132,15 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 	const firstPaymentDate = selectFirstPaymentDate(draft.timeline) ?? format(new Date(), 'yyyy-MM-dd');
 	const trialDuration = selectTrialDuration(draft.timeline) ?? { duration_type: 'days' as const, duration_value: 7 };
 	const hasTrial = selectHasTrial(draft.timeline);
-	const firstPaymentPreview = format(parseISO(firstPaymentDate), 'MMM d, yyyy');
+	const firstPaymentPreview = format(parseISO(firstPaymentDate), 'PP');
 	const cyclePreview = formatCycle(draft.billing_cycle_type, draft.billing_cycle_value);
 	const trialPreview = formatTrial(trialDuration.duration_type, trialDuration.duration_value);
 	const categoryPreview = category?.title ?? (draft.category_slug ? t(`category.${draft.category_slug}`) : 'None');
 	const paymentPreview = tender?.title ?? 'None';
-	const notificationsPreview = !draft.notify_enabled
-		? 'Off'
-		: draft.notify_days_before.length === 0
-			? 'On'
-			: `${draft.notify_days_before.length} reminder${draft.notify_days_before.length === 1 ? '' : 's'}`;
+	const notificationsPreview =
+		draft.notify_enabled && draft.notify_days_before > 0
+			? `${draft.notify_days_before} ${draft.notify_days_before === 1 ? 'day' : 'days'} before`
+			: 'Off';
 
 	const goToFPDSettings = () => {
 		router.push('/(crossroad)/first-payment-date');
@@ -163,37 +180,39 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 		}
 	};
 
+	const isLogoDirty = logoKeys.some((key) => blank(draft.logo[key]) !== blank(draft.logoSnapshot[key]));
+
 	return (
-		<Host style={{ flex: 1 }} useViewportSizeMeasurement>
-			<List
-				modifiers={[
-					listStyle('insetGrouped'),
-					scrollDismissesKeyboard('immediately'),
-					scrollTargetBehavior('viewAligned')
-				]}
-			>
-				<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
-					<RNHostView matchContents>
-						<LogoRow />
-					</RNHostView>
+		<List
+			modifiers={[
+				listStyle('insetGrouped'),
+				scrollTargetBehavior('viewAligned'),
+				scrollDismissesKeyboard('immediately')
+			]}
+		>
+			<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+				<RNHostView matchContents>
+					<LogoRow />
+				</RNHostView>
 
-					<TextField
-						key={focusVersion}
-						defaultValue={draft.custom_name}
-						onValueChange={draft.setTitle}
-						placeholder="Service name"
-						modifiers={[
-							multilineTextAlignment('center'),
-							font({ design: 'rounded', size: 26, weight: 'bold' }),
-							foregroundStyle(theme.text.primary)
-						]}
-					/>
+				<TextField
+					defaultValue={draft.custom_name}
+					onValueChange={draft.setTitle}
+					placeholder="Service name"
+					modifiers={[
+						multilineTextAlignment('center'),
+						foregroundStyle(theme.text.primary),
+						font({ design: 'rounded', size: 26, weight: 'bold' })
+					]}
+				/>
 
-					<PriceRow focusVersion={focusVersion} />
-				</Section>
+				<PriceRow />
+			</Section>
 
-				{canSyncLocalService && (
-					<Section>
+			{/* Sync with local service */}
+			{(canSyncLocalService || isLogoDirty) && (
+				<Section>
+					{canSyncLocalService && (
 						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(onSyncLocalService)]}>
 							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
 
@@ -203,110 +222,131 @@ const MasterPane = ({ focusVersion, canSyncLocalService, onSyncLocalService }: P
 
 							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 						</HStack>
-					</Section>
-				)}
+					)}
 
-				{/* FPD | Billing Cycle | Trial */}
-				<Section>
-					{/* First payment date */}
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToFPDSettings)]}>
-						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>First Payment Date</Text>
+					{isLogoDirty && (
+						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(resetLogo)]}>
+							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
 
-						<Spacer />
+							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Reset Logo</Text>
 
-						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-							{firstPaymentPreview}
-						</Text>
-
-						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-					</HStack>
-
-					{/* Billing cycle */}
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToBillingCycleSettings)]}>
-						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Billing Cycle</Text>
-						<Spacer />
-
-						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-							{cyclePreview}
-						</Text>
-						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-					</HStack>
-
-					{/* Trial block */}
-					<Toggle
-						label="With Trial"
-						isOn={hasTrial}
-						modifiers={[toggleStyle('switch'), tint(settingAccent)]}
-						onIsOnChange={setTrialEnabled}
-					/>
-
-					{hasTrial && (
-						<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
-							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Trial Duration</Text>
 							<Spacer />
 
-							<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-								{trialPreview}
-							</Text>
 							<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 						</HStack>
 					)}
 				</Section>
+			)}
 
-				{/* Category | List | Payment Method */}
-				<Section>
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToCategorySelection)]}>
-						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Category</Text>
+			{/* Color Picker */}
+			<Section>
+				<ColorPicker
+					label="Color"
+					supportsOpacity={false}
+					onSelectionChange={setColor}
+					selection={draft.logo.color ?? settingAccent ?? null}
+				/>
+			</Section>
+
+			{/* FPD | Billing Cycle | Trial */}
+			<Section>
+				{/* First payment date */}
+				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToFPDSettings)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>First Payment Date</Text>
+
+					<Spacer />
+
+					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+						{firstPaymentPreview}
+					</Text>
+
+					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+				</HStack>
+
+				{/* Billing cycle */}
+				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToBillingCycleSettings)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Billing Cycle</Text>
+					<Spacer />
+
+					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+						{cyclePreview}
+					</Text>
+					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+				</HStack>
+
+				{/* Trial block */}
+				<Toggle
+					label="With Trial"
+					isOn={hasTrial}
+					modifiers={[toggleStyle('switch'), tint(settingAccent)]}
+					onIsOnChange={setTrialEnabled}
+				/>
+
+				{hasTrial && (
+					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
+						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Trial Duration</Text>
 						<Spacer />
 
 						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-							{categoryPreview}
+							{trialPreview}
 						</Text>
 						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 					</HStack>
+				)}
+			</Section>
 
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToPaymentSelection)]}>
-						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Payment Method</Text>
-						<Spacer />
+			{/* Category | List | Payment Method */}
+			<Section>
+				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToCategorySelection)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Category</Text>
+					<Spacer />
 
-						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-							{paymentPreview}
-						</Text>
-						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-					</HStack>
-				</Section>
+					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+						{categoryPreview}
+					</Text>
+					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+				</HStack>
 
-				{/* Notifications */}
-				<Section>
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToNotificationsSettings)]}>
-						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Notifications</Text>
-						<Spacer />
+				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToPaymentSelection)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Payment Method</Text>
+					<Spacer />
 
-						<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
-							{notificationsPreview}
-						</Text>
-						<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
-					</HStack>
-				</Section>
+					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+						{paymentPreview}
+					</Text>
+					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+				</HStack>
+			</Section>
 
-				<Section title="Notes" modifiers={[listRowSeparator('hidden')]}>
-					<TextField
-						key={focusVersion}
-						axis="vertical"
-						defaultValue={draft.notes}
-						onValueChange={draft.setNotes}
-						placeholder="Cancel later"
-						modifiers={[
-							font({ design: 'rounded', size: 17 }),
-							lineLimit(4, { reservesSpace: true }),
-							foregroundStyle(theme.text.primary)
-						]}
-					/>
-				</Section>
+			{/* Notifications */}
+			<Section>
+				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToNotificationsSettings)]}>
+					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Notifications</Text>
+					<Spacer />
 
-				<Timeline />
-			</List>
-		</Host>
+					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
+						{notificationsPreview}
+					</Text>
+					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
+				</HStack>
+			</Section>
+
+			<Section title="Notes" modifiers={[listRowSeparator('hidden')]}>
+				<TextField
+					axis="vertical"
+					defaultValue={draft.notes}
+					onValueChange={draft.setNotes}
+					placeholder="Cancel later"
+					modifiers={[
+						font({ design: 'rounded', size: 17 }),
+						lineLimit(4, { reservesSpace: true }),
+						foregroundStyle(theme.text.primary)
+					]}
+				/>
+			</Section>
+
+			<Timeline />
+		</List>
 	);
 };
 

@@ -1,15 +1,17 @@
 import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import { useHeaderHeight } from '@react-navigation/elements';
+
 import { useCurrencies } from './hooks';
 import { useEntitlement } from '@hooks';
 import { isHeaderSection } from './utils';
-import { useHeaderHeight } from '@react-navigation/elements';
 
 import { FlashList } from '@shopify/flash-list';
 import { Header, SearchBar, CurrencyRow, NoFilters } from './components';
 import Root, { Content, SectionHeaderText } from './select-currency.styles';
 
-import type { RowItem } from './select-currency.d';
 import type { ListRenderItemInfo } from '@shopify/flash-list';
+import type { RowItem, SearchParamsT } from './select-currency.d';
 
 const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 	if (isHeaderSection(item)) {
@@ -23,8 +25,15 @@ const renderRowItem = ({ item, extraData }: ListRenderItemInfo<RowItem>) => {
 	return <CurrencyRow {...rest} isLast={item.isLast} isForbidden={isForbidden} />;
 };
 
-const SelectCurrencyScreen = () => {
+const useIsAllowed = () => {
 	const { tier } = useEntitlement();
+	const { target } = useLocalSearchParams<SearchParamsT>();
+
+	return ['settings_recalc_currency'].includes(target) ? tier.allCurrencies : true;
+};
+
+const SelectCurrencyScreen = () => {
+	const isAllowed = useIsAllowed();
 	const headerHeight = useHeaderHeight();
 	const { sections, freeCurrencies, setSearchQuery } = useCurrencies();
 
@@ -45,7 +54,7 @@ const SelectCurrencyScreen = () => {
 						keyboardShouldPersistTaps="handled"
 						extraData={{
 							freeCurrencies,
-							isAllowed: tier.allCurrencies
+							isAllowed
 						}}
 						ListEmptyComponent={NoFilters}
 						showsVerticalScrollIndicator={false}

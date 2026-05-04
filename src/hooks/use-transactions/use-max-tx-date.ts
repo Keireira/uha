@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { max as maxR } from 'ramda';
-import { advanceDate } from './utils';
+import { addByCycle } from '@lib/date';
 import { useSettingsValue } from '@hooks';
 import { isAfter, isBefore, startOfToday, startOfTomorrow, addYears, endOfMonth } from 'date-fns';
 
@@ -35,7 +35,7 @@ const findMaxTxDate = (subscriptions: PreparedSubscriptionT[], horizonShift: Use
 		const nearestPaymentDate = latest_transaction_date
 			? new Date(latest_transaction_date)
 			: new Date(first_payment_date);
-		let nextDate = advanceDate(nearestPaymentDate, billing_cycle_type, billing_cycle_value);
+		let nextDate = addByCycle(nearestPaymentDate, billing_cycle_type, billing_cycle_value);
 
 		if (isAfter(nextDate, maxHorizon)) {
 			maxHorizon = nextDate;

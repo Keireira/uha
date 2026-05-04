@@ -11,12 +11,14 @@ import type { TenderT } from '@models';
 const getText = (item: TenderT) => [item.title, item.comment ?? ''];
 const mapResultItem = ({ item }: { item: TenderT }) => item;
 
-const NONE_TENDER = {
-	id: null,
+const NONE_TENDER: TenderT = {
+	id: 'c3905427-d934-4142-9fab-5571e3c7a50d',
 	title: 'None',
 	comment: null,
-	emoji: null,
-	color: null
+	emoji: '',
+	symbol: 'chevron.compact.up.chevron.compact.right.chevron.compact.down.chevron.compact.left',
+	is_card: false,
+	color: ''
 };
 
 const useFilter = () => {

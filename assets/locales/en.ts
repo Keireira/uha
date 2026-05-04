@@ -400,13 +400,15 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Search Sources',
-		footer: 'Inhouse results are always shown regardless of these settings.',
 		search: 'Search',
 		primary: 'Primary',
 		language: 'Language',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Our own curated database of brands and subscriptions',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'Use exact site name, such as https://uha.app',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},
@@ -509,6 +511,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	}
 };
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Library',
 	grid: {
 		categories: {
 			title: 'Categories',
@@ -525,6 +528,45 @@ const libraryScreen: LocaleRootT['library'] = {
 		subscriptions: {
 			title: 'Subscriptions',
 			description: 'Browse and edit active plans'
+		}
+	},
+	delete_blocked: {
+		title: "Can't delete",
+		default_category: 'This is system category',
+		category_one: 'Used by 1 subscription',
+		category_other: 'Used by {{count}} subscriptions',
+		service_one: 'Used by 1 subscription',
+		service_other: 'Used by {{count}} subscriptions',
+		payment_one: 'Used by 1 subscription',
+		payment_other: 'Used by {{count}} subscriptions'
+	},
+	details: {
+		save: 'Save',
+		copy: 'Copy',
+		copied: 'Copied',
+		id_copied: 'ID copied',
+		section: {
+			identity: 'Identity',
+			appearance: 'Appearance',
+			other: 'Other',
+			aliases: 'Aliases'
+		},
+		aliases: {
+			add: 'Add alias…'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Custom Title',
+			emoji: 'Emoji',
+			color: 'Color',
+			comment: 'Comment',
+			card: 'Card',
+			category: 'Category',
+			symbol: 'SF Symbol',
+			logo_url: 'Logo URL',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Referral link'
 		}
 	}
 };
@@ -620,7 +662,21 @@ const english: LocaleRootT = {
 		month: 'Month',
 		year: 'Year',
 		in_month: 'In {{month}}',
-		in_year: 'In {{year}}'
+		in_year: 'In {{year}}',
+		in_months: {
+			0: 'In January',
+			1: 'In February',
+			2: 'In March',
+			3: 'In April',
+			4: 'In May',
+			5: 'In June',
+			6: 'In July',
+			7: 'In August',
+			8: 'In September',
+			9: 'In October',
+			10: 'In November',
+			11: 'In December'
+		}
 	},
 	rates: {
 		error: {
@@ -633,6 +689,18 @@ const english: LocaleRootT = {
 	},
 	category: defaultCategories,
 
+	notifications: {
+		title: 'Subscription Reminder',
+		subscription: {
+			today: 'Your subscription payment is due today.',
+			in_days: 'Your subscription payment is due in {{count}} days.'
+		},
+		trial: {
+			today: 'Your subscription trial will end today.',
+			in_days: 'Your subscription trial will end in {{count}} days.'
+		}
+	},
+
 	navbar: {
 		transactions: {
 			title: 'Home',
@@ -642,6 +710,7 @@ const english: LocaleRootT = {
 			open_filters: 'Filters'
 		},
 		library: {
+			root: 'Root',
 			title: 'Library',
 			categories: 'Categories',
 			services: 'Services',

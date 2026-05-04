@@ -39,6 +39,16 @@ export const StoreConfigRow = styled.View`
 	gap: 10px;
 `;
 
+export const DescText = styled(SmallText)`
+	font-size: 13px;
+	color: ${({ theme }) => theme.text.secondary};
+`;
+
+export const DescRow = styled.View`
+	padding: 0 16px 14px 36px;
+	gap: 10px;
+`;
+
 export const ConfigPill = styled.Pressable<{ $color: string }>`
 	flex-direction: row;
 	align-items: center;

@@ -15,7 +15,9 @@ import Root, {
 	ProviderName,
 	StoreConfigRow,
 	ConfigPill,
-	ConfigPillText
+	ConfigPillText,
+	DescRow,
+	DescText
 } from './search-sources.styles';
 import { Switch } from 'react-native';
 
@@ -23,6 +25,12 @@ import type { SourceT } from '@api/soup/soup.d';
 import type { ProviderMeta } from './search-sources.d';
 
 export const PROVIDERS: ProviderMeta[] = [
+	{
+		key: 'inhouse',
+		color_slug: 'pink',
+		labelKey: 'settings.sources.inhouse',
+		subtitleKey: 'settings.sources.inhouse_desc'
+	},
 	{
 		key: 'appstore',
 		color_slug: 'blue',
@@ -38,7 +46,8 @@ export const PROVIDERS: ProviderMeta[] = [
 	{
 		key: 'web',
 		color_slug: 'orange',
-		labelKey: 'settings.sources.web'
+		labelKey: 'settings.sources.web',
+		subtitleKey: 'settings.sources.web_desc'
 	},
 	{
 		key: 'brandfetch',
@@ -78,7 +87,9 @@ const SearchSources = () => {
 		const isEnabled = enabledSources.includes(source);
 		const next = isEnabled ? enabledSources.filter((s) => s !== source) : [...enabledSources, source];
 
-		if (next.length === 0) return;
+		if (!next.length) {
+			return;
+		}
 
 		setSettingsValue('search_sources', next);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -103,6 +114,7 @@ const SearchSources = () => {
 				const isLast = index === PROVIDERS.length - 1;
 
 				const cfg = provider.storeConfig ? storeConfigs[provider.key] : null;
+				const subtitle = provider.subtitleKey ? t(provider.subtitleKey) : null;
 
 				return (
 					<React.Fragment key={provider.key}>
@@ -118,6 +130,12 @@ const SearchSources = () => {
 								onValueChange={() => toggleSource(provider.key)}
 							/>
 						</ProviderRow>
+
+						{subtitle && (
+							<DescRow>
+								<DescText>{subtitle}</DescText>
+							</DescRow>
+						)}
 
 						{provider.storeConfig && isEnabled && cfg && (
 							<StoreConfigRow>

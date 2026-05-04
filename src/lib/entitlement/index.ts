@@ -2,18 +2,14 @@ import { expo as expoConfig } from '@src/../app.json';
 
 export const FREE_TIER = {
 	maxSubscriptions: 5,
-	maxCurrencies: 3,
 	maxHorizon: 2,
-	// hasPremiumAI: false,
 	allCurrencies: false,
 	backup: false
 } as const;
 
 export const UNLIMITED_TIER = {
 	maxSubscriptions: Infinity,
-	maxCurrencies: Infinity,
 	maxHorizon: 10,
-	// hasPremiumAI: true,
 	allCurrencies: true,
 	backup: true
 } as const;

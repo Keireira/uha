@@ -1,4 +1,4 @@
-import type { SFSymbol } from 'sf-symbols-typescript';
+import type { SFSymbol } from 'expo-symbols';
 
 export type SymbolSection = {
 	title: string;

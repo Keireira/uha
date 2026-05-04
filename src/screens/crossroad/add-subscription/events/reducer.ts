@@ -1,3 +1,6 @@
+import { clamp } from 'ramda';
+import { differenceInDays, parseISO } from 'date-fns';
+
 import {
 	formatISODate,
 	selectDefaultTrialStartDate,
@@ -97,7 +100,8 @@ export const createSubscriptionDraft = (
 		billing_cycle_type,
 		billing_cycle_value,
 		notify_enabled: false,
-		notify_days_before: [1],
+		notify_days_before: 1,
+		notify_trial_end: false,
 		notes: '',
 		timeline: [
 			createFirstPaymentEvent({
@@ -120,30 +124,26 @@ export const patchDraft = (draft: SubscriptionDraftT, patch: Partial<Subscriptio
 export const setLogoSymbol = (
 	draft: SubscriptionDraftT,
 	symbol: SubscriptionDraftT['logo']['symbol']
-): SubscriptionDraftT => {
-	return {
-		...draft,
-		logo: {
-			...draft.logo,
-			image_uri: undefined,
-			symbol
-		}
-	};
-};
+): SubscriptionDraftT => ({
+	...draft,
+	logo: {
+		...draft.logo,
+		image_uri: undefined,
+		symbol
+	}
+});
 
 export const setLogoImage = (
 	draft: SubscriptionDraftT,
 	image_uri: SubscriptionDraftT['logo']['image_uri']
-): SubscriptionDraftT => {
-	return {
-		...draft,
-		logo: {
-			...draft.logo,
-			image_uri,
-			symbol: undefined
-		}
-	};
-};
+): SubscriptionDraftT => ({
+	...draft,
+	logo: {
+		...draft.logo,
+		image_uri,
+		symbol: undefined
+	}
+});
 
 export const setSubscriptionColor = (
 	draft: SubscriptionDraftT,
@@ -280,19 +280,27 @@ export const setCurrencyId = (draft: SubscriptionDraftT, currency_id: CurrencyT[
 
 export const enableTrial = (
 	draft: SubscriptionDraftT,
-	{ idFactory, duration_type = 'days', duration_value = 7 }: EnableTrialParamsT
+	{ idFactory, duration_type = 'days', duration_value }: EnableTrialParamsT
 ): SubscriptionDraftT => {
-	if (selectTrialEvent(draft.timeline)) return draft;
+	if (selectTrialEvent(draft.timeline)) {
+		return draft;
+	}
 
 	const firstPayment = selectFirstPaymentEvent(draft.timeline);
-	const date = firstPayment ? selectDefaultTrialStartDate(firstPayment.date, duration_type, duration_value) : today();
+	const durationValue = clamp(
+		1,
+		Number.POSITIVE_INFINITY,
+		firstPayment ? (duration_value ?? differenceInDays(parseISO(firstPayment.date), new Date())) : 7
+	);
+
+	const date = firstPayment ? selectDefaultTrialStartDate(firstPayment.date, duration_type, durationValue) : today();
 
 	const trial: TrialEventT = {
 		id: idFactory(),
 		type: 'trial',
 		date,
 		duration_type,
-		duration_value
+		duration_value: durationValue
 	};
 
 	return {

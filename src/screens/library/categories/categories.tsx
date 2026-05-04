@@ -1,38 +1,48 @@
 import React, { useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
 
-import { useAccent } from '@hooks';
-
 import db from '@db';
-import { asc } from 'drizzle-orm';
-import { categoriesTable } from '@db/schema';
+import { asc, eq, sql } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { categoriesTable, subscriptionsTable } from '@db/schema';
 
-import { openLibraryDetails } from '../common';
+import { useAccent } from '@hooks';
+import { openLibraryDetails } from '../shared';
 
 import {
 	font,
+	frame,
+	shapes,
 	padding,
 	listStyle,
+	lineLimit,
+	contentShape,
+	onTapGesture,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
-	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { LogoView } from '@ui';
+import Toast from 'react-native-toast-message';
+import { swipeActions } from '@modules/expo-ui-modifiers';
+import { Host, Text, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
 
+import type { CategoryT } from '@models';
+import type { SFSymbol } from 'expo-symbols';
 import type { TextInputChangeEvent } from 'react-native';
 
-type CategoryT = typeof categoriesTable.$inferSelect;
-
-const mapResultItem = ({ item }: { item: CategoryT }) => item;
+type MapResult = {
+	item: CategoryT;
+};
 
 const Categories = () => {
-	const router = useRouter();
+	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -44,11 +54,12 @@ const Categories = () => {
 		category.emoji ?? '',
 		t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })
 	];
+
 	const matches = useFuzzySearchList({
+		getText,
 		list: data,
 		queryText: searchQuery,
-		getText,
-		mapResultItem
+		mapResultItem: ({ item }: MapResult) => item
 	});
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
@@ -57,18 +68,41 @@ const Categories = () => {
 
 	const categories = searchQuery ? matches : data;
 
+	const deleteCategory = (slug: string) => async () => {
+		const [{ count = 0 } = {}] = await db
+			.select({ count: sql<number>`count(*)`.mapWith(Number) })
+			.from(subscriptionsTable)
+			.where(eq(subscriptionsTable.category_slug, slug));
+
+		if (count > 0) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.category', { count })
+			});
+			return;
+		}
+
+		const [{ is_system: isSystem } = {}] = await db
+			.select({ is_system: categoriesTable.is_system })
+			.from(categoriesTable)
+			.where(eq(categoriesTable.slug, slug))
+			.limit(1);
+
+		if (isSystem) {
+			Toast.show({
+				type: 'error',
+				text1: t('library.delete_blocked.title'),
+				text2: t('library.delete_blocked.default_category')
+			});
+			return;
+		}
+
+		await db.delete(categoriesTable).where(eq(categoriesTable.slug, slug));
+	};
+
 	return (
 		<>
-			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					variant="plain"
-					icon="chevron.backward"
-					accessibilityLabel="Go back"
-					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
-					tintColor={settingAccent}
-				/>
-			</Stack.Toolbar>
-
 			<Host style={{ flex: 1 }}>
 				<List
 					modifiers={[
@@ -80,7 +114,7 @@ const Categories = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{categories.map((category) => {
-							const title = category.title ?? t(`category.${category.slug}`, { defaultValue: category.title });
+							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
 
 							const openDetails = () => {
 								openLibraryDetails('category', category.slug, title);
@@ -89,14 +123,44 @@ const Categories = () => {
 							return (
 								<HStack
 									key={category.slug}
-									spacing={14}
-									modifiers={[padding({ vertical: 8, horizontal: 0 }), onTapGesture(openDetails)]}
+									spacing={16}
+									modifiers={[
+										onTapGesture(openDetails),
+										contentShape(shapes.rectangle()),
+										padding({ vertical: 6, horizontal: 0 }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
+										swipeActions({
+											actions: [
+												{
+													id: 'delete',
+													systemImage: 'trash',
+													tint: theme.semantic.error,
+													onPress: deleteCategory(category.slug)
+												}
+											]
+										})
+									]}
 								>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>
-										{category.emoji ? `${category.emoji} ${title}` : title}
+									<RNHostView matchContents>
+										<LogoView
+											key={`${category.slug}-icon`}
+											symbolName={category.symbol as SFSymbol}
+											name={category.title || ''}
+											emoji={category.emoji}
+											color={category.color}
+											size={48}
+										/>
+									</RNHostView>
+
+									<Text
+										modifiers={[
+											font({ size: 20, design: 'rounded', weight: 'medium' }),
+											foregroundStyle(theme.text.primary),
+											lineLimit(1)
+										]}
+									>
+										{title}
 									</Text>
-									<Spacer />
-									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{category.color ?? ''}</Text>
 								</HStack>
 							);
 						})}

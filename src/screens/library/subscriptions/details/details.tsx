@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { asc, eq } from 'drizzle-orm';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 
-import { useAccent, useSettingsValue } from '@hooks';
 import db from '@db';
-import { regenerateAllTxs } from '@hooks/setup';
+import { asc, eq } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { categoriesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
 
-import { normalizeOptional, parsePositiveInt } from '../../common';
+import { regenerateAllTxs } from '@hooks/setup';
+import { useAccent, useSettingsValue } from '@hooks';
+import { reconcileSubscription } from '@lib/notifications';
+import { normalizeOptional, parsePositiveInt } from '../../shared';
 
 import { listStyle, scrollDismissesKeyboard, tag } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, Text, TextField, Picker, Toggle, Button } from '@expo/ui/swift-ui';
 
-type BillingCycleT = 'days' | 'weeks' | 'months' | 'years';
+import type { BillingCycleT } from '@screens/crossroad/add-subscription/events';
 
 const cycleTypes: BillingCycleT[] = ['days', 'weeks', 'months', 'years'];
 const noPaymentMethod = '__none__';
 
 const SubscriptionDetails = () => {
+	const router = useRouter();
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const settingAccent = useAccent();
 	const maxHorizon = useSettingsValue<number>('max_horizon');
@@ -82,13 +84,23 @@ const SubscriptionDetails = () => {
 
 		const horizonYears = typeof maxHorizon === 'number' && Number.isFinite(maxHorizon) ? maxHorizon : 2;
 		await regenerateAllTxs(horizonYears);
+		await reconcileSubscription(subscription.id);
+	};
+
+	const closeModal = () => {
+		router.back();
 	};
 
 	return (
 		<>
+			<Stack.Toolbar placement="left">
+				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
+			</Stack.Toolbar>
+
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={save} tintColor={settingAccent} />
 			</Stack.Toolbar>
+
 			<Host style={{ flex: 1 }}>
 				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
 					<Section title="Subscription">

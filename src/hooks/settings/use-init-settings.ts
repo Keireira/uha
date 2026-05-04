@@ -97,7 +97,7 @@ const useInitSettings = () => {
 			appstore_country: locale.regionCode || 'US',
 			playstore_country: locale.regionCode || 'US',
 			playstore_lang: locale.languageCode || 'en',
-			search_sources: ['inhouse', 'appstore', 'playstore', 'web', 'brandfetch', 'logo.dev']
+			search_sources: ['inhouse', 'appstore', 'web']
 		};
 
 		const row = db.select().from(userTable).limit(1).get();

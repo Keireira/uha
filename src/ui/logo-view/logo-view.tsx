@@ -29,16 +29,16 @@ const Fallback = ({ symbolName, emoji, initials, size, color }: FallbackProps) =
 		return <SymbolView name={symbolName} size={contentSize} tintColor={color ?? undefined} />;
 	}
 
-	if (initials) {
-		return <H3 $align="center">{initials}</H3>;
-	}
-
 	if (emoji) {
 		return (
 			<Emoji $align="center" $size={contentSize}>
 				{emoji}
 			</Emoji>
 		);
+	}
+
+	if (initials) {
+		return <H3 $align="center">{initials}</H3>;
 	}
 
 	return <SymbolView name="questionmark" size={contentSize} tintColor={color ?? undefined} />;

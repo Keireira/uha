@@ -11,6 +11,7 @@ import { NativeTabs } from 'expo-router/unstable-native-tabs';
 import type { TabContextMenuActionEvent } from '@modules/tab-context-menu';
 
 type LibraryRouteT =
+	| '/(tabs)/library'
 	| '/(tabs)/library/categories-list'
 	| '/(tabs)/library/services-list'
 	| '/(tabs)/library/payments-list'
@@ -73,7 +74,8 @@ const TabLayout = () => {
 					{ id: 'lib_categories', title: t('navbar.library.categories'), icon: 'square.grid.2x2' },
 					{ id: 'lib_services', title: t('navbar.library.services'), icon: 'building.2' },
 					{ id: 'lib_payments', title: t('navbar.library.payments'), icon: 'creditcard' },
-					{ id: 'lib_subscriptions', title: t('navbar.library.subscriptions'), icon: 'arrow.triangle.2.circlepath' }
+					{ id: 'lib_subscriptions', title: t('navbar.library.subscriptions'), icon: 'arrow.triangle.2.circlepath' },
+					{ id: 'lib_root', title: t('navbar.library.root'), icon: 'house' }
 				]
 			},
 			{
@@ -100,6 +102,11 @@ const TabLayout = () => {
 
 				case 'open_filters': {
 					router.push('/(tabs)/transactions/filters');
+					break;
+				}
+
+				case 'lib_root': {
+					openLibraryRoute('/(tabs)/library');
 					break;
 				}
 
