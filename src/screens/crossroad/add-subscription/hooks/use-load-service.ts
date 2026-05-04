@@ -43,7 +43,12 @@ const DEFAULT_SERVICE: ServiceT = {
 	domains: [],
 	social_links: {},
 	aliases: [],
-	category_slug: ''
+	category_slug: '',
+	emoji: null,
+	initial_emoji: null,
+	initial_color: null,
+	initial_symbol: null,
+	initial_logo_url: null
 };
 
 // I can't access extended data for service via brandfetch or logo.dev APIs since their heavy paywall restrictions.
@@ -149,7 +154,12 @@ const mergeWithLocalFallbacks = (external: ServiceT, local: ServiceT | null): Se
 		domains: hasItems(external.domains) ? external.domains : local.domains,
 		social_links: hasKeys(external.social_links) ? external.social_links : local.social_links,
 		aliases: hasItems(external.aliases) ? external.aliases : local.aliases,
-		category_slug: isBlank(external.category_slug) ? local.category_slug : external.category_slug
+		category_slug: isBlank(external.category_slug) ? local.category_slug : external.category_slug,
+		emoji: local.emoji,
+		initial_emoji: local.initial_emoji,
+		initial_color: local.initial_color,
+		initial_symbol: local.initial_symbol,
+		initial_logo_url: local.initial_logo_url
 	};
 };
 
@@ -181,7 +191,12 @@ const fetchFromRemote = async (params: LoadedRouteParams): Promise<ServiceT | nu
 		domains: response.domains,
 		social_links: response.social_links,
 		aliases: response.alternative_names,
-		category_slug: response.category_slug
+		category_slug: response.category_slug,
+		emoji: null,
+		initial_emoji: null,
+		initial_color: null,
+		initial_symbol: null,
+		initial_logo_url: null
 	};
 };
 

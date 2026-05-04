@@ -1,41 +1,28 @@
 import { create } from 'zustand';
 
-import type { SFSymbol } from 'expo-symbols';
+import type { ServiceEditParams, ServiceEditState } from '@screens/library/services';
 
-type ServiceEditState = {
-	id: string;
-	slug: string;
-	title: string;
-	color: string;
-	logo_url: string;
-	symbol: SFSymbol | '';
-	bundle_id: string;
-	category_slug: string;
-	aliases: string[];
-
-	init: (data: Partial<Omit<ServiceEditState, 'init' | 'patch' | 'reset'>>) => void;
-	patch: (patch: Partial<Omit<ServiceEditState, 'init' | 'patch' | 'reset'>>) => void;
-	reset: () => void;
-};
-
-const INITIAL: Omit<ServiceEditState, 'init' | 'patch' | 'reset'> = {
-	id: '',
+const INITIAL_PARAMS: ServiceEditParams = {
 	slug: '',
 	title: '',
-	color: '',
-	logo_url: '',
-	symbol: '',
 	bundle_id: '',
 	category_slug: '',
-	aliases: []
+	aliases: [],
+
+	color: '',
+	emoji: undefined,
+	symbol: undefined,
+	logo_url: undefined
 };
 
 const useEditServiceStore = create<ServiceEditState>((set) => ({
-	...INITIAL,
+	...INITIAL_PARAMS,
 
-	init: (data) => set({ ...INITIAL, ...data }),
-	patch: (patch) => set(patch),
-	reset: () => set(INITIAL)
+	actions: {
+		init: (data) => set({ ...INITIAL_PARAMS, ...data }),
+		patch: (patch) => set(patch),
+		reset: () => set(INITIAL_PARAMS)
+	}
 }));
 
 export default useEditServiceStore;

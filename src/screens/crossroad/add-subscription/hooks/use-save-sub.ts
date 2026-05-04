@@ -62,7 +62,7 @@ const getAmount = (event: TimelineEventT): number => {
 	throw new Error(`Missing amount for ${event.type} event`);
 };
 
-const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, categorySlug: string): ServiceInsertT => {
+const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, categorySlug: string) => {
 	const symbol = draft.logo.symbol ?? null;
 
 	return {
@@ -76,7 +76,12 @@ const normalizeService = (service: ServiceT, draft: SubscriptionDraftT, category
 		domains: service.domains ?? [],
 		social_links: service.social_links ?? {},
 		aliases: service.aliases ?? [],
-		category_slug: categorySlug
+		category_slug: categorySlug,
+
+		initial_emoji: service.emoji,
+		initial_color: service.color,
+		initial_symbol: service.symbol,
+		initial_logo_url: service.logo_url
 	};
 };
 
@@ -206,7 +211,11 @@ const useSaveSubscriptions = () => {
 						domains: serviceRow.domains,
 						social_links: serviceRow.social_links,
 						aliases: serviceRow.aliases,
-						category_slug: serviceRow.category_slug
+						category_slug: serviceRow.category_slug,
+						initial_emoji: serviceRow.initial_emoji,
+						initial_color: serviceRow.initial_color,
+						initial_symbol: serviceRow.initial_symbol,
+						initial_logo_url: serviceRow.initial_logo_url
 					}
 				});
 

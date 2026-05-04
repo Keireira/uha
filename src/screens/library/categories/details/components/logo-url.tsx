@@ -34,7 +34,7 @@ const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl }: Props) => {
 			modifiers={[
 				contentShape(shapes.rectangle()),
 				onTapGesture(openImagePicker),
-				swipeActions({
+				...swipeActions({
 					actions: [
 						{
 							id: 'delete',

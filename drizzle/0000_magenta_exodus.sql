@@ -56,6 +56,10 @@ CREATE TABLE `services` (
 	`color` text NOT NULL,
 	`symbol` text,
 	`logo_url` text,
+	`initial_emoji` text,
+	`initial_color` text,
+	`initial_symbol` text,
+	`initial_logo_url` text,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

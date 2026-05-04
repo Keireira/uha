@@ -46,10 +46,13 @@ export type SwipeAction = {
 	label?: string;
 	/** When `false`, the action is omitted. Defaults to `true`. */
 	enabled?: boolean;
+	/** Per-action edge. Overrides the top-level `edge` default. */
+	edge?: SwipeEdge;
 };
 
 export type SwipeActionsConfig = {
 	actions: SwipeAction[];
+	/** Default edge for actions that don't specify their own. Defaults to `'trailing'`. */
 	edge?: SwipeEdge;
 	allowsFullSwipe?: boolean;
 };
@@ -64,24 +67,27 @@ const stripOnPress = (action: SwipeAction) => ({
 
 export const swipeActions = ({
 	actions,
-	edge = 'trailing',
+	edge: defaultEdge = 'trailing',
 	allowsFullSwipe = true
-}: SwipeActionsConfig): ModifierConfig => {
+}: SwipeActionsConfig): ModifierConfig[] => {
 	const visible = actions.filter((a) => a.enabled !== false);
 	const handlers = new Map(visible.map((a) => [a.id, a.onPress]));
 
-	return createModifierWithEventListener(
-		'swipeActions',
-		(payload: { id?: string }) => {
-			if (payload?.id) {
-				handlers.get(payload.id)?.();
-			}
-		},
-		{
-			edge,
-			allowsFullSwipe,
-			actions: visible.map(stripOnPress)
-		}
+	const byEdge = new Map<SwipeEdge, SwipeAction[]>();
+	for (const action of visible) {
+		const edge = action.edge ?? defaultEdge;
+		if (!byEdge.has(edge)) byEdge.set(edge, []);
+		byEdge.get(edge)!.push(action);
+	}
+
+	return Array.from(byEdge.entries()).map(([edge, edgeActions]) =>
+		createModifierWithEventListener(
+			'swipeActions',
+			(payload: { id?: string }) => {
+				if (payload?.id) handlers.get(payload.id)?.();
+			},
+			{ edge, allowsFullSwipe, actions: edgeActions.map(stripOnPress) }
+		)
 	);
 };
 

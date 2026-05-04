@@ -4,38 +4,31 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import { useAccent } from '@hooks';
+import { withAlpha } from '@lib/colors';
 
-import {
-	font,
-	shapes,
-	contentShape,
-	onTapGesture,
-	foregroundStyle,
-	multilineTextAlignment
-} from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Text, Image, HStack, LabeledContent } from '@expo/ui/swift-ui';
+import { font, foregroundStyle, multilineTextAlignment, onTapGesture } from '@expo/ui/swift-ui/modifiers';
 
-import type { CategoryEditParams } from '@screens/library/categories';
+import type { ServiceEditParams } from '@screens/library/services';
 
 type Props = {
-	symbol: CategoryEditParams['symbol'];
-	color: CategoryEditParams['color'];
+	symbol: ServiceEditParams['symbol'];
+	color: ServiceEditParams['color'];
 	resetSymbol: () => void;
+	resetToInitialSymbol: () => void;
 };
 
-const Symbol = ({ symbol, color, resetSymbol }: Props) => {
-	const theme = useTheme();
+const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => {
 	const router = useRouter();
 	const { t } = useTranslation();
+	const theme = useTheme();
 	const settingAccent = useAccent();
 
 	const openLogoPicker = () => {
 		router.push({
 			pathname: '/(pickers)/select-symbol-logo',
-			params: {
-				target: 'library_category_logo'
-			}
+			params: { target: 'library_service_logo' }
 		});
 	};
 
@@ -43,10 +36,16 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 		<LabeledContent
 			label={t('library.details.fields.symbol')}
 			modifiers={[
-				contentShape(shapes.rectangle()),
 				onTapGesture(openLogoPicker),
 				...swipeActions({
 					actions: [
+						{
+							id: 'reset',
+							edge: 'leading',
+							systemImage: 'arrow.counterclockwise',
+							tint: settingAccent,
+							onPress: resetToInitialSymbol
+						},
 						{
 							id: 'delete',
 							enabled: Boolean(symbol),
@@ -73,6 +72,7 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 						—
 					</Text>
 				)}
+				<Image systemName="chevron.right" size={12} color={withAlpha(settingAccent, 0.6)} />
 			</HStack>
 		</LabeledContent>
 	);

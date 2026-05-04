@@ -27,7 +27,12 @@ export const servicesTable = sqliteTable(
 		emoji: text(), // 🍔 | 🚗 | ...
 		color: text().notNull(), // #FF0000 | #00FF00 | ...
 		symbol: text(), // SF Symbol name
-		logo_url: text() // URL of the logo
+		logo_url: text(), // URL of the logo
+
+		initial_emoji: text(),
+		initial_color: text(),
+		initial_symbol: text(),
+		initial_logo_url: text()
 	},
 	(table) => [index('services_category_slug_idx').on(table.category_slug), index('services_title_idx').on(table.title)]
 );

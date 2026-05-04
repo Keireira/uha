@@ -99,7 +99,7 @@ const Timeline = () => {
 									frame({ height: 70 }),
 									listRowInsets({ leading: 16, trailing: 16 }),
 									deleteDisabled(event.type === 'first_payment'),
-									swipeActions({
+									...swipeActions({
 										actions: [
 											{
 												id: 'delete',

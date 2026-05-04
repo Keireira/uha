@@ -54,7 +54,7 @@ const useParams = (): ParamsBinding => {
 			color: state.color,
 			image_uri: state.logo_url,
 			symbol: state.symbol,
-			patch: state.patch
+			patch: state.actions.patch
 		}))
 	);
 

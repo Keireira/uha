@@ -45,7 +45,7 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 			modifiers={[
 				contentShape(shapes.rectangle()),
 				onTapGesture(openLogoPicker),
-				swipeActions({
+				...swipeActions({
 					actions: [
 						{
 							id: 'delete',

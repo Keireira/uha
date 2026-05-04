@@ -66,7 +66,9 @@ const TxsList = ({ transactions }: Props) => {
 				text1: t('transactions.refresh_success.title'),
 				text2: t('transactions.refresh_success.description')
 			});
-		} catch {
+		} catch (err) {
+			console.log(err);
+
 			Toast.show({
 				type: 'error',
 				text1: t('rates.error.title'),

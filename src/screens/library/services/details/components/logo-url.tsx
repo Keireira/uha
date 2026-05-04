@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
@@ -7,7 +6,10 @@ import { useAccent } from '@hooks';
 
 import {
 	font,
+	frame,
 	shapes,
+	resizable,
+	clipShape,
 	contentShape,
 	onTapGesture,
 	foregroundStyle,
@@ -16,43 +18,41 @@ import {
 import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Text, Image, HStack, LabeledContent } from '@expo/ui/swift-ui';
 
-import type { CategoryEditParams } from '@screens/library/categories';
+import type { ServiceEditParams } from '@screens/library/services';
 
 type Props = {
-	symbol: CategoryEditParams['symbol'];
-	color: CategoryEditParams['color'];
-	resetSymbol: () => void;
+	logoUrl: ServiceEditParams['logo_url'];
+	openImagePicker: () => void;
+	resetLogoUrl: () => void;
+	resetToInitialLogoUrl: () => void;
 };
 
-const Symbol = ({ symbol, color, resetSymbol }: Props) => {
+const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl, resetToInitialLogoUrl }: Props) => {
 	const theme = useTheme();
-	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 
-	const openLogoPicker = () => {
-		router.push({
-			pathname: '/(pickers)/select-symbol-logo',
-			params: {
-				target: 'library_category_logo'
-			}
-		});
-	};
-
 	return (
 		<LabeledContent
-			label={t('library.details.fields.symbol')}
+			label={t('library.details.fields.logo_url')}
 			modifiers={[
 				contentShape(shapes.rectangle()),
-				onTapGesture(openLogoPicker),
+				onTapGesture(openImagePicker),
 				...swipeActions({
 					actions: [
 						{
+							id: 'reset',
+							edge: 'leading',
+							systemImage: 'arrow.counterclockwise',
+							tint: settingAccent,
+							onPress: resetToInitialLogoUrl
+						},
+						{
 							id: 'delete',
-							enabled: Boolean(symbol),
+							enabled: Boolean(logoUrl),
 							systemImage: 'pencil.and.outline',
 							tint: theme.semantic.error,
-							onPress: resetSymbol,
+							onPress: resetLogoUrl,
 							label: 'Clear'
 						}
 					]
@@ -60,8 +60,11 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 			]}
 		>
 			<HStack spacing={8}>
-				{symbol ? (
-					<Image systemName={symbol} size={22} color={color || settingAccent} />
+				{logoUrl ? (
+					<Image
+						uiImage={logoUrl}
+						modifiers={[resizable(), frame({ width: 28, height: 28 }), clipShape('roundedRectangle')]}
+					/>
 				) : (
 					<Text
 						modifiers={[
@@ -78,4 +81,4 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 	);
 };
 
-export default Symbol;
+export default LogoUrl;
