@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -80,11 +80,12 @@ const formatTrial = (type: BillingCycleT, value: number) => {
 };
 
 type Props = {
+	syncEpoch: number;
 	canSyncLocalService: boolean;
 	onSyncLocalService: () => void;
 };
 
-const MasterPane = ({ canSyncLocalService, onSyncLocalService }: Props) => {
+const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -196,6 +197,7 @@ const MasterPane = ({ canSyncLocalService, onSyncLocalService }: Props) => {
 				</RNHostView>
 
 				<TextField
+					key={`title-${syncEpoch}`}
 					defaultValue={draft.custom_name}
 					onValueChange={draft.setTitle}
 					placeholder="Service name"
