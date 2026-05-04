@@ -398,13 +398,15 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Источники поиска',
-		footer: 'Верифицированные результаты отображаются всегда, независимо от этих настроек.',
 		search: 'Поиск',
 		primary: 'Основные',
 		language: 'Язык',
+		inhouse: 'Uha API',
+		inhouse_desc: 'Наша собственная база брендов и подписок',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'Используйте точное название сайта, например https://uha.app',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},
@@ -508,6 +510,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Библиотека',
 	grid: {
 		categories: {
 			title: 'Категории',
@@ -524,6 +527,51 @@ const libraryScreen: LocaleRootT['library'] = {
 		subscriptions: {
 			title: 'Подписки',
 			description: 'Просмотр и редактирование планов'
+		}
+	},
+	delete_blocked: {
+		title: 'Нельзя удалить',
+		default_category: 'Нельзя удалить системную категорию',
+		category_one: 'Используется в {{count}} подписке',
+		category_few: 'Используется в {{count}} подписках',
+		category_many: 'Используется в {{count}} подписках',
+		category_other: 'Используется в {{count}} подписках',
+		service_one: 'Используется в {{count}} подписке',
+		service_few: 'Используется в {{count}} подписках',
+		service_many: 'Используется в {{count}} подписках',
+		service_other: 'Используется в {{count}} подписках',
+		payment_one: 'Используется в {{count}} подписке',
+		payment_few: 'Используется в {{count}} подписках',
+		payment_many: 'Используется в {{count}} подписках',
+		payment_other: 'Используется в {{count}} подписках'
+	},
+	details: {
+		save: 'Сохранить',
+		copy: 'Скопировать',
+		copied: 'Скопировано',
+		id_copied: 'ID скопирован',
+		section: {
+			identity: 'Идентификация',
+			appearance: 'Внешний вид',
+			other: 'Прочее',
+			aliases: 'Псевдонимы'
+		},
+		aliases: {
+			add: 'Добавить псевдоним…'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Своё название',
+			emoji: 'Эмодзи',
+			color: 'Цвет',
+			comment: 'Комментарий',
+			card: 'Это карта',
+			category: 'Категория',
+			symbol: 'SF Symbol',
+			logo_url: 'URL логотипа',
+			bundle_id: 'Bundle ID',
+			ref_link: 'Реферальная ссылка'
 		}
 	}
 };
@@ -614,7 +662,21 @@ const russian: LocaleRootT = {
 		month: 'Месяц',
 		year: 'Год',
 		in_month: 'В {{month}}',
-		in_year: 'В {{year}}'
+		in_year: 'В {{year}}',
+		in_months: {
+			0: 'В Январе',
+			1: 'В Феврале',
+			2: 'В Марте',
+			3: 'В Апреле',
+			4: 'В Мае',
+			5: 'В Июне',
+			6: 'В Июле',
+			7: 'В Августе',
+			8: 'В Сентябре',
+			9: 'В Октябре',
+			10: 'В Ноябре',
+			11: 'В Декабре'
+		}
 	},
 	rates: {
 		error: {
@@ -627,6 +689,18 @@ const russian: LocaleRootT = {
 	},
 	category: defaultCategories,
 
+	notifications: {
+		title: 'Напоминание о подписке',
+		subscription: {
+			today: 'Срок оплаты подписки — сегодня.',
+			in_days: 'Срок оплаты подписки наступит через {{count}} дн.'
+		},
+		trial: {
+			today: 'Пробный период подписки заканчивается сегодня.',
+			in_days: 'Пробный период подписки закончится через {{count}} дн.'
+		}
+	},
+
 	navbar: {
 		transactions: {
 			title: 'Главная',
@@ -636,6 +710,7 @@ const russian: LocaleRootT = {
 			open_filters: 'Фильтры'
 		},
 		library: {
+			root: 'Корень',
 			title: 'Библиотека',
 			categories: 'Категории',
 			services: 'Сервисы',

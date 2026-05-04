@@ -1,7 +1,9 @@
 import * as Crypto from 'expo-crypto';
-import { eq, inArray } from 'drizzle-orm';
 
 import db from '@db';
+import { eq, inArray } from 'drizzle-orm';
+import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
+
 import { useGenerateTxs } from '@hooks/setup';
 import {
 	sortTimeline,
@@ -10,7 +12,7 @@ import {
 	selectCancellationEvent,
 	selectFirstPaymentEvent
 } from '@screens/crossroad/add-subscription/events';
-import { categoriesTable, currenciesTable, servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
+import { reconcileSubscription } from '@lib/notifications';
 
 import type { ServiceT, SubscriptionT, CurrencyT } from '@models';
 import type { SubscriptionDraftT, TimelineEventT } from '@screens/crossroad/add-subscription/events';
@@ -181,7 +183,8 @@ const useSaveSubscriptions = () => {
 			cancellation_date: cancellation?.date ?? null,
 			notes: draft.notes.trim() || null,
 			notify_enabled: draft.notify_enabled,
-			notify_days_before: JSON.stringify(draft.notify_days_before)
+			notify_days_before: draft.notify_days_before,
+			notify_trial_end: draft.notify_trial_end
 		};
 
 		const timelineRows = sortTimeline(draft.timeline).map((event) =>
@@ -217,6 +220,7 @@ const useSaveSubscriptions = () => {
 		});
 
 		await generateSubscriptionTxs(subscription);
+		await reconcileSubscription(subscriptionId);
 
 		return subscriptionId;
 	};

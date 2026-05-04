@@ -8,14 +8,16 @@ import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { MIN_EVENT_DATE, formatISODate, selectFirstPaymentDate } from '@screens/crossroad/add-subscription/events';
 
 import { Host, DatePicker } from '@expo/ui/swift-ui';
+import { locale, firstWeekday } from '@modules/expo-ui-modifiers';
 import { tint, datePickerStyle } from '@expo/ui/swift-ui/modifiers';
 
 import type { UserT } from '@models';
 
 const Calendar = () => {
-	const [locale] = useLocales();
+	const [activeLocale] = useLocales();
 	const settingAccent = useAccent();
 	const maxHorizon = useSettingsValue<UserT['max_horizon']>('max_horizon');
+	const firstWeekdayValue = useSettingsValue<UserT['first_day']>('first_day');
 
 	const { firstPaymentDate, setFirstPaymentDate } = useDraftStore(
 		useShallow((state) => ({
@@ -39,8 +41,12 @@ const Calendar = () => {
 				displayedComponents={['date']}
 				onDateChange={onDateChangeHd}
 				range={{ start: MIN_EVENT_DATE, end: maxEventDate }}
-				modifiers={[datePickerStyle('graphical'), tint(settingAccent)]}
-				locale={locale?.languageTag ?? 'en-US'}
+				modifiers={[
+					tint(settingAccent),
+					datePickerStyle('graphical'),
+					firstWeekday(firstWeekdayValue),
+					locale(activeLocale?.languageTag ?? 'en-US')
+				]}
 			/>
 		</Host>
 	);

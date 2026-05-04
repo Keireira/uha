@@ -1,15 +1,6 @@
-import {
-	addDays,
-	addMonths,
-	addWeeks,
-	addYears,
-	format,
-	parseISO,
-	subDays,
-	subMonths,
-	subWeeks,
-	subYears
-} from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import { addByCycle, subByCycle } from '@lib/date';
+
 import type { CurrencyT } from '@models';
 
 import { BILLING_PRICE_EVENT_TYPES, EVENT_ORDER } from './meta';
@@ -26,32 +17,6 @@ import type {
 	TimelineEventT,
 	TrialEventT
 } from './events.d';
-
-export const addByCycle = (base: Date, type: BillingCycleT, value: number): Date => {
-	switch (type) {
-		case 'days':
-			return addDays(base, value);
-		case 'weeks':
-			return addWeeks(base, value);
-		case 'months':
-			return addMonths(base, value);
-		case 'years':
-			return addYears(base, value);
-	}
-};
-
-export const subByCycle = (base: Date, type: BillingCycleT, value: number): Date => {
-	switch (type) {
-		case 'days':
-			return subDays(base, value);
-		case 'weeks':
-			return subWeeks(base, value);
-		case 'months':
-			return subMonths(base, value);
-		case 'years':
-			return subYears(base, value);
-	}
-};
 
 export const formatISODate = (date: Date): ISODateStringT => format(date, 'yyyy-MM-dd');
 

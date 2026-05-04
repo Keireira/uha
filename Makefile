@@ -1,4 +1,4 @@
-.PHONY: rm fix dev dev-logs build-release migrate migrate-custom
+.PHONY: rm fix pod dev dev-logs build-release migrate migrate-custom
 
 rm:
 	rm -rf ./node_modules
@@ -9,6 +9,9 @@ rm:
 
 fix:
 	pnpm expo install expo@latest --fix
+
+pod:
+	cd ./ios && pod install
 
 dev:
 	pnpm expo run:ios --device

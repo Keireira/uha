@@ -1,88 +1,98 @@
 import React, { useState } from 'react';
-import { asc, eq } from 'drizzle-orm';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-import { useAccent } from '@hooks';
 import db from '@db';
-import { categoriesTable, servicesTable, subscriptionsTable, tendersTable } from '@db/schema';
+import { asc, eq } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { servicesTable, subscriptionsTable, timelineEventsTable } from '@db/schema';
 
-import { openLibraryDetails } from '../common';
+import { openLibraryDetails } from '../shared';
+import { regenerateAllTxs } from '@hooks/setup';
+import { useAccent, useSettingsValue } from '@hooks';
+import { removeNotificationsFor } from '@lib/notifications';
 
 import {
 	font,
+	frame,
+	shapes,
 	padding,
 	listStyle,
+	lineLimit,
+	contentShape,
+	onTapGesture,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
-	onTapGesture,
 	scrollTargetBehavior,
 	scrollDismissesKeyboard,
 	scrollContentBackground
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, Text, HStack, List, Section, Spacer } from '@expo/ui/swift-ui';
+import { LogoView } from '@ui';
+import { swipeActions } from '@modules/expo-ui-modifiers';
+import { Host, Text, HStack, VStack, List, Section, RNHostView } from '@expo/ui/swift-ui';
 
+import type { SFSymbol } from 'expo-symbols';
+import type { SubscriptionT, ServiceT } from '@models';
 import type { TextInputChangeEvent } from 'react-native';
 
 type SubscriptionRowT = {
-	subscription: typeof subscriptionsTable.$inferSelect;
-	service: typeof servicesTable.$inferSelect;
-	category: typeof categoriesTable.$inferSelect | null;
-	payment: typeof tendersTable.$inferSelect | null;
+	subscription: SubscriptionT;
+	service: ServiceT;
 };
 
-const getText = ({ subscription, service, category, payment }: SubscriptionRowT) => [
-	subscription.custom_name ?? '',
-	service.title,
-	category?.title ?? '',
-	payment?.title ?? ''
-];
-const mapResultItem = ({ item }: { item: SubscriptionRowT }) => item;
+type ResultItemT = {
+	item: SubscriptionRowT;
+};
 
-const Subscriptions = () => {
-	const router = useRouter();
-	const settingAccent = useAccent();
-	const [searchQuery, setSearchQuery] = useState('');
+const getText = ({ subscription, service }: SubscriptionRowT) => [subscription.custom_name ?? '', service.title];
+
+const useSubscriptions = (searchQuery = '') => {
 	const { data = [] } = useLiveQuery(
 		db
 			.select({
 				subscription: subscriptionsTable,
-				service: servicesTable,
-				category: categoriesTable,
-				payment: tendersTable
+				service: servicesTable
 			})
 			.from(subscriptionsTable)
 			.innerJoin(servicesTable, eq(subscriptionsTable.service_id, servicesTable.id))
-			.leftJoin(categoriesTable, eq(subscriptionsTable.category_slug, categoriesTable.slug))
-			.leftJoin(tendersTable, eq(subscriptionsTable.tender_id, tendersTable.id))
 			.orderBy(asc(servicesTable.title))
 	);
+
 	const matches = useFuzzySearchList({
 		list: data,
 		queryText: searchQuery,
 		getText,
-		mapResultItem
+		mapResultItem: ({ item }: ResultItemT) => item
 	});
+
+	return searchQuery ? matches : data;
+};
+
+const Subscriptions = () => {
+	const theme = useTheme();
+	const { t } = useTranslation();
+	const settingAccent = useAccent();
+	const [searchQuery, setSearchQuery] = useState('');
+	const subscriptions = useSubscriptions(searchQuery);
+	const maxHorizon = useSettingsValue<number>('max_horizon');
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
 		setSearchQuery(e.nativeEvent.text.trim());
 	};
 
-	const subscriptions = searchQuery ? matches : data;
+	const deleteSubscription = (id: string) => async () => {
+		await removeNotificationsFor(id)();
+		await db.delete(timelineEventsTable).where(eq(timelineEventsTable.subscription_id, id));
+		await db.delete(subscriptionsTable).where(eq(subscriptionsTable.id, id));
+
+		await regenerateAllTxs(maxHorizon);
+	};
 
 	return (
 		<>
-			<Stack.Toolbar placement="left">
-				<Stack.Toolbar.Button
-					variant="plain"
-					icon="chevron.backward"
-					accessibilityLabel="Go back"
-					onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/library'))}
-					tintColor={settingAccent}
-				/>
-			</Stack.Toolbar>
-
 			<Host style={{ flex: 1 }}>
 				<List
 					modifiers={[
@@ -93,20 +103,71 @@ const Subscriptions = () => {
 					]}
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
-						{subscriptions.map(({ subscription, service, payment }) => {
+						{subscriptions.map(({ subscription, service }) => {
 							const title = subscription.custom_name || service.title;
+							const subtitle = t(`category.${subscription.category_slug}`, {
+								defaultValue: subscription.category_slug
+							});
+
+							const openDetails = () => {
+								openLibraryDetails('subscription', subscription.id, title);
+							};
+
 							return (
 								<HStack
 									key={subscription.id}
-									spacing={14}
+									spacing={16}
 									modifiers={[
-										padding({ vertical: 8, horizontal: 0 }),
-										onTapGesture(() => openLibraryDetails('subscription', subscription.id, title))
+										onTapGesture(openDetails),
+										contentShape(shapes.rectangle()),
+										padding({ vertical: 6, horizontal: 0 }),
+										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
+										swipeActions({
+											actions: [
+												{
+													id: 'delete',
+													systemImage: 'trash',
+													tint: theme.semantic.error,
+													onPress: deleteSubscription(subscription.id)
+												}
+											]
+										})
 									]}
 								>
-									<Text modifiers={[font({ size: 20, design: 'rounded', weight: 'regular' })]}>{title}</Text>
-									<Spacer />
-									<Text modifiers={[font({ size: 15, design: 'rounded' })]}>{payment?.title ?? ''}</Text>
+									<RNHostView matchContents>
+										<LogoView
+											key={`${service.id}-icon`}
+											url={subscription.custom_logo ?? service.logo_url}
+											symbolName={(subscription.custom_symbol ?? service.symbol) as SFSymbol}
+											name={title}
+											color={service.color}
+											size={48}
+										/>
+									</RNHostView>
+
+									<VStack alignment="leading" spacing={4}>
+										<Text
+											modifiers={[
+												font({ size: 20, design: 'rounded', weight: 'semibold' }),
+												foregroundStyle(theme.text.primary),
+												lineLimit(1)
+											]}
+										>
+											{title}
+										</Text>
+
+										{Boolean(subtitle) && (
+											<Text
+												modifiers={[
+													font({ size: 16, design: 'rounded', weight: 'regular' }),
+													foregroundStyle(theme.text.secondary),
+													lineLimit(1)
+												]}
+											>
+												{subtitle}
+											</Text>
+										)}
+									</VStack>
 								</HStack>
 							);
 						})}

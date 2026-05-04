@@ -40,5 +40,5 @@
       "format_on_save": "on",
     },
   },
-  "language_servers": ["!biome", "npm-package-json-checker"],
+  "language_servers": ["!biome", "npm-package-json-checker", "package-swift-lsp"],
 }

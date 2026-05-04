@@ -34,6 +34,7 @@ import {
 	foregroundStyle,
 	listSectionMargins
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { AddEventModal, AddEventButton, ErrorsBanner } from './components';
 
 const Timeline = () => {
@@ -67,18 +68,10 @@ const Timeline = () => {
 		}
 	};
 
-	const onDeleteHd = (indices: number[]) => {
-		const event = timeline[indices[0]];
-
-		if (event && event.type !== 'first_payment') {
-			removeEvent(event.id);
-		}
-	};
-
 	return (
 		<>
 			<Section title="Timeline" modifiers={[listSectionMargins({ length: 0, edges: 'vertical' })]}>
-				<List.ForEach onDelete={onDeleteHd}>
+				<List.ForEach>
 					{timeline.map((event, index, arr) => {
 						const isFirst = index === 0;
 						const isLast = index === arr.length - 1;
@@ -87,6 +80,12 @@ const Timeline = () => {
 						const tone = theme.accents[meta.accent];
 
 						const summary = eventSummary(event);
+
+						const onDeleteHd = () => {
+							if (event.type === 'first_payment') return;
+
+							removeEvent(event.id);
+						};
 
 						return (
 							<HStack
@@ -97,6 +96,16 @@ const Timeline = () => {
 									frame({ height: 70 }),
 									listRowInsets({ leading: 16, trailing: 16 }),
 									deleteDisabled(event.type === 'first_payment'),
+									swipeActions({
+										actions: [
+											{
+												id: 'delete',
+												systemImage: 'trash',
+												role: 'destructive',
+												onPress: onDeleteHd
+											}
+										]
+									}),
 									onTapGesture(openEditor(event))
 								]}
 							>
@@ -160,7 +169,7 @@ const Timeline = () => {
 											foregroundStyle(theme.text.secondary)
 										]}
 									>
-										{format(parseISO(event.date), 'MMM d, yyyy')}
+										{format(parseISO(event.date), 'PP')}
 									</Text>
 
 									<Image systemName="chevron.right" size={12} color={theme.text.secondary} />

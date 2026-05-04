@@ -1,41 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
+import { useAIAvailability } from '@lib/ai';
 import { setSettingsValue, useSettingsValue, useAccent } from '@hooks';
 
 import { H5, SmallText } from '@ui';
-import { Platform, Switch } from 'react-native';
+import { Switch } from 'react-native';
 import Root, { Card, CardRow } from './neuro.styles';
 
 import type { UserT } from '@models';
-
-const useAICompat = () => {
-	const [isSupported, setIsSupported] = useState(false);
-
-	useEffect(() => {
-		if (Platform.OS !== 'ios') {
-			return;
-		}
-
-		try {
-			const AICompatModule = require('@modules/ai-compat').default;
-
-			const result = AICompatModule.isSupported();
-			setIsSupported(result);
-		} catch {
-			setIsSupported(false);
-		}
-	}, []);
-
-	return isSupported;
-};
 
 const Neuro = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const accentColor = useAccent();
-	const isAISupported = useAICompat();
+	const isAISupported = useAIAvailability();
 	const aiEnabled = useSettingsValue<UserT['ai_enabled']>('ai_enabled');
 
 	return (

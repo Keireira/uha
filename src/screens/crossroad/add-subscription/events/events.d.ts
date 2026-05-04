@@ -121,7 +121,8 @@ export type SubscriptionDraftT = {
 	billing_cycle_type: BillingCycleT;
 
 	notify_enabled: boolean;
-	notify_days_before: number[];
+	notify_days_before: number;
+	notify_trial_end: boolean;
 
 	notes: string; // may be an empty string
 
@@ -152,7 +153,8 @@ export type SubscriptionDraftActionsT = {
 	setCategorySlug: (slug: CategoryT['slug']) => void;
 	setBillingCycle: (type: BillingCycleT, value: number) => void;
 	setNotifyEnabled: (enabled: boolean) => void;
-	setNotifyDaysBefore: (days: number[]) => void;
+	setNotifyDaysBefore: (days: number) => void;
+	setNotifyTrialEnd: (enabled: boolean) => void;
 	setNotes: (notes: string) => void;
 
 	setFirstPaymentDate: (date: ISODateStringT) => void;
@@ -191,5 +193,6 @@ export type DraftToSaveT = {
 	cancellation_date: CancellationEventT['date'] | null;
 	notify_enabled: SubscriptionT['notify_enabled'];
 	notify_days_before: SubscriptionT['notify_days_before'];
+	notify_trial_end: SubscriptionT['notify_trial_end'];
 	notes: SubscriptionT['notes'];
 };

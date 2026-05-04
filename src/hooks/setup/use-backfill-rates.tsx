@@ -8,10 +8,10 @@ import { lightFormat, startOfToday, startOfTomorrow } from 'date-fns';
 import { withRetry } from '@lib';
 import { getHistoryRates } from '@api/sharkie';
 
-import db, { silentDb, uhaDb } from '@db';
 import { lt, sql } from 'drizzle-orm';
+import db, { silentDb, uhaDb } from '@db';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { currencyRatesTable, transactionsTable } from '@db/schema';
+import { currenciesTable, currencyRatesTable, transactionsTable } from '@db/schema';
 
 /**
  * Today's rate acts as the baseline `lastKnownRates` used by summaries and
@@ -24,6 +24,13 @@ const todayStr = () => lightFormat(startOfToday(), 'yyyy-MM-dd');
 
 type BackfillRatesOptionsT = {
 	refetchExisting?: boolean;
+};
+
+type InsertRateItemT = {
+	id: string;
+	target_currency_id: string;
+	date: string;
+	rate: number;
 };
 
 const getRateDates = ({ refetchExisting = false }: BackfillRatesOptionsT = {}) => {
@@ -79,6 +86,14 @@ export const backfillRates = async (
 		responses.push(await withRetry(() => getHistoryRates(dates)));
 	}
 
+	const knownCurrencyIds = new Set(
+		db
+			.select({ id: currenciesTable.id })
+			.from(currenciesTable)
+			.all()
+			.map((c) => c.id)
+	);
+
 	for (const response of responses) {
 		for (const entry of response.data) {
 			if (__DEV__) {
@@ -87,12 +102,18 @@ export const backfillRates = async (
 				);
 			}
 
-			const values = Object.entries(entry.rates).map(([target_currency_id, rate]) => ({
-				id: Crypto.randomUUID(),
-				target_currency_id,
-				date: entry.date,
-				rate
-			}));
+			const values = Object.entries(entry.rates).reduce((acc, [target_currency_id, rate]) => {
+				if (knownCurrencyIds.has(target_currency_id)) {
+					acc.push({
+						id: Crypto.randomUUID(),
+						target_currency_id,
+						date: entry.date,
+						rate
+					});
+				}
+
+				return acc;
+			}, [] as InsertRateItemT[]);
 
 			valuesToInsert.push(...values);
 		}

@@ -63,8 +63,6 @@ const SettingsScreen = () => {
 				<SectionCard glassEffectStyle={glassEffectStyle}>
 					<SearchSourcesSetting />
 				</SectionCard>
-
-				<SectionFooterText>{t('settings.sources.footer')}</SectionFooterText>
 			</SectionWrap>
 
 			{/* Preferences */}

@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsValue } from '@hooks';
 import { useSearch } from '@screens/add/hooks';
 
-import { NoResults } from '@elements';
-import { ScreenTitle } from './search-mode.styles';
-import { ResultSection, TopHitCard, Loader } from './components';
+import { Host, Text } from '@expo/ui/swift-ui';
+import { font, frame, padding } from '@expo/ui/swift-ui/modifiers';
+import { ResultSection, TopHitCard, Loader, NoResults } from './components';
 
 import type { SearchResultT } from '@api/soup/soup.d';
 
@@ -49,19 +49,19 @@ const SearchMode = () => {
 			params: {
 				service_id: searchResult.id,
 				service_name: searchResult.name,
-					service_logo: searchResult.logo_url,
-					service_source: searchResult.source,
-					service_bundle_id: searchResult.bundle_id,
-					service_slug: searchResult.slug,
-					service_color: searchResult.colors?.primary,
-					service_ref_link: searchResult.ref_link,
-					service_category_slug: searchResult.category_slug,
-					service_domains: JSON.stringify(searchResult.domains ?? []),
-					service_aliases: JSON.stringify(searchResult.alternative_names ?? []),
-					service_social_links: JSON.stringify(searchResult.social_links ?? {}),
-					...additionalParams
-				}
-			});
+				service_logo: searchResult.logo_url,
+				service_source: searchResult.source,
+				service_bundle_id: searchResult.bundle_id,
+				service_slug: searchResult.slug,
+				service_color: searchResult.colors?.primary,
+				service_ref_link: searchResult.ref_link,
+				service_category_slug: searchResult.category_slug,
+				service_domains: JSON.stringify(searchResult.domains ?? []),
+				service_aliases: JSON.stringify(searchResult.alternative_names ?? []),
+				service_social_links: JSON.stringify(searchResult.social_links ?? {}),
+				...additionalParams
+			}
+		});
 	};
 
 	const isFetching = isLoading && isFilled && !results.length;
@@ -70,7 +70,17 @@ const SearchMode = () => {
 
 	return (
 		<>
-			<ScreenTitle>{t('crossroad.add.search_results')}</ScreenTitle>
+			<Host style={{ marginBottom: 16 }} matchContents>
+				<Text
+					modifiers={[
+						padding({ horizontal: 20 }),
+						frame({ alignment: 'leading' }),
+						font({ size: 32, design: 'rounded', weight: 'bold' })
+					]}
+				>
+					{t('crossroad.add.search_results')}
+				</Text>
+			</Host>
 
 			{isFetching && <Loader />}
 

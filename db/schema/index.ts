@@ -7,3 +7,4 @@ export * from './subscriptions';
 export * from './tenders';
 export * from './transactions';
 export * from './user';
+export * from './notifications';

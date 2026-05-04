@@ -62,6 +62,14 @@ const Layout = () => {
 					...sharedScreenConfig
 				}}
 			/>
+
+			<Stack.Screen
+				name="select-symbol-logo"
+				options={{
+					title: 'Symbol & Image',
+					...sharedScreenConfig
+				}}
+			/>
 		</Stack>
 	);
 };

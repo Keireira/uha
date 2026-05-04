@@ -96,9 +96,9 @@ const Layout = () => {
 					title: 'Details',
 					...sharedScreenConfig,
 					headerTransparent: true,
-					headerLargeTitleEnabled: true,
-					headerLargeTitleShadowVisible: true,
-					presentation: 'card'
+					headerLargeTitleEnabled: false,
+					headerLargeTitleShadowVisible: false,
+					presentation: 'containedModal'
 				}}
 			/>
 		</Stack>

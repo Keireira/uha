@@ -7,7 +7,8 @@ import {
 	currenciesTable,
 	currencyRatesTable,
 	timelineEventsTable,
-	userTable
+	userTable,
+	notificationsTable
 } from '@db/schema';
 import drizzleDB from '@db';
 
@@ -24,6 +25,4 @@ export type SubscriptionT = InferSelectModel<typeof subscriptionsTable>;
 export type CurrencyT = InferSelectModel<typeof currenciesTable>;
 export type CurrencyRateT = InferSelectModel<typeof currencyRatesTable>;
 export type TimelineEventT = InferSelectModel<typeof timelineEventsTable>;
-
-// SCROLL MODEL
-export type ScrollDirection = 'up' | 'down' | 'idle';
+export type NotificationT = InferSelectModel<typeof notificationsTable>;

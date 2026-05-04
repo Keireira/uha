@@ -400,13 +400,15 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: 'Fuentes de búsqueda',
-		footer: 'Los resultados verificados se muestran siempre, independientemente de esta configuración.',
 		search: 'Buscar',
 		primary: 'Principal',
 		language: 'Idioma',
+		inhouse: 'API de Uha',
+		inhouse_desc: 'Nuestra propia base de datos seleccionada de marcas y suscripciones',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'Usa el nombre exacto del sitio, como https://uha.app',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},
@@ -510,6 +512,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'Biblioteca',
 	grid: {
 		categories: {
 			title: 'Categorías',
@@ -526,6 +529,45 @@ const libraryScreen: LocaleRootT['library'] = {
 		subscriptions: {
 			title: 'Suscripciones',
 			description: 'Ver y editar planes activos'
+		}
+	},
+	delete_blocked: {
+		default_category: 'No se puede eliminar la categoría del sistema',
+		title: 'No se puede eliminar',
+		category_one: 'En uso por 1 suscripción',
+		category_other: 'En uso por {{count}} suscripciones',
+		service_one: 'En uso por 1 suscripción',
+		service_other: 'En uso por {{count}} suscripciones',
+		payment_one: 'En uso por 1 suscripción',
+		payment_other: 'En uso por {{count}} suscripciones'
+	},
+	details: {
+		save: 'Guardar',
+		copy: 'Copiar',
+		copied: 'Copiado',
+		id_copied: 'ID copiado',
+		section: {
+			identity: 'Identidad',
+			appearance: 'Apariencia',
+			other: 'Otros',
+			aliases: 'Alias'
+		},
+		aliases: {
+			add: 'Añadir alias…'
+		},
+		fields: {
+			slug: 'Slug',
+			id: 'ID',
+			title: 'Título personalizado',
+			emoji: 'Emoji',
+			color: 'Color',
+			comment: 'Comentario',
+			card: 'Tarjeta',
+			category: 'Categoría',
+			symbol: 'Símbolo SF',
+			logo_url: 'URL del logo',
+			bundle_id: 'ID del paquete',
+			ref_link: 'Enlace de referido'
 		}
 	}
 };
@@ -616,7 +658,21 @@ const spanish: LocaleRootT = {
 		month: 'Mes',
 		year: 'Año',
 		in_month: 'En {{month}}',
-		in_year: 'En {{year}}'
+		in_year: 'En {{year}}',
+		in_months: {
+			0: 'En enero',
+			1: 'En febrero',
+			2: 'En marzo',
+			3: 'En abril',
+			4: 'En mayo',
+			5: 'En junio',
+			6: 'En julio',
+			7: 'En agosto',
+			8: 'En septiembre',
+			9: 'En octubre',
+			10: 'En noviembre',
+			11: 'En diciembre'
+		}
 	},
 	rates: {
 		error: {
@@ -629,6 +685,18 @@ const spanish: LocaleRootT = {
 	},
 	category: defaultCategories,
 
+	notifications: {
+		title: 'Recordatorio de suscripción',
+		subscription: {
+			today: 'El pago de tu suscripción vence hoy.',
+			in_days: 'El pago de tu suscripción vence en {{count}} días.'
+		},
+		trial: {
+			today: 'El periodo de prueba de tu suscripción termina hoy.',
+			in_days: 'El periodo de prueba de tu suscripción termina en {{count}} días.'
+		}
+	},
+
 	navbar: {
 		transactions: {
 			title: 'Inicio',
@@ -638,6 +706,7 @@ const spanish: LocaleRootT = {
 			open_filters: 'Filtros'
 		},
 		library: {
+			root: 'Raíz',
 			title: 'Biblioteca',
 			categories: 'Categorías',
 			services: 'Servicios',

@@ -18,12 +18,10 @@ export const transactionsTable = sqliteTable(
 		currency_id: text()
 			.references(() => currenciesTable.id)
 			.notNull(), // e.g. 'USD' | 'RUB' | ...
-		tender_id: text()
-			.references(() => tendersTable.id)
-			.notNull(), // uuid v4
+		tender_id: text().references(() => tendersTable.id), // uuid v4
 
 		subscription_id: text()
-			.references(() => subscriptionsTable.id)
+			.references(() => subscriptionsTable.id, { onDelete: 'cascade' })
 			.notNull(),
 
 		comment: text().default('')

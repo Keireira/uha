@@ -423,13 +423,15 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	sources: {
 		header: '検索ソース',
-		footer: '認証済みの結果はこれらの設定に関係なく常に表示されます。',
 		search: '検索',
 		primary: 'プライマリ',
 		language: '言語',
+		inhouse: 'Uha API',
+		inhouse_desc: 'ブランドとサブスクリプションを厳選した自社データベース',
 		appstore: 'App Store',
 		playstore: 'Google Play',
 		web: 'Web',
+		web_desc: 'https://uha.app のように、正確なサイト名を使用してください',
 		brandfetch: 'Brandfetch',
 		logo_dev: 'logo.dev'
 	},
@@ -533,6 +535,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 };
 
 const libraryScreen: LocaleRootT['library'] = {
+	title: 'ライブラリ',
 	grid: {
 		categories: {
 			title: 'カテゴリ',
@@ -549,6 +552,42 @@ const libraryScreen: LocaleRootT['library'] = {
 		subscriptions: {
 			title: 'サブスクリプション',
 			description: 'プランの表示と編集'
+		}
+	},
+	delete_blocked: {
+		title: '削除できません',
+		default_category: 'システムカテゴリは削除できません',
+		category_other: '{{count}} 件のサブスクリプションで使用中',
+		service_other: '{{count}} 件のサブスクリプションで使用中',
+		payment_other: '{{count}} 件のサブスクリプションで使用中'
+	},
+	details: {
+		save: '保存',
+		copy: 'コピー',
+		copied: 'コピーしました',
+		id_copied: 'ID をコピーしました',
+		section: {
+			identity: '識別情報',
+			appearance: '外観',
+			other: 'その他',
+			aliases: '別名'
+		},
+		aliases: {
+			add: '別名を追加…'
+		},
+		fields: {
+			slug: 'スラッグ',
+			id: 'ID',
+			title: 'カスタムタイトル',
+			emoji: '絵文字',
+			color: '色',
+			comment: 'コメント',
+			card: 'カード',
+			category: 'カテゴリ',
+			symbol: 'SFシンボル',
+			logo_url: 'ロゴURL',
+			bundle_id: 'バンドルID',
+			ref_link: '紹介リンク'
 		}
 	}
 };
@@ -639,7 +678,21 @@ const nihongo: LocaleRootT = {
 		month: '月',
 		year: '年',
 		in_month: '{{month}}',
-		in_year: '{{year}}年'
+		in_year: '{{year}}年',
+		in_months: {
+			0: '1月に',
+			1: '2月に',
+			2: '3月に',
+			3: '4月に',
+			4: '5月に',
+			5: '6月に',
+			6: '7月に',
+			7: '8月に',
+			8: '9月に',
+			9: '10月に',
+			10: '11月に',
+			11: '12月に'
+		}
 	},
 	rates: {
 		error: {
@@ -652,6 +705,18 @@ const nihongo: LocaleRootT = {
 	},
 	category: defaultCategories,
 
+	notifications: {
+		title: 'サブスクリプションのリマインダー',
+		subscription: {
+			today: 'サブスクリプションのお支払い期限は本日です。',
+			in_days: '{{count}}日後にサブスクリプションのお支払い期限を迎えます。'
+		},
+		trial: {
+			today: 'サブスクリプションの無料トライアルは本日終了します。',
+			in_days: 'サブスクリプションの無料トライアルは{{count}}日後に終了します。'
+		}
+	},
+
 	navbar: {
 		transactions: {
 			title: 'ホーム',
@@ -661,6 +726,7 @@ const nihongo: LocaleRootT = {
 			open_filters: 'フィルター'
 		},
 		library: {
+			root: 'ルート',
 			title: 'ライブラリ',
 			categories: 'カテゴリ',
 			services: 'サービス',

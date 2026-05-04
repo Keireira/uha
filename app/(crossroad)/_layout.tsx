@@ -34,30 +34,12 @@ const Layout = () => {
 
 	return (
 		<Stack>
-			{/*<Stack.Screen name="index" />*/}
-
 			<Stack.Screen
 				name="add-subscription"
 				options={{
 					title: 'New Subscription',
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
-				name="edit-logo-sheet"
-				options={{
-					title: 'Color & Logo',
-					...sharedScreenConfig
-				}}
-			/>
-
-			<Stack.Screen
-				name="color-presets"
-				options={{
 					...sharedScreenConfig,
-					title: 'Color Presets',
-					sheetAllowedDetents: [0.8]
+					freezeOnBlur: true
 				}}
 			/>
 
