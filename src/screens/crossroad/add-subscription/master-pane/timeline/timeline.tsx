@@ -8,30 +8,32 @@ import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
 import { EVENT_META, eventSummary, type TimelineEventT } from '@screens/crossroad/add-subscription/events';
 
 import {
-	RNHostView,
 	List,
-	Section,
-	HStack,
-	VStack,
-	ZStack,
 	Text,
 	Image,
+	VStack,
+	HStack,
+	ZStack,
 	Spacer,
 	Circle,
-	Rectangle
+	Section,
+	Rectangle,
+	RNHostView
 } from '@expo/ui/swift-ui';
 import {
 	font,
 	frame,
+	shapes,
 	opacity,
 	lineLimit,
 	onTapGesture,
+	contentShape,
 	listRowInsets,
+	deleteDisabled,
+	foregroundStyle,
 	listRowSeparator,
 	listRowBackground,
 	listSectionSpacing,
-	deleteDisabled,
-	foregroundStyle,
 	listSectionMargins
 } from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
@@ -93,6 +95,7 @@ const Timeline = () => {
 								spacing={12}
 								alignment="center"
 								modifiers={[
+									contentShape(shapes.rectangle()),
 									frame({ height: 70 }),
 									listRowInsets({ leading: 16, trailing: 16 }),
 									deleteDisabled(event.type === 'first_payment'),

@@ -31,7 +31,7 @@ import {
 import { LogoView } from '@ui';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, VStack, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
+import { Host, Text, VStack, HStack, RNHostView, List, Spacer, Section } from '@expo/ui/swift-ui';
 
 import type { TenderT } from '@models';
 import type { SFSymbol } from 'expo-symbols';
@@ -162,6 +162,8 @@ const Payments = () => {
 											</Text>
 										)}
 									</VStack>
+
+									<Spacer />
 								</HStack>
 							);
 						})}

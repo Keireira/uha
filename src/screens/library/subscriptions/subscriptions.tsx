@@ -32,7 +32,7 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import { LogoView } from '@ui';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, VStack, List, Section, RNHostView } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, VStack, List, Spacer, Section, RNHostView } from '@expo/ui/swift-ui';
 
 import type { SFSymbol } from 'expo-symbols';
 import type { SubscriptionT, ServiceT } from '@models';
@@ -168,6 +168,8 @@ const Subscriptions = () => {
 											</Text>
 										)}
 									</VStack>
+
+									<Spacer />
 								</HStack>
 							);
 						})}
