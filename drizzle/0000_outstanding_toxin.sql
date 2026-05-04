@@ -92,9 +92,10 @@ CREATE TABLE `tenders` (
 	`title` text NOT NULL,
 	`is_card` integer DEFAULT true NOT NULL,
 	`comment` text DEFAULT '',
-	`color` text NOT NULL,
-	`emoji` text NOT NULL,
-	`symbol` text
+	`emoji` text,
+	`color` text,
+	`symbol` text,
+	`logo_url` text
 );
 --> statement-breakpoint
 CREATE TABLE `transactions` (

@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
-import type { CategoryEditParams, CategoryEditState } from '@screens/library/categories';
+import type { PaymentEditParams, PaymentEditState } from '@screens/library/payments';
 
-const INITIAL_PARAMS: CategoryEditParams = {
-	slug: '',
+const INITIAL_PARAMS: PaymentEditParams = {
 	title: '',
+	comment: '',
+	is_card: true,
 
 	color: '',
 	emoji: undefined,
@@ -12,7 +13,7 @@ const INITIAL_PARAMS: CategoryEditParams = {
 	logo_url: undefined
 };
 
-const useEditCategoryStore = create<CategoryEditState>((set) => ({
+const useEditPaymentStore = create<PaymentEditState>((set) => ({
 	...INITIAL_PARAMS,
 
 	actions: {
@@ -22,4 +23,4 @@ const useEditCategoryStore = create<CategoryEditState>((set) => ({
 	}
 }));
 
-export default useEditCategoryStore;
+export default useEditPaymentStore;

@@ -77,8 +77,8 @@ const SelectTenderScreen = () => {
 									key={tender.id}
 									spacing={16}
 									modifiers={[
-										onTapGesture(selectTender),
 										contentShape(shapes.rectangle()),
+										onTapGesture(selectTender),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' })
 									]}
@@ -89,6 +89,7 @@ const SelectTenderScreen = () => {
 											symbolName={tender.symbol as SFSymbol}
 											color={tender.color || settingAccent}
 											name={tender.title || ''}
+											url={tender.logo_url}
 											emoji={tender.emoji}
 											size={48}
 										/>
@@ -118,12 +119,9 @@ const SelectTenderScreen = () => {
 										)}
 									</VStack>
 
-									{isActive && (
-										<>
-											<Spacer />
-											<Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />
-										</>
-									)}
+									<Spacer />
+
+									{isActive && <Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />}
 								</HStack>
 							);
 						})}
