@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useAccent } from '@hooks';
 
-import { tint } from '@expo/ui/swift-ui/modifiers';
 import { Toggle } from '@expo/ui/swift-ui';
+import { tint } from '@expo/ui/swift-ui/modifiers';
 
 import type { PaymentEditParams } from '@screens/library/payments';
 

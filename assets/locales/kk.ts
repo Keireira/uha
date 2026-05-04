@@ -566,8 +566,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Санат',
 			symbol: 'SF Symbol',
 			logo_url: 'Логотип URL мекенжайы',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Рефералдық сілтеме'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

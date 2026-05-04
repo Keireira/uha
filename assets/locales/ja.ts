@@ -586,8 +586,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'カテゴリ',
 			symbol: 'SFシンボル',
 			logo_url: 'ロゴURL',
-			bundle_id: 'バンドルID',
-			ref_link: '紹介リンク'
+			bundle_id: 'バンドルID'
 		}
 	}
 };

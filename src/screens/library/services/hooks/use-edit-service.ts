@@ -10,7 +10,6 @@ type ServiceEditState = {
 	logo_url: string;
 	symbol: SFSymbol | '';
 	bundle_id: string;
-	ref_link: string;
 	category_slug: string;
 	aliases: string[];
 
@@ -27,7 +26,6 @@ const INITIAL: Omit<ServiceEditState, 'init' | 'patch' | 'reset'> = {
 	logo_url: '',
 	symbol: '',
 	bundle_id: '',
-	ref_link: '',
 	category_slug: '',
 	aliases: []
 };

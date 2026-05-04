@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { font, foregroundStyle, multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 import { TextField, LabeledContent } from '@expo/ui/swift-ui';
+import { font, foregroundStyle, multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 
 import type { PaymentEditParams } from '@screens/library/payments';
 

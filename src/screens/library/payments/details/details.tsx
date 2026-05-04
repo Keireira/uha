@@ -4,10 +4,10 @@ import { useInitDraft, useDraft } from './hooks';
 
 import {
 	listStyle,
-	listSectionSpacing,
-	scrollDismissesKeyboard,
 	listRowSeparator,
-	listRowBackground
+	listRowBackground,
+	listSectionSpacing,
+	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
 import { Host, List, Section, ColorPicker } from '@expo/ui/swift-ui';
 import { Header, LogoPreview, Title, Comment, CardToggle, Emoji, LogoUrl, Symbol } from './components';
@@ -36,6 +36,12 @@ const PaymentDetails = () => {
 					<Section title={t('library.details.section.identity')}>
 						{/* Title */}
 						<Title title={draft.title} onChangeTitle={actions.onChangeTitle} />
+
+						{/* Comment */}
+						<Comment comment={draft.comment} onChangeComment={actions.onChangeComment} />
+
+						{/* Card toggle */}
+						<CardToggle isCard={draft.is_card} onChangeIsCard={actions.onChangeIsCard} />
 					</Section>
 
 					<Section title={t('library.details.section.appearance')}>
@@ -59,14 +65,6 @@ const PaymentDetails = () => {
 							onSelectionChange={actions.onChangeColor}
 							supportsOpacity={false}
 						/>
-					</Section>
-
-					<Section title={t('library.details.section.other')}>
-						{/* Comment */}
-						<Comment comment={draft.comment} onChangeComment={actions.onChangeComment} />
-
-						{/* Card toggle */}
-						<CardToggle isCard={draft.is_card} onChangeIsCard={actions.onChangeIsCard} />
 					</Section>
 				</List>
 			</Host>

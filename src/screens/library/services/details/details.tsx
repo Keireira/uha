@@ -70,7 +70,6 @@ const ServiceDetails = () => {
 			logo_url: state.logo_url,
 			symbol: state.symbol,
 			bundle_id: state.bundle_id,
-			ref_link: state.ref_link,
 			category_slug: state.category_slug,
 			aliases: state.aliases
 		}))
@@ -85,7 +84,6 @@ const ServiceDetails = () => {
 	const [aliasInputKey, setAliasInputKey] = useState(0);
 	const [isSlugEditable, setIsSlugEditable] = useState(false);
 	const [isLogoEditable, setIsLogoEditable] = useState(false);
-	const [isRefEditable, setIsRefEditable] = useState(false);
 
 	useEffect(() => {
 		if (!service) return;
@@ -98,7 +96,6 @@ const ServiceDetails = () => {
 			logo_url: service.logo_url ?? '',
 			symbol: (service.symbol ?? '') as SFSymbol | '',
 			bundle_id: service.bundle_id ?? '',
-			ref_link: service.ref_link ?? '',
 			category_slug: service.category_slug,
 			aliases: service.aliases ?? []
 		});
@@ -123,7 +120,6 @@ const ServiceDetails = () => {
 
 	const enableSlugEdit = () => setIsSlugEditable(true);
 	const enableLogoEdit = () => setIsLogoEditable(true);
-	const enableRefEdit = () => setIsRefEditable(true);
 
 	const copyId = () => {
 		if (!service) return;
@@ -174,7 +170,6 @@ const ServiceDetails = () => {
 					logo_url: normalizeOptional(draft.logo_url),
 					symbol: normalizeOptional(draft.symbol),
 					bundle_id: normalizeOptional(draft.bundle_id),
-					ref_link: normalizeOptional(draft.ref_link),
 					category_slug: draft.category_slug,
 					aliases: draft.aliases
 				})
@@ -337,41 +332,6 @@ const ServiceDetails = () => {
 								modifiers={valueMods}
 							/>
 						</LabeledContent>
-
-						{isRefEditable ? (
-							<LabeledContent label={t('library.details.fields.ref_link')} modifiers={labelMods}>
-								<TextField
-									autoFocus
-									defaultValue={draft.ref_link}
-									placeholder="https://…"
-									onValueChange={(ref_link) => patch({ ref_link })}
-									onFocusChange={(focused) => !focused && setIsRefEditable(false)}
-									modifiers={valueMods}
-								/>
-							</LabeledContent>
-						) : (
-							<LabeledContent label={t('library.details.fields.ref_link')} modifiers={[onTapGesture(enableRefEdit)]}>
-								<ContextMenu>
-									<ContextMenu.Trigger>
-										<Text modifiers={linkValueMods}>{draft.ref_link || '—'}</Text>
-									</ContextMenu.Trigger>
-									<ContextMenu.Preview>
-										<VStack modifiers={[padding({ all: 14 })]}>
-											<Text modifiers={[font({ size: 13, design: 'monospaced', weight: 'regular' })]}>
-												{draft.ref_link || '—'}
-											</Text>
-										</VStack>
-									</ContextMenu.Preview>
-									<ContextMenu.Items>
-										<Button
-											label={t('library.details.copy')}
-											systemImage="doc.on.doc"
-											onPress={copyText(draft.ref_link)}
-										/>
-									</ContextMenu.Items>
-								</ContextMenu>
-							</LabeledContent>
-						)}
 					</Section>
 
 					<Section title={t('library.details.section.aliases')}>

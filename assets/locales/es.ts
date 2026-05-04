@@ -566,8 +566,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Categoría',
 			symbol: 'Símbolo SF',
 			logo_url: 'URL del logo',
-			bundle_id: 'ID del paquete',
-			ref_link: 'Enlace de referido'
+			bundle_id: 'ID del paquete'
 		}
 	}
 };

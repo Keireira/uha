@@ -5,11 +5,12 @@ export const categoriesTable = sqliteTable(
 	{
 		slug: text().primaryKey(),
 		title: text(),
+		is_system: int({ mode: 'boolean' }).default(false).notNull(),
+
 		emoji: text(), // 🍔 | 🚗 | ...
-		color: text(), // #FF0000 | #00FF00 | ...
+		color: text().notNull(), // #FF0000 | #00FF00 | ...
 		symbol: text(), // SF Symbol name
-		logo_url: text(), // URL of the logo
-		is_system: int({ mode: 'boolean' }).default(false).notNull()
+		logo_url: text() // URL of the logo
 	},
 	(table) => [unique('categories_full_unique').on(table.emoji, table.color)]
 );

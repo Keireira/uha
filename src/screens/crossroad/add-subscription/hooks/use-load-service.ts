@@ -17,7 +17,6 @@ type RouteParams = {
 	service_bundle_id?: SearchResultT['bundle_id'];
 	service_slug?: SearchResultT['slug'];
 	service_color?: string;
-	service_ref_link?: string;
 	service_category_slug?: SearchResultT['category_slug'];
 	service_domains?: string;
 	service_aliases?: string;
@@ -41,7 +40,6 @@ const DEFAULT_SERVICE: ServiceT = {
 	title: '',
 	color: '',
 	symbol: null,
-	ref_link: '',
 	domains: [],
 	social_links: {},
 	aliases: [],
@@ -148,7 +146,6 @@ const mergeWithLocalFallbacks = (external: ServiceT, local: ServiceT | null): Se
 		color: isBlank(external.color) ? local.color : external.color,
 		logo_url: symbol ? null : (externalLogoUrl ?? local.logo_url),
 		symbol,
-		ref_link: isBlank(external.ref_link) ? local.ref_link : external.ref_link,
 		domains: hasItems(external.domains) ? external.domains : local.domains,
 		social_links: hasKeys(external.social_links) ? external.social_links : local.social_links,
 		aliases: hasItems(external.aliases) ? external.aliases : local.aliases,
@@ -181,7 +178,6 @@ const fetchFromRemote = async (params: LoadedRouteParams): Promise<ServiceT | nu
 		title: response.name,
 		color: response.colors?.primary ?? '',
 		symbol: null,
-		ref_link: response.ref_link,
 		domains: response.domains,
 		social_links: response.social_links,
 		aliases: response.alternative_names,
@@ -203,7 +199,6 @@ const parseFromSearch = (params: RouteParams, local?: ServiceT | null): ServiceT
 		title: params.service_name ?? '',
 		color: params.service_color ?? '',
 		bundle_id,
-		ref_link: params.service_ref_link ?? '',
 		category_slug: params.service_category_slug ?? '',
 		domains,
 		aliases: parseStringArray(params.service_aliases),
@@ -240,7 +235,6 @@ const useLoadService = () => {
 		service_bundle_id,
 		service_slug,
 		service_color,
-		service_ref_link,
 		service_category_slug,
 		service_domains,
 		service_aliases,
@@ -268,7 +262,6 @@ const useLoadService = () => {
 			service_bundle_id,
 			service_slug,
 			service_color,
-			service_ref_link,
 			service_category_slug,
 			service_domains,
 			service_aliases,
@@ -283,7 +276,6 @@ const useLoadService = () => {
 		service_bundle_id,
 		service_slug,
 		service_color,
-		service_ref_link,
 		service_category_slug,
 		service_domains,
 		service_aliases,
@@ -313,7 +305,6 @@ const useLoadService = () => {
 			service_bundle_id,
 			service_slug,
 			service_color,
-			service_ref_link,
 			service_category_slug,
 			service_domains,
 			service_aliases,
@@ -343,7 +334,6 @@ const useLoadService = () => {
 		service_bundle_id,
 		service_slug,
 		service_color,
-		service_ref_link,
 		service_category_slug,
 		service_domains,
 		service_aliases,

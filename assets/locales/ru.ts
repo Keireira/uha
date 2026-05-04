@@ -570,8 +570,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Категория',
 			symbol: 'SF Symbol',
 			logo_url: 'URL логотипа',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Реферальная ссылка'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

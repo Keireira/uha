@@ -572,7 +572,6 @@ export type LocaleRootT = {
 				symbol: string;
 				logo_url: string;
 				bundle_id: string;
-				ref_link: string;
 			};
 		};
 	};
