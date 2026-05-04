@@ -38,7 +38,6 @@ const useSaveCategory = () => {
 
 		try {
 			if (nextSlug === category.slug) {
-				console.log('dataToUpdate:', dataToUpdate);
 				await db.update(categoriesTable).set(dataToUpdate).where(eq(categoriesTable.slug, category.slug));
 			} else {
 				await db.transaction(async (tx) => {

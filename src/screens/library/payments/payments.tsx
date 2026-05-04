@@ -112,8 +112,8 @@ const Payments = () => {
 									key={payment.id}
 									spacing={16}
 									modifiers={[
-										onTapGesture(openDetails),
 										contentShape(shapes.rectangle()),
+										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
 										swipeActions({

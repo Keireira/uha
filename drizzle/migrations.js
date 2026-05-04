@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_true_wrecker.sql';
-import m0001 from './0001_omniscient_the_order.sql';
+import m0000 from './0000_outstanding_toxin.sql';
+import m0001 from './0001_mushy_red_shift.sql';
 
 export default {
 	journal,

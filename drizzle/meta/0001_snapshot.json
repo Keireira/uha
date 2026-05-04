@@ -1,6 +1,6 @@
 {
-  "id": "85534192-b227-461d-b8f3-757fef51ebd1",
-  "prevId": "ff605ff2-6bd9-4a55-a65f-74503b4d66d9",
+  "id": "b6f6a2c1-587d-4240-82d2-7c251e12d3bc",
+  "prevId": "9e098da8-1d88-4235-8cc4-fd2d0d9c6ba1",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -615,22 +615,29 @@
           "autoincrement": false,
           "default": "''"
         },
-        "color": {
-          "name": "color",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "emoji": {
           "name": "emoji",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "symbol": {
           "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "logo_url": {
+          "name": "logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
