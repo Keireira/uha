@@ -5,6 +5,7 @@
 ## TODO
 
 - [x] utilize `max_horizon` settings
+- [ ] Rewrite everything to expo-ui/swift-ui & remove styled-components
 - [ ] unify `formSheet` pages with searchBar & remove `floating-search-bar` module
 
 ## WTF
