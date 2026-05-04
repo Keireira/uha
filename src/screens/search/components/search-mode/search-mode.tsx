@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { useSettingsValue } from '@hooks';
-import { useSearch } from '@screens/add/hooks';
+import { useSearch } from '@screens/search/hooks';
 
 import { Host, Text } from '@expo/ui/swift-ui';
 import { font, frame, padding } from '@expo/ui/swift-ui/modifiers';
@@ -78,7 +78,7 @@ const SearchMode = () => {
 						font({ size: 32, design: 'rounded', weight: 'bold' })
 					]}
 				>
-					{t('crossroad.add.search_results')}
+					{t('crossroad.search.search_results')}
 				</Text>
 			</Host>
 
@@ -91,13 +91,13 @@ const SearchMode = () => {
 					{topHit && <TopHitCard {...topHit} onPress={goToNewService} />}
 
 					<ResultSection
-						label={t('crossroad.add.sections.verified')}
+						label={t('crossroad.search.sections.verified')}
 						results={inHouseResults}
 						onPress={goToNewService}
 					/>
 
 					<ResultSection
-						label={t('crossroad.add.sections.external')}
+						label={t('crossroad.search.sections.external')}
 						results={externalResults}
 						onPress={goToNewService}
 					/>

@@ -3,7 +3,7 @@ import { Stack, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { useSearch } from '@screens/add/hooks';
+import { useSearch } from '@screens/search/hooks';
 
 import type { SearchBarCommands } from 'react-native-screens';
 
@@ -26,7 +26,7 @@ const Layout = () => {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: t('crossroad.add.header'),
+					title: t('crossroad.search.header'),
 					headerTitleStyle: {
 						color: 'transparent'
 					},
@@ -39,7 +39,7 @@ const Layout = () => {
 					headerSearchBarOptions: {
 						ref: searchBarRef,
 						hideNavigationBar: false,
-						placeholder: t('crossroad.add.search_bar'),
+						placeholder: t('crossroad.search.search_bar'),
 						onChangeText: (e) => {
 							runSearch(e.nativeEvent.text);
 						}

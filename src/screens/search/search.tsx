@@ -2,10 +2,10 @@ import React from 'react';
 
 import { useSearch } from './hooks';
 
+import Root from './search.styles';
 import { Crossroad, SearchMode } from './components';
-import Root from './add.styles';
 
-const AddCrossroad = () => {
+const SearchCrossroad = () => {
 	const { isSearchMode } = useSearch();
 
 	if (isSearchMode) {
@@ -19,4 +19,4 @@ const AddCrossroad = () => {
 	return <Crossroad />;
 };
 
-export default AddCrossroad;
+export default SearchCrossroad;

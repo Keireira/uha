@@ -18,7 +18,7 @@ const TopHitCard = ({ onPress, ...searchResult }: Props) => {
 
 	return (
 		<Root>
-			<Label>{t('crossroad.add.sections.top_hit')}</Label>
+			<Label>{t('crossroad.search.sections.top_hit')}</Label>
 
 			<GlassCard isInteractive>
 				<Inner onPress={onPressHd}>
