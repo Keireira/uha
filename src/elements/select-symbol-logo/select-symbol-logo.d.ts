@@ -1,6 +1,10 @@
 import type { SFSymbol } from 'expo-symbols';
 
-export type SelectLogoTarget = 'add_subscription_logo' | 'library_category_logo' | 'library_service_logo';
+export type SelectLogoTarget =
+	| 'add_subscription_logo'
+	| 'library_category_logo'
+	| 'library_tender_logo'
+	| 'library_service_logo';
 
 export type SearchParamsT = {
 	target: SelectLogoTarget;

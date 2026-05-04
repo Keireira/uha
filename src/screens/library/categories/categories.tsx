@@ -31,7 +31,7 @@ import {
 import { LogoView } from '@ui';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
+import { Host, Text, HStack, RNHostView, List, Spacer, Section } from '@expo/ui/swift-ui';
 
 import type { CategoryT } from '@models';
 import type { SFSymbol } from 'expo-symbols';
@@ -130,8 +130,8 @@ const Categories = () => {
 									key={category.slug}
 									spacing={16}
 									modifiers={[
-										onTapGesture(openDetails),
 										contentShape(shapes.rectangle()),
+										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
 										swipeActions({
@@ -167,6 +167,8 @@ const Categories = () => {
 									>
 										{title}
 									</Text>
+
+									<Spacer />
 								</HStack>
 							);
 						})}

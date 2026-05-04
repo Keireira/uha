@@ -3,6 +3,7 @@ import type { SFSymbol } from 'expo-symbols';
 export type CategoryEditParams = {
 	slug: string;
 	title: string;
+
 	color: string;
 	emoji?: string;
 	symbol?: SFSymbol;

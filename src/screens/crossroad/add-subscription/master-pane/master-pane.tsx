@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -25,17 +25,19 @@ import PriceRow from './price-row';
 import {
 	font,
 	tint,
+	shapes,
 	listStyle,
 	lineLimit,
 	toggleStyle,
 	onTapGesture,
-	scrollDismissesKeyboard,
+	contentShape,
 	foregroundStyle,
+	listRowSeparator,
+	listRowBackground,
 	listSectionSpacing,
 	scrollTargetBehavior,
-	listRowBackground,
-	listRowSeparator,
-	multilineTextAlignment
+	multilineTextAlignment,
+	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
 import {
 	List,
@@ -136,7 +138,7 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 	const firstPaymentPreview = format(parseISO(firstPaymentDate), 'PP');
 	const cyclePreview = formatCycle(draft.billing_cycle_type, draft.billing_cycle_value);
 	const trialPreview = formatTrial(trialDuration.duration_type, trialDuration.duration_value);
-	const categoryPreview = category?.title ?? (draft.category_slug ? t(`category.${draft.category_slug}`) : 'None');
+	const categoryPreview = category?.title || (draft.category_slug ? t(`category.${draft.category_slug}`) : 'None');
 	const paymentPreview = tender?.title ?? 'None';
 	const notificationsPreview =
 		draft.notify_enabled && draft.notify_days_before > 0
@@ -215,7 +217,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 			{(canSyncLocalService || isLogoDirty) && (
 				<Section>
 					{canSyncLocalService && (
-						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(onSyncLocalService)]}>
+						<HStack
+							spacing={8}
+							alignment="center"
+							modifiers={[contentShape(shapes.rectangle()), onTapGesture(onSyncLocalService)]}
+						>
 							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
 
 							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Use Local Service Info</Text>
@@ -227,7 +233,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 					)}
 
 					{isLogoDirty && (
-						<HStack spacing={8} alignment="center" modifiers={[onTapGesture(resetLogo)]}>
+						<HStack
+							spacing={8}
+							alignment="center"
+							modifiers={[contentShape(shapes.rectangle()), onTapGesture(resetLogo)]}
+						>
 							<Image systemName="arrow.triangle.2.circlepath" size={18} color={theme.text.secondary} />
 
 							<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Reset Logo</Text>
@@ -253,7 +263,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 			{/* FPD | Billing Cycle | Trial */}
 			<Section>
 				{/* First payment date */}
-				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToFPDSettings)]}>
+				<HStack
+					spacing={6}
+					alignment="center"
+					modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToFPDSettings)]}
+				>
 					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>First Payment Date</Text>
 
 					<Spacer />
@@ -266,7 +280,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 				</HStack>
 
 				{/* Billing cycle */}
-				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToBillingCycleSettings)]}>
+				<HStack
+					spacing={6}
+					alignment="center"
+					modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToBillingCycleSettings)]}
+				>
 					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Billing Cycle</Text>
 					<Spacer />
 
@@ -285,7 +303,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 				/>
 
 				{hasTrial && (
-					<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToTrialDurationSettings)]}>
+					<HStack
+						spacing={6}
+						alignment="center"
+						modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToTrialDurationSettings)]}
+					>
 						<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Trial Duration</Text>
 						<Spacer />
 
@@ -299,17 +321,26 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 
 			{/* Category | List | Payment Method */}
 			<Section>
-				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToCategorySelection)]}>
+				<HStack
+					spacing={6}
+					alignment="center"
+					modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToCategorySelection)]}
+				>
 					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Category</Text>
 					<Spacer />
 
 					<Text modifiers={[font({ design: 'rounded', size: 15 }), foregroundStyle(theme.text.secondary)]}>
 						{categoryPreview}
 					</Text>
+
 					<Image systemName="chevron.right" size={12} color={theme.text.tertiary} />
 				</HStack>
 
-				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToPaymentSelection)]}>
+				<HStack
+					spacing={6}
+					alignment="center"
+					modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToPaymentSelection)]}
+				>
 					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Payment Method</Text>
 					<Spacer />
 
@@ -322,7 +353,11 @@ const MasterPane = ({ syncEpoch, canSyncLocalService, onSyncLocalService }: Prop
 
 			{/* Notifications */}
 			<Section>
-				<HStack spacing={6} alignment="center" modifiers={[onTapGesture(goToNotificationsSettings)]}>
+				<HStack
+					spacing={6}
+					alignment="center"
+					modifiers={[contentShape(shapes.rectangle()), onTapGesture(goToNotificationsSettings)]}
+				>
 					<Text modifiers={[font({ design: 'rounded', size: 16, weight: 'medium' })]}>Notifications</Text>
 					<Spacer />
 

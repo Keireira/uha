@@ -31,7 +31,7 @@ import {
 import { LogoView } from '@ui';
 import Toast from 'react-native-toast-message';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Host, Text, VStack, HStack, RNHostView, List, Section } from '@expo/ui/swift-ui';
+import { Host, Text, VStack, HStack, RNHostView, List, Spacer, Section } from '@expo/ui/swift-ui';
 
 import type { TenderT } from '@models';
 import type { SFSymbol } from 'expo-symbols';
@@ -101,7 +101,7 @@ const Payments = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{payments.map((payment) => {
-							const comment = payment.comment?.trim() || (payment.is_card ? t('library.details.fields.card') : '');
+							const comment = payment.comment || (payment.is_card ? t('library.details.fields.card') : null);
 
 							const openDetails = () => {
 								openLibraryDetails('payment', payment.id, payment.title);
@@ -112,8 +112,8 @@ const Payments = () => {
 									key={payment.id}
 									spacing={16}
 									modifiers={[
-										onTapGesture(openDetails),
 										contentShape(shapes.rectangle()),
+										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
 										swipeActions({
@@ -135,6 +135,7 @@ const Payments = () => {
 											name={payment.title}
 											emoji={payment.emoji}
 											color={payment.color}
+											url={payment.logo_url}
 											size={48}
 										/>
 									</RNHostView>
@@ -162,6 +163,8 @@ const Payments = () => {
 											</Text>
 										)}
 									</VStack>
+
+									<Spacer />
 								</HStack>
 							);
 						})}

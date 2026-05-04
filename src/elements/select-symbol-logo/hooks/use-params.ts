@@ -1,6 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
 import { useLocalSearchParams } from 'expo-router';
 
+import { useEditPaymentStore } from '@screens/library/payments/hooks';
 import { useEditServiceStore } from '@screens/library/services/hooks';
 import { useEditCategoryStore } from '@screens/library/categories/hooks';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
@@ -33,6 +34,16 @@ const useParams = (): ParamsBinding => {
 			color: state.color,
 			symbol: state.symbol as SFSymbol,
 			logo_url: state.logo_url,
+			patch: state.actions.patch
+		}))
+	);
+
+	/* For library_tender_logo */
+	const tenderDraft = useEditPaymentStore(
+		useShallow((state) => ({
+			color: state.color,
+			image_uri: state.logo_url,
+			symbol: state.symbol as SFSymbol,
 			patch: state.actions.patch
 		}))
 	);
@@ -82,6 +93,19 @@ const useParams = (): ParamsBinding => {
 				image_uri: subscriptionDraft.image_uri,
 				setSymbol: subscriptionDraft.setLogoSymbol,
 				setImageUri: subscriptionDraft.setLogoImage
+			};
+
+		case 'library_tender_logo':
+			return {
+				color: tenderDraft.color,
+				image_uri: tenderDraft.image_uri,
+				symbol: tenderDraft.symbol as SFSymbol,
+				setImageUri: (logo_uri) => {
+					tenderDraft.patch({ logo_url: logo_uri });
+				},
+				setSymbol: (symbol) => {
+					tenderDraft.patch({ symbol });
+				}
 			};
 
 		default:

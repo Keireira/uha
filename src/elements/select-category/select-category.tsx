@@ -78,8 +78,8 @@ const SelectCategoryScreen = () => {
 									key={category.slug}
 									spacing={16}
 									modifiers={[
-										onTapGesture(selecteCategory),
 										contentShape(shapes.rectangle()),
+										onTapGesture(selecteCategory),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' })
 									]}
@@ -91,6 +91,7 @@ const SelectCategoryScreen = () => {
 											name={category.title || ''}
 											emoji={category.emoji}
 											color={category.color}
+											url={category.logo_url}
 											size={48}
 										/>
 									</RNHostView>
@@ -105,12 +106,8 @@ const SelectCategoryScreen = () => {
 										{title}
 									</Text>
 
-									{isActive && (
-										<>
-											<Spacer />
-											<Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />
-										</>
-									)}
+									<Spacer />
+									{isActive && <Image systemName="checkmark" size={18} color={settingAccent} modifiers={[bold()]} />}
 								</HStack>
 							);
 						})}
