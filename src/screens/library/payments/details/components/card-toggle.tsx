@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAccent } from '@hooks';
 
 import { Toggle } from '@expo/ui/swift-ui';
-import { tint } from '@expo/ui/swift-ui/modifiers';
+import { tint, contentShape, shapes } from '@expo/ui/swift-ui/modifiers';
 
 import type { PaymentEditParams } from '@screens/library/payments';
 
@@ -20,7 +20,7 @@ const CardToggle = ({ isCard, onChangeIsCard }: Props) => {
 	return (
 		<Toggle
 			label={t('library.details.fields.card')}
-			modifiers={[tint(settingAccent)]}
+			modifiers={[contentShape(shapes.rectangle()), tint(settingAccent)]}
 			isOn={isCard}
 			onIsOnChange={onChangeIsCard}
 		/>

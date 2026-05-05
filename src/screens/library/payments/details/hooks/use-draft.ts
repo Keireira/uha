@@ -1,26 +1,26 @@
 import { useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { tendersTable } from '@db/schema';
 import useEditPaymentStore from '../../hooks/use-edit-payment';
 
 import * as ImagePicker from 'expo-image-picker';
 
+import type { TenderT } from '@models';
 import type { SFSymbol } from 'expo-symbols';
 import type { PaymentEditParams } from '@screens/library/payments';
 
-const normalizePaymentDraft = (payment: typeof tendersTable.$inferSelect): PaymentEditParams => ({
+const normalizePaymentDraft = (payment: TenderT): PaymentEditParams => ({
 	title: payment.title || '',
 	comment: payment.comment || '',
 	is_card: payment.is_card,
 
-	emoji: payment.emoji || '',
 	color: payment.color || '',
-	logo_url: payment.logo_url || '',
-	symbol: payment.symbol as SFSymbol
+	emoji: payment.emoji || '',
+	symbol: payment.symbol as SFSymbol | null,
+	logo_url: payment.logo_url || ''
 });
 
-const useDraft = (payment?: typeof tendersTable.$inferSelect) => {
+const useDraft = (payment?: TenderT) => {
 	const initStore = useEditPaymentStore((state) => state.actions.init);
 	const patch = useEditPaymentStore((state) => state.actions.patch);
 
@@ -64,8 +64,36 @@ const useDraft = (payment?: typeof tendersTable.$inferSelect) => {
 		const [asset] = result.assets;
 		patch({ logo_url: asset.uri });
 	};
+
+	/* Reset actions */
+	const resetEmoji = () => patch({ emoji: '' });
 	const resetSymbol = () => patch({ symbol: undefined });
 	const resetLogoUrl = () => patch({ logo_url: undefined });
+
+	/* Initial resets */
+	const resetToInitialEmoji = () => {
+		if (!payment) return;
+
+		patch({ emoji: payment.initial_emoji || '' });
+	};
+
+	const resetToInitialSymbol = () => {
+		if (!payment) return;
+
+		patch({ symbol: payment.initial_symbol as SFSymbol });
+	};
+
+	const resetToInitialColor = () => {
+		if (!payment) return;
+
+		patch({ color: payment.initial_color || '' });
+	};
+
+	const resetToInitialLogoUrl = () => {
+		if (!payment) return;
+
+		patch({ logo_url: payment.initial_logo_url });
+	};
 
 	return {
 		draft,
@@ -76,8 +104,15 @@ const useDraft = (payment?: typeof tendersTable.$inferSelect) => {
 			onChangeComment,
 			onChangeIsCard,
 			openImagePicker,
+
+			resetEmoji,
 			resetSymbol,
-			resetLogoUrl
+			resetLogoUrl,
+
+			resetToInitialEmoji,
+			resetToInitialSymbol,
+			resetToInitialColor,
+			resetToInitialLogoUrl
 		}
 	};
 };

@@ -22,9 +22,10 @@ type Props = {
 	symbol: PaymentEditParams['symbol'];
 	color: PaymentEditParams['color'];
 	resetSymbol: () => void;
+	resetToInitialSymbol: () => void;
 };
 
-const Symbol = ({ symbol, color, resetSymbol }: Props) => {
+const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -47,6 +48,13 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 				onTapGesture(openLogoPicker),
 				...swipeActions({
 					actions: [
+						{
+							id: 'reset',
+							edge: 'leading',
+							systemImage: 'arrow.counterclockwise',
+							tint: settingAccent,
+							onPress: resetToInitialSymbol
+						},
 						{
 							id: 'delete',
 							enabled: Boolean(symbol),

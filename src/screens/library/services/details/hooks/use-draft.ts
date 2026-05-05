@@ -12,11 +12,11 @@ import type { ServiceEditParams } from '@screens/library/services';
 const normalizeServiceDraft = (service: ServiceT): ServiceEditParams => ({
 	slug: service.slug || '',
 	title: service.title || '',
-	color: service.color || '',
 	bundle_id: service.bundle_id || '',
 	category_slug: service.category_slug || '',
 	aliases: service.aliases || [],
 
+	color: service.color || '',
 	emoji: service.emoji || '',
 	symbol: service.symbol as SFSymbol | null,
 	logo_url: service.logo_url || ''
@@ -55,9 +55,6 @@ const useDraft = (service?: ServiceT) => {
 	const onChangeEmoji = (emoji: string) => patch({ emoji: emoji.slice(-8) });
 	const onChangeAliases = (aliases: string[]) => patch({ aliases });
 
-	const resetEmoji = () => patch({ emoji: '' });
-	const resetSymbol = () => patch({ symbol: undefined });
-	const resetLogoUrl = () => patch({ logo_url: undefined });
 	const openImagePicker = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ['images'],
@@ -73,6 +70,11 @@ const useDraft = (service?: ServiceT) => {
 		const [asset] = result.assets;
 		patch({ logo_url: asset.uri });
 	};
+
+	/* Reset actions */
+	const resetEmoji = () => patch({ emoji: '' });
+	const resetSymbol = () => patch({ symbol: undefined });
+	const resetLogoUrl = () => patch({ logo_url: undefined });
 
 	/* Initial resets */
 	const resetToInitialEmoji = () => {
