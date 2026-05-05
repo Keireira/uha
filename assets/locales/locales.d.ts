@@ -592,6 +592,7 @@ export type LocaleRootT = {
 		};
 		appearance: {
 			header: string;
+			auto: string;
 			light: string;
 			dark: string;
 			oled: string;

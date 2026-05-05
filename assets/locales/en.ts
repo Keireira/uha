@@ -377,6 +377,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Appearance',
+		auto: 'Auto',
 		light: 'Light',
 		dark: 'Dark',
 		oled: 'OLED'

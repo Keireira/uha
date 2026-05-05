@@ -400,6 +400,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: '外観',
+		auto: '自動',
 		light: 'ライト',
 		dark: 'ダーク',
 		oled: 'OLED'

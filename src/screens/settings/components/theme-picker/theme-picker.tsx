@@ -1,87 +1,60 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { setSettingsValue, useSettingsValue } from '@hooks';
 
-import { H6 } from '@ui';
-import { SymbolView } from 'expo-symbols';
-import Root, { Tile, InnerTile } from './theme-picker.styles';
+import { useAccent } from '@hooks';
+import { AUTO_MODE, MODES } from './data';
+import { useGetModifiers, useGetActiveMode } from './hooks';
 
-import type { UserT } from '@models';
-import type { ModeT } from './theme-picker.d';
-
-const MODES: ModeT[] = [
-	{
-		mode: 'light',
-		icon: 'sun.max.fill',
-		labelKey: 'settings.appearance.light',
-		bg: '#ffffff',
-		text: '#1C1C1E',
-		colorScheme: 'light'
-	},
-	{
-		mode: 'dark',
-		icon: 'moon.fill',
-		labelKey: 'settings.appearance.dark',
-		bg: '#1c1c1e',
-		text: '#fafafa',
-		colorScheme: 'dark'
-	},
-	{
-		mode: 'oled',
-		icon: 'moon.stars.fill',
-		labelKey: 'settings.appearance.oled',
-		bg: '#000000',
-		text: '#ffffff',
-		colorScheme: 'dark'
-	}
-];
+import { HStack, VStack, Image, Text } from '@expo/ui/swift-ui';
+import { font, frame, foregroundStyle } from '@expo/ui/swift-ui/modifiers';
 
 const ThemePicker = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
+	const settingAccent = useAccent();
 
-	const currentTheme = useSettingsValue<UserT['theme']>('theme');
-	const selectedAccent = useSettingsValue<UserT['accent']>('accent');
-	const isOledEnabled = useSettingsValue<UserT['oled_mode']>('oled_mode');
-	const activeMode = isOledEnabled && currentTheme === 'dark' ? 'oled' : currentTheme;
+	const activeMode = useGetActiveMode();
+	const getModifiers = useGetModifiers();
 
-	const accentColor = useMemo(() => {
-		return theme.accents[selectedAccent] || theme.accents.orange;
-	}, [theme, selectedAccent]);
+	const isAutoActive = activeMode === AUTO_MODE.mode;
 
 	return (
-		<Root>
-			{MODES.map((mode) => {
-				const isActive = activeMode === mode.mode;
+		<VStack spacing={12} modifiers={[frame({ maxWidth: Number.POSITIVE_INFINITY })]}>
+			<HStack spacing={12} modifiers={[frame({ maxWidth: Number.POSITIVE_INFINITY })]}>
+				{MODES.map((mode) => {
+					const isActive = activeMode === mode.mode;
 
-				const selectTheme = () => {
-					setSettingsValue('oled_mode', mode.mode === 'oled');
-					setSettingsValue('theme', mode.mode === 'oled' ? 'dark' : mode.mode);
-				};
+					return (
+						<VStack key={mode.mode} spacing={12} modifiers={getModifiers(mode, isActive)}>
+							<Image systemName={mode.icon} size={28} color={isActive ? settingAccent : mode.text} />
 
-				return (
-					<Tile
-						key={mode.mode}
-						colorScheme={mode.colorScheme}
-						isInteractive
-						$accent={accentColor}
-						$bg={mode.bg}
-						$isActive={isActive}
-					>
-						<InnerTile onPress={selectTheme}>
-							<SymbolView
-								name="sun.max.fill"
-								size={28}
-								tintColor={isActive ? theme.accents[selectedAccent] : mode.text}
-							/>
+							<Text
+								modifiers={[
+									font({ design: 'rounded', weight: 'semibold', size: 14 }),
+									foregroundStyle(mode?.text || theme.text.primary)
+								]}
+							>
+								{t(mode.labelKey)}
+							</Text>
+						</VStack>
+					);
+				})}
+			</HStack>
 
-							<H6 $color={mode.text}>{t(mode.labelKey)}</H6>
-						</InnerTile>
-					</Tile>
-				);
-			})}
-		</Root>
+			<HStack spacing={8} modifiers={getModifiers(AUTO_MODE, isAutoActive)}>
+				<Image systemName={AUTO_MODE.icon} size={20} color={isAutoActive ? settingAccent : AUTO_MODE.text} />
+
+				<Text
+					modifiers={[
+						font({ design: 'rounded', weight: 'semibold', size: 14 }),
+						foregroundStyle(AUTO_MODE?.text || theme.text.primary)
+					]}
+				>
+					{t(AUTO_MODE.labelKey)}
+				</Text>
+			</HStack>
+		</VStack>
 	);
 };
 
