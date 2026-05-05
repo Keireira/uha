@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8708047a-b48a-49a6-ade5-63a2ab51deda",
+  "id": "8e60e420-3a90-4277-9418-832ada9e6a62",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -86,13 +86,7 @@
           "autoincrement": false
         }
       },
-      "indexes": {
-        "categories_full_unique": {
-          "name": "categories_full_unique",
-          "columns": ["emoji", "color"],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

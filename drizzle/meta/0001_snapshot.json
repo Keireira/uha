@@ -1,6 +1,6 @@
 {
-  "id": "3b63e033-4c78-4cec-b100-be9af07c7438",
-  "prevId": "8708047a-b48a-49a6-ade5-63a2ab51deda",
+  "id": "9fb45b99-dec4-4a14-96c1-80ac4f46f998",
+  "prevId": "8e60e420-3a90-4277-9418-832ada9e6a62",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -86,13 +86,7 @@
           "autoincrement": false
         }
       },
-      "indexes": {
-        "categories_full_unique": {
-          "name": "categories_full_unique",
-          "columns": ["emoji", "color"],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

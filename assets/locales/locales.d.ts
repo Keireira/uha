@@ -5,6 +5,7 @@ export type RegionsT = {
 	south_america: string;
 	caribbean: string;
 	central_asia: string;
+	west_asia: string;
 	south_asia: string;
 	east_asia: string;
 	southeast_asia: string;
@@ -16,6 +17,7 @@ export type RegionsT = {
 
 type CurrencyCode =
 	| 'AOA'
+	| 'BYN'
 	| 'BWP'
 	| 'BIF'
 	| 'CDF'

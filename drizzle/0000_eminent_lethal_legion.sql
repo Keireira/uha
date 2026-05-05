@@ -12,7 +12,6 @@ CREATE TABLE `categories` (
 	`initial_logo_url` text
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`emoji`,`color`);--> statement-breakpoint
 CREATE TABLE `currencies` (
 	`id` text PRIMARY KEY NOT NULL,
 	`symbol` text NOT NULL,

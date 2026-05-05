@@ -30,7 +30,7 @@ INSERT INTO "categories" ("color", "emoji", "slug", "title", "is_system", "initi
   ('#FFD700', '🔐', 'vpn_and_security', NULL, true, '#FFD700', '🔐'),
   ('#7B68EE', '🎬', 'video_streaming', NULL, true, '#7B68EE', '🎬');
 --> statement-breakpoint
-INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title", , "initial_emoji", "initial_color") VALUES
+INSERT INTO "tenders" ("id", "emoji", "comment", "color", "is_card", "title", "initial_emoji", "initial_color") VALUES
   ('88888888-0000-0000-0000-000000000001', '💳', '', '#1A1F71', true, 'Credit Card', '💳', '#1A1F71'),
   ('88888888-0000-0000-0000-000000000002', '💳', '', '#1A8F71', true, 'Debit Card', '💳', '#1A8F71'),
   ('88888888-0000-0000-0000-000000000003', '💸', '', '#007F73', false, 'PayPal', '💸', '#007F73'),
@@ -75,7 +75,7 @@ INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, r
   ('ALL', 'L', 100, 2, 'sq-AL', 'europe'),
   ('BAM', 'KM', 100, 2, 'bs-BA', 'europe'),
   ('BGN', 'лв', 100, 2, 'bg-BG', 'europe'),
-  ('BYN', 'р', 100, 2, 'ru-BY', 'europe'),
+  ('BYN', 'Br', 100, 2, 'ru-BY', 'europe'),
   ('CHF', 'CHF', 100, 2, 'de-CH', 'europe'),
   ('CZK', 'Kč', 100, 2, 'cs-CZ', 'europe'),
   ('DKK', 'kr', 100, 2, 'da-DK', 'europe'),
@@ -126,7 +126,7 @@ INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, r
   ('TTD', 'TT$', 100, 2, 'en-TT', 'caribbean'),
   ('XCD', 'EC$', 100, 2, 'en-AG', 'caribbean'),
   ('AMD', '֏', 100, 2, 'hy-AM', 'europe'),
-  ('AZN', '₼', 100, 2, 'az-AZ', 'central_asia'),
+  ('AZN', '₼', 100, 2, 'az-AZ', 'west_asia'),
   ('KGS', 'с', 100, 2, 'ky-KG', 'central_asia'),
   ('KZT', '₸', 100, 2, 'kk-KZ', 'central_asia'),
   ('TJS', 'смн', 100, 2, 'tg-TJ', 'central_asia'),
@@ -166,7 +166,7 @@ INSERT INTO currencies (id, symbol, denominator, fraction_digits, intl_locale, r
   ('XRP', 'XRP', 1000000, 6, 'en-US', 'cryptocurrency'),
   ('AED', 'AED', 100, 2, 'ar-AE', 'other'),
   ('OMR', 'ر.ع.', 1000, 3, 'ar-OM', 'other'),
-  ('TRY', '₺', 100, 2, 'tr-TR', 'asia'),
+  ('TRY', '₺', 100, 2, 'tr-TR', 'west_asia'),
   ('BDT', '৳', 100, 2, 'bn-BD', 'other'),
   ('IDR', 'Rp', 100, 2, 'id-ID', 'other'),
   ('MYR', 'RM', 100, 2, 'ms-MY', 'other'),

@@ -8,6 +8,7 @@ const regions: RegionsT = {
 	south_america: 'Оңтүстік Америка',
 	caribbean: 'Кариб',
 	central_asia: 'Орталық Азия',
+	west_asia: 'Батыс Азия',
 	south_asia: 'Оңтүстік Азия',
 	east_asia: 'Шығыс Азия',
 	southeast_asia: 'Оңтүстік-Шығыс Азия',
@@ -235,6 +236,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Ангола кванзасы',
+	BYN: 'Беларусь рублі',
 	BWP: 'Ботсвана пуласы',
 	BIF: 'Бурунди франкі',
 	CDF: 'Конго франкі',
