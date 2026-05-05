@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { categoriesTable } from '@db/schema';
 import useEditCategoryStore from '../../hooks/use-edit-category';
 
 import * as ImagePicker from 'expo-image-picker';
 
+import type { CategoryT } from '@models';
 import type { SFSymbol } from 'expo-symbols';
 import type { CategoryEditParams } from '@screens/library/categories';
 
-const normalizeCategoryDraft = (category: typeof categoriesTable.$inferSelect): CategoryEditParams => ({
+const normalizeCategoryDraft = (category: CategoryT): CategoryEditParams => ({
 	slug: category.slug || '',
 	title: category.title || '',
 
-	emoji: category.emoji || '',
 	color: category.color || '',
-	logo_url: category.logo_url || '',
-	symbol: category.symbol as SFSymbol
+	emoji: category.emoji || '',
+	symbol: category.symbol as SFSymbol | null,
+	logo_url: category.logo_url || ''
 });
 
-const useDraft = (category?: typeof categoriesTable.$inferSelect) => {
+const useDraft = (category?: CategoryT) => {
 	const initStore = useEditCategoryStore((state) => state.actions.init);
 	const patch = useEditCategoryStore((state) => state.actions.patch);
 
@@ -60,8 +60,36 @@ const useDraft = (category?: typeof categoriesTable.$inferSelect) => {
 		const [asset] = result.assets;
 		patch({ logo_url: asset.uri });
 	};
+
+	/* Reset actions */
+	const resetEmoji = () => patch({ emoji: '' });
 	const resetSymbol = () => patch({ symbol: undefined });
 	const resetLogoUrl = () => patch({ logo_url: undefined });
+
+	/* Initial resets */
+	const resetToInitialEmoji = () => {
+		if (!category) return;
+
+		patch({ emoji: category.initial_emoji || '' });
+	};
+
+	const resetToInitialSymbol = () => {
+		if (!category) return;
+
+		patch({ symbol: category.initial_symbol as SFSymbol });
+	};
+
+	const resetToInitialColor = () => {
+		if (!category) return;
+
+		patch({ color: category.initial_color || '' });
+	};
+
+	const resetToInitialLogoUrl = () => {
+		if (!category) return;
+
+		patch({ logo_url: category.initial_logo_url });
+	};
 
 	return {
 		draft,
@@ -70,9 +98,16 @@ const useDraft = (category?: typeof categoriesTable.$inferSelect) => {
 			onChangeTitle,
 			onChangeColor,
 			onChangeEmoji,
-			resetLogoUrl,
+			openImagePicker,
+
+			resetEmoji,
 			resetSymbol,
-			openImagePicker
+			resetLogoUrl,
+
+			resetToInitialEmoji,
+			resetToInitialSymbol,
+			resetToInitialColor,
+			resetToInitialLogoUrl
 		}
 	};
 };

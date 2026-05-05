@@ -8,6 +8,7 @@ const regions: RegionsT = {
 	south_america: 'South America',
 	caribbean: 'Caribbean',
 	central_asia: 'Central Asia',
+	west_asia: 'West Asia',
 	south_asia: 'South Asia',
 	east_asia: 'East Asia',
 	southeast_asia: 'Southeast Asia',
@@ -235,6 +236,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Angolan Kwanza',
+	BYN: 'Belarusian Ruble',
 	BWP: 'Botswanan Pula',
 	BIF: 'Burundian Franc',
 	CDF: 'Congolese Franc',
@@ -375,6 +377,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Appearance',
+		auto: 'Auto',
 		light: 'Light',
 		dark: 'Dark',
 		oled: 'OLED'
@@ -565,8 +568,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Category',
 			symbol: 'SF Symbol',
 			logo_url: 'Logo URL',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Referral link'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

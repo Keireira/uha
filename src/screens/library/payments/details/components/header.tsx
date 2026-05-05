@@ -34,7 +34,7 @@ const Header = ({ initDraft, draft }: Props) => {
 				<Stack.Toolbar.Button variant="plain" icon="xmark" onPress={closeModal} />
 			</Stack.Toolbar>
 
-			<Stack.Screen options={{ title: initDraft.title || '' }} />
+			<Stack.Screen options={{ title: initDraft.title || draft.title }} />
 
 			<Stack.Toolbar placement="right">
 				<Stack.Toolbar.Button variant="done" icon="checkmark" onPress={save} tintColor={settingAccent} />

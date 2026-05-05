@@ -7,6 +7,7 @@ const regions: RegionsT = {
 	south_america: 'Южная Америка',
 	caribbean: 'Карибский бассейн',
 	central_asia: 'Центральная Азия',
+	west_asia: 'Западная Азия',
 	south_asia: 'Южная Азия',
 	east_asia: 'Восточная Азия',
 	southeast_asia: 'Юго-Восточная Азия',
@@ -234,6 +235,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Ангольская кванза',
+	BYN: 'Рубль Беларуси',
 	BWP: 'Ботсванская пула',
 	BIF: 'Бурундийский франк',
 	CDF: 'Конголезский франк',
@@ -373,6 +375,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Оформление',
+		auto: 'Авто',
 		light: 'Светлая',
 		dark: 'Тёмная',
 		oled: 'OLED'
@@ -570,8 +573,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Категория',
 			symbol: 'SF Symbol',
 			logo_url: 'URL логотипа',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Реферальная ссылка'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

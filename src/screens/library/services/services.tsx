@@ -75,6 +75,7 @@ const Services = () => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
+
 	const [searchQuery, setSearchQuery] = useState('');
 	const services = useServices(searchQuery);
 
@@ -114,9 +115,8 @@ const Services = () => {
 				>
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{services.map(({ service, category }) => {
-							const categoryTitle = category
-								? t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug })
-								: null;
+							const categoryTitle =
+								category?.title || t(`category.${category?.slug}`, { defaultValue: category?.slug });
 
 							const openDetails = () => {
 								openLibraryDetails('service', service.id, service.title);
@@ -131,7 +131,7 @@ const Services = () => {
 										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
-										swipeActions({
+										...swipeActions({
 											actions: [
 												{
 													id: 'delete',

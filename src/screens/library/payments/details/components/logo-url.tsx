@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
+import { useAccent } from '@hooks';
+
 import {
 	font,
 	frame,
@@ -16,17 +18,19 @@ import {
 import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Text, Image, HStack, LabeledContent } from '@expo/ui/swift-ui';
 
-import type { CategoryEditParams } from '@screens/library/categories';
+import type { PaymentEditParams } from '@screens/library/payments';
 
 type Props = {
-	logoUrl: CategoryEditParams['logo_url'];
+	logoUrl: PaymentEditParams['logo_url'];
 	openImagePicker: () => void;
 	resetLogoUrl: () => void;
+	resetToInitialLogoUrl: () => void;
 };
 
-const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl }: Props) => {
+const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl, resetToInitialLogoUrl }: Props) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
+	const settingAccent = useAccent();
 
 	return (
 		<LabeledContent
@@ -34,8 +38,15 @@ const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl }: Props) => {
 			modifiers={[
 				contentShape(shapes.rectangle()),
 				onTapGesture(openImagePicker),
-				swipeActions({
+				...swipeActions({
 					actions: [
+						{
+							id: 'reset',
+							edge: 'leading',
+							systemImage: 'arrow.counterclockwise',
+							tint: settingAccent,
+							onPress: resetToInitialLogoUrl
+						},
 						{
 							id: 'delete',
 							enabled: Boolean(logoUrl),

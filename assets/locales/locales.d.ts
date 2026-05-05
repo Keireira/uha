@@ -5,6 +5,7 @@ export type RegionsT = {
 	south_america: string;
 	caribbean: string;
 	central_asia: string;
+	west_asia: string;
 	south_asia: string;
 	east_asia: string;
 	southeast_asia: string;
@@ -16,6 +17,7 @@ export type RegionsT = {
 
 type CurrencyCode =
 	| 'AOA'
+	| 'BYN'
 	| 'BWP'
 	| 'BIF'
 	| 'CDF'
@@ -572,7 +574,6 @@ export type LocaleRootT = {
 				symbol: string;
 				logo_url: string;
 				bundle_id: string;
-				ref_link: string;
 			};
 		};
 	};
@@ -591,6 +592,7 @@ export type LocaleRootT = {
 		};
 		appearance: {
 			header: string;
+			auto: string;
 			light: string;
 			dark: string;
 			oled: string;

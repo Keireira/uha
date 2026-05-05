@@ -8,9 +8,9 @@ const INITIAL_PARAMS: PaymentEditParams = {
 	is_card: true,
 
 	color: '',
-	emoji: undefined,
-	symbol: undefined,
-	logo_url: undefined
+	emoji: null,
+	symbol: null,
+	logo_url: null
 };
 
 const useEditPaymentStore = create<PaymentEditState>((set) => ({

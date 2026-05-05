@@ -8,6 +8,7 @@ const regions: RegionsT = {
 	south_america: 'Sudamérica',
 	caribbean: 'Caribe',
 	central_asia: 'Asia Central',
+	west_asia: 'Asia occidental',
 	south_asia: 'Asia del Sur',
 	east_asia: 'Asia Oriental',
 	southeast_asia: 'Sudeste Asiático',
@@ -235,6 +236,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Kwanza angoleño',
+	BYN: 'Rublo bielorruso',
 	BWP: 'Pula botsuanesa',
 	BIF: 'Franco burundés',
 	CDF: 'Franco congoleño',
@@ -375,6 +377,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Apariencia',
+		auto: 'Auto',
 		light: 'Claro',
 		dark: 'Oscuro',
 		oled: 'OLED'
@@ -566,8 +569,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Categoría',
 			symbol: 'Símbolo SF',
 			logo_url: 'URL del logo',
-			bundle_id: 'ID del paquete',
-			ref_link: 'Enlace de referido'
+			bundle_id: 'ID del paquete'
 		}
 	}
 };

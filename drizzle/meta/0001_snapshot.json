@@ -1,6 +1,6 @@
 {
-  "id": "b6f6a2c1-587d-4240-82d2-7c251e12d3bc",
-  "prevId": "9e098da8-1d88-4235-8cc4-fd2d0d9c6ba1",
+  "id": "9fb45b99-dec4-4a14-96c1-80ac4f46f998",
+  "prevId": "8e60e420-3a90-4277-9418-832ada9e6a62",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -21,6 +21,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "is_system": {
+          "name": "is_system",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
         "emoji": {
           "name": "emoji",
           "type": "text",
@@ -32,7 +40,7 @@
           "name": "color",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "symbol": {
@@ -49,22 +57,36 @@
           "notNull": false,
           "autoincrement": false
         },
-        "is_system": {
-          "name": "is_system",
-          "type": "integer",
+        "initial_emoji": {
+          "name": "initial_emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_color": {
+          "name": "initial_color",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": false
+          "autoincrement": false
+        },
+        "initial_symbol": {
+          "name": "initial_symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_logo_url": {
+          "name": "initial_logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
-      "indexes": {
-        "categories_full_unique": {
-          "name": "categories_full_unique",
-          "columns": ["emoji", "color"],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -314,34 +336,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "color": {
-          "name": "color",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "logo_url": {
-          "name": "logo_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "symbol": {
-          "name": "symbol",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "ref_link": {
-          "name": "ref_link",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "domains": {
           "name": "domains",
           "type": "text",
@@ -371,6 +365,62 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "emoji": {
+          "name": "emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "logo_url": {
+          "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_emoji": {
+          "name": "initial_emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_color": {
+          "name": "initial_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_symbol": {
+          "name": "initial_symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_logo_url": {
+          "name": "initial_logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -626,7 +676,7 @@
           "name": "color",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "symbol": {
@@ -638,6 +688,34 @@
         },
         "logo_url": {
           "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_emoji": {
+          "name": "initial_emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_color": {
+          "name": "initial_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "initial_symbol": {
+          "name": "initial_symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_logo_url": {
+          "name": "initial_logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

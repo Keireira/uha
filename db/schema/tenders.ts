@@ -7,7 +7,12 @@ export const tendersTable = sqliteTable('tenders', {
 	comment: text().default(''), // *8096 e.g.
 
 	emoji: text(), // 🍔 | 🚗 | ...
-	color: text(), // #FF0000 | #00FF00 | ...
+	color: text().notNull(), // #FF0000 | #00FF00 | ...
 	symbol: text(), // SF Symbol name
-	logo_url: text() // URL of the logo
+	logo_url: text(), // URL of the logo
+
+	initial_emoji: text(),
+	initial_color: text().notNull(),
+	initial_symbol: text(),
+	initial_logo_url: text()
 });

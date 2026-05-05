@@ -6,9 +6,9 @@ export type PaymentEditParams = {
 	is_card: boolean;
 
 	color: string;
-	emoji?: string;
-	symbol?: SFSymbol;
-	logo_url?: string;
+	emoji: string | null;
+	symbol: SFSymbol | null;
+	logo_url: string | null;
 };
 
 type PaymentEditActions = {

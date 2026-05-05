@@ -7,9 +7,9 @@ const INITIAL_PARAMS: CategoryEditParams = {
 	title: '',
 
 	color: '',
-	emoji: undefined,
-	symbol: undefined,
-	logo_url: undefined
+	emoji: null,
+	symbol: null,
+	logo_url: null
 };
 
 const useEditCategoryStore = create<CategoryEditState>((set) => ({
