@@ -28,7 +28,6 @@ export type SearchResultT = {
 	colors?: {
 		primary?: string;
 	};
-	ref_link?: string | null;
 	alternative_names?: string[];
 	social_links?: Record<string, string>;
 };
@@ -60,5 +59,4 @@ export type ServiceResponseT = {
 	};
 	social_links: Record<string, string>;
 	logo_url: string;
-	ref_link: string | null;
 };

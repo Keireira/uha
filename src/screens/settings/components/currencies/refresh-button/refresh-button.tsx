@@ -24,7 +24,9 @@ const RefreshButton = () => {
 				type: 'success',
 				text1: t('rates.success.title')
 			});
-		} catch {
+		} catch (err) {
+			console.log(err);
+
 			Toast.show({
 				type: 'error',
 				text1: t('rates.error.title'),

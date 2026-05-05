@@ -1,7 +1,7 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
-import { useRouter } from 'expo-router';
 
 import { useAccent } from '@hooks';
 
@@ -22,9 +22,10 @@ type Props = {
 	symbol: CategoryEditParams['symbol'];
 	color: CategoryEditParams['color'];
 	resetSymbol: () => void;
+	resetToInitialSymbol: () => void;
 };
 
-const Symbol = ({ symbol, color, resetSymbol }: Props) => {
+const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => {
 	const theme = useTheme();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -45,15 +46,22 @@ const Symbol = ({ symbol, color, resetSymbol }: Props) => {
 			modifiers={[
 				contentShape(shapes.rectangle()),
 				onTapGesture(openLogoPicker),
-				swipeActions({
+				...swipeActions({
 					actions: [
+						{
+							id: 'reset',
+							edge: 'leading',
+							systemImage: 'arrow.counterclockwise',
+							tint: settingAccent,
+							onPress: resetToInitialSymbol
+						},
 						{
 							id: 'delete',
 							enabled: Boolean(symbol),
 							systemImage: 'pencil.and.outline',
 							tint: theme.semantic.error,
 							onPress: resetSymbol,
-							label: 'Clear'
+							label: t('library.details.actions.clear')
 						}
 					]
 				})

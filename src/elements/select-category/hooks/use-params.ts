@@ -28,7 +28,7 @@ const useCategoryBinding = (): ParamsBinding => {
 	const service = useEditServiceStore(
 		useShallow((state) => ({
 			categorySlug: state.category_slug,
-			patch: state.patch
+			patch: state.actions.patch
 		}))
 	);
 

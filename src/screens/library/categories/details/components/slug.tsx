@@ -29,7 +29,7 @@ const Slug = ({ isSystem, slug, onChangeSlug }: Props) => {
 			<LabeledContent label={t('library.details.fields.slug')}>
 				<TextField
 					defaultValue={slug}
-					placeholder="slug"
+					placeholder={t('library.details.placeholders.slug')}
 					onValueChange={onChangeSlug}
 					modifiers={[
 						multilineTextAlignment('trailing'),

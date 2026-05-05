@@ -62,7 +62,7 @@ const SubscriptionDetails = () => {
 	}, [subscription]);
 
 	const save = async () => {
-		if (!subscription || !serviceId || !categorySlug || !firstPaymentDate.trim()) return;
+		if (!(subscription && serviceId && categorySlug && firstPaymentDate.trim())) return;
 
 		await db
 			.update(subscriptionsTable)

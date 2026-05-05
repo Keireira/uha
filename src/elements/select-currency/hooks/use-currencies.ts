@@ -21,6 +21,7 @@ const REGION_ORDER = [
 	'caribbean',
 	'central_asia',
 	'south_asia',
+	'west_asia',
 	'east_asia',
 	'southeast_asia',
 	'oceania',

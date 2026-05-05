@@ -8,6 +8,7 @@ const regions: RegionsT = {
 	south_america: 'South America',
 	caribbean: 'Caribbean',
 	central_asia: 'Central Asia',
+	west_asia: 'West Asia',
 	south_asia: 'South Asia',
 	east_asia: 'East Asia',
 	southeast_asia: 'Southeast Asia',
@@ -235,6 +236,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Angolan Kwanza',
+	BYN: 'Belarusian Ruble',
 	BWP: 'Botswanan Pula',
 	BIF: 'Burundian Franc',
 	CDF: 'Congolese Franc',
@@ -375,6 +377,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Appearance',
+		auto: 'Auto',
 		light: 'Light',
 		dark: 'Dark',
 		oled: 'OLED'
@@ -530,6 +533,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'Browse and edit active plans'
 		}
 	},
+	filters: {
+		categories: 'Filter categories',
+		services: 'Filter services',
+		payments: 'Filter payment methods'
+	},
 	delete_blocked: {
 		title: "Can't delete",
 		default_category: 'This is system category',
@@ -545,6 +553,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'Copy',
 		copied: 'Copied',
 		id_copied: 'ID copied',
+		actions: {
+			clear: 'Clear'
+		},
 		section: {
 			identity: 'Identity',
 			appearance: 'Appearance',
@@ -553,6 +564,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: 'Add alias…'
+		},
+		placeholders: {
+			slug: 'slug',
+			title_override: 'Override current one',
+			emoji: 'One emoji to symbolize'
 		},
 		fields: {
 			slug: 'Slug',
@@ -565,8 +581,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Category',
 			symbol: 'SF Symbol',
 			logo_url: 'Logo URL',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Referral link'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

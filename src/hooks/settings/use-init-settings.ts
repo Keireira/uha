@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useLocales, useCalendars } from 'expo-localization';
-import { Settings, Appearance, useColorScheme } from 'react-native';
+import { Settings, Appearance } from 'react-native';
 
 import db, { silentDb } from '@db';
 import { userTable } from '@db/schema';
-import SettingsBridgeModule from '@modules/settings-bridge';
 
 import { USER_ID } from '@db/constants';
 import { deserialize, serializeForNS } from './shared';
-import { cache, setSettingsValue, useSettingsValue } from './use-settings';
+import { cache, useSettingsValue } from './use-settings';
 
 import type { UserT } from '@models';
 import type { UserKey } from './shared';
@@ -39,41 +38,24 @@ const hydrateSettings = (dbRow: UserT | undefined, defaults: Partial<Omit<UserT,
 };
 
 const useSyncSettings = () => {
-	const colorScheme = useColorScheme();
 	const theme = useSettingsValue<'auto' | 'dark' | 'light'>('theme');
-
-	useEffect(() => {
-		SettingsBridgeModule.addListener('onThemeChanged', (event) => {
-			if (__DEV__) {
-				console.log(`\x1b[34m[ACTION] \x1b[35m[onThemeChanged] \x1b[0m(${event.newValue})`);
-			}
-
-			Appearance.setColorScheme(event.newValue);
-		});
-
-		return () => {
-			SettingsBridgeModule.removeAllListeners('onThemeChanged');
-		};
-	}, []);
 
 	useEffect(() => {
 		if (theme === 'auto' || !theme) {
 			if (__DEV__) {
-				console.log(`\x1b[34m[SYNC SETTINGS]: \x1b[35mSetup settings value\x1b[0m`);
+				console.log(`\x1b[34m[SYNC SETTINGS]: \x1b[35mSetup system color scheme\x1b[0m`);
 			}
 
-			setSettingsValue('theme', colorScheme);
+			Appearance.setColorScheme('unspecified');
+			return;
 		}
 
-		if (theme !== colorScheme && theme && theme !== 'auto') {
-			if (__DEV__) {
-				console.log(`\x1b[34m[SYNC SETTINGS]: \x1b[35mSetup color scheme to \x1b[0m(${theme})`);
-			}
-
-			Appearance.setColorScheme(theme);
-			setSettingsValue('theme', theme);
+		if (__DEV__) {
+			console.log(`\x1b[34m[SYNC SETTINGS]: \x1b[35mSetup color scheme to \x1b[0m(${theme})`);
 		}
-	}, [theme, colorScheme]);
+
+		Appearance.setColorScheme(theme);
+	}, [theme]);
 };
 
 const useInitSettings = () => {
@@ -92,8 +74,8 @@ const useInitSettings = () => {
 			ai_enabled: false,
 			is_unlimited: false,
 			accent: 'orange',
-			default_currency: 'USD',
-			recalc_currency: locale.currencyCode || 'USD',
+			default_currency: locale.currencyCode || 'USD',
+			recalc_currency: 'USD',
 			appstore_country: locale.regionCode || 'US',
 			playstore_country: locale.regionCode || 'US',
 			playstore_lang: locale.languageCode || 'en',

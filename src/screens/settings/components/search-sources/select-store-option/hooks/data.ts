@@ -8,6 +8,7 @@ export const REGION_ORDER = [
 	'south_asia',
 	'east_asia',
 	'southeast_asia',
+	'west_asia',
 	'oceania',
 	'africa',
 	'other'
@@ -108,8 +109,11 @@ export const REGION_MAP: Record<string, string[]> = {
 		'VC', // Saint Vincent and the Grenadines
 		'VG' // British Virgin Islands
 	],
+	west_asia: [
+		'TR', // Turkey
+		'AZ' // Azerbaijan
+	],
 	central_asia: [
-		'AZ', // Azerbaijan
 		'AM', // Armenia
 		'KZ', // Kazakhstan
 		'KG', // Kyrgyzstan
@@ -217,7 +221,6 @@ export const REGION_MAP: Record<string, string[]> = {
 		'QA', // Qatar
 		'SA', // Saudi Arabia
 		'TN', // Tunisia
-		'TR', // Turkey
 		'YE' // Yemen
 	]
 };

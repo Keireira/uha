@@ -5,9 +5,9 @@ export type CategoryEditParams = {
 	title: string;
 
 	color: string;
-	emoji?: string;
-	symbol?: SFSymbol;
-	logo_url?: string;
+	emoji: string | null;
+	symbol: SFSymbol | null;
+	logo_url: string | null;
 };
 
 type CategoryEditActions = {

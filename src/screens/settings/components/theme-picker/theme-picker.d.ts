@@ -1,16 +1,12 @@
 import type { ThemeConfigT } from '@themes';
+import type { UserT } from '@models';
+import type { SFSymbol } from 'sf-symbols-typescript';
 
 export type ModeT = {
-	mode: ThemeConfigT['tint'] | 'oled';
-	icon: string;
+	mode: UserT['theme'] | 'oled';
+	icon: SFSymbol;
 	labelKey: string;
-	bg: string;
-	text: string;
+	bg?: string;
+	text?: string;
 	colorScheme: ThemeConfigT['tint'];
-};
-
-export type TilePropsT = {
-	$bg: ModeT['bg'];
-	$isActive: boolean;
-	$accent: string;
 };

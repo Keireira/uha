@@ -1,14 +1,17 @@
 CREATE TABLE `categories` (
 	`slug` text PRIMARY KEY NOT NULL,
 	`title` text,
+	`is_system` integer DEFAULT false NOT NULL,
 	`emoji` text,
-	`color` text,
+	`color` text NOT NULL,
 	`symbol` text,
 	`logo_url` text,
-	`is_system` integer DEFAULT false NOT NULL
+	`initial_emoji` text,
+	`initial_color` text NOT NULL,
+	`initial_symbol` text,
+	`initial_logo_url` text
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`emoji`,`color`);--> statement-breakpoint
 CREATE TABLE `currencies` (
 	`id` text PRIMARY KEY NOT NULL,
 	`symbol` text NOT NULL,
@@ -48,14 +51,18 @@ CREATE TABLE `services` (
 	`bundle_id` text,
 	`slug` text,
 	`title` text NOT NULL,
-	`color` text NOT NULL,
-	`logo_url` text,
-	`symbol` text,
-	`ref_link` text,
 	`domains` text DEFAULT '[]',
 	`social_links` text DEFAULT '{}',
 	`aliases` text DEFAULT '[]' NOT NULL,
 	`category_slug` text NOT NULL,
+	`emoji` text,
+	`color` text NOT NULL,
+	`symbol` text,
+	`logo_url` text,
+	`initial_emoji` text,
+	`initial_color` text,
+	`initial_symbol` text,
+	`initial_logo_url` text,
 	FOREIGN KEY (`category_slug`) REFERENCES `categories`(`slug`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -93,9 +100,13 @@ CREATE TABLE `tenders` (
 	`is_card` integer DEFAULT true NOT NULL,
 	`comment` text DEFAULT '',
 	`emoji` text,
-	`color` text,
+	`color` text NOT NULL,
 	`symbol` text,
-	`logo_url` text
+	`logo_url` text,
+	`initial_emoji` text,
+	`initial_color` text NOT NULL,
+	`initial_symbol` text,
+	`initial_logo_url` text
 );
 --> statement-breakpoint
 CREATE TABLE `transactions` (

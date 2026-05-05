@@ -184,7 +184,9 @@ const useBackfillRates = () => {
 	useEffect(() => {
 		if (!newDates.length) return;
 
-		backfillRates().catch(() => {
+		backfillRates().catch((err) => {
+			console.log(err);
+
 			Toast.show({
 				type: 'error',
 				text1: t('rates.error.title'),

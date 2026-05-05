@@ -71,7 +71,7 @@ const SelectSymbolLogoScreen = () => {
 		router.back();
 	};
 
-	const showImagePicker = !['library_category_logo', 'library_tender_logo'].includes(target);
+	const showImagePicker = !['library_category_logo', 'library_tender_logo', 'library_service_logo'].includes(target);
 	const woChanges = paramsBinding.symbol === snapshot.symbol && paramsBinding.image_uri === snapshot.image_uri;
 
 	return (

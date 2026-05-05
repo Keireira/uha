@@ -1,4 +1,4 @@
-import type { ColorSchemeName } from 'react-native';
+export type SettingsColorSchemeName = 'light' | 'dark' | null;
 
 export enum NotificationPermissionStatus {
 	NOT_DETERMINED = 0,
@@ -9,11 +9,11 @@ export enum NotificationPermissionStatus {
 }
 
 export type SettingsChangedEventPayload = {
-	key: string | 'theme';
+	key: 'theme';
 	timestamp: number;
 	source: 'app' | 'ios_settings';
-	oldValue: ColorSchemeName;
-	newValue: ColorSchemeName;
+	oldValue: SettingsColorSchemeName;
+	newValue: SettingsColorSchemeName;
 };
 
 export type NotificationPermissionChangedEventPayload = {

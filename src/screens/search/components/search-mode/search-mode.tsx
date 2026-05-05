@@ -54,7 +54,6 @@ const SearchMode = () => {
 				service_bundle_id: searchResult.bundle_id,
 				service_slug: searchResult.slug,
 				service_color: searchResult.colors?.primary,
-				service_ref_link: searchResult.ref_link,
 				service_category_slug: searchResult.category_slug,
 				service_domains: JSON.stringify(searchResult.domains ?? []),
 				service_aliases: JSON.stringify(searchResult.alternative_names ?? []),

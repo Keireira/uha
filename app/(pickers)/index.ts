@@ -1,1 +1,3 @@
-export { default as FirstPaymentDate } from '@screens/crossroad/add-subscription/pickers/first-payment';
+import { Slot } from 'expo-router';
+
+export default Slot;

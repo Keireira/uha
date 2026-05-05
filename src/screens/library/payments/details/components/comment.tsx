@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { font, foregroundStyle, multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 import { TextField, LabeledContent } from '@expo/ui/swift-ui';
+import { font, foregroundStyle, multilineTextAlignment, contentShape, shapes } from '@expo/ui/swift-ui/modifiers';
 
 import type { PaymentEditParams } from '@screens/library/payments';
 
@@ -19,7 +19,7 @@ const Comment = ({ comment, onChangeComment }: Props) => {
 	return (
 		<LabeledContent
 			label={t('library.details.fields.comment')}
-			modifiers={[font({ size: 16, weight: 'regular', design: 'rounded' })]}
+			modifiers={[contentShape(shapes.rectangle()), font({ size: 16, weight: 'regular', design: 'rounded' })]}
 		>
 			<TextField
 				defaultValue={comment}

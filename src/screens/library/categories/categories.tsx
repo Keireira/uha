@@ -134,7 +134,7 @@ const Categories = () => {
 										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
-										swipeActions({
+										...swipeActions({
 											actions: [
 												{
 													id: 'delete',
@@ -185,7 +185,7 @@ const Categories = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter categories"
+					placeholder={t('library.filters.categories')}
 				/>
 			</Stack.Toolbar>
 		</>

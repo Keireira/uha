@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components/native';
+
 import { useGlassStyle, useTipJar, useEntitlement } from '@hooks';
 
 import {
@@ -19,9 +20,11 @@ import {
 	AccentSpectrumSetting,
 	SearchSourcesSetting
 } from './components';
+import { Host } from '@expo/ui/swift-ui';
 import Root, { SectionWrap, SectionLabel, SectionCard, SectionFooterText, Row } from './settings.styles';
 
 const SettingsScreen = () => {
+	const theme = useTheme();
 	const { t } = useTranslation();
 
 	const glassEffectStyle = useGlassStyle();
@@ -37,7 +40,9 @@ const SettingsScreen = () => {
 				<SectionLabel>{t('settings.appearance.header')}</SectionLabel>
 
 				<SectionCard glassEffectStyle={glassEffectStyle}>
-					<ThemePickerSetting />
+					<Host matchContents colorScheme={theme.tint}>
+						<ThemePickerSetting />
+					</Host>
 
 					<AccentSpectrumSetting />
 				</SectionCard>

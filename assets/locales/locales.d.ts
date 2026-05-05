@@ -5,6 +5,7 @@ export type RegionsT = {
 	south_america: string;
 	caribbean: string;
 	central_asia: string;
+	west_asia: string;
 	south_asia: string;
 	east_asia: string;
 	southeast_asia: string;
@@ -16,6 +17,7 @@ export type RegionsT = {
 
 type CurrencyCode =
 	| 'AOA'
+	| 'BYN'
 	| 'BWP'
 	| 'BIF'
 	| 'CDF'
@@ -523,6 +525,11 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
+		filters: {
+			categories: string;
+			services: string;
+			payments: string;
+		};
 
 		delete_blocked: {
 			title: string;
@@ -551,6 +558,9 @@ export type LocaleRootT = {
 			copy: string;
 			copied: string;
 			id_copied: string;
+			actions: {
+				clear: string;
+			};
 			section: {
 				identity: string;
 				appearance: string;
@@ -559,6 +569,11 @@ export type LocaleRootT = {
 			};
 			aliases: {
 				add: string;
+			};
+			placeholders: {
+				slug: string;
+				title_override: string;
+				emoji: string;
 			};
 			fields: {
 				slug: string;
@@ -572,7 +587,6 @@ export type LocaleRootT = {
 				symbol: string;
 				logo_url: string;
 				bundle_id: string;
-				ref_link: string;
 			};
 		};
 	};
@@ -591,6 +605,7 @@ export type LocaleRootT = {
 		};
 		appearance: {
 			header: string;
+			auto: string;
 			light: string;
 			dark: string;
 			oled: string;

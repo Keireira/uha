@@ -8,6 +8,7 @@ const regions: RegionsT = {
 	south_america: 'Оңтүстік Америка',
 	caribbean: 'Кариб',
 	central_asia: 'Орталық Азия',
+	west_asia: 'Батыс Азия',
 	south_asia: 'Оңтүстік Азия',
 	east_asia: 'Шығыс Азия',
 	southeast_asia: 'Оңтүстік-Шығыс Азия',
@@ -235,6 +236,7 @@ const languages: Record<LanguageCode, string> = {
 };
 const currencies: Record<CurrencyCode, string> = {
 	AOA: 'Ангола кванзасы',
+	BYN: 'Беларусь рублі',
 	BWP: 'Ботсвана пуласы',
 	BIF: 'Бурунди франкі',
 	CDF: 'Конго франкі',
@@ -375,6 +377,7 @@ const settingsScreen: LocaleRootT['settings'] = {
 	},
 	appearance: {
 		header: 'Сыртқы түр',
+		auto: 'Авто',
 		light: 'Жарық',
 		dark: 'Қараңғы',
 		oled: 'OLED'
@@ -531,6 +534,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'Жоспарларды қарау және өзгерту'
 		}
 	},
+	filters: {
+		categories: 'Санаттарды сүзу',
+		services: 'Қызметтерді сүзу',
+		payments: 'Төлем тәсілдерін сүзу'
+	},
 	delete_blocked: {
 		title: 'Жою мүмкін емес',
 		default_category: 'Жүйелік санатты жою мүмкін емес',
@@ -546,6 +554,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'Көшіру',
 		copied: 'Көшірілді',
 		id_copied: 'ID көшірілді',
+		actions: {
+			clear: 'Тазарту'
+		},
 		section: {
 			identity: 'Идентификация',
 			appearance: 'Сыртқы түрі',
@@ -554,6 +565,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: 'Бүркеншік ат қосу…'
+		},
+		placeholders: {
+			slug: 'slug',
+			title_override: 'Қазіргі атауды ауыстыру',
+			emoji: 'Белгілеуге бір эмодзи'
 		},
 		fields: {
 			slug: 'Slug',
@@ -566,8 +582,7 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Санат',
 			symbol: 'SF Symbol',
 			logo_url: 'Логотип URL мекенжайы',
-			bundle_id: 'Bundle ID',
-			ref_link: 'Рефералдық сілтеме'
+			bundle_id: 'Bundle ID'
 		}
 	}
 };

@@ -116,7 +116,7 @@ const Payments = () => {
 										onTapGesture(openDetails),
 										padding({ vertical: 6, horizontal: 0 }),
 										frame({ maxWidth: Number.POSITIVE_INFINITY, alignment: 'leading' }),
-										swipeActions({
+										...swipeActions({
 											actions: [
 												{
 													id: 'delete',
@@ -181,7 +181,7 @@ const Payments = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter payment methods"
+					placeholder={t('library.filters.payments')}
 				/>
 			</Stack.Toolbar>
 		</>
