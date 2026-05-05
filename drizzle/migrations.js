@@ -1,6 +1,6 @@
 import journal from './meta/_journal.json';
-import m0000 from './0000_magenta_exodus.sql';
-import m0001 from './0001_ambitious_vertigo.sql';
+import m0000 from './0000_illegal_luckman.sql';
+import m0001 from './0001_flat_juggernaut.sql';
 
 export default {
 	journal,

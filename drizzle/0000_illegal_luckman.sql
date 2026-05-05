@@ -5,7 +5,11 @@ CREATE TABLE `categories` (
 	`emoji` text,
 	`color` text NOT NULL,
 	`symbol` text,
-	`logo_url` text
+	`logo_url` text,
+	`initial_emoji` text,
+	`initial_color` text NOT NULL,
+	`initial_symbol` text,
+	`initial_logo_url` text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `categories_full_unique` ON `categories` (`emoji`,`color`);--> statement-breakpoint
@@ -99,7 +103,11 @@ CREATE TABLE `tenders` (
 	`emoji` text,
 	`color` text NOT NULL,
 	`symbol` text,
-	`logo_url` text
+	`logo_url` text,
+	`initial_emoji` text,
+	`initial_color` text NOT NULL,
+	`initial_symbol` text,
+	`initial_logo_url` text
 );
 --> statement-breakpoint
 CREATE TABLE `transactions` (

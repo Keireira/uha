@@ -1,6 +1,6 @@
 {
-  "id": "c498e5ff-84bc-49ad-923d-1b543eda4bcd",
-  "prevId": "8369d179-d712-4ce4-895b-e6b9707035a2",
+  "id": "3b63e033-4c78-4cec-b100-be9af07c7438",
+  "prevId": "8708047a-b48a-49a6-ade5-63a2ab51deda",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -52,6 +52,34 @@
         },
         "logo_url": {
           "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_emoji": {
+          "name": "initial_emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_color": {
+          "name": "initial_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "initial_symbol": {
+          "name": "initial_symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_logo_url": {
+          "name": "initial_logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -666,6 +694,34 @@
         },
         "logo_url": {
           "name": "logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_emoji": {
+          "name": "initial_emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_color": {
+          "name": "initial_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "initial_symbol": {
+          "name": "initial_symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "initial_logo_url": {
+          "name": "initial_logo_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

@@ -10,7 +10,12 @@ export const categoriesTable = sqliteTable(
 		emoji: text(), // 🍔 | 🚗 | ...
 		color: text().notNull(), // #FF0000 | #00FF00 | ...
 		symbol: text(), // SF Symbol name
-		logo_url: text() // URL of the logo
+		logo_url: text(), // URL of the logo
+
+		initial_emoji: text(),
+		initial_color: text().notNull(),
+		initial_symbol: text(),
+		initial_logo_url: text()
 	},
 	(table) => [unique('categories_full_unique').on(table.emoji, table.color)]
 );
