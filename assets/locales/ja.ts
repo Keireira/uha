@@ -557,6 +557,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'プランの表示と編集'
 		}
 	},
+	filters: {
+		categories: 'カテゴリを絞り込み',
+		services: 'サービスを絞り込み',
+		payments: '支払い方法を絞り込み'
+	},
 	delete_blocked: {
 		title: '削除できません',
 		default_category: 'システムカテゴリは削除できません',
@@ -569,6 +574,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'コピー',
 		copied: 'コピーしました',
 		id_copied: 'ID をコピーしました',
+		actions: {
+			clear: 'クリア'
+		},
 		section: {
 			identity: '識別情報',
 			appearance: '外観',
@@ -577,6 +585,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: '別名を追加…'
+		},
+		placeholders: {
+			slug: 'スラッグ',
+			title_override: '現在の名前を上書き',
+			emoji: '目印になる絵文字 1 つ'
 		},
 		fields: {
 			slug: 'スラッグ',

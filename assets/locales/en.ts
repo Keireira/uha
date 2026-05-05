@@ -533,6 +533,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'Browse and edit active plans'
 		}
 	},
+	filters: {
+		categories: 'Filter categories',
+		services: 'Filter services',
+		payments: 'Filter payment methods'
+	},
 	delete_blocked: {
 		title: "Can't delete",
 		default_category: 'This is system category',
@@ -548,6 +553,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'Copy',
 		copied: 'Copied',
 		id_copied: 'ID copied',
+		actions: {
+			clear: 'Clear'
+		},
 		section: {
 			identity: 'Identity',
 			appearance: 'Appearance',
@@ -556,6 +564,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: 'Add alias…'
+		},
+		placeholders: {
+			slug: 'slug',
+			title_override: 'Override current one',
+			emoji: 'One emoji to symbolize'
 		},
 		fields: {
 			slug: 'Slug',

@@ -181,7 +181,7 @@ const Payments = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter payment methods"
+					placeholder={t('library.filters.payments')}
 				/>
 			</Stack.Toolbar>
 		</>

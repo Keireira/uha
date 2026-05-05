@@ -532,6 +532,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'Просмотр и редактирование планов'
 		}
 	},
+	filters: {
+		categories: 'Фильтр категорий',
+		services: 'Фильтр сервисов',
+		payments: 'Фильтр методов оплаты'
+	},
 	delete_blocked: {
 		title: 'Нельзя удалить',
 		default_category: 'Нельзя удалить системную категорию',
@@ -553,6 +558,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'Скопировать',
 		copied: 'Скопировано',
 		id_copied: 'ID скопирован',
+		actions: {
+			clear: 'Очистить'
+		},
 		section: {
 			identity: 'Идентификация',
 			appearance: 'Внешний вид',
@@ -561,6 +569,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: 'Добавить псевдоним…'
+		},
+		placeholders: {
+			slug: 'slug',
+			title_override: 'Переопредели текущее',
+			emoji: 'Один эмодзи-символ'
 		},
 		fields: {
 			slug: 'Slug',

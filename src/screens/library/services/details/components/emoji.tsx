@@ -43,7 +43,7 @@ const Emoji = ({ emoji, onChangeEmoji, resetToInitialEmoji, resetEmoji }: Props)
 							systemImage: 'pencil.and.outline',
 							tint: theme.semantic.error,
 							onPress: resetEmoji,
-							label: 'Clear'
+							label: t('library.details.actions.clear')
 						}
 					]
 				})
@@ -51,7 +51,7 @@ const Emoji = ({ emoji, onChangeEmoji, resetToInitialEmoji, resetEmoji }: Props)
 		>
 			<TextField
 				defaultValue={emoji || ''}
-				placeholder="One emoji to symbolize"
+				placeholder={t('library.details.placeholders.emoji')}
 				onValueChange={onChangeEmoji}
 				modifiers={[
 					multilineTextAlignment('trailing'),

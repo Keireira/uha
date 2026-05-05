@@ -195,7 +195,7 @@ const Services = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter services"
+					placeholder={t('library.filters.services')}
 				/>
 			</Stack.Toolbar>
 		</>

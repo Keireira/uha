@@ -36,7 +36,7 @@ const Slug = ({ slug, onChangeSlug }: Props) => {
 				<TextField
 					autoFocus
 					defaultValue={slug}
-					placeholder="slug"
+					placeholder={t('library.details.placeholders.slug')}
 					onValueChange={onChangeSlug}
 					modifiers={valueMods}
 				/>

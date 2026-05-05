@@ -525,6 +525,11 @@ export type LocaleRootT = {
 				description: string;
 			};
 		};
+		filters: {
+			categories: string;
+			services: string;
+			payments: string;
+		};
 
 		delete_blocked: {
 			title: string;
@@ -553,6 +558,9 @@ export type LocaleRootT = {
 			copy: string;
 			copied: string;
 			id_copied: string;
+			actions: {
+				clear: string;
+			};
 			section: {
 				identity: string;
 				appearance: string;
@@ -561,6 +569,11 @@ export type LocaleRootT = {
 			};
 			aliases: {
 				add: string;
+			};
+			placeholders: {
+				slug: string;
+				title_override: string;
+				emoji: string;
 			};
 			fields: {
 				slug: string;

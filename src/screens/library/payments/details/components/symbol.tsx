@@ -61,7 +61,7 @@ const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => 
 							systemImage: 'pencil.and.outline',
 							tint: theme.semantic.error,
 							onPress: resetSymbol,
-							label: 'Clear'
+							label: t('library.details.actions.clear')
 						}
 					]
 				})

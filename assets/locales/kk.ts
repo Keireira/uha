@@ -534,6 +534,11 @@ const libraryScreen: LocaleRootT['library'] = {
 			description: 'Жоспарларды қарау және өзгерту'
 		}
 	},
+	filters: {
+		categories: 'Санаттарды сүзу',
+		services: 'Қызметтерді сүзу',
+		payments: 'Төлем тәсілдерін сүзу'
+	},
 	delete_blocked: {
 		title: 'Жою мүмкін емес',
 		default_category: 'Жүйелік санатты жою мүмкін емес',
@@ -549,6 +554,9 @@ const libraryScreen: LocaleRootT['library'] = {
 		copy: 'Көшіру',
 		copied: 'Көшірілді',
 		id_copied: 'ID көшірілді',
+		actions: {
+			clear: 'Тазарту'
+		},
 		section: {
 			identity: 'Идентификация',
 			appearance: 'Сыртқы түрі',
@@ -557,6 +565,11 @@ const libraryScreen: LocaleRootT['library'] = {
 		},
 		aliases: {
 			add: 'Бүркеншік ат қосу…'
+		},
+		placeholders: {
+			slug: 'slug',
+			title_override: 'Қазіргі атауды ауыстыру',
+			emoji: 'Белгілеуге бір эмодзи'
 		},
 		fields: {
 			slug: 'Slug',

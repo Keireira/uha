@@ -53,7 +53,7 @@ const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl, resetToInitialLogoUrl
 							systemImage: 'pencil.and.outline',
 							tint: theme.semantic.error,
 							onPress: resetLogoUrl,
-							label: 'Clear'
+							label: t('library.details.actions.clear')
 						}
 					]
 				})

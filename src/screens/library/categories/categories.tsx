@@ -185,7 +185,7 @@ const Categories = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter categories"
+					placeholder={t('library.filters.categories')}
 				/>
 			</Stack.Toolbar>
 		</>
