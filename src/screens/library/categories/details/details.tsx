@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { useAccent } from '@hooks';
 import { useInitDraft, useDraft } from './hooks';
 
 import {
@@ -10,11 +12,13 @@ import {
 	listSectionSpacing,
 	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
+import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Host, List, Section, ColorPicker, Text } from '@expo/ui/swift-ui';
 import { Header, LogoPreview, Slug, Title, Emoji, LogoUrl, Symbol } from './components';
 
 const CategoryDetails = () => {
 	const { t } = useTranslation();
+	const settingAccent = useAccent();
 
 	const initDraft = useInitDraft();
 	const { draft, actions } = useDraft(initDraft);
@@ -51,17 +55,28 @@ const CategoryDetails = () => {
 						}
 					>
 						{/* Emoji */}
-						<Emoji emoji={draft.emoji} onChangeEmoji={actions.onChangeEmoji} />
+						<Emoji
+							emoji={draft.emoji}
+							onChangeEmoji={actions.onChangeEmoji}
+							resetEmoji={actions.resetEmoji}
+							resetToInitialEmoji={actions.resetToInitialEmoji}
+						/>
 
 						{/* Logo URL */}
 						<LogoUrl
 							logoUrl={draft.logo_url}
-							resetLogoUrl={actions.resetLogoUrl}
 							openImagePicker={actions.openImagePicker}
+							resetLogoUrl={actions.resetLogoUrl}
+							resetToInitialLogoUrl={actions.resetToInitialLogoUrl}
 						/>
 
 						{/* Symbol */}
-						<Symbol symbol={draft.symbol} color={draft.color} resetSymbol={actions.resetSymbol} />
+						<Symbol
+							symbol={draft.symbol}
+							color={draft.color}
+							resetSymbol={actions.resetSymbol}
+							resetToInitialSymbol={actions.resetToInitialSymbol}
+						/>
 
 						{/* Color */}
 						<ColorPicker
@@ -69,6 +84,19 @@ const CategoryDetails = () => {
 							selection={draft.color}
 							onSelectionChange={actions.onChangeColor}
 							supportsOpacity={false}
+							modifiers={[
+								...swipeActions({
+									actions: [
+										{
+											id: 'reset',
+											edge: 'leading',
+											systemImage: 'arrow.counterclockwise',
+											tint: settingAccent,
+											onPress: actions.resetToInitialColor
+										}
+									]
+								})
+							]}
 						/>
 					</Section>
 				</List>

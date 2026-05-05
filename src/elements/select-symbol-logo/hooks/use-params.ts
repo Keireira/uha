@@ -62,7 +62,7 @@ const useParams = (): ParamsBinding => {
 		case 'library_service_logo':
 			return {
 				color: serviceDraft.color,
-				image_uri: serviceDraft.image_uri,
+				image_uri: serviceDraft.image_uri || undefined,
 				symbol: serviceDraft.symbol as SFSymbol,
 				setImageUri: (logo_uri) => {
 					serviceDraft.patch({ logo_url: logo_uri });
@@ -75,7 +75,7 @@ const useParams = (): ParamsBinding => {
 		case 'library_category_logo': {
 			return {
 				color: categoryDraft.color,
-				image_uri: categoryDraft.logo_url,
+				image_uri: categoryDraft.logo_url || undefined,
 				symbol: categoryDraft.symbol as SFSymbol,
 				setImageUri: (image_uri) => {
 					categoryDraft.patch({ logo_url: image_uri });
@@ -98,7 +98,7 @@ const useParams = (): ParamsBinding => {
 		case 'library_tender_logo':
 			return {
 				color: tenderDraft.color,
-				image_uri: tenderDraft.image_uri,
+				image_uri: tenderDraft.image_uri || undefined,
 				symbol: tenderDraft.symbol as SFSymbol,
 				setImageUri: (logo_uri) => {
 					tenderDraft.patch({ logo_url: logo_uri });
