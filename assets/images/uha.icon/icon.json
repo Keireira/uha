@@ -1,36 +1,40 @@
 {
-  "color-space-for-untagged-svg-colors": "display-p3",
-  "fill-specializations": [
+  "color-space-for-untagged-svg-colors" : "display-p3",
+  "fill-specializations" : [
     {
-      "value": {
-        "solid": "display-p3:0.33268,0.21410,0.69738,1.00000"
+      "value" : {
+        "solid" : "display-p3:0.34681,0.23010,0.25269,1.00000"
       }
     },
     {
-      "appearance": "dark",
-      "value": "automatic"
-    }
-  ],
-  "groups": [
-    {
-      "layers": [
-        {
-          "image-name": "fish-logo.png",
-          "name": "fish-logo"
-        }
-      ],
-      "shadow": {
-        "kind": "neutral",
-        "opacity": 0.5
-      },
-      "translucency": {
-        "enabled": true,
-        "value": 0.5
+      "appearance" : "light",
+      "value" : {
+        "solid" : "display-p3:0.03922,0.14510,0.15686,1.00000"
       }
     }
   ],
-  "supported-platforms": {
-    "circles": ["watchOS"],
-    "squares": "shared"
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "fish-logo.png",
+          "name" : "fish-logo"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
   }
 }
