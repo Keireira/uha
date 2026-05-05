@@ -67,7 +67,7 @@ const SelectCategoryScreen = () => {
 					<Section modifiers={[listRowSeparator('hidden', 'all'), listRowBackground('transparent')]}>
 						{categories.map((category) => {
 							const isActive = category.slug === currentValue;
-							const title = t(`category.${category.slug}`, { defaultValue: category.title ?? category.slug });
+							const title = category.title || t(`category.${category.slug}`, { defaultValue: category.slug });
 
 							const selecteCategory = () => {
 								onSelectHd(category.slug);

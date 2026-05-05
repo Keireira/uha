@@ -10,9 +10,9 @@ const INITIAL_PARAMS: ServiceEditParams = {
 	aliases: [],
 
 	color: '',
-	emoji: undefined,
-	symbol: undefined,
-	logo_url: undefined
+	emoji: null,
+	symbol: null,
+	logo_url: null
 };
 
 const useEditServiceStore = create<ServiceEditState>((set) => ({

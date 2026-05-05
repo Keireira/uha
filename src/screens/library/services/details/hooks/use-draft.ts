@@ -17,9 +17,9 @@ const normalizeServiceDraft = (service: ServiceT): ServiceEditParams => ({
 	category_slug: service.category_slug || '',
 	aliases: service.aliases || [],
 
-	emoji: service.emoji || undefined,
-	symbol: (service.symbol as SFSymbol | '') || undefined,
-	logo_url: service.logo_url || undefined
+	emoji: service.emoji || '',
+	symbol: service.symbol as SFSymbol | null,
+	logo_url: service.logo_url || ''
 });
 
 const useDraft = (service?: ServiceT) => {
@@ -55,6 +55,7 @@ const useDraft = (service?: ServiceT) => {
 	const onChangeEmoji = (emoji: string) => patch({ emoji: emoji.slice(-8) });
 	const onChangeAliases = (aliases: string[]) => patch({ aliases });
 
+	const resetEmoji = () => patch({ emoji: '' });
 	const resetSymbol = () => patch({ symbol: undefined });
 	const resetLogoUrl = () => patch({ logo_url: undefined });
 	const openImagePicker = async () => {
@@ -77,13 +78,13 @@ const useDraft = (service?: ServiceT) => {
 	const resetToInitialEmoji = () => {
 		if (!service) return;
 
-		patch({ emoji: service.initial_emoji || undefined });
+		patch({ emoji: service.initial_emoji || '' });
 	};
 
 	const resetToInitialSymbol = () => {
 		if (!service) return;
 
-		patch({ symbol: (service.initial_symbol as SFSymbol) || undefined });
+		patch({ symbol: service.initial_symbol as SFSymbol });
 	};
 
 	const resetToInitialColor = () => {
@@ -95,7 +96,7 @@ const useDraft = (service?: ServiceT) => {
 	const resetToInitialLogoUrl = () => {
 		if (!service) return;
 
-		patch({ logo_url: service.initial_logo_url || undefined });
+		patch({ logo_url: service.initial_logo_url });
 	};
 
 	return {
@@ -107,9 +108,11 @@ const useDraft = (service?: ServiceT) => {
 			onChangeBundleId,
 			onChangeEmoji,
 			openImagePicker,
-			resetLogoUrl,
 			onChangeAliases,
+
+			resetEmoji,
 			resetSymbol,
+			resetLogoUrl,
 
 			resetToInitialEmoji,
 			resetToInitialSymbol,

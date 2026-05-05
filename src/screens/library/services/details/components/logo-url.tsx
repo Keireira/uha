@@ -16,7 +16,7 @@ import {
 	multilineTextAlignment
 } from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Text, Image, HStack, LabeledContent } from '@expo/ui/swift-ui';
+import { Text, Image, LabeledContent } from '@expo/ui/swift-ui';
 
 import type { ServiceEditParams } from '@screens/library/services';
 
@@ -59,24 +59,22 @@ const LogoUrl = ({ logoUrl, openImagePicker, resetLogoUrl, resetToInitialLogoUrl
 				})
 			]}
 		>
-			<HStack spacing={8}>
-				{logoUrl ? (
-					<Image
-						uiImage={logoUrl}
-						modifiers={[resizable(), frame({ width: 28, height: 28 }), clipShape('roundedRectangle')]}
-					/>
-				) : (
-					<Text
-						modifiers={[
-							multilineTextAlignment('trailing'),
-							foregroundStyle(theme.text.secondary),
-							font({ size: 16, weight: 'regular', design: 'rounded' })
-						]}
-					>
-						—
-					</Text>
-				)}
-			</HStack>
+			{logoUrl ? (
+				<Image
+					uiImage={logoUrl}
+					modifiers={[resizable(), frame({ width: 28, height: 28 }), clipShape('roundedRectangle')]}
+				/>
+			) : (
+				<Text
+					modifiers={[
+						multilineTextAlignment('trailing'),
+						foregroundStyle(theme.text.secondary),
+						font({ size: 16, weight: 'regular', design: 'rounded' })
+					]}
+				>
+					—
+				</Text>
+			)}
 		</LabeledContent>
 	);
 };

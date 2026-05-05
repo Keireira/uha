@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
-import { font, padding, submitLabel, onSubmit, multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
 import { Text, HStack, TextField, LabeledContent } from '@expo/ui/swift-ui';
+import { font, padding, submitLabel, onSubmit, multilineTextAlignment } from '@expo/ui/swift-ui/modifiers';
 
 import type { ServiceEditParams } from '@screens/library/services';
 

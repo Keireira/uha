@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
+import {
+	font,
+	shapes,
+	contentShape,
+	foregroundStyle,
+	onLongPressGesture,
+	multilineTextAlignment
+} from '@expo/ui/swift-ui/modifiers';
 import { Text, TextField, LabeledContent } from '@expo/ui/swift-ui';
-import { font, foregroundStyle, multilineTextAlignment, onLongPressGesture } from '@expo/ui/swift-ui/modifiers';
 
 import type { ServiceEditParams } from '@screens/library/services';
 
@@ -40,7 +47,7 @@ const Slug = ({ slug, onChangeSlug }: Props) => {
 	return (
 		<LabeledContent
 			label={t('library.details.fields.slug')}
-			modifiers={[onLongPressGesture(() => setIsEditable(true))]}
+			modifiers={[contentShape(shapes.rectangle()), onLongPressGesture(() => setIsEditable(true))]}
 		>
 			<Text modifiers={valueMods}>{slug || '—'}</Text>
 		</LabeledContent>

@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useInitDraft, useDraft } from './hooks';
 
 import {
+	font,
 	listStyle,
 	listRowSeparator,
 	listRowBackground,
 	listSectionSpacing,
 	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, List, Section, ColorPicker } from '@expo/ui/swift-ui';
+import { Host, List, Section, ColorPicker, Text } from '@expo/ui/swift-ui';
 import { Header, LogoPreview, Title, Comment, CardToggle, Emoji, LogoUrl, Symbol } from './components';
 
 const PaymentDetails = () => {
@@ -44,7 +45,14 @@ const PaymentDetails = () => {
 						<CardToggle isCard={draft.is_card} onChangeIsCard={actions.onChangeIsCard} />
 					</Section>
 
-					<Section title={t('library.details.section.appearance')}>
+					<Section
+						title={t('library.details.section.appearance')}
+						footer={
+							<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>
+								Swipe right restores init value. Swipe left clears one.
+							</Text>
+						}
+					>
 						{/* Emoji */}
 						<Emoji emoji={draft.emoji} onChangeEmoji={actions.onChangeEmoji} />
 

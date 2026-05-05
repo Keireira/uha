@@ -4,11 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 
 import { useAccent } from '@hooks';
-import { withAlpha } from '@lib/colors';
 
+import {
+	font,
+	shapes,
+	contentShape,
+	onTapGesture,
+	foregroundStyle,
+	multilineTextAlignment
+} from '@expo/ui/swift-ui/modifiers';
 import { swipeActions } from '@modules/expo-ui-modifiers';
-import { Text, Image, HStack, LabeledContent } from '@expo/ui/swift-ui';
-import { font, foregroundStyle, multilineTextAlignment, onTapGesture } from '@expo/ui/swift-ui/modifiers';
+import { Text, Image, LabeledContent } from '@expo/ui/swift-ui';
 
 import type { ServiceEditParams } from '@screens/library/services';
 
@@ -36,6 +42,7 @@ const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => 
 		<LabeledContent
 			label={t('library.details.fields.symbol')}
 			modifiers={[
+				contentShape(shapes.rectangle()),
 				onTapGesture(openLogoPicker),
 				...swipeActions({
 					actions: [
@@ -58,22 +65,19 @@ const Symbol = ({ symbol, color, resetSymbol, resetToInitialSymbol }: Props) => 
 				})
 			]}
 		>
-			<HStack spacing={8}>
-				{symbol ? (
-					<Image systemName={symbol} size={22} color={color || settingAccent} />
-				) : (
-					<Text
-						modifiers={[
-							multilineTextAlignment('trailing'),
-							foregroundStyle(theme.text.secondary),
-							font({ size: 16, weight: 'regular', design: 'rounded' })
-						]}
-					>
-						—
-					</Text>
-				)}
-				<Image systemName="chevron.right" size={12} color={withAlpha(settingAccent, 0.6)} />
-			</HStack>
+			{symbol ? (
+				<Image systemName={symbol} size={22} color={color || settingAccent} />
+			) : (
+				<Text
+					modifiers={[
+						multilineTextAlignment('trailing'),
+						foregroundStyle(theme.text.secondary),
+						font({ size: 16, weight: 'regular', design: 'rounded' })
+					]}
+				>
+					—
+				</Text>
+			)}
 		</LabeledContent>
 	);
 };

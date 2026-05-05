@@ -8,7 +8,7 @@ export type Props = React.PropsWithChildren<{
 	assetId?: number;
 	url?: string | null;
 	emoji?: string | null;
-	symbolName?: SFSymbol;
+	symbolName?: SFSymbol | null;
 	color?: string | null;
 	size: number;
 }>;

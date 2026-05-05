@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useInitDraft, useDraft } from './hooks';
 
 import {
+	font,
 	listStyle,
 	listRowSeparator,
 	listRowBackground,
 	listSectionSpacing,
 	scrollDismissesKeyboard
 } from '@expo/ui/swift-ui/modifiers';
-import { Host, List, Section, ColorPicker } from '@expo/ui/swift-ui';
+import { Host, List, Section, ColorPicker, Text } from '@expo/ui/swift-ui';
 import { Header, LogoPreview, Slug, Title, Emoji, LogoUrl, Symbol } from './components';
 
 const CategoryDetails = () => {
@@ -41,7 +42,14 @@ const CategoryDetails = () => {
 						<Title title={draft.title} onChangeTitle={actions.onChangeTitle} />
 					</Section>
 
-					<Section title={t('library.details.section.appearance')}>
+					<Section
+						title={t('library.details.section.appearance')}
+						footer={
+							<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>
+								Swipe right restores init value. Swipe left clears one.
+							</Text>
+						}
+					>
 						{/* Emoji */}
 						<Emoji emoji={draft.emoji} onChangeEmoji={actions.onChangeEmoji} />
 

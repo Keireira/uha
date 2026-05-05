@@ -53,7 +53,7 @@ const ServiceDetails = () => {
 						title={t('library.details.section.appearance')}
 						footer={
 							<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>
-								Swipe left to reset; Swipe right to delete
+								Swipe right restores init value. Swipe left clears one.
 							</Text>
 						}
 					>
@@ -61,6 +61,7 @@ const ServiceDetails = () => {
 						<Emoji
 							emoji={draft.emoji}
 							onChangeEmoji={actions.onChangeEmoji}
+							resetEmoji={actions.resetEmoji}
 							resetToInitialEmoji={actions.resetToInitialEmoji}
 						/>
 
