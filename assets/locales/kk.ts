@@ -537,7 +537,8 @@ const libraryScreen: LocaleRootT['library'] = {
 	filters: {
 		categories: 'Санаттарды сүзу',
 		services: 'Қызметтерді сүзу',
-		payments: 'Төлем тәсілдерін сүзу'
+		payments: 'Төлем тәсілдерін сүзу',
+		subscriptions: 'Жазылымдарды сүзу'
 	},
 	delete_blocked: {
 		title: 'Жою мүмкін емес',
@@ -561,7 +562,9 @@ const libraryScreen: LocaleRootT['library'] = {
 			identity: 'Идентификация',
 			appearance: 'Сыртқы түрі',
 			other: 'Басқа',
-			aliases: 'Бүркеншік атаулар'
+			aliases: 'Бүркеншік атаулар',
+			notes: 'Жазбалар',
+			sync: 'Қызметпен синхрондау'
 		},
 		aliases: {
 			add: 'Бүркеншік ат қосу…'
@@ -569,7 +572,8 @@ const libraryScreen: LocaleRootT['library'] = {
 		placeholders: {
 			slug: 'slug',
 			title_override: 'Қазіргі атауды ауыстыру',
-			emoji: 'Белгілеуге бір эмодзи'
+			emoji: 'Белгілеуге бір эмодзи',
+			notes: 'Жазба қосу үшін түртіңіз'
 		},
 		fields: {
 			slug: 'Slug',
@@ -582,7 +586,33 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Санат',
 			symbol: 'SF Symbol',
 			logo_url: 'Логотип URL мекенжайы',
-			bundle_id: 'Bundle ID'
+			bundle_id: 'Bundle ID',
+			payment: 'Төлем тәсілі',
+			payment_none: 'Көрсетілмеген',
+			notify_enabled: 'Хабарландырулар'
+		},
+		appearance: {
+			footer: 'Қатарды солға жанау таңдамалы мәнді тазартады.'
+		},
+		sync: {
+			apply: 'Қызметке қолдану',
+			footer:
+				'Бұл өзгертулер «{{service}}» қызметіне қолданылады. Сол қызметке байланысты басқа жазылымдар да жаңа сыртқы түрді көрсетеді.',
+			diff: {
+				title: 'Атауы',
+				logo: 'Логотип',
+				symbol: 'Символ'
+			},
+			toast: {
+				success: {
+					title: 'Қызметпен синхрондалды',
+					description: 'Өзгертулер байланысты қызметке қолданылды'
+				},
+				error: {
+					title: 'Синхрондау сәтсіз',
+					description: 'Жазылымды қызметпен синхрондау мүмкін болмады'
+				}
+			}
 		}
 	}
 };

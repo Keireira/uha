@@ -23,6 +23,7 @@ const useCategoryBinding = (): ParamsBinding => {
 
 	switch (target) {
 		case 'add_subscription_tender':
+		case 'library_subscription_tender':
 			return {
 				currentValue: tenderId,
 				commit: (slug: string | null) => {

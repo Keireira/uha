@@ -535,7 +535,8 @@ const libraryScreen: LocaleRootT['library'] = {
 	filters: {
 		categories: 'Фильтр категорий',
 		services: 'Фильтр сервисов',
-		payments: 'Фильтр методов оплаты'
+		payments: 'Фильтр методов оплаты',
+		subscriptions: 'Фильтр подписок'
 	},
 	delete_blocked: {
 		title: 'Нельзя удалить',
@@ -565,7 +566,9 @@ const libraryScreen: LocaleRootT['library'] = {
 			identity: 'Идентификация',
 			appearance: 'Внешний вид',
 			other: 'Прочее',
-			aliases: 'Псевдонимы'
+			aliases: 'Псевдонимы',
+			notes: 'Заметки',
+			sync: 'Синхронизация с сервисом'
 		},
 		aliases: {
 			add: 'Добавить псевдоним…'
@@ -573,7 +576,8 @@ const libraryScreen: LocaleRootT['library'] = {
 		placeholders: {
 			slug: 'slug',
 			title_override: 'Переопредели текущее',
-			emoji: 'Один эмодзи-символ'
+			emoji: 'Один эмодзи-символ',
+			notes: 'Нажми, чтобы добавить заметку'
 		},
 		fields: {
 			slug: 'Slug',
@@ -586,7 +590,33 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Категория',
 			symbol: 'SF Symbol',
 			logo_url: 'URL логотипа',
-			bundle_id: 'Bundle ID'
+			bundle_id: 'Bundle ID',
+			payment: 'Способ оплаты',
+			payment_none: 'Не указан',
+			notify_enabled: 'Уведомления'
+		},
+		appearance: {
+			footer: 'Свайп влево по строке очищает переопределение.'
+		},
+		sync: {
+			apply: 'Применить к сервису',
+			footer:
+				'Перенести эти переопределения в «{{service}}». Все подписки, связанные с этим сервисом, получат новый внешний вид.',
+			diff: {
+				title: 'Название',
+				logo: 'Логотип',
+				symbol: 'Символ'
+			},
+			toast: {
+				success: {
+					title: 'Синхронизировано',
+					description: 'Переопределения применены к сервису'
+				},
+				error: {
+					title: 'Ошибка синхронизации',
+					description: 'Не удалось синхронизировать подписку с сервисом'
+				}
+			}
 		}
 	}
 };

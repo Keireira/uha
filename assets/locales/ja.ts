@@ -560,7 +560,8 @@ const libraryScreen: LocaleRootT['library'] = {
 	filters: {
 		categories: 'カテゴリを絞り込み',
 		services: 'サービスを絞り込み',
-		payments: '支払い方法を絞り込み'
+		payments: '支払い方法を絞り込み',
+		subscriptions: 'サブスクリプションを絞り込み'
 	},
 	delete_blocked: {
 		title: '削除できません',
@@ -581,7 +582,9 @@ const libraryScreen: LocaleRootT['library'] = {
 			identity: '識別情報',
 			appearance: '外観',
 			other: 'その他',
-			aliases: '別名'
+			aliases: '別名',
+			notes: 'メモ',
+			sync: 'サービスと同期'
 		},
 		aliases: {
 			add: '別名を追加…'
@@ -589,7 +592,8 @@ const libraryScreen: LocaleRootT['library'] = {
 		placeholders: {
 			slug: 'スラッグ',
 			title_override: '現在の名前を上書き',
-			emoji: '目印になる絵文字 1 つ'
+			emoji: '目印になる絵文字 1 つ',
+			notes: 'タップしてメモを追加'
 		},
 		fields: {
 			slug: 'スラッグ',
@@ -602,7 +606,33 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'カテゴリ',
 			symbol: 'SFシンボル',
 			logo_url: 'ロゴURL',
-			bundle_id: 'バンドルID'
+			bundle_id: 'バンドルID',
+			payment: '支払い方法',
+			payment_none: 'なし',
+			notify_enabled: '通知'
+		},
+		appearance: {
+			footer: '行を左にスワイプするとカスタマイズを解除できます。'
+		},
+		sync: {
+			apply: 'サービスに適用',
+			footer:
+				'これらのカスタマイズを「{{service}}」へ適用します。同じサービスに紐づく他のサブスクリプションにも反映されます。',
+			diff: {
+				title: 'タイトル',
+				logo: 'ロゴ',
+				symbol: 'シンボル'
+			},
+			toast: {
+				success: {
+					title: 'サービスと同期しました',
+					description: 'カスタマイズが連携先のサービスに適用されました'
+				},
+				error: {
+					title: '同期に失敗しました',
+					description: 'サブスクリプションをサービスと同期できませんでした'
+				}
+			}
 		}
 	}
 };

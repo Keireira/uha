@@ -536,7 +536,8 @@ const libraryScreen: LocaleRootT['library'] = {
 	filters: {
 		categories: 'Filter categories',
 		services: 'Filter services',
-		payments: 'Filter payment methods'
+		payments: 'Filter payment methods',
+		subscriptions: 'Filter subscriptions'
 	},
 	delete_blocked: {
 		title: "Can't delete",
@@ -560,7 +561,9 @@ const libraryScreen: LocaleRootT['library'] = {
 			identity: 'Identity',
 			appearance: 'Appearance',
 			other: 'Other',
-			aliases: 'Aliases'
+			aliases: 'Aliases',
+			notes: 'Notes',
+			sync: 'Sync with service'
 		},
 		aliases: {
 			add: 'Add alias…'
@@ -568,7 +571,8 @@ const libraryScreen: LocaleRootT['library'] = {
 		placeholders: {
 			slug: 'slug',
 			title_override: 'Override current one',
-			emoji: 'One emoji to symbolize'
+			emoji: 'One emoji to symbolize',
+			notes: 'Tap to add a note'
 		},
 		fields: {
 			slug: 'Slug',
@@ -581,7 +585,33 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Category',
 			symbol: 'SF Symbol',
 			logo_url: 'Logo URL',
-			bundle_id: 'Bundle ID'
+			bundle_id: 'Bundle ID',
+			payment: 'Payment method',
+			payment_none: 'None',
+			notify_enabled: 'Notifications'
+		},
+		appearance: {
+			footer: 'Swipe left on a row to clear the override.'
+		},
+		sync: {
+			apply: 'Apply to service',
+			footer:
+				'Push these overrides to "{{service}}". Other subscriptions linked to this service will reflect the new appearance.',
+			diff: {
+				title: 'Title',
+				logo: 'Logo',
+				symbol: 'Symbol'
+			},
+			toast: {
+				success: {
+					title: 'Synced with service',
+					description: 'Overrides were applied to the linked service'
+				},
+				error: {
+					title: 'Sync failed',
+					description: "Couldn't sync subscription with service"
+				}
+			}
 		}
 	}
 };

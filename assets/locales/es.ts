@@ -537,7 +537,8 @@ const libraryScreen: LocaleRootT['library'] = {
 	filters: {
 		categories: 'Filtrar categorías',
 		services: 'Filtrar servicios',
-		payments: 'Filtrar métodos de pago'
+		payments: 'Filtrar métodos de pago',
+		subscriptions: 'Filtrar suscripciones'
 	},
 	delete_blocked: {
 		default_category: 'No se puede eliminar la categoría del sistema',
@@ -561,7 +562,9 @@ const libraryScreen: LocaleRootT['library'] = {
 			identity: 'Identidad',
 			appearance: 'Apariencia',
 			other: 'Otros',
-			aliases: 'Alias'
+			aliases: 'Alias',
+			notes: 'Notas',
+			sync: 'Sincronizar con servicio'
 		},
 		aliases: {
 			add: 'Añadir alias…'
@@ -569,7 +572,8 @@ const libraryScreen: LocaleRootT['library'] = {
 		placeholders: {
 			slug: 'slug',
 			title_override: 'Reemplaza el actual',
-			emoji: 'Un emoji como símbolo'
+			emoji: 'Un emoji como símbolo',
+			notes: 'Toca para añadir una nota'
 		},
 		fields: {
 			slug: 'Slug',
@@ -582,7 +586,33 @@ const libraryScreen: LocaleRootT['library'] = {
 			category: 'Categoría',
 			symbol: 'Símbolo SF',
 			logo_url: 'URL del logo',
-			bundle_id: 'ID del paquete'
+			bundle_id: 'ID del paquete',
+			payment: 'Método de pago',
+			payment_none: 'Ninguno',
+			notify_enabled: 'Notificaciones'
+		},
+		appearance: {
+			footer: 'Desliza la fila a la izquierda para borrar el ajuste personalizado.'
+		},
+		sync: {
+			apply: 'Aplicar al servicio',
+			footer:
+				'Aplica estos cambios a «{{service}}». Las demás suscripciones vinculadas a este servicio reflejarán la nueva apariencia.',
+			diff: {
+				title: 'Título',
+				logo: 'Logo',
+				symbol: 'Símbolo'
+			},
+			toast: {
+				success: {
+					title: 'Sincronizado con el servicio',
+					description: 'Los cambios se aplicaron al servicio vinculado'
+				},
+				error: {
+					title: 'Error al sincronizar',
+					description: 'No se pudo sincronizar la suscripción con el servicio'
+				}
+			}
 		}
 	}
 };

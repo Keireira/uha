@@ -148,7 +148,7 @@ const Subscriptions = () => {
 									<VStack alignment="leading" spacing={4}>
 										<Text
 											modifiers={[
-												font({ size: 20, design: 'rounded', weight: 'semibold' }),
+												font({ size: 20, design: 'rounded', weight: 'medium' }),
 												foregroundStyle(theme.text.primary),
 												lineLimit(1)
 											]}
@@ -159,7 +159,7 @@ const Subscriptions = () => {
 										{Boolean(subtitle) && (
 											<Text
 												modifiers={[
-													font({ size: 16, design: 'rounded', weight: 'regular' }),
+													font({ size: 16, weight: 'regular', design: 'rounded' }),
 													foregroundStyle(theme.text.secondary),
 													lineLimit(1)
 												]}
@@ -186,7 +186,7 @@ const Subscriptions = () => {
 					hideNavigationBar={false}
 					onChangeText={handleChangeText}
 					tintColor={settingAccent}
-					placeholder="Filter subscriptions"
+					placeholder={t('library.filters.subscriptions')}
 				/>
 			</Stack.Toolbar>
 		</>

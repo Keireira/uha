@@ -529,6 +529,7 @@ export type LocaleRootT = {
 			categories: string;
 			services: string;
 			payments: string;
+			subscriptions: string;
 		};
 
 		delete_blocked: {
@@ -566,6 +567,8 @@ export type LocaleRootT = {
 				appearance: string;
 				other: string;
 				aliases: string;
+				notes: string;
+				sync: string;
 			};
 			aliases: {
 				add: string;
@@ -574,6 +577,7 @@ export type LocaleRootT = {
 				slug: string;
 				title_override: string;
 				emoji: string;
+				notes: string;
 			};
 			fields: {
 				slug: string;
@@ -587,6 +591,31 @@ export type LocaleRootT = {
 				symbol: string;
 				logo_url: string;
 				bundle_id: string;
+				payment: string;
+				payment_none: string;
+				notify_enabled: string;
+			};
+			appearance: {
+				footer: string;
+			};
+			sync: {
+				apply: string;
+				footer: string;
+				diff: {
+					title: string;
+					logo: string;
+					symbol: string;
+				};
+				toast: {
+					success: {
+						title: string;
+						description: string;
+					};
+					error: {
+						title: string;
+						description: string;
+					};
+				};
 			};
 		};
 	};

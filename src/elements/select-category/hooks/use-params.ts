@@ -34,6 +34,7 @@ const useCategoryBinding = (): ParamsBinding => {
 
 	switch (target) {
 		case 'add_subscription_category':
+		case 'library_subscription_category':
 			return {
 				currentValue: draft.categorySlug,
 				commit: (slug) => {

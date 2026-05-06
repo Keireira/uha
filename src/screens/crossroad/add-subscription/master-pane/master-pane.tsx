@@ -18,9 +18,9 @@ import {
 	selectFirstPaymentDate
 } from '@screens/crossroad/add-subscription/events';
 import { useDraftStore } from '@screens/crossroad/add-subscription/hooks';
+import { Timeline } from '@elements';
 
 import LogoRow from './logo-row';
-import Timeline from './timeline';
 import PriceRow from './price-row';
 import {
 	font,
