@@ -6,6 +6,7 @@ import { format, lightFormat } from 'date-fns';
 import db from '@db';
 import { eq, between } from 'drizzle-orm';
 import { currencyRatesTable } from '@db/schema';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import { useSettingsValue } from '@/src/hooks/settings/use-settings';
 
@@ -84,9 +85,13 @@ const updatePrices = (
 
 	for (const tx of transactions) {
 		const ratesByDate = rates?.get(lightFormat(tx.date, 'yyyy-MM-dd')) || lastKnownRates;
+		const recalcRate = getCurrencyRate(recalcCurrencyCode, ratesByDate, lastKnownRates);
+		const txToUsdRate = getCurrencyRate(tx.currency_code, ratesByDate, lastKnownRates);
 
-		const recalcRate = ratesByDate.get(recalcCurrencyCode) ?? 1;
-		const txToUsdRate = ratesByDate.get(tx.currency_code) ?? 1;
+		if (!recalcRate || !txToUsdRate) {
+			continue;
+		}
+
 		const convertedToUsd = tx.price / txToUsdRate;
 
 		txsWithRates.push({
@@ -98,20 +103,24 @@ const updatePrices = (
 	return txsWithRates;
 };
 
+const getCurrencyRate = (currencyCode: string, rates: LastKnownRatesT, fallbackRates: LastKnownRatesT) => {
+	return rates.get(currencyCode) ?? fallbackRates.get(currencyCode) ?? (currencyCode === 'USD' ? 1 : undefined);
+};
+
 export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: LastKnownRatesT): SummaryReturnT => {
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
-	const ratesOnDate = useMemo(() => {
-		return db
+	const { data: ratesOnDate = [] } = useLiveQuery(
+		db
 			.select({
 				date: currencyRatesTable.date,
 				rate: currencyRatesTable.rate,
 				target_currency_id: currencyRatesTable.target_currency_id
 			})
 			.from(currencyRatesTable)
-			.where(eq(currencyRatesTable.date, transactions.dates.dayFormatted))
-			.all();
-	}, [transactions.dates.dayFormatted]);
+			.where(eq(currencyRatesTable.date, transactions.dates.dayFormatted)),
+		[transactions.dates.dayFormatted]
+	);
 
 	const rates = useMemo(() => {
 		if (!ratesOnDate?.length) {
@@ -125,15 +134,23 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		}
 
 		return nextRates;
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [ratesOnDate]);
+	}, [lastKnownRates, ratesOnDate]);
 
 	const summary = useMemo(() => {
 		const txsWithRates: PreparedDbTxT[] = [];
-		const recalcRate = rates.get(recalcCurrencyCode) || 1;
+		const recalcRate = getCurrencyRate(recalcCurrencyCode, rates, lastKnownRates);
+
+		if (!recalcRate) {
+			return computeSummary(txsWithRates);
+		}
 
 		for (const tx of transactions.day) {
-			const txToUsdRate = rates.get(tx.currency_code) || 1;
+			const txToUsdRate = getCurrencyRate(tx.currency_code, rates, lastKnownRates);
+
+			if (!txToUsdRate) {
+				continue;
+			}
+
 			const convertedToUsd = tx.price / txToUsdRate;
 
 			txsWithRates.push({
@@ -143,7 +160,7 @@ export const useDay = (transactions: SummariesQueryReturnT, lastKnownRates: Last
 		}
 
 		return computeSummary(txsWithRates);
-	}, [rates, recalcCurrencyCode, transactions.day]);
+	}, [lastKnownRates, rates, recalcCurrencyCode, transactions.day]);
 
 	const formattedDate = useMemo(() => {
 		return format(transactions.dates.dayRaw, 'dd');
@@ -161,8 +178,8 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
-	const ratesInRange = useMemo(() => {
-		return db
+	const { data: ratesInRange = [] } = useLiveQuery(
+		db
 			.select({
 				date: currencyRatesTable.date,
 				rate: currencyRatesTable.rate,
@@ -171,9 +188,9 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 			.from(currencyRatesTable)
 			.where(
 				between(currencyRatesTable.date, transactions.dates.monthStartFormatted, transactions.dates.monthEndFormatted)
-			)
-			.all();
-	}, [transactions.dates.monthStartFormatted, transactions.dates.monthEndFormatted]);
+			),
+		[transactions.dates.monthStartFormatted, transactions.dates.monthEndFormatted]
+	);
 
 	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
 
@@ -185,8 +202,7 @@ export const useMonth = (transactions: SummariesQueryReturnT, lastKnownRates: La
 		const txsWithRates = updatePrices(transactions.month, rates, recalcCurrencyCode, lastKnownRates);
 
 		return computeSummary(txsWithRates);
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [rates, recalcCurrencyCode, transactions.month]);
+	}, [lastKnownRates, rates, recalcCurrencyCode, transactions.month]);
 
 	const formattedDate = useMemo(() => {
 		const monthIndex = transactions.dates.monthStartRaw.getMonth();
@@ -206,8 +222,8 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 	const { t } = useTranslation();
 	const recalcCurrencyCode = useSettingsValue<string>('recalc_currency');
 
-	const ratesInRange = useMemo(() => {
-		return db
+	const { data: ratesInRange = [] } = useLiveQuery(
+		db
 			.select({
 				date: currencyRatesTable.date,
 				rate: currencyRatesTable.rate,
@@ -216,9 +232,9 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 			.from(currencyRatesTable)
 			.where(
 				between(currencyRatesTable.date, transactions.dates.yearStartFormatted, transactions.dates.yearEndFormatted)
-			)
-			.all();
-	}, [transactions.dates.yearStartFormatted, transactions.dates.yearEndFormatted]);
+			),
+		[transactions.dates.yearStartFormatted, transactions.dates.yearEndFormatted]
+	);
 
 	const rates = useMemo(() => calcRatesMap(ratesInRange), [ratesInRange]);
 
@@ -230,8 +246,7 @@ export const useYear = (transactions: SummariesQueryReturnT, lastKnownRates: Las
 		const txsWithRates = updatePrices(transactions.year, rates, recalcCurrencyCode, lastKnownRates);
 
 		return computeSummary(txsWithRates);
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [rates, recalcCurrencyCode, transactions.year]);
+	}, [lastKnownRates, rates, recalcCurrencyCode, transactions.year]);
 
 	const formattedDate = useMemo(
 		() => t('dates.in_year', { year: format(transactions.dates.yearStartRaw, 'yyyy') }),

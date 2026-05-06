@@ -9,18 +9,24 @@ import useGetFilledDateRates from './use-get-filled-date-rates';
 
 import type { CurrencyT } from '@models';
 
-export const formatCurrency = (value: number, currency?: CurrencyT) => {
+type FormatCurrencyOptionsT = {
+	omitLargeFractions?: boolean;
+};
+
+export const formatCurrency = (value: number, currency?: CurrencyT, options: FormatCurrencyOptionsT = {}) => {
 	if (!currency) {
 		return value.toFixed(2);
 	}
+
+	const fractionDigits = options.omitLargeFractions && value > 1000 ? 0 : currency.fraction_digits;
 
 	try {
 		return new Intl.NumberFormat(currency.intl_locale, {
 			style: 'currency',
 			currency: currency.id,
 			currencyDisplay: 'symbol',
-			minimumFractionDigits: currency.fraction_digits,
-			maximumFractionDigits: currency.fraction_digits
+			minimumFractionDigits: fractionDigits,
+			maximumFractionDigits: fractionDigits
 		}).format(value);
 	} catch {
 		return value.toFixed(2);

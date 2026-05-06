@@ -6,6 +6,7 @@ import { eq } from 'drizzle-orm';
 import { currenciesTable } from '@db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
+import { formatCurrency } from '@hooks/rates';
 import { useSummaryAnimations } from '../../hooks';
 import { useSettingsValue, useSearchParams } from '@hooks';
 
@@ -40,17 +41,7 @@ const SummaryBlock = ({ clavis, total, formattedDate, categories, isDisabled, on
 
 	return (
 		<Root style={animations.summary} $isDisabled={isDisabled} onTouchEnd={onPress}>
-			<Text $bold>
-				{total > 0 && currency
-					? total.toLocaleString(currency.intl_locale, {
-							style: 'currency',
-							currency: currency.id,
-							currencyDisplay: 'symbol',
-							minimumFractionDigits: total > 1000 ? 0 : currency.fraction_digits,
-							maximumFractionDigits: total > 1000 ? 0 : currency.fraction_digits
-						})
-					: '—'}
-			</Text>
+			<Text $bold>{total > 0 && currency ? formatCurrency(total, currency, { omitLargeFractions: true }) : '—'}</Text>
 
 			<DateText>{txViewMode === 'list' ? formattedDate : t(`dates.${clavis}`)}</DateText>
 
