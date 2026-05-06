@@ -1,14 +1,16 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAccent, useGlassStyle } from '@hooks';
+import { useAccent } from '@hooks';
 import { withAlpha } from '@lib/colors';
 import { WrapHStack } from '@modules/wrap-hstack';
 
 import { useSyncWithService, computeSyncDiff, hasSyncDiff } from '../hooks';
-import { HStack, RNHostView, Section, Text } from '@expo/ui/swift-ui';
+import { Button, HStack, Image, Section, Text, VStack } from '@expo/ui/swift-ui';
 import {
+	buttonStyle,
 	font,
+	frame,
 	foregroundStyle,
 	glassEffect,
 	listRowBackground,
@@ -16,8 +18,6 @@ import {
 	listSectionSpacing,
 	padding
 } from '@expo/ui/swift-ui/modifiers';
-import { SymbolView } from 'expo-symbols';
-import Root, { ButtonInner, ButtonLabel, FooterText } from './sync.styles';
 
 import type { ServiceT, SubscriptionT } from '@models';
 import type { LogoDraftT } from '@screens/crossroad/add-subscription/events';
@@ -31,7 +31,6 @@ type Props = {
 
 const Sync = ({ subscription, service, customName, logo }: Props) => {
 	const settingAccent = useAccent();
-	const glassEffectStyle = useGlassStyle();
 	const { t } = useTranslation();
 	const applyToService = useSyncWithService();
 
@@ -76,19 +75,44 @@ const Sync = ({ subscription, service, customName, logo }: Props) => {
 			</Section>
 
 			<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
-				<RNHostView matchContents>
-					<>
-						<Root glassEffectStyle={glassEffectStyle}>
-							<ButtonInner onPress={onPress} $tintColor={settingAccent}>
-								<SymbolView name="arrow.triangle.2.circlepath" size={16} tintColor={settingAccent} weight="bold" />
+				<VStack spacing={4} modifiers={[padding({ horizontal: 16, top: 10 })]}>
+					<Button onPress={onPress} modifiers={[buttonStyle('borderless')]}>
+						<HStack
+							spacing={8}
+							alignment="center"
+							modifiers={[
+								frame({ maxWidth: Number.POSITIVE_INFINITY }),
+								padding({ vertical: 14, horizontal: 16 }),
+								foregroundStyle(settingAccent),
+								glassEffect({
+									glass: {
+										interactive: true,
+										variant: 'regular',
+										tint: withAlpha(settingAccent, 0.14)
+									},
+									shape: 'roundedRectangle',
+									cornerRadius: 14
+								})
+							]}
+						>
+							<Image systemName="arrow.triangle.2.circlepath" size={16} color={settingAccent} />
 
-								<ButtonLabel $tintColor={settingAccent}>{t('library.details.sync.apply')}</ButtonLabel>
-							</ButtonInner>
-						</Root>
+							<Text modifiers={[font({ design: 'rounded', size: 15, weight: 'semibold' })]}>
+								{t('library.details.sync.apply')}
+							</Text>
+						</HStack>
+					</Button>
 
-						<FooterText>{t('library.details.sync.footer', { service: service.title })}</FooterText>
-					</>
-				</RNHostView>
+					<Text
+						modifiers={[
+							padding({ horizontal: 16 }),
+							font({ design: 'rounded', size: 12, weight: 'regular' }),
+							foregroundStyle('#8E8E93')
+						]}
+					>
+						{t('library.details.sync.footer', { service: service.title })}
+					</Text>
+				</VStack>
 			</Section>
 		</>
 	);

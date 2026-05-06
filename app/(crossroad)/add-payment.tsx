@@ -1,3 +1,3 @@
-import { AddPaymentScreen } from '@screens/crossroad';
+import { AddPayment } from '@screens/library/payments';
 
-export default AddPaymentScreen;
+export default AddPayment;

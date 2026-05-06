@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
@@ -59,11 +59,15 @@ const usePayments = (searchQuery = '') => {
 };
 
 const Payments = () => {
+	const router = useRouter();
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const [searchQuery, setSearchQuery] = useState('');
 	const payments = usePayments(searchQuery);
+	const openAddPayment = () => {
+		router.push('/add-payment');
+	};
 
 	const handleChangeText = (e: TextInputChangeEvent) => {
 		setSearchQuery(e.nativeEvent.text.trim());
@@ -183,6 +187,10 @@ const Payments = () => {
 					tintColor={settingAccent}
 					placeholder={t('library.filters.payments')}
 				/>
+			</Stack.Toolbar>
+
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Button variant="plain" icon="plus" onPress={openAddPayment} tintColor={settingAccent} />
 			</Stack.Toolbar>
 		</>
 	);

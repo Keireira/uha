@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'styled-components/native';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
@@ -42,6 +42,7 @@ type MapResult = {
 };
 
 const Categories = () => {
+	const router = useRouter();
 	const theme = useTheme();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
@@ -72,6 +73,9 @@ const Categories = () => {
 	};
 
 	const categories = searchQuery ? matches : data;
+	const openAddCategory = () => {
+		router.push('/add-category');
+	};
 
 	const deleteCategory = (slug: string) => async () => {
 		const [{ count = 0 } = {}] = await db
@@ -187,6 +191,10 @@ const Categories = () => {
 					tintColor={settingAccent}
 					placeholder={t('library.filters.categories')}
 				/>
+			</Stack.Toolbar>
+
+			<Stack.Toolbar placement="right">
+				<Stack.Toolbar.Button variant="plain" icon="plus" onPress={openAddCategory} tintColor={settingAccent} />
 			</Stack.Toolbar>
 		</>
 	);

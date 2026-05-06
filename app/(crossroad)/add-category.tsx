@@ -1,3 +1,3 @@
-import { AddCategoryScreen } from '@screens/crossroad';
+import { AddCategory } from '@screens/library/categories';
 
-export default AddCategoryScreen;
+export default AddCategory;

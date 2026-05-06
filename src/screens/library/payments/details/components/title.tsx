@@ -23,6 +23,7 @@ const Title = ({ title, onChangeTitle }: Props) => {
 		>
 			<TextField
 				defaultValue={title}
+				placeholder={t('library.details.placeholders.title_override')}
 				onValueChange={onChangeTitle}
 				modifiers={[
 					multilineTextAlignment('trailing'),
