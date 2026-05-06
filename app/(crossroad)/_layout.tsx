@@ -10,6 +10,7 @@ const useGetSharedConfig = () => {
 
 	const config: StackScreenProps['options'] = {
 		gestureEnabled: true,
+		headerBackButtonMenuEnabled: false,
 		presentation: 'formSheet',
 		sheetLargestUndimmedDetentIndex: 'none',
 		sheetGrabberVisible: true,

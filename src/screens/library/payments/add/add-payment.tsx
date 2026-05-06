@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
 import * as Crypto from 'expo-crypto';
@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import db from '@db';
 import { tendersTable } from '@db/schema';
 import { useAccent } from '@hooks';
+import { DiscardChangesConfirmation, useDiscardChangesConfirmation } from '@elements';
 import useEditPaymentStore from '../hooks/use-edit-payment';
 
 import {
@@ -47,13 +48,16 @@ const normalizePayment = (draft: PaymentEditParams) => {
 };
 
 const AddPayment = () => {
-	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const didInitRef = useRef(false);
 
 	const init = useEditPaymentStore((state) => state.actions.init);
 	const patch = useEditPaymentStore((state) => state.actions.patch);
+	const reset = useEditPaymentStore((state) => state.actions.reset);
+	const discardConfirmation = useDiscardChangesConfirmation({
+		onDiscard: reset
+	});
 	const draft = useEditPaymentStore(
 		useShallow((state) => ({
 			title: state.title,
@@ -81,7 +85,7 @@ const AddPayment = () => {
 		didInitRef.current = true;
 	}, [init, settingAccent]);
 
-	const closeModal = () => router.back();
+	const closeModal = () => discardConfirmation.requestClose();
 	const canSave = Boolean(normalizePayment(draft));
 
 	const save = async () => {
@@ -89,7 +93,8 @@ const AddPayment = () => {
 		if (!payment) return;
 
 		await db.insert(tendersTable).values(payment);
-		router.back();
+		reset();
+		discardConfirmation.closeWithoutConfirmation();
 	};
 
 	const resetEmoji = () => patch({ emoji: '' });
@@ -128,49 +133,60 @@ const AddPayment = () => {
 			</Stack.Toolbar>
 
 			<Host style={{ flex: 1 }}>
-				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
-					<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
-						<LogoPreview {...draft} />
-					</Section>
+				<>
+					<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
+						<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+							<LogoPreview {...draft} />
+						</Section>
 
-					<Section title={t('library.details.section.identity')}>
-						<Title title={draft.title} onChangeTitle={(title) => patch({ title })} />
-						<Comment comment={draft.comment} onChangeComment={(comment) => patch({ comment })} />
-						<CardToggle isCard={draft.is_card} onChangeIsCard={(is_card) => patch({ is_card })} />
-					</Section>
+						<Section title={t('library.details.section.identity')}>
+							<Title title={draft.title} onChangeTitle={(title) => patch({ title })} />
+							<Comment comment={draft.comment} onChangeComment={(comment) => patch({ comment })} />
+							<CardToggle isCard={draft.is_card} onChangeIsCard={(is_card) => patch({ is_card })} />
+						</Section>
 
-					<Section
-						title={t('library.details.section.appearance')}
-						footer={
-							<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>Swipe left clears one.</Text>
-						}
-					>
-						<Emoji
-							emoji={draft.emoji}
-							onChangeEmoji={(emoji) => patch({ emoji: emoji.slice(-8) })}
-							resetEmoji={resetEmoji}
-							resetToInitialEmoji={resetEmoji}
-						/>
-						<LogoUrl
-							logoUrl={draft.logo_url}
-							openImagePicker={openImagePicker}
-							resetLogoUrl={resetLogoUrl}
-							resetToInitialLogoUrl={resetLogoUrl}
-						/>
-						<Symbol
-							symbol={draft.symbol}
-							color={draft.color}
-							resetSymbol={resetSymbol}
-							resetToInitialSymbol={resetSymbol}
-						/>
-						<ColorPicker
-							label={t('library.details.fields.color')}
-							selection={draft.color}
-							onSelectionChange={(color) => patch({ color })}
-							supportsOpacity={false}
-						/>
-					</Section>
-				</List>
+						<Section
+							title={t('library.details.section.appearance')}
+							footer={
+								<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>
+									Swipe left clears one.
+								</Text>
+							}
+						>
+							<Emoji
+								emoji={draft.emoji}
+								onChangeEmoji={(emoji) => patch({ emoji: emoji.slice(-8) })}
+								resetEmoji={resetEmoji}
+								resetToInitialEmoji={resetEmoji}
+							/>
+							<LogoUrl
+								logoUrl={draft.logo_url}
+								openImagePicker={openImagePicker}
+								resetLogoUrl={resetLogoUrl}
+								resetToInitialLogoUrl={resetLogoUrl}
+							/>
+							<Symbol
+								symbol={draft.symbol}
+								color={draft.color}
+								resetSymbol={resetSymbol}
+								resetToInitialSymbol={resetSymbol}
+							/>
+							<ColorPicker
+								label={t('library.details.fields.color')}
+								selection={draft.color}
+								onSelectionChange={(color) => patch({ color })}
+								supportsOpacity={false}
+							/>
+						</Section>
+					</List>
+
+					<DiscardChangesConfirmation
+						title="Are you sure you want to discard this new payment method?"
+						isPresented={discardConfirmation.isPresented}
+						onIsPresentedChange={discardConfirmation.setIsPresented}
+						onDiscard={discardConfirmation.discard}
+					/>
+				</>
 			</Host>
 		</>
 	);

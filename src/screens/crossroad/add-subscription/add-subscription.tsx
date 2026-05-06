@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Stack, useRouter, useNavigation } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import db from '@db';
@@ -12,24 +12,16 @@ import { useAccent, useSettingsValue } from '@hooks';
 
 import { useLoadService, useDraftStore, useSaveSubscriptions } from './hooks';
 import { selectCurrencyId, selectCurrentAmount, timelineErrors } from './events';
+import { DiscardChangesConfirmation, useDiscardChangesConfirmation } from '@elements';
 
 import MasterPane from './master-pane';
 import { Host } from '@expo/ui/swift-ui';
 
 import type { CurrencyT, ServiceT } from '@models';
 import type { LogoDraftT, SubscriptionDraftT } from './events';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-type RootStackParamList = {
-	index: undefined;
-	modal: undefined;
-};
-
-type StackNavigation = NativeStackNavigationProp<RootStackParamList>;
 
 const AddSubscriptionScreen = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const settingAccent = useAccent();
 	const { service: loadedService, preliminaryService, localService, isLoading } = useLoadService();
 	const [service, setService] = useState<ServiceT>(preliminaryService);
@@ -42,9 +34,14 @@ const AddSubscriptionScreen = () => {
 	const resetSubscription = useDraftStore((state) => state.actions.reset);
 	const autoFixTimeline = useDraftStore((state) => state.actions.autoFixTimeline);
 	const saveSubscription = useSaveSubscriptions();
+	const discardConfirmation = useDiscardChangesConfirmation({
+		onDiscard: resetSubscription
+	});
 
 	const initedRef = useRef(false);
-	if (!initedRef.current) {
+	useEffect(() => {
+		if (initedRef.current) return;
+
 		initSubscription(
 			{
 				...preliminaryService,
@@ -55,7 +52,7 @@ const AddSubscriptionScreen = () => {
 			}
 		);
 		initedRef.current = true;
-	}
+	}, [defaultCurrency, initSubscription, preliminaryService, settingAccent]);
 
 	const draft = useDraftStore(
 		useShallow((state) => ({
@@ -74,16 +71,6 @@ const AddSubscriptionScreen = () => {
 	);
 	const currencyId = selectCurrencyId(draft.timeline);
 	const amount = selectCurrentAmount(draft.timeline);
-	const navigation = useNavigation<StackNavigation>();
-
-	useEffect(() => {
-		const unsubscribe = navigation.addListener('beforeRemove', () => {
-			resetSubscription();
-		});
-
-		return unsubscribe;
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [navigation]);
 
 	const { data: currencyRows } = useLiveQuery(
 		db
@@ -126,7 +113,8 @@ const AddSubscriptionScreen = () => {
 				draft
 			});
 
-			router.back();
+			resetSubscription();
+			discardConfirmation.closeWithoutConfirmation();
 		} catch (err) {
 			console.warn('[add-subscription] save failed:', err);
 		} finally {
@@ -197,7 +185,7 @@ const AddSubscriptionScreen = () => {
 	};
 
 	const closeSheetHd = () => {
-		router.back();
+		discardConfirmation.requestClose();
 	};
 
 	return (
@@ -223,11 +211,20 @@ const AddSubscriptionScreen = () => {
 			)}
 
 			<Host style={{ flex: 1 }}>
-				<MasterPane
-					syncEpoch={syncEpoch}
-					onSyncLocalService={syncLocalService}
-					canSyncLocalService={Boolean(localService) && !isLocalSynced}
-				/>
+				<>
+					<MasterPane
+						syncEpoch={syncEpoch}
+						onSyncLocalService={syncLocalService}
+						canSyncLocalService={Boolean(localService) && !isLocalSynced}
+					/>
+
+					<DiscardChangesConfirmation
+						title="Are you sure you want to discard this new subscription?"
+						isPresented={discardConfirmation.isPresented}
+						onIsPresentedChange={discardConfirmation.setIsPresented}
+						onDiscard={discardConfirmation.discard}
+					/>
+				</>
 			</Host>
 		</>
 	);

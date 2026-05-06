@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
 import { useTheme } from 'styled-components/native';
@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import db from '@db';
 import { categoriesTable } from '@db/schema';
 import { useAccent } from '@hooks';
+import { DiscardChangesConfirmation, useDiscardChangesConfirmation } from '@elements';
 import useEditCategoryStore from '../hooks/use-edit-category';
 
 import {
@@ -29,8 +30,8 @@ const slugify = (value: string) =>
 	value
 		.trim()
 		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '_')
-		.replace(/^_+|_+$/g, '');
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
 
 const normalizeCategory = (draft: CategoryEditParams) => {
 	const title = draft.title.trim();
@@ -56,14 +57,19 @@ const normalizeCategory = (draft: CategoryEditParams) => {
 
 const AddCategory = () => {
 	const theme = useTheme();
-	const router = useRouter();
 	const { t } = useTranslation();
 	const settingAccent = useAccent();
 	const didInitRef = useRef(false);
 	const didEditSlugRef = useRef(false);
+	const autoSlugRef = useRef('');
+	const [slugInputKey, setSlugInputKey] = useState(0);
 
 	const init = useEditCategoryStore((state) => state.actions.init);
 	const patch = useEditCategoryStore((state) => state.actions.patch);
+	const reset = useEditCategoryStore((state) => state.actions.reset);
+	const discardConfirmation = useDiscardChangesConfirmation({
+		onDiscard: reset
+	});
 	const draft = useEditCategoryStore(
 		useShallow((state) => ({
 			slug: state.slug,
@@ -89,10 +95,15 @@ const AddCategory = () => {
 		didInitRef.current = true;
 	}, [init, settingAccent]);
 
-	const closeModal = () => router.back();
+	const closeModal = () => discardConfirmation.requestClose();
 	const canSave = Boolean(normalizeCategory(draft));
 
 	const onChangeSlug = (slug: string) => {
+		if (!didEditSlugRef.current && slug === autoSlugRef.current) {
+			patch({ slug });
+			return;
+		}
+
 		didEditSlugRef.current = true;
 		patch({ slug });
 	};
@@ -103,7 +114,10 @@ const AddCategory = () => {
 			return;
 		}
 
-		patch({ title, slug: slugify(title) });
+		const slug = slugify(title);
+		autoSlugRef.current = slug;
+		patch({ title, slug });
+		setSlugInputKey((key) => key + 1);
 	};
 
 	const openImagePicker = async () => {
@@ -127,7 +141,8 @@ const AddCategory = () => {
 		if (!category) return;
 
 		await db.insert(categoriesTable).values(category);
-		router.back();
+		reset();
+		discardConfirmation.closeWithoutConfirmation();
 	};
 
 	const resetEmoji = () => patch({ emoji: '' });
@@ -151,59 +166,71 @@ const AddCategory = () => {
 			</Stack.Toolbar>
 
 			<Host style={{ flex: 1 }}>
-				<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
-					<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
-						<LogoPreview {...draft} />
-					</Section>
+				<>
+					<List modifiers={[listStyle('insetGrouped'), scrollDismissesKeyboard('immediately')]}>
+						<Section modifiers={[listRowBackground('transparent'), listRowSeparator('hidden'), listSectionSpacing(0)]}>
+							<LogoPreview {...draft} />
+						</Section>
 
-					<Section title={t('library.details.section.identity')}>
-						<LabeledContent label={t('library.details.fields.slug')}>
-							<TextField
-								defaultValue={draft.slug}
-								placeholder={t('library.details.placeholders.slug')}
-								onValueChange={onChangeSlug}
-								modifiers={[
-									multilineTextAlignment('trailing'),
-									foregroundStyle(theme.text.secondary),
-									font({ size: 16, weight: 'regular', design: 'rounded' })
-								]}
+						<Section title={t('library.details.section.identity')}>
+							<LabeledContent label={t('library.details.fields.slug')}>
+								<TextField
+									key={`slug-${slugInputKey}`}
+									defaultValue={draft.slug}
+									placeholder={t('library.details.placeholders.slug')}
+									onValueChange={onChangeSlug}
+									modifiers={[
+										multilineTextAlignment('trailing'),
+										foregroundStyle(theme.text.secondary),
+										font({ size: 16, weight: 'regular', design: 'rounded' })
+									]}
+								/>
+							</LabeledContent>
+							<Title title={draft.title} onChangeTitle={onChangeTitle} />
+						</Section>
+
+						<Section
+							title={t('library.details.section.appearance')}
+							footer={
+								<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>
+									Swipe left clears one.
+								</Text>
+							}
+						>
+							<Emoji
+								emoji={draft.emoji}
+								onChangeEmoji={(emoji) => patch({ emoji: emoji.slice(-8) })}
+								resetEmoji={resetEmoji}
+								resetToInitialEmoji={resetEmoji}
 							/>
-						</LabeledContent>
-						<Title title={draft.title} onChangeTitle={onChangeTitle} />
-					</Section>
+							<LogoUrl
+								logoUrl={draft.logo_url}
+								openImagePicker={openImagePicker}
+								resetLogoUrl={resetLogoUrl}
+								resetToInitialLogoUrl={resetLogoUrl}
+							/>
+							<Symbol
+								symbol={draft.symbol}
+								color={draft.color}
+								resetSymbol={resetSymbol}
+								resetToInitialSymbol={resetSymbol}
+							/>
+							<ColorPicker
+								label={t('library.details.fields.color')}
+								selection={draft.color}
+								onSelectionChange={(color) => patch({ color })}
+								supportsOpacity={false}
+							/>
+						</Section>
+					</List>
 
-					<Section
-						title={t('library.details.section.appearance')}
-						footer={
-							<Text modifiers={[font({ size: 12, weight: 'regular', design: 'rounded' })]}>Swipe left clears one.</Text>
-						}
-					>
-						<Emoji
-							emoji={draft.emoji}
-							onChangeEmoji={(emoji) => patch({ emoji: emoji.slice(-8) })}
-							resetEmoji={resetEmoji}
-							resetToInitialEmoji={resetEmoji}
-						/>
-						<LogoUrl
-							logoUrl={draft.logo_url}
-							openImagePicker={openImagePicker}
-							resetLogoUrl={resetLogoUrl}
-							resetToInitialLogoUrl={resetLogoUrl}
-						/>
-						<Symbol
-							symbol={draft.symbol}
-							color={draft.color}
-							resetSymbol={resetSymbol}
-							resetToInitialSymbol={resetSymbol}
-						/>
-						<ColorPicker
-							label={t('library.details.fields.color')}
-							selection={draft.color}
-							onSelectionChange={(color) => patch({ color })}
-							supportsOpacity={false}
-						/>
-					</Section>
-				</List>
+					<DiscardChangesConfirmation
+						title="Are you sure you want to discard this new category?"
+						isPresented={discardConfirmation.isPresented}
+						onIsPresentedChange={discardConfirmation.setIsPresented}
+						onDiscard={discardConfirmation.discard}
+					/>
+				</>
 			</Host>
 		</>
 	);
